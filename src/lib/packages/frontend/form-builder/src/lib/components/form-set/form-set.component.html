@@ -1,0 +1,7 @@
+<nxt-form-element
+  *ngFor="let field of fields"
+  [fieldName]="field"
+  [formController]="controller"
+  (change)="isFormValid($event)"
+  (dataOutput)="isFormValid($event)"
+></nxt-form-element>

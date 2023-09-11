@@ -1,0 +1,43 @@
+{
+  "name": "next-framework",
+  "description": "Rapid Development Framework Node.js Angular",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/next-levels/next-framework.git"
+  },
+  "author": "nextlevels",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/next-levels/next-framework/issues"
+  },
+  "homepage": "https://github.com/next-levels/next-framework#readme",
+  "dependencies": {
+    "@angular/common": "^16.2.4",
+    "@angular/core": "^16.2.4",
+    "@angular/material": "^16.2.3",
+    "@nestjs/axios": "^3.0.0",
+    "@nestjs/common": "^10.2.4",
+    "@nestjs/event-emitter": "^2.0.2",
+    "@nestjs/platform-express": "^10.2.5",
+    "@nestjs/swagger": "^7.1.11",
+    "@nestjs/typeorm": "^10.0.0",
+    "@nestjs/websockets": "^10.2.5",
+    "@ngneat/transloco": "^5.0.7",
+    "@ngrx/effects": "^16.2.0",
+    "@ngrx/entity": "^16.2.0",
+    "@ngrx/store": "^16.2.0",
+    "@ngx-translate/core": "^15.0.0",
+    "nestjs-paginate": "^8.3.0",
+    "ngx-progressbar": "^11.1.0",
+    "reflect-metadata": "^0.1.13",
+    "sharp": "^0.32.5",
+    "socket.io": "^4.7.2",
+    "socket.io-client": "^4.7.2",
+    "sweetalert2": "^11.7.27"
+  }
+}

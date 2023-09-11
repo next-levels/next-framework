@@ -1,0 +1,86 @@
+<mat-horizontal-stepper [linear]="true" #horizontalStepper *transloco="let t">
+  <mat-step
+    *ngFor="let step of steps"
+    class="stepper-item"
+    [ngClass]="{
+      current: currentStep === step.index,
+      completed: currentStep > step.index
+    }"
+    #horizontalStepperStep1
+  >
+    <ng-template matStepLabel>
+      {{
+        className + '.groups.' + step.title + '.name' | translate
+      }}</ng-template
+    >
+    <p class="my-6 font-medium">{{ t('tire_guarantee.add_information') }}</p>
+
+    <div class="grid gap-4">
+      <nxtlvls-form-set
+        *ngIf="formController"
+        [fields]="step.fields"
+        [controller]="formController"
+        (formValid)="formStepValid = $event"
+      ></nxtlvls-form-set>
+    </div>
+
+    <mat-dialog-actions>
+      <div class="flex w-full justify-between">
+        <button
+          mat-flat-button
+          [color]="'accent'"
+          [mat-dialog-close]="true"
+          type="reset"
+          (click)="horizontalStepper.reset()"
+        >
+          {{ t('button.cancel') }}
+        </button>
+        <div class="inline-flex items-center">
+          <button
+            class="mr-2"
+            mat-button
+            (click)="prevStep()"
+            *ngIf="currentStep > 1"
+          >
+            <span class="inline-flex items-center">
+              <mat-icon
+                class="icon-size-5 text-current"
+                [svgIcon]="'heroicons_solid:arrow-small-left'"
+              ></mat-icon>
+              <span class="ml-1.5">{{ t('button.back') }}</span>
+            </span>
+          </button>
+
+          <button
+            mat-flat-button
+            [color]="'primary'"
+            type="button"
+            (click)="nextStep()"
+            *ngIf="currentStep < steps.length"
+            [disabled]="!formStepValid"
+          >
+            <span class="mr-1.5">Weiter</span>
+            <mat-icon
+              class="icon-size-5 text-current"
+              [svgIcon]="'heroicons_solid:arrow-small-right'"
+            ></mat-icon>
+          </button>
+          <button
+            mat-flat-button
+            [color]="'primary'"
+            type="submit"
+            *ngIf="currentStep === steps.length"
+            (click)="fireAction()"
+          >
+            <span class="mr-1.5" *ngIf="!edit">{{ t('button.create') }}</span>
+            <span class="mr-1.5" *ngIf="edit">{{ t('button.save') }}</span>
+            <mat-icon
+              class="icon-size-5 text-current"
+              [svgIcon]="'heroicons_solid:plus'"
+            ></mat-icon>
+          </button>
+        </div>
+      </div>
+    </mat-dialog-actions>
+  </mat-step>
+</mat-horizontal-stepper>

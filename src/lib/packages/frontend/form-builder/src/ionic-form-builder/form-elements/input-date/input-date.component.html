@@ -1,0 +1,25 @@
+<ng-container [formGroup]="fg">
+  <div class="mt-3">
+    <label>
+      <span class="roboto" style="color: #888888">{{ formField.label }}</span>
+
+      <ion-datetime-button
+        class="mt-2"
+        datetime="datetime"
+      ></ion-datetime-button>
+
+      <ion-modal [keepContentsMounted]="true">
+        <ng-template>
+          <ion-datetime
+            id="datetime"
+            [formControlName]="formField.name"
+            presentation="date"
+            doneText="All set"
+            cancelText="Never mind"
+           >
+          </ion-datetime>
+        </ng-template>
+      </ion-modal>
+    </label>
+  </div>
+</ng-container>

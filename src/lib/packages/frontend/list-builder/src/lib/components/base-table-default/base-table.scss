@@ -1,0 +1,21 @@
+.transparent {
+  background-color: transparent;
+}
+
+@keyframes rowAppear {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.row-animate {
+  animation: rowAppear 1s ease-in-out;
+  /* background: #1cff9d1a; */
+  border: #1cff9db0 solid 4px;
+  //border: #52c60096 solid 2px;
+}

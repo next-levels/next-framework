@@ -1,0 +1,17 @@
+{
+  "name": "@nxt-lvls/form-builder",
+  "version": "2.0.2",
+  "description": "Next Levels Form Builder",
+  "homepage": "https://next-levels.de",
+  "bugs": "https://next-levels.de",
+  "repository": "https://next-levels.de",
+  "license": "MIT",
+  "author": "dev@next-levels.de",
+  "dependencies": {
+    "ng-packagr": "13.3.0",
+    "ts-node": "10.9.1",
+    "ng-inline-svg-2": "^15.0.0",
+    "@ngx-translate/core": "^14.0.0",
+    "reflect-metadata": "^0.1.13"
+  }
+}

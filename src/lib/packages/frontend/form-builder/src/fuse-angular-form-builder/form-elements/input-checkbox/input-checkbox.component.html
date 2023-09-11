@@ -1,0 +1,10 @@
+<div class="input-checkbox-wrapper mt-1" [formGroup]="fg">
+  <div class="form-check form-check-solid form-switch fv-row">
+    <mat-checkbox
+      formControlName=" {{ formField.name }}"
+      (keyup)="onEventChange($event)"
+    >
+      {{ formField.label }}
+    </mat-checkbox>
+  </div>
+</div>

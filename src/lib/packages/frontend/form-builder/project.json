@@ -1,0 +1,27 @@
+{
+  "name": "form-builder",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/form-builder/src",
+  "prefix": "nxt-lvls",
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["coverage/libs/form-builder"],
+      "options": {
+        "jestConfig": "libs/form-builder/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/form-builder/**/*.ts",
+          "libs/form-builder/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

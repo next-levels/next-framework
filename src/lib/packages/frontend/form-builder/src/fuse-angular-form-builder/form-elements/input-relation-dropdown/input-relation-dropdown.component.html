@@ -1,0 +1,11 @@
+<div class="input-relation-wrapper mt-1 input-wrapper" [formGroup]="fg">
+  <mat-form-field floatLabel="always" class="flex-auto gt-xs:pr-3 w-full">
+    <mat-label>{{ formField.label }}</mat-label>
+
+    <mat-select [formControlName]="formField.name" (change)="logChange($event)">
+      <mat-option *ngFor="let option of this.options" [value]="option.value">
+        {{ option.label }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

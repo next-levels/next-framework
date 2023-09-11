@@ -1,0 +1,35 @@
+<div
+  *ngIf="!detailView"
+  class="flex items-center cursor-pointer hover:bg-gray-100 justify-center py-1 px-3 mr-3 rounded-full leading-normal text-gray-500 bg-blue-100 dark:text-gray-300 dark:bg-blue-700 ng-tns-c309-40 ng-star-inserted"
+  (click)="openRelation()"
+>
+  <span class="text-sm font-medium whitespace-nowrap ng-tns-c309-40">
+    {{ _value }}
+  </span>
+</div>
+
+<div *ngIf="detailView">
+  <mat-expansion-panel class="expansion-panel" >
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <div
+          class="flex items-center cursor-pointer hover:bg-gray-100 justify-center py-1 px-3 mr-3 rounded-full leading-normal text-gray-500 bg-blue-100 dark:text-gray-300 dark:bg-blue-700 ng-tns-c309-40 ng-star-inserted"
+        >
+          <span class="text-sm font-medium whitespace-nowrap ng-tns-c309-40">
+            {{ _value }}
+          </span>
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div *ngFor="let field of detail_fields" class="view-item">
+      <p class="my-6 font-medium view-modal__title">
+        {{ field.label | translate }}
+      </p>
+      <div class="grid gap-4 view-modal__field">
+        {{ field.value }}
+      </div>
+    </div>
+
+   </mat-expansion-panel>
+</div>

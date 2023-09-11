@@ -1,0 +1,11 @@
+<div class="input-textarea-wrapper mt-1 input-wrapper" [formGroup]="fg">
+  <mat-form-field floatLabel="always" class="flex-auto">
+    <mat-label>{{ formField.label }}</mat-label>
+    <textarea
+      matInput
+      formControlName="{{ formField.name }}"
+      [placeholder]="formField.label"
+      rows="8"
+    ></textarea>
+  </mat-form-field>
+</div>

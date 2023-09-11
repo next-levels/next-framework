@@ -1,0 +1,11 @@
+<div
+  class="overlay"
+  *ngIf="this.loading$ | async as isShowing"
+  [@inOutAnimation]
+>
+  <div class="overlay__inner">
+    <div class="overlay__content">
+      <div *ngIf="isShowing" class="loader"></div>
+    </div>
+  </div>
+</div>

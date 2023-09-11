@@ -1,0 +1,105 @@
+<div class="modal-header">
+  <h2>
+    {{ className + '.name' | translate }}
+    {{ edit ? 'bearbeiten' : 'hinzufügen' }}
+  </h2>
+  <div
+    class="btn btn-sm btn-icon btn-active-color-primary"
+    (click)="onDismiss()"
+  >
+    <span
+      class="svg-icon svg-icon-1"
+      inlineSVG="./assets/media/icons/duotune/arrows/arr061.svg"
+    >
+    </span>
+  </div>
+</div>
+
+<div class="modal-body py-lg-10 px-lg-10">
+  <div
+    class="stepper stepper-pills stepper-column d-flex flex-column flex-xl-row flex-row-fluid"
+    id="kt_create_account_stepper"
+  >
+    <div class="flex-row-fluid py-lg-5 px-lg-15">
+      <form noValidate id="kt_create_account_form">
+        <div class="current">
+          <ng-container *ngFor="let step of steps">
+            <div *ngIf="currentStep === step.arrayIndex">
+              <div class="pb-10 pb-lg-15">
+                <h2 class="fw-bolder d-flex align-items-center text-dark">
+                  {{
+                    className + '.groups.' + step.title + '.description'
+                      | translate
+                  }}
+                  <i
+                    class="fas fa-exclamation-circle ms-2 fs-7"
+                    ngbTooltip="{{
+                      className + '.groups.' + step.title + '.info_text'
+                        | translate
+                    }}"
+                  ></i>
+                </h2>
+              </div>
+              <nxtlvls-form-set
+                *ngIf="formController"
+                [formFields]="step.fields"
+                [controller]="formController"
+                (formValid)="formStepValid = $event"
+              ></nxtlvls-form-set>
+            </div>
+          </ng-container>
+        </div>
+
+        <div class="d-flex flex-stack pt-10">
+          <div class="mr-2">
+            <ng-container *ngIf="currentStep !== 0">
+              <button
+                type="button"
+                class="btn btn-lg btn-light-primary me-3"
+                (click)="prevStep()"
+              >
+                <span
+                  [inlineSVG]="'./assets/media/icons/duotune/arrows/arr063.svg'"
+                  class="svg-icon svg-icon-4 me-1"
+                ></span>
+                Zurück
+              </button>
+            </ng-container>
+          </div>
+
+          <ng-container>
+            <div>
+              <button
+                type="button"
+                class="btn btn-lg btn-primary me-3"
+                [disabled]="!formStepValid"
+                (click)="nextStep()"
+                *ngIf="currentStep < steps.length"
+              >
+                <span class="indicator-label">
+                  Weiter {{ ' ' }}
+                  <span
+                    [inlineSVG]="
+                      './assets/media/icons/duotune/arrows/arr064.svg'
+                    "
+                    class="svg-icon svg-icon-3 ms-2 me-0"
+                  ></span>
+                </span>
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-lg btn-primary"
+                [disabled]="!formStepValid"
+                *ngIf="currentStep === steps.length"
+                (click)="fireAction()"
+              >
+                <span class="indicator-label">Speichern</span>
+              </button>
+            </div>
+          </ng-container>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+{
+  "name": "generics",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "src",
+  "prefix": "vosdellen",
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["coverage/libs/generics"],
+      "options": {
+        "jestConfig": "libs/generics/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/generics/**/*.ts", "libs/generics/**/*.html"]
+      }
+    }
+  },
+  "tags": []
+}

@@ -1,0 +1,33 @@
+<div *transloco="let t">
+  <div *ngFor="let field of _fields" class="view-item">
+    <p class="my-6 font-medium view-modal__title">
+      {{ translateService.instant(listController.getElementLabel(field)) }}
+    </p>
+
+    <div class="grid gap-4 view-modal__field">
+      <nxtlvls-view-element
+        [fieldName]="field"
+        [listController]="listController"
+        [viewObject]="values"
+        [detailView]="true"
+      >
+      </nxtlvls-view-element>
+    </div>
+  </div>
+
+  <mat-dialog-actions>
+    <div class="flex w-full justify-between">
+      <div class="inline-flex items-center">
+        <button class="mr-2" mat-button (click)="close()">
+          <span class="inline-flex items-center">
+            <mat-icon
+              class="icon-size-5 text-current"
+              [svgIcon]="'heroicons_solid:arrow-small-left'"
+            ></mat-icon>
+            <span class="ml-1.5">{{ t('button.back') }}</span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </mat-dialog-actions>
+</div>

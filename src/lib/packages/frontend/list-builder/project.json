@@ -1,0 +1,27 @@
+{
+  "name": "list-builder",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "src",
+  "prefix": "vosdellen",
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["coverage/libs/list-builder"],
+      "options": {
+        "jestConfig": "libs/list-builder/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/list-builder/**/*.ts",
+          "libs/list-builder/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

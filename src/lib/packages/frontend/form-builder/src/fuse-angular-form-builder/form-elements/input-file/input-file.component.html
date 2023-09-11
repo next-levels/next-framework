@@ -1,0 +1,82 @@
+<div class="input-file-wrapper mt-1" [formGroup]="fg">
+  <mat-label>{{ formField.label }}</mat-label>
+
+  <div class="relative w-32 h-32 mr-4 rounded-md overflow-hidden">
+    <ng-container *ngIf="edit" [ngTemplateOutlet]="editToggler"></ng-container>
+    <ng-container *ngIf="editMode">
+      <!-- Upload / Remove avatar -->
+      <div class="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
+      <div
+        *ngIf="edit"
+        class="absolute inset-0 flex items-center justify-center z-20"
+      >
+        <div>
+          <input
+            id="avatar-file-input"
+            class="absolute h-0 w-0 opacity-0 invisible pointer-events-none"
+            type="file"
+            [multiple]="false"
+            [accept]="'image/jpeg, image/png'"
+            (change)="uploadAvatar(avatarFileInput.files)"
+            #avatarFileInput
+          />
+          <label
+            class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer hover:bg-hover"
+            for="avatar-file-input"
+            matRipple
+          >
+            <mat-icon
+              class="text-white"
+              [svgIcon]="'heroicons_outline:camera'"
+            ></mat-icon>
+          </label>
+        </div>
+        <div>
+          <button mat-icon-button>
+            <mat-icon
+              class="text-white"
+              [svgIcon]="'heroicons_outline:trash'"
+            ></mat-icon>
+          </button>
+        </div>
+      </div>
+    </ng-container>
+
+    <img
+      class="object-cover w-full h-full"
+      *ngIf="file_id"
+      [src]="baseApiUrl + file_id"
+    />
+    <div
+      class="flex items-center justify-center p-4 w-full h-full rounded overflow-hidden uppercase text-6xl font-bold leading-none bg-gray-100 text-gray-600 dark:bg-primary-700 dark:text-gray-200"
+      *ngIf="!file_id"
+    ></div>
+  </div>
+</div>
+
+<ng-template #editToggler>
+  <div class="absolute top-0 right-0 z-50">
+    <ng-container *ngIf="!editMode">
+      <button
+        class="rounded-full"
+        mat-mini-fab
+        (click)="toggleEditMode(true)"
+        type="button"
+        color="accent"
+      >
+        <mat-icon [svgIcon]="'heroicons_solid:pencil-alt'"></mat-icon>
+      </button>
+    </ng-container>
+    <ng-container *ngIf="editMode">
+      <button
+        class="rounded-full"
+        mat-mini-fab
+        (click)="toggleEditMode(false)"
+        type="button"
+        color="warn"
+      >
+        <mat-icon [svgIcon]="'heroicons_solid:x'"></mat-icon>
+      </button>
+    </ng-container>
+  </div>
+</ng-template>

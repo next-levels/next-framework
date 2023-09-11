@@ -1,0 +1,21 @@
+.file-exists {
+  background: transparent;
+  align-items: start;
+  justify-content: start;
+  img {
+    height: 200px;
+  }
+}
+
+.refresh-icon {
+  position: absolute;
+  --ion-color-base: white !important;
+}
+
+.filename {
+  position: absolute;
+  bottom: 10px;
+  text-align: center;
+  width: 100%;
+  font-size: 12px;
+}
