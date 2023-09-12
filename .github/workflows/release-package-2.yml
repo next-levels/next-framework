@@ -14,9 +14,6 @@ jobs:
       - name: Clear npm cache
         run: npm cache clean --force
 
-      - name: Set cache time 0
-        run: npm config set cache-min 0
-
       - name: Remove node_modules
         run: rm -rf node_modules
 
@@ -45,4 +42,4 @@ jobs:
       - run: npm ci
       - run: npm publish
         env:
-          NODE_TOKEN: ${{secrets.NODE_TOKEN}}
+          NODE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
