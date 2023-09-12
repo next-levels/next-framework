@@ -2,7 +2,7 @@ name: Node.js Package
 
 on:
   release:
-    types: [created, edited]
+    types: [created]
 
 jobs:
   build:
@@ -29,9 +29,6 @@ jobs:
       packages: write
       contents: read
     steps:
-      - name: Log node token
-        run: echo "NODE_TOKEN: ${{secrets.NODE_TOKEN}}"
-
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
