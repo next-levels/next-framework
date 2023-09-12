@@ -42,4 +42,4 @@ jobs:
       - run: npm ci
       - run: npm publish
         env:
-          NODE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_TOKEN: ${{secrets.NODE_TOKEN}}
