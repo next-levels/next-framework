@@ -1,4 +1,4 @@
-name: Node.js Package 2
+name: Node.js Package 2 Test
 
 on:
   workflow_dispatch:
