@@ -45,11 +45,14 @@ jobs:
         run: |
           cat .npmrc
           echo $NODE_TOKEN
+      - name: Set npm registry
+        run: |
+          npm config set @next-levels/next-framework:registry=https://npm.pkg.github.com
+      - name: Debug npm Config
+        run: npm config list
       - name: Log configuration
         run: npm config get registry
       - run: npm ci
       - run: npm publish
         env:
           NODE_TOKEN: ${{secrets.NODE_TOKEN}}
-        with:
-          args: publish --registry=https://npm.pkg.github.com/next-levels/next-framework
