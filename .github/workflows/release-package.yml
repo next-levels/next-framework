@@ -41,7 +41,8 @@ jobs:
       - name: Debug .npmrc
         run: |
           cat .npmrc
-          echo $NODE_TOKEN
+      - name: Debug NODE_AUTH_TOKEN
+        run: echo $NODE_AUTH_TOKEN
       - name: Debug npm Config
         run: npm config list
       - name: Log configuration
@@ -49,4 +50,4 @@ jobs:
       - run: npm ci
       - run: npm publish
         env:
-          NODE_TOKEN: ${{secrets.NODE_TOKEN}}
+          NODE_AUTH_TOKEN: ${{secrets.NODE_TOKEN}}
