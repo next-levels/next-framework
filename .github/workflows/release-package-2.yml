@@ -39,8 +39,6 @@ jobs:
           registry-url: https://npm.pkg.github.com/
       - name: List Files in Root Directory
         run: ls -a
-      - name: Set Token to npmrc
-        run: echo "//npm.pkg.github.com/:_authToken=\${NODE_TOKEN}" >> .npmrc
       - name: Debug .npmrc
         run: |
           cat .npmrc
