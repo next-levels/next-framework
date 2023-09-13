@@ -31,7 +31,7 @@ jobs:
       contents: read
     steps:
       - name: Log configuration
-        run: npm config list
+        run: npm config get registry
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
