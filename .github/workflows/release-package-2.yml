@@ -32,6 +32,8 @@ jobs:
     steps:
       - name: Log configuration
         run: npm config get registry
+      - name: List Files in Root Directory
+        run: ls -a
       - name: Debug .npmrc
         run: |
           cat .npmrc
