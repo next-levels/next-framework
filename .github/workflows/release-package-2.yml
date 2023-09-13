@@ -19,7 +19,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
       - run: npm ci
       - run: npm test
 
@@ -38,7 +38,7 @@ jobs:
           path: .
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
           registry-url: https://npm.pkg.github.com/
       # - name: List Files in Root Directory
       #   run: ls -a
@@ -47,7 +47,7 @@ jobs:
           cat .npmrc
           echo $NODE_TOKEN
       - name: Debug npm Config
-        run: npm config list
+        run: npm config ls -l
       - name: Log configuration
         run: npm config get registry
       - run: npm ci
