@@ -34,6 +34,8 @@ jobs:
         run: echo "${{secrets.NODE_TOKEN}}"
       - name: Log hello
         run: echo "NODE_TOKEN"
+      - name: Add node token to npmrc
+        run: echo "//npm.pkg.github.com/:_authToken=\${NODE_TOKEN}" >> .npmrc
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
