@@ -1,5 +1,5 @@
 {
-  "name": "next-framework",
+  "name": "@next-levels/next-framework",
   "description": "Rapid Development Framework Node.js Angular",
   "version": "1.0.0",
   "main": "index.js",
