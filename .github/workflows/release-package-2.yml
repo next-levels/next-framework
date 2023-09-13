@@ -49,7 +49,7 @@ jobs:
         run: npm config get registry
       - run: npm ci
       - run: npm publish
-        with:
-          args: publish --registry=https://npm.pkg.github.com/next-levels/next-framework
         env:
           NODE_TOKEN: ${{secrets.NODE_TOKEN}}
+        with:
+          args: publish --registry=https://npm.pkg.github.com/next-levels/next-framework
