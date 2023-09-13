@@ -1,7 +1,6 @@
 name: Node.js Package 2 Test
 
 on:
-  workflow_dispatch:
   release:
     types: [created, edited]
 
@@ -10,16 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
-      - name: Clear npm cache
-        run: npm cache clean --force
-
-      # - name: Remove node_modules
-      #   run: rm -rf node_modules
-
       - uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 16
       - run: npm ci
       - run: npm test
 
@@ -38,16 +30,14 @@ jobs:
           path: .
       - uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 16
           registry-url: https://npm.pkg.github.com/
-      # - name: List Files in Root Directory
-      #   run: ls -a
       - name: Debug .npmrc
         run: |
           cat .npmrc
           echo $NODE_TOKEN
       - name: Debug npm Config
-        run: npm config ls -l
+        run: npm config list
       - name: Log configuration
         run: npm config get registry
       - run: npm ci
