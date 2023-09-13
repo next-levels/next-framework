@@ -30,12 +30,6 @@ jobs:
       packages: write
       contents: read
     steps:
-      - name: Log node token
-        run: echo "${{secrets.NODE_TOKEN}}"
-      - name: Log hello
-        run: echo "NODE_TOKEN"
-      - name: Add node token to npmrc
-        run: echo "//npm.pkg.github.com/:_authToken=\${NODE_TOKEN}" >> .npmrc
       - name: Log configuration
         run: npm config list
       - uses: actions/checkout@v3
