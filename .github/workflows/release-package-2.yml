@@ -39,6 +39,8 @@ jobs:
           registry-url: https://npm.pkg.github.com/
       - name: List Files in Root Directory
         run: ls -a
+      - name: Set Token to npmrc
+        run: echo "//npm.pkg.github.com/:_authToken=\${NODE_TOKEN}" >> .npmrc
       - name: Debug .npmrc
         run: |
           cat .npmrc
@@ -47,5 +49,7 @@ jobs:
         run: npm config get registry
       - run: npm ci
       - run: npm publish
+        with:
+          args: publish --registry=https://npm.pkg.github.com/next-levels/next-framework
         env:
           NODE_TOKEN: ${{secrets.NODE_TOKEN}}
