@@ -37,15 +37,12 @@ jobs:
         with:
           node-version: 16
           registry-url: https://npm.pkg.github.com/
-      - name: List Files in Root Directory
-        run: ls -a
+      # - name: List Files in Root Directory
+      #   run: ls -a
       - name: Debug .npmrc
         run: |
           cat .npmrc
           echo $NODE_TOKEN
-      - name: Set npm registry
-        run: |
-          npm config set @next-levels/next-framework:registry=https://npm.pkg.github.com
       - name: Debug npm Config
         run: npm config list
       - name: Log configuration
