@@ -8,6 +8,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Clear npm cache
+        run: npm cache clean --force
+
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
