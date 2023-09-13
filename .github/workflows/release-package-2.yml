@@ -30,21 +30,21 @@ jobs:
       packages: write
       contents: read
     steps:
-      - name: List Files in Root Directory
-        run: ls -a
+      - uses: actions/checkout@v3
         with:
           path: .
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: https://npm.pkg.github.com/
+      - name: List Files in Root Directory
+        run: ls -a
       - name: Debug .npmrc
         run: |
           cat .npmrc
           echo $NODE_TOKEN
       - name: Log configuration
         run: npm config get registry
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          registry-url: https://npm.pkg.github.com/
       - run: npm ci
       - run: npm publish
         env:
