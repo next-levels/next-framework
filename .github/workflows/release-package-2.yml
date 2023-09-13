@@ -32,6 +32,10 @@ jobs:
     steps:
       - name: Log configuration
         run: npm config get registry
+      - name: Debug .npmrc
+        run: |
+          cat .npmrc
+          echo $NODE_TOKEN
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
