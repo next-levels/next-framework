@@ -14,8 +14,8 @@ jobs:
       - name: Clear npm cache
         run: npm cache clean --force
 
-      - name: Remove node_modules
-        run: rm -rf node_modules
+      # - name: Remove node_modules
+      #   run: rm -rf node_modules
 
       - uses: actions/setup-node@v3
         with:
@@ -30,6 +30,9 @@ jobs:
       packages: write
       contents: read
     steps:
+      - name: Clear npm cache
+        run: npm cache clean --force
+
       - uses: actions/checkout@v3
         with:
           path: .
