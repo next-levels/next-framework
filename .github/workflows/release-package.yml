@@ -41,9 +41,12 @@ jobs:
         with:
           node-version: 16
           registry-url: https://npm.pkg.github.com/
-      - name: Debug .npmrc
-        run: |
-          cat .npmrc
+      # - name: Debug .npmrc
+      #   run: |
+      #     cat .npmrc
+      - run: |
+          echo "@next-levels/next-framework:registry=https://npm.pkg.github.com" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.NODE_TOKEN }}" >> .npmrc
       - name: Debug NODE_AUTH_TOKEN
         run: echo $NODE_AUTH_TOKEN
       - name: Debug npm Config
