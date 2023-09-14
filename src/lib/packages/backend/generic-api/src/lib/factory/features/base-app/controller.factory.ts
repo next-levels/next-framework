@@ -21,11 +21,13 @@ import { IBaseApiService } from './service.type';
 import { BaseApiController } from '../../../types/controller.type';
 import { ControllerConfig } from '../../../types/controller-config.type';
 import { FileInjectInterceptor } from '@nxtlvls/file-handler';
-import { FrontendJwtAuthGuard } from '@kumho/nest-commons';
 import { SoftDeleteQueryBuilder } from 'typeorm/query-builder/SoftDeleteQueryBuilder';
-import { META } from "@nxtlvls/generic-types";
+import { META } from '@nxtlvls/generic-types';
 
-export function GenericBaseApiController<T extends Type<any>>(entity: T,event:any = null): any {
+export function GenericBaseApiController<T extends Type<any>>(
+  entity: T,
+  event: any = null
+): any {
   @Controller()
   class GenericControllerHost extends BaseApiController {
     constructor(private readonly service: IBaseApiService<T>) {
@@ -83,14 +85,17 @@ export function GenericBaseApiController<T extends Type<any>>(entity: T,event:an
     @Post()
     @ApiBody({ type: entity })
     public async create(@Body() data: T, @Req() req): Promise<Result<T>> {
-      const result =  await this.service.create(data, req);
+      const result = await this.service.create(data, req);
       const options = META.getOptionsByModel(new entity());
       let name = '';
       if (options) {
         name = options.name;
       }
-      if(event !== null){
-        event.emit('events:' + name, { method: 'post', data: result.getValue() });
+      if (event !== null) {
+        event.emit('events:' + name, {
+          method: 'post',
+          data: result.getValue(),
+        });
       }
       return result;
     }
@@ -108,11 +113,14 @@ export function GenericBaseApiController<T extends Type<any>>(entity: T,event:an
 
 export function GenericBaseApiControllerCreator<T extends Type<any>>(
   config: ControllerConfig,
-  event:any = null
+  event: any = null
 ): any {
   @Controller(config.route + '/user/')
   @UseGuards(FrontendJwtAuthGuard)
-  class GenericControllerHost extends GenericBaseApiController(config.entity,event) {
+  class GenericControllerHost extends GenericBaseApiController(
+    config.entity,
+    event
+  ) {
     constructor(
       @Inject(config.serviceToken)
       private readonly service: IBaseApiService<T>

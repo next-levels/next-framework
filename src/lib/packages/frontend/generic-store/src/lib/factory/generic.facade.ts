@@ -8,8 +8,6 @@ import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { createSelector, Store } from '@ngrx/store';
 import { BaseGenericFacade } from '../types/base-generic.facade';
 import { Observable } from 'rxjs';
-import { TireGuarantee } from '@kumho-cms/data-models';
-import * as moment from 'moment';
 
 type FunctionObject = {
   key: string;
@@ -54,7 +52,7 @@ export function createGenericFacade<T extends Object, S>(
         dynamicFilters: any[];
       };
       const dynamicFilters = EntityConstructor.dynamicFilters;
-       const dynamicFilterMap: Record<string, any> = {};
+      const dynamicFilterMap: Record<string, any> = {};
       if (Array.isArray(dynamicFilters)) {
         for (const filter of dynamicFilters) {
           const { key, func } = filter;
@@ -66,14 +64,12 @@ export function createGenericFacade<T extends Object, S>(
         }
       }
 
-       this.selectors = dynamicFilterMap as Record<
+      this.selectors = dynamicFilterMap as Record<
         string,
         (arg: any) => Observable<any>
       >;
-
-     }
+    }
   }
-
 
   return GenericFacade;
 }

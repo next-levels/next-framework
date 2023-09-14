@@ -19,8 +19,8 @@ import { IBaseCmsService } from './service.type';
 import { BaseApiController } from '../../../types/controller.type';
 import { ControllerConfig } from '../../../types/controller-config.type';
 import { FileInjectInterceptor } from '@nxtlvls/file-handler';
-import { JwtAuthGuard } from '@kumho/nest-commons';
 import { META } from '@nxtlvls/generic-types';
+import { JwtAuthGuard } from '@nxtlvls/nest-commons';
 
 export function GenericBaseCMSController<T extends Type<any>>(
   entity: T,
@@ -73,16 +73,18 @@ export function GenericBaseCMSController<T extends Type<any>>(
     @Post()
     @ApiBody({ type: entity })
     public async create(@Body() dto: T): Promise<Result<T>> {
+      const result = await this.service.create(dto);
 
-       const result = await this.service.create(dto)
-
-       const options = META.getOptionsByModel(new entity());
+      const options = META.getOptionsByModel(new entity());
       let name = '';
       if (options) {
         name = options.name;
       }
-       if(event !== null){
-         event.emit('events:' + name, { method: 'post', data: result.getValue() });
+      if (event !== null) {
+        event.emit('events:' + name, {
+          method: 'post',
+          data: result.getValue(),
+        });
       }
       return result;
     }

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { BaseInputComponent } from './base-input.component';
-import { environment } from '@nxtlvls/angular-commons';
+import { EnvironmentStorageService } from '../../../../../../shared/generics/src';
 
 @Component({
   selector: 'nxt-input-file',
@@ -19,10 +19,11 @@ export class BaseInputFileComponent extends BaseInputComponent {
   constructor(
     public _httpClient: HttpClient,
     public override cdRef: ChangeDetectorRef,
-    public override translateService: TranslateService
+    public override translateService: TranslateService,
+    private environmentStorage: EnvironmentStorageService
   ) {
     super(cdRef, translateService);
-    this.baseUrl = environment.baseUrl;
+    this.baseUrl = this.environmentStorage.baseUrl;
     this.baseApiUrl = this.baseUrl + '/files/';
   }
 

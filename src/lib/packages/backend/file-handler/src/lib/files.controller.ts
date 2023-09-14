@@ -30,8 +30,8 @@ import { FileEntity } from './entities/file.entity';
 import 'reflect-metadata';
 import { ThumbnailService } from './thumbnail.service';
 import { Response as ExpressResponse } from 'express';
-import { Result } from '@nxtlvls/nest-tools';
-import { FrontendJwtAuthGuard, JwtAuthGuard } from '@kumho/nest-commons';
+import { Result } from '../../../nest-tools/src';
+import { FrontendJwtAuthGuard, JwtAuthGuard } from '../../../nest-commons/src';
 
 @Controller('files')
 @ApiTags('Files')

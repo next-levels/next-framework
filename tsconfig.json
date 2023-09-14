@@ -11,10 +11,7 @@
     "useDefineForClassFields": false,
     "noImplicitAny": false,
     "skipLibCheck": true,
-    "lib": [
-      "ES2022",
-      "dom"
-    ],
+    "lib": ["ES2022", "dom"],
     "outDir": "../out-tsc/app",
     "target": "ES2022",
     "module": "commonjs",
@@ -22,34 +19,44 @@
     "rootDir": ".",
     "strict": true,
     "paths": {
-
-       "@nxtlvls/angular-tools": [
+      "@nxtlvls/angular-tools": [
         "src/lib/packages/frontend/angular-tools/src/index.ts"
       ],
       "@nxtlvls/dynamic-modals": [
         "src/lib/packages/frontend/dynamic-modals/src/index.ts"
       ],
-       "@nxtlvls/form-builder": [
+      "@nxtlvls/form-builder": [
         "src/lib/packages/frontend/form-builder/src/index.ts"
       ],
-      "@nxtlvls/generic-api": ["src/lib/packages/backend/generic-api/src/index.ts"],
+      "@nxtlvls/generic-api": [
+        "src/lib/packages/backend/generic-api/src/index.ts"
+      ],
       "@nxtlvls/generic-store": [
         "src/lib/packages/frontend/generic-store/src/index.ts"
       ],
-      "@nxtlvls/generic-types": ["src/lib/packages/shared/generics/src/index.ts"],
+      "@nxtlvls/generic-types": [
+        "src/lib/packages/shared/generics/src/index.ts"
+      ],
       "@nxtlvls/list-builder": [
         "src/lib/packages/frontend/list-builder/src/index.ts"
       ],
 
-       "@nxtlvls/nest-tools": ["src/lib/packages/backend/nest-tools/src/index.ts"],
+      "@nxtlvls/nest-commons": [
+        "src/lib/packages/backend/nest-commons/src/index.ts"
+      ],
+      "@nxtlvls/nest-tools": [
+        "src/lib/packages/backend/nest-tools/src/index.ts"
+      ],
 
-      "@nxt/translation": ["src/lib/packages/backend/nxt-translation/src/index.ts"],
-      "@nxtlvls/file-handler": ["src/lib/packages/backend/file-handler/src/index.ts"],
+      "@nxt/translation": [
+        "src/lib/packages/backend/nxt-translation/src/index.ts"
+      ],
+      "@nxtlvls/file-handler": [
+        "src/lib/packages/backend/file-handler/src/index.ts"
+      ],
       "@nxtlvls/nest-auth": ["src/lib/packages/backend/nest-auth/src/index.ts"]
     },
-    "typeRoots": [
-      "node_modules/@types"
-    ]
+    "typeRoots": ["node_modules/@types"]
   },
   "exclude": [
     "dist",
@@ -58,5 +65,3 @@
     "modules/schematics/src/*/files/**/*"
   ]
 }
-
-

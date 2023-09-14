@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { BaseViewComponent } from '../base-view/base-view.component';
 import { DatePipe } from '@angular/common';
-import { environment } from '@nxtlvls/angular-commons';
+import { EnvironmentStorageService } from '../../../../../../../shared/generics/src';
 
 @Component({
   selector: 'vosdellen-view-file',
@@ -16,9 +16,13 @@ import { environment } from '@nxtlvls/angular-commons';
 export class ViewFileComponent extends BaseViewComponent implements OnInit {
   baseUrl = '';
 
-  constructor(private datePipe: DatePipe, public cdRef: ChangeDetectorRef) {
+  constructor(
+    private datePipe: DatePipe,
+    public cdRef: ChangeDetectorRef,
+    private environmentStorage: EnvironmentStorageService
+  ) {
     super(cdRef);
-    this.baseUrl = environment.baseUrl;
+    this.baseUrl = this.environmentStorage.baseUrl;
   }
   ngOnInit() {
     super.ngOnInit();
