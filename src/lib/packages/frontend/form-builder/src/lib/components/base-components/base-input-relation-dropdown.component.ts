@@ -1,10 +1,10 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { BaseInputComponent } from '@nxtlvls/form-builder';
 import { select, Store } from '@ngrx/store';
 import { FormControl, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { ModelRelationOptions } from '@nxtlvls/generic-types';
-import {InstanceRegistryService} from "@nxtlvls/angular-commons";
+import { InstanceRegistryService } from '../../../../../angular-commons/src';
+import { BaseInputComponent } from './base-input.component';
+import { ModelRelationOptions } from '../../../../../../shared/generics/src';
 
 @Component({
   selector: 'nxt-input-relation-dropdown',
@@ -28,7 +28,7 @@ export class BaseInputRelationDropdownComponent
     public store: Store<any>,
     public override cdRef: ChangeDetectorRef,
     public override translateService: TranslateService,
-    private registry: InstanceRegistryService,
+    private registry: InstanceRegistryService
   ) {
     super(cdRef, translateService);
   }
@@ -78,32 +78,25 @@ export class BaseInputRelationDropdownComponent
         console.log(data);
         this.mapData(data);
       });
-
-
-    }else{
+    } else {
       if (this.registry.retrieve(this.formController.getClassName())) {
-        this.facade = this.registry.retrieve(this.formController.getClassName());
+        this.facade = this.registry.retrieve(
+          this.formController.getClassName()
+        );
         this.facade.base.loadFiltered();
 
         console.log(this.facade.base.filtered$);
-        this.facade.base.filtered$.subscribe((data) =>
-
-          this.mapData(data)
-        );
+        this.facade.base.filtered$.subscribe((data) => this.mapData(data));
       }
     }
 
     this._value = '';
     this.formControl = new FormControl(this._value, [Validators.required]);
     if (this.formController && this.formField.name) {
-      this.formController.addFormControl(
-        this.formControl,
-        this.formField.name
-      );
+      this.formController.addFormControl(this.formControl, this.formField.name);
     }
     this.fg = this.formController.getForm();
     this.initFilter();
-
   }
 
   private initFilter() {

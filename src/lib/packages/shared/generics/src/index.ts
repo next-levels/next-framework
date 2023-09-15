@@ -27,4 +27,3 @@ export * from './lib/types/options/relation-options';
 export * from './lib/types/options/dependency-options';
 export * from './lib/types/options/visibility-options';
 export * from './lib/types/options/dropdown-options';
-export * from './lib/environment-storage/environment-storage.service';

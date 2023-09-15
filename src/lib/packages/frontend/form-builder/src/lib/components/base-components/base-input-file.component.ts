@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { BaseInputComponent } from './base-input.component';
-import { EnvironmentStorageService } from '../../../../../../shared/generics/src';
+import { EnvironmentStorageService } from '../../../../../angular-commons/src';
 
 @Component({
   selector: 'nxt-input-file',

@@ -1,6 +1,7 @@
 export * from './lib/packages/backend/generic-api/src';
 export * from './lib/packages/backend/nest-tools/src';
 export * from './lib/packages/backend/nest-commons/src';
+export * from './lib/packages/frontend/angular-commons/src';
 export * from './lib/packages/frontend/dynamic-modals/src';
 export * from './lib/packages/frontend/form-builder/src';
 export * from './lib/packages/frontend/generic-store/src';

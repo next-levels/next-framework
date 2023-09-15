@@ -19,6 +19,9 @@
     "rootDir": ".",
     "strict": true,
     "paths": {
+      "@nxtlvls/angular-commons": [
+        "src/lib/packages/frontend/angular-commons/src/index.ts"
+      ],
       "@nxtlvls/angular-tools": [
         "src/lib/packages/frontend/angular-tools/src/index.ts"
       ],

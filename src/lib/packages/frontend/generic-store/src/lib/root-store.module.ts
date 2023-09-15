@@ -1,32 +1,30 @@
-import {
-  NgModule,
-  ModuleWithProviders,
-  Type,
-  InjectionToken,
-  Inject,
-  forwardRef,
-} from '@angular/core';
+import { NgModule, ModuleWithProviders, Type, Injector } from '@angular/core';
 import { Store, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { environment, InstanceRegistryService } from '@nxtlvls/angular-commons';
 import {
   GenericData,
   getStoreFeatures,
   NotificationData,
 } from '@nxtlvls/generic-store';
 import { META } from '@nxtlvls/generic-types';
-import { EnvironmentStorageService } from '../../../../shared/generics/src';
+import {
+  EnvironmentStorageService,
+  InstanceRegistryService,
+} from '../../../angular-commons/src';
 
 @NgModule({})
 export class RootStoreModule {
-  count = 0;
-  constructor(private environmentStorage: EnvironmentStorageService) {}
-
   static forFeature(model: Type<any>): ModuleWithProviders<RootStoreModule> {
     const providers: any[] = [];
     const imports = [];
     let config = META.getOptionsByModel(model.prototype);
-    const apiUrl = `${this.environmentStorage.baseUrl}/${config.url}`; // wird später aktualisiert
+
+    const injector = Injector.create({
+      providers: [{ provide: EnvironmentStorageService, deps: [] }],
+    });
+    const storedEnvironment = injector.get(EnvironmentStorageService);
+
+    const apiUrl = `${storedEnvironment.baseUrl}/${config.url}`; // wird später aktualisiert
 
     const store = getStoreFeatures<
       typeof model,
