@@ -4,6 +4,10 @@
 
 The next-levels/node-enterprise-stack is a cutting-edge development framework that offers a symbiosis of backend and frontend in an nx workspace. It utilizes NestJS for the backend and Angular CMS among other Angular applications for the frontend. The uniqueness of this stack lies in its consistent reuse of code and resources to minimize inconsistencies and repetitive tasks.
 
+## Documentation
+
+[docs.next-levels.de/next-framework](https://docs.next-levels.de/next-framework/overview)
+
 ## Libraries
 
 The Next-Framework project is organized into multiple libraries. Each library has its own README file for detailed information.
