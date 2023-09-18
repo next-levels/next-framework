@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { EntityPaginated, FilterOptions } from '@nxtlvls/generic-types';
+import { EntityPaginated, FilterOptions } from '../../../../../shared/generics/src';
 
 export interface BaseService<EntityType extends object> {
   getAll(): Observable<EntityType[]>;
