@@ -1,5 +1,5 @@
 import { Dictionary, EntityState } from '@ngrx/entity';
-import { PaginationMeta } from '@nxtlvls/generic-types';
+import { PaginationMeta } from '../../../../../shared/generics/src';
 
 export interface GenericData<EntityType> extends EntityState<EntityType> {
   selectedEntityId: string | number;

@@ -1,13 +1,11 @@
-import {
-  BaseFacade,
-  createBaseFacadeInstance,
-  createNotificationFacade,
-  NotificationFacade,
-} from '@nxtlvls/generic-store';
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { createSelector, Store } from '@ngrx/store';
 import { BaseGenericFacade } from '../types/base-generic.facade';
 import { Observable } from 'rxjs';
+import { BaseFacade } from './base.facede';
+import { NotificationFacade } from '../+store-types/notifcation/notification.facede';
+import { createNotificationFacade } from '../+store-types/notifcation/notification.factory';
+import { createBaseFacadeInstance } from './base.factory';
 
 type FunctionObject = {
   key: string;

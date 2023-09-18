@@ -1,5 +1,6 @@
-import { BasicFacade, NotificationTypeFacade } from '@nxtlvls/generic-store';
-import { Observable } from "rxjs";
+import { Observable } from 'rxjs';
+import { BasicFacade } from './base.type';
+import { NotificationTypeFacade } from '../+store-types/notifcation/notification.facede';
 
 export interface BaseFacadeType {
   base: BasicFacade<any>;

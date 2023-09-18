@@ -1,4 +1,4 @@
-import { PaginationMeta } from '@nxtlvls/generic-types';
+import { PaginationMeta } from '../../../../../shared/generics/src';
 
 export type BaseSelectors<EntityType, StateType> = {
   getEntities: (state: StateType) => EntityType[];

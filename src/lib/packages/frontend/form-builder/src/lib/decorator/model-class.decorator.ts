@@ -1,5 +1,8 @@
 import 'reflect-metadata';
-import { Constructor, decorator_models } from '@nxtlvls/generic-types';
+import {
+  Constructor,
+  decorator_models,
+} from '../../../../../shared/generics/src';
 export const MODELCLASS_PREFIX = 'fb:models';
 export const MODELCLASS_ALL_PREFIX = 'fb:models:all';
 

@@ -1,13 +1,11 @@
 import { EntityAdapter, createEntityAdapter, EntityState } from '@ngrx/entity';
-import {
-  createGenericActions,
-  createGenericReducer,
-  createGenericSelectors,
-  GenericData,
-} from '@nxtlvls/generic-store';
 import { BaseActions } from '../types/base.actions';
 import { BaseSelectors } from '../types/base.selectors';
 import { Action, ActionReducer } from '@ngrx/store';
+import { GenericData } from '../types/generic.data';
+import { createGenericActions } from '../+state/generic.actions';
+import { createGenericSelectors } from '../+state/generic.selectors';
+import { createGenericReducer } from '../+state/generic.reducers';
 
 export abstract class BaseStore<
   EntityType extends any,

@@ -1,6 +1,6 @@
 import { ActionReducer, combineReducers } from '@ngrx/store';
 import { createBaseReducers } from '../+state/base.reducers';
-import { createNotificationReducer } from '@nxtlvls/generic-store';
+import { createNotificationReducer } from '../+store-types/notifcation/notification.reducers';
 
 type ReducerMapType = {
   [key: string]: ActionReducer<any> | undefined;

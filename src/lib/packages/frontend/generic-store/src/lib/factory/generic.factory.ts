@@ -1,27 +1,23 @@
 import { Injectable, InjectionToken } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {
-  BaseService,
-  createBaseEffectServicePair,
-  createNotificationEffectServicePair,
-  createNotificationActions,
-  createGenericActions,
-  createNotificationSelectorsFeature,
-  createGenericSelectorsFeature,
-  createGenericReducerState,
-  StoreFeatureConfig,
-} from '@nxtlvls/generic-store';
-import {
-  Constructor,
-  EntityPaginated,
-  FilterOptions,
-  META,
-} from '@nxtlvls/generic-types';
 import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import { createReducers } from './reducer.factory';
 import { EffectsConfig } from '../types/effects-config.type';
 import { createGenericFacade } from './generic.facade';
+import { BaseService } from '../types/base.service';
+import {
+  EntityPaginated,
+  FilterOptions,
+  META,
+} from '../../../../../shared/generics/src';
+import { createBaseEffectServicePair } from './base.factory';
+import { createNotificationEffectServicePair } from '../+store-types/notifcation/notification.factory';
+import { createGenericActions } from '../+state/generic.actions';
+import { createNotificationActions } from '../+store-types/notifcation/notification.actions';
+import { createGenericSelectorsFeature } from '../+state/generic.selectors';
+import { createNotificationSelectorsFeature } from '../+store-types/notifcation/notification.selectors';
+import { StoreFeatureConfig } from '../types/store-feature-config.type';
 
 type ActionType<T> = (moduleName: string) => any;
 export type SelectorType<T, S> = (

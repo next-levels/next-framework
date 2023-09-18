@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
-import { FilterOptions } from '@nxtlvls/generic-types';
+import { FilterOptions } from '../../../../../shared/generics/src';
 
 export function createGenericActions<T>(entityName: string) {
   return {
@@ -52,7 +52,7 @@ export function createGenericActions<T>(entityName: string) {
 
     addEntitySuccess: createAction(
       `[${entityName} API] Add Entity Success`,
-      props<{ payload: { entity: T,showPopup?: boolean;  } }>()
+      props<{ payload: { entity: T; showPopup?: boolean } }>()
     ),
 
     addEntityFail: createAction(

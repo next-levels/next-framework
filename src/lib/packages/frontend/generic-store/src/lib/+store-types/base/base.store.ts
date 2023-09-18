@@ -1,7 +1,7 @@
 import { createAction, props } from '@ngrx/store';
-import { FilterOptions } from '@nxtlvls/generic-types';
 import { Update } from '@ngrx/entity';
 import { GenericStore } from '../../factory/generic.store';
+import { FilterOptions } from '../../../../../../shared/generics/src';
 
 export class BaseStore<T, S> implements GenericStore {
   entityName: string;

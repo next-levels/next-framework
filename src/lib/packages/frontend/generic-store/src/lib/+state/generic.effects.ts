@@ -6,8 +6,11 @@ import { Action } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
 import Swal from 'sweetalert2';
 import { BaseService } from '../types/base.service';
-import { EntityPaginated, FilterOptions, META } from '@nxtlvls/generic-types';
 import { TranslateService } from '@ngx-translate/core';
+import {
+  EntityPaginated,
+  FilterOptions,
+} from '../../../../../shared/generics/src';
 
 export function customOfType(...allowedTypes: any[]) {
   return filter((action: any) =>
@@ -130,7 +133,8 @@ export class GenericEffects<EntityType extends object> {
         customOfType(this.entityActions.addEntitySuccess),
         map((action: any) => action),
         tap((action: any) => {
-          if (action.payload.showPopup !== false) { // Only show popup if showPopup is not explicitly set to false
+          if (action.payload.showPopup !== false) {
+            // Only show popup if showPopup is not explicitly set to false
             let message = '';
             if (this.entityName && this.entityName !== '') {
               if (this.modelName && this.modelName !== '') {
@@ -165,7 +169,6 @@ export class GenericEffects<EntityType extends object> {
       ),
     { dispatch: false }
   );
-
 
   deleteEntity$ = createEffect(
     () =>

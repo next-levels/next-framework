@@ -3,8 +3,8 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 import { exhaustMap, mergeMap, Observable, of } from 'rxjs';
 import { createGenericActions } from './generic.actions';
 import { Action } from '@ngrx/store';
-import { BaseService } from '@nxtlvls/generic-store';
-import { FilterOptions } from '@nxtlvls/generic-types';
+import { BaseService } from '../types/base.service';
+import { FilterOptions } from '../../../../../shared/generics/src';
 
 export class LocalStorageEffects<EntityType extends object> {
   constructor(

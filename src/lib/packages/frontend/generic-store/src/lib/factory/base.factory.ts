@@ -3,21 +3,20 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { Actions } from '@ngrx/effects';
-import {
-  BaseStore,
-  createGenericActions,
-  createGenericReducer,
-  GenericData,
-  BaseService,
-  BaseFacade,
-  GenericEffects,
-} from '@nxtlvls/generic-store';
+
 import { BaseActions } from '../types/base.actions';
 import { BaseSelectors } from '../types/base.selectors';
 import { LocalStorageEffects } from '../+state/local-storage.effects';
-import { EntityPaginated, FilterOptions } from '@nxtlvls/generic-types';
 import { EffectsConfig } from '../types/effects-config.type';
 import { TranslateService } from '@ngx-translate/core';
+import { BaseService } from '../types/base.service';
+import { EntityPaginated, FilterOptions } from '../../../../../shared/generics/src';
+import { BaseStore } from './base.store';
+import { GenericData } from '../types/generic.data';
+import { createGenericReducer } from '../+state/generic.reducers';
+import { createGenericActions } from '../+state/generic.actions';
+import { GenericEffects } from '../+state/generic.effects';
+import { BaseFacade } from './base.facede';
 
 export function createBaseService<T extends object>(modelUrl: string) {
   @Injectable({

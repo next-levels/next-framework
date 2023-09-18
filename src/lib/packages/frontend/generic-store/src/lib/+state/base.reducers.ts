@@ -1,7 +1,7 @@
 import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
 import { EntityAdapter, EntityState } from '@ngrx/entity';
 import { createGenericActions } from './generic.actions';
-import { EntityPaginated } from '@nxtlvls/generic-types';
+import { EntityPaginated } from '../../../../../shared/generics/src';
 
 export function createBaseReducers<
   EntityType,

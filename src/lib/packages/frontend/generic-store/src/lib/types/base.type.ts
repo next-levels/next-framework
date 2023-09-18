@@ -1,6 +1,9 @@
 import { Update } from '@ngrx/entity';
 import { Observable } from 'rxjs';
-import { FilterOptions, PaginationMeta } from '@nxtlvls/generic-types';
+import {
+  FilterOptions,
+  PaginationMeta,
+} from '../../../../../shared/generics/src';
 
 export interface BasicFacade<EntityType> {
   all$: Observable<EntityType[]>;
