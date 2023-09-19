@@ -16,9 +16,7 @@ export class ValidationTypes {
 
   static PURCHASE_DATE: ValidationType = {
     validation: checkPurchaseDate(),
-
     error_code: 'dateFutureOr15Days',
-
     error_message: 'Das Datum muss in der Vergangenheit liegen.',
   };
 
@@ -127,7 +125,6 @@ function checkPurchaseDate(): ValidatorFn {
     if (new Date(value) > date) {
       error = { dateFutureOr15Days: true };
     }
-
 
     return error;
   };
