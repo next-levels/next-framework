@@ -2,7 +2,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { FormBuilderModule } from '@nxtlvls/form-builder';
 import { TranslateModule } from '@ngx-translate/core';
 import { QuillEditorComponent } from 'ngx-quill';
 import { InputTextComponent } from './form-elements/input-text/input-text.component';
@@ -18,6 +17,7 @@ import { InputDateComponent } from './form-elements/input-date/input-date.compon
 import { InputSignComponent } from './form-elements/input-sign/input-sign.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { InputDropdownRadioComponent } from './form-elements/input-dropdown-radio/input-dropdown-radio.component';
+import { FormBuilderModule } from '../lib/form-builder.module';
 
 @NgModule({
   imports: [

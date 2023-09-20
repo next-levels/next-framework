@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormController } from '../../controller/form-controller';
-import { FormOptions } from '@nxtlvls/generic-types';
+import { FormOptions } from '../../../../../../shared/generics/src';
 
 @Component({
   selector: 'nxtlvls-form-set',

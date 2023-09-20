@@ -11,14 +11,13 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { ListController } from '../../../controllers/ListController';
 import {
   BUILDERFIELD_PREFIX,
-  ListComponents,
   LISTFIELD_PREFIX,
+  ListComponents,
   ListOptions,
-  META,
-} from '@nxtlvls/generic-types';
-import { ListController } from '@nxtlvls/list-builder';
+} from '../../../../../../../shared/generics/src';
 
 @Component({
   selector: 'nxtlvls-view-element',

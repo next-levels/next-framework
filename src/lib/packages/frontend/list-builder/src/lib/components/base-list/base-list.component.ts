@@ -10,6 +10,13 @@ import {
   Output,
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+
+import { TranslateService } from '@ngx-translate/core';
+import { ActivatedRoute } from '@angular/router';
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatDialog } from '@angular/material/dialog';
+import { getFilterOptions } from '../../helpers/list.helper';
+import { ListController } from '../../controllers/ListController';
 import {
   FilterOptions,
   LISTFIELD_ALL_PREFIX,
@@ -17,14 +24,8 @@ import {
   ListOptions,
   PaginationMeta,
   SortDirection,
-} from '@nxtlvls/generic-types';
-import { TranslateService } from '@ngx-translate/core';
-import { ActivatedRoute } from '@angular/router';
-import { SelectionModel } from '@angular/cdk/collections';
-import { ListController } from '@nxtlvls/list-builder';
-import { CreateWizardComponent } from '@nxtlvls/dynamic-modals';
-import { MatDialog } from '@angular/material/dialog';
-import { getFilterOptions } from '../../helpers/list.helper';
+} from '../../../../../../shared/generics/src';
+import { CreateWizardComponent } from '../../../../../dynamic-modals/src';
 
 @Component({
   template: '<ng-container></ng-container>',

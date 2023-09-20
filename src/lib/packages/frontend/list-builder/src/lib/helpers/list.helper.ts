@@ -1,4 +1,4 @@
-import { FilterOptions, PaginationMeta } from '@nxtlvls/generic-types';
+import { FilterOptions } from '../../../../../shared/generics/src';
 
 export function getFilterOptions(pagination): FilterOptions {
   return {

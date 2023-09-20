@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { BaseService } from 'libs/angular/features/generic-store/src';
 import { Observable, map, of } from 'rxjs';
 import { MinimizedModal } from '../../data-models/minimized';
 import { CreateWizardComponent } from '../../components/create-wizard/create-wizard.component';
-import { META } from '@nxtlvls/generic-types';
 import { MatDialog } from '@angular/material/dialog';
-import { FormController } from '@nxtlvls/form-builder';
+import { BaseService } from '../../../../../generic-store/public_api';
+import { META } from '../../../../../../shared/generics/src';
+import { FormController } from '../../../../../form-builder/src';
 
 export enum ComponentInstanceTypes {
   AgencyModel = 'Agentur',
