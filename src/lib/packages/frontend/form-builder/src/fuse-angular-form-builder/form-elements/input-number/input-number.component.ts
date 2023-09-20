@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BaseInputNumberComponent } from '@nxtlvls/form-builder';
+import { BaseInputNumberComponent } from '../../../../public_api';
 
 @Component({
   selector: 'nxt-input-number',

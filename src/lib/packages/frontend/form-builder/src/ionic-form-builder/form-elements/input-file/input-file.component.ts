@@ -6,13 +6,13 @@ import {
   Inject,
   ViewChild,
 } from '@angular/core';
-import { BaseInputFileComponent } from '@nxtlvls/form-builder';
-import { FilePicker } from 'capacitor-file-picker';
+import { FilePicker } from '@capawesome/capacitor-file-picker';
 import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
 import { ActionSheetController, Platform } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { firstValueFrom } from 'rxjs';
+import { BaseInputFileComponent } from '../../../../public_api';
 
 @Component({
   selector: 'nxt-input-file',

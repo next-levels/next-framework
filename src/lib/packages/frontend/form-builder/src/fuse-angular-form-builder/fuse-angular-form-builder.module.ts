@@ -2,7 +2,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { FormBuilderModule } from '@nxtlvls/form-builder';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -25,6 +24,7 @@ import { InputRelationDropdownComponent } from './form-elements/input-relation-d
 import { InputFileComponent } from './form-elements/input-file/input-file.component';
 import { InputCheckboxComponent } from './form-elements/input-checkbox/input-checkbox.component';
 import { InputDateComponent } from './form-elements/input-date/input-date.component';
+import { FormBuilderModule } from '../lib/form-builder.module';
 
 @NgModule({
   imports: [

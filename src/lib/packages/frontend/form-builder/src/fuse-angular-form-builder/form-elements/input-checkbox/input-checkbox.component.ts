@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BaseInputCheckboxComponent } from '@nxtlvls/form-builder';
+import { BaseInputCheckboxComponent } from '../../../../public_api';
 
 @Component({
   selector: 'nxt-input-checkbox',

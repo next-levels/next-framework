@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BaseInputTextareaComponent } from '@nxtlvls/form-builder';
+import { BaseInputTextareaComponent } from '../../../../public_api';
 
 @Component({
   selector: 'nxt-input-textarea',

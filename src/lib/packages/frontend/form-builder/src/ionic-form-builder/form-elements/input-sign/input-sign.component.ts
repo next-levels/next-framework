@@ -8,7 +8,6 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { BaseInputTextComponent } from '@nxtlvls/form-builder';
 import { TranslateService } from '@ngx-translate/core';
 import SignaturePad from 'signature_pad';
 import { UntypedFormGroup } from '@angular/forms';

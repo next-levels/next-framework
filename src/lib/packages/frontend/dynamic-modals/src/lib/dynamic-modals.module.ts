@@ -15,7 +15,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslocoModule } from '@ngneat/transloco';
-import { FormBuilderModule } from '@nxtlvls/form-builder';
 import { ViewModalComponent } from './components/view-modal/view-modal.component';
 import { MatTableModule } from '@angular/material/table';
 

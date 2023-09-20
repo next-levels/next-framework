@@ -2,10 +2,11 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  OnInit, ViewChild,
+  OnInit,
+  ViewChild,
 } from '@angular/core';
-import { BaseInputTextComponent } from '@nxtlvls/form-builder';
 import { TranslateService } from '@ngx-translate/core';
+import { BaseInputTextComponent } from '../../../../public_api';
 
 @Component({
   selector: 'nxt-input-date',
@@ -22,6 +23,4 @@ export class InputDateComponent
   ) {
     super(cdRef, translateService);
   }
-
-
 }

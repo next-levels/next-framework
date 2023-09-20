@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { BaseInputTextComponent } from '@nxtlvls/form-builder';
+import { BaseInputTextComponent } from '../../../../public_api';
 
 @Component({
   selector: 'nxt-input-date',

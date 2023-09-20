@@ -4,8 +4,8 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
-import { BaseInputTextComponent } from '@nxtlvls/form-builder';
 import { TranslateService } from '@ngx-translate/core';
+import { BaseInputTextComponent } from '../../../../public_api';
 
 @Component({
   selector: 'nxt-input-text',
@@ -21,5 +21,5 @@ export class InputTextComponent
     public override translateService: TranslateService
   ) {
     super(cdRef, translateService);
-   }
+  }
 }
