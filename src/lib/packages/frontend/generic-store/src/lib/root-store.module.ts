@@ -2,15 +2,13 @@ import { NgModule, ModuleWithProviders, Type, Injector } from '@angular/core';
 import { Store, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import {
-  GenericData,
-  getStoreFeatures,
-  NotificationData,
-} from '@nxtlvls/generic-store';
-import { META } from '@nxtlvls/generic-types';
-import {
   EnvironmentStorageService,
   InstanceRegistryService,
 } from '../../../angular-commons/src';
+import { META } from '../../../../shared/generics/src';
+import { getStoreFeatures } from './factory/generic.factory';
+import { GenericData } from './types/generic.data';
+import { NotificationData } from '../../public_api';
 
 @NgModule({})
 export class RootStoreModule {

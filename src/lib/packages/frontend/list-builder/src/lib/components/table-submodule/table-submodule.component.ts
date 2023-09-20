@@ -8,19 +8,17 @@ import {
 } from '@angular/core';
 import { debounceTime, merge, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, SortDirection } from '@angular/material/sort';
 import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { Store } from '@ngrx/store';
-
 import { TranslateService } from '@ngx-translate/core';
+import { ActivatedRoute } from '@angular/router';
+import { ListController } from '../../controllers/ListController';
 import {
   BaseFacadeType,
-  BasicFacade,
   StoreFacade,
-} from 'libs/angular/features/generic-store/src';
-import { ActivatedRoute } from '@angular/router';
-import { ListController } from '@nxtlvls/list-builder';
+} from '../../../../../generic-store/public_api';
 import {
   FilterOptions,
   LISTFIELD_ALL_PREFIX,
@@ -28,8 +26,7 @@ import {
   ListOptions,
   PaginationMeta,
   ScopeFilter,
-  SortDirection,
-} from '@nxtlvls/generic-types';
+} from '../../../../../../shared/generics/src';
 
 @Component({
   selector: 'table-submodule',

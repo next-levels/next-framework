@@ -8,17 +8,16 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-
 import { SwalService } from '../../services/swal/swal.service';
 import { MinimizeService } from '../../services/minimize/minimize.service';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MatStepper } from '@angular/material/stepper';
+import { FormController } from '../../../../../form-builder/src';
 import {
   ScopeFilter,
   VISIBILITY_PREFIX,
   VISIBILITY_PREFIX_ALL,
-} from '@nxtlvls/generic-types';
-import { FormController } from '@nxtlvls/form-builder';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { MatStepper } from '@angular/material/stepper';
+} from '../../../../../../shared/generics/src';
 
 @Component({
   selector: 'vosdellen-create-wizard',
@@ -131,8 +130,7 @@ export class CreateWizardComponent implements AfterViewInit, OnInit {
     }
   }
 
-  isValid() {
-   }
+  isValid() {}
   fireAction() {
     const form = this.formController.getForm().value;
     if (this.scope && this.scope.length > 0) {
@@ -155,11 +153,10 @@ export class CreateWizardComponent implements AfterViewInit, OnInit {
         this.minimizeService.minimizeCurrentModal(
           Object.assign(Object.create(Object.getPrototypeOf(this)), this)
         );
-
-       } else if (result.isDenied) {
+      } else if (result.isDenied) {
         this._matDialog.closeAll();
-       } else if (result.isDismissed) {
-       }
+      } else if (result.isDismissed) {
+      }
     });
   }
 }

@@ -1,9 +1,6 @@
 import 'reflect-metadata';
-import {
-  BaseFacadeType,
-  BasicFacade,
-} from 'libs/angular/features/generic-store/src';
-import { META, ModelOptions } from '@nxtlvls/generic-types';
+import { BaseFacadeType } from '../../../../generic-store/public_api';
+import { META, ModelOptions } from '../../../../../shared/generics/src';
 
 export class BaseController {
   protected model: any;

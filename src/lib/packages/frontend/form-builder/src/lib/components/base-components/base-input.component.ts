@@ -10,12 +10,12 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { FormController } from '@nxtlvls/form-builder';
 import {
   DependencyOptions,
   FormOptions,
   VisibilityOptions,
-} from '@nxtlvls/generic-types';
+} from '../../../../../../shared/generics/src';
+import { FormController } from '../../controller/form-controller';
 
 @Component({
   template: '<ng-container ></ng-container>',
