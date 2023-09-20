@@ -1,7 +1,7 @@
 {
   "name": "@next-levels/next-framework",
   "description": "Rapid Development Framework Node.js Angular",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\""
@@ -36,7 +36,7 @@
     "@ngrx/entity": "^16.2.0",
     "@ngrx/store": "^16.2.0",
     "@ngx-translate/core": "^15.0.0",
-    "express": "^3.0.1",
+    "express": "^4.18.2",
     "nestjs-paginate": "^8.3.0",
     "ngx-progressbar": "^11.1.0",
     "ngx-quill": "^22.0.0",
