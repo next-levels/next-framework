@@ -1,5 +1,5 @@
-import { TireGuarantee } from './tire-guarantee.model';
 import { Field, FormField, Model } from '@nxtlvls/generic-types';
+import { TireGuarantee } from './tire-guarantee.model';
 import {
   Column,
   CreateDateColumn,
@@ -65,7 +65,8 @@ export class DamageReport {
 
   @Field({
     type: 'RELATION',
-    options: { selector: 'tireGuarantee.id',
+    options: {
+      selector: 'tireGuarantee.id',
       detail_fields: [
         'tireGuarantee.licence_plate',
         'tireGuarantee.dealer_name',
@@ -73,7 +74,8 @@ export class DamageReport {
         'tireGuarantee.purchase_date',
         'tireGuarantee.invoice_number',
       ],
-      model: new TireGuarantee() },
+      model: new TireGuarantee(),
+    },
   })
   @Column({ type: 'int', nullable: true })
   tire_guarantee_id: number;

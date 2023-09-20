@@ -19,47 +19,45 @@
     "rootDir": ".",
     "strict": true,
     "paths": {
-      "@next-framework/angular-commons": [
+      "@nxtlvls/angular-commons": [
         "src/lib/packages/frontend/angular-commons/src/index.ts"
       ],
-      "@next-framework/angular-tools": [
+      "@nxtlvls/angular-tools": [
         "src/lib/packages/frontend/angular-tools/src/index.ts"
       ],
-      "@next-framework/dynamic-modals": [
+      "@nxtlvls/dynamic-modals": [
         "src/lib/packages/frontend/dynamic-modals/src/index.ts"
       ],
-      "@next-framework/form-builder": [
+      "@nxtlvls/form-builder": [
         "src/lib/packages/frontend/form-builder/src/index.ts"
       ],
-      "@next-framework/generic-api": [
+      "@nxtlvls/generic-api": [
         "src/lib/packages/backend/generic-api/src/index.ts"
       ],
-      "@next-framework/generic-store": [
+      "@nxtlvls/generic-store": [
         "src/lib/packages/frontend/generic-store/src/index.ts"
       ],
-      "@next-framework/generic-types": [
+      "@nxtlvls/generic-types": [
         "src/lib/packages/shared/generics/src/index.ts"
       ],
-      "@next-framework/list-builder": [
+      "@nxtlvls/list-builder": [
         "src/lib/packages/frontend/list-builder/src/index.ts"
       ],
 
-      "@next-framework/nest-commons": [
+      "@nxtlvls/nest-commons": [
         "src/lib/packages/backend/nest-commons/src/index.ts"
       ],
-      "@next-framework/nest-tools": [
+      "@nxtlvls/nest-tools": [
         "src/lib/packages/backend/nest-tools/src/index.ts"
       ],
 
-      "@next-framework/translation": [
+      "@nxtlvls/translation": [
         "src/lib/packages/backend/nxt-translation/src/index.ts"
       ],
-      "@next-framework/file-handler": [
+      "@nxtlvls/file-handler": [
         "src/lib/packages/backend/file-handler/src/index.ts"
       ],
-      "@next-framework/nest-auth": [
-        "src/lib/packages/backend/nest-auth/src/index.ts"
-      ]
+      "@nxtlvls/nest-auth": ["src/lib/packages/backend/nest-auth/src/index.ts"]
     },
     "typeRoots": ["node_modules/@types"]
   },
