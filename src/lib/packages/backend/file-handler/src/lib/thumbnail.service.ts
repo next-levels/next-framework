@@ -3,8 +3,8 @@ import { Injectable } from '@nestjs/common';
 import * as sharp from 'sharp';
 import { Readable } from 'stream';
 import { FileEntity } from './entities/file.entity';
-import { ErrorCode, Result } from '@nxtlvls/nest-tools';
 import { Response } from 'express';
+import { ErrorCode, Result } from '../../../nest-tools/src';
 
 @Injectable()
 export class ThumbnailService {

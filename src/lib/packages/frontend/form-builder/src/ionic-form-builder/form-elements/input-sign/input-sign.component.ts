@@ -15,6 +15,7 @@ import { ActionSheetController, Platform } from '@ionic/angular';
 import { Camera } from '@awesome-cordova-plugins/camera/ngx';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { BaseInputTextComponent } from '../../../../public_api';
 
 @Component({
   selector: 'nxt-input-sign',
@@ -23,7 +24,7 @@ import { firstValueFrom } from 'rxjs';
 })
 export class InputSignComponent
   extends BaseInputTextComponent
-  implements OnInit, AfterViewInit
+  implements AfterViewInit
 {
   @ViewChild('canvas', { static: true }) signaturePadElement;
   signaturePad: any;

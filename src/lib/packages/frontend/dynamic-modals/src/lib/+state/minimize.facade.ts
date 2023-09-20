@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import {
-  BaseFacade,
-  GenericData,
-} from '@nxtlvls/generic-store';
 import { MinimizeStore } from './minimize.store';
 import { MinimizedModal } from '../data-models/minimized';
+import { BaseFacade, GenericData } from '../../../../generic-store/src';
 
 @Injectable({
   providedIn: 'root',

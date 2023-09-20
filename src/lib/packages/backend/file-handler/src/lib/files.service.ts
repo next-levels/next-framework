@@ -4,11 +4,11 @@ import { paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
 import { Connection, Repository } from 'typeorm';
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ErrorCode, Result } from '@nxtlvls/nest-tools';
 import { FileDto } from './dtos/file.dto';
 import { UpdateFileDto } from './dtos/update-file.dto';
 import { FileEntity } from './entities/file.entity';
 import { FILE_FIELD_METADATA_KEY } from './decoretors/file-field.decorator';
+import { ErrorCode, Result } from '../../../nest-tools/src';
 
 @Injectable()
 export class FilesService {

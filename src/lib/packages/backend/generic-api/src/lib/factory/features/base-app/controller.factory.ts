@@ -14,7 +14,6 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { Result } from '@nxtlvls/nest-tools';
 import { ApiBody, ApiQuery } from '@nestjs/swagger';
 import { Paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
 import { IBaseApiService } from './service.type';
@@ -23,6 +22,8 @@ import { ControllerConfig } from '../../../types/controller-config.type';
 import { FileInjectInterceptor } from '@nxtlvls/file-handler';
 import { SoftDeleteQueryBuilder } from 'typeorm/query-builder/SoftDeleteQueryBuilder';
 import { META } from '@nxtlvls/generic-types';
+import { Result } from '@nxtlvls/nest-tools';
+import { FrontendJwtAuthGuard } from '@nxtlvls/nest-commons';
 
 export function GenericBaseApiController<T extends Type<any>>(
   entity: T,

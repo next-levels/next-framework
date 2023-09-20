@@ -1,15 +1,16 @@
 import {
   BaseStore,
+  GenericData,
   createGenericActions,
   createGenericReducer,
-  GenericData,
-} from '@nxtlvls/generic-store';
+} from '../../../../generic-store/src';
 import { MinimizedModal } from '../data-models/minimized';
 
 export class MinimizeStore extends BaseStore<
   MinimizedModal,
   GenericData<MinimizedModal>
 > {
+  baseActions: any;
   constructor() {
     super('minimized');
 

@@ -4,7 +4,6 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
-import { Result } from '@nxtlvls/nest-tools';
 import { Paginated } from 'nestjs-paginate';
 import 'reflect-metadata';
 import { Observable, switchMap } from 'rxjs';
@@ -12,6 +11,7 @@ import { FILE_FIELD_METADATA_KEY } from '../decoretors/file-field.decorator';
 import { FilesService } from '../files.service';
 import { fileMapping } from '../constants/file-mapping';
 import { convertItem } from '../file.helper';
+import { Result } from '../../../../nest-tools/src';
 
 @Injectable()
 export class FileInjectInterceptor implements NestInterceptor {
@@ -56,10 +56,8 @@ export class FileInjectInterceptor implements NestInterceptor {
           singleEnitiy = true;
         }
 
-
         for (const item of data) {
           for (const [className, Entity] of entitiesWithFileFields.entries()) {
-
             if (item instanceof Entity) {
               await this.processFileFields(item, className);
             }
