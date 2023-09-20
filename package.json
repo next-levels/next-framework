@@ -1,7 +1,7 @@
 {
   "name": "@next-levels/next-framework",
   "description": "Rapid Development Framework Node.js Angular",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\""
@@ -40,5 +40,6 @@
     "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2",
     "sweetalert2": "^11.7.27"
-  }
+  },
+  "typings": "index.d.ts"
 }
