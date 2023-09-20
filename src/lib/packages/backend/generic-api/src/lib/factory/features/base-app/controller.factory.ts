@@ -21,9 +21,9 @@ import { BaseApiController } from '../../../types/controller.type';
 import { ControllerConfig } from '../../../types/controller-config.type';
 import { FileInjectInterceptor } from '@nxtlvls/file-handler';
 import { SoftDeleteQueryBuilder } from 'typeorm/query-builder/SoftDeleteQueryBuilder';
-import { META } from '@nxtlvls/generic-types';
-import { Result } from '@nxtlvls/nest-tools';
 import { FrontendJwtAuthGuard } from '@nxtlvls/nest-commons';
+import { META } from 'src/lib/packages/shared/generics/src/lib/helpers/meta-data.helper';
+import { Result } from 'src/lib/packages/backend/nest-tools/src/lib/return/result';
 
 export function GenericBaseApiController<T extends Type<any>>(
   entity: T,

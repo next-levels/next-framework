@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ObjectType, Repository } from 'typeorm';
-import { Result } from '@nxtlvls/nest-tools';
 import {
   FilterOperator,
   paginate,
@@ -9,9 +8,9 @@ import {
   PaginateQuery,
 } from 'nestjs-paginate';
 import { IBaseCmsService } from './service.type';
-import { BaseApiService } from "@nxtlvls/generic-api";
-
 import { getFilterFields } from '../../../helpers/fields.helper';
+import { BaseApiService } from '../../../types/service.type';
+import { Result } from 'src/lib/packages/backend/nest-tools/src/lib/return/result';
 
 export function GenericBaseCMSService<T>(entity: ObjectType<T>): any {
   @Injectable()
@@ -21,13 +20,13 @@ export function GenericBaseCMSService<T>(entity: ObjectType<T>): any {
   {
     constructor(
       @InjectRepository(entity)
-      private readonly repository: Repository<T>,
+      private readonly repository: Repository<T>
     ) {
       super();
     }
 
     async create(data: T): Promise<Result<T>> {
-       return Result.ok(await this.saveWithRelations(data));
+      return Result.ok(await this.saveWithRelations(data));
     }
 
     async delete(id: number): Promise<Result<any>> {
@@ -86,7 +85,7 @@ export function GenericBaseCMSService<T>(entity: ObjectType<T>): any {
     }
 
     async saveWithRelations(entity: any): Promise<any> {
-       const newEntity = await this.repository.save(entity);
+      const newEntity = await this.repository.save(entity);
 
       const relationFields = this.repository.metadata.relations.map(
         (relation) => relation.propertyName as any
@@ -94,8 +93,8 @@ export function GenericBaseCMSService<T>(entity: ObjectType<T>): any {
 
       // Step 2: Fetch it back with relations
       return this.repository.findOne({
-        where: { 'id': newEntity.id } as any,
-        relations: relationFields // Include the relations you want
+        where: { id: newEntity.id } as any,
+        relations: relationFields, // Include the relations you want
       });
     }
   }

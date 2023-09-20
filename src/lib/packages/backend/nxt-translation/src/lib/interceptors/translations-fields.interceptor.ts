@@ -10,7 +10,7 @@ import { TranslationsService } from '../translations.service';
 import { TRANSLATABLE_FIELDS_METADATA_KEY } from '../decoretors/translatable-fields.decorator';
 import { translatableEntities } from '../translatable-entities';
 import { findNearestEntity } from '../translations.helper';
-import { Result } from '@nxtlvls/nest-tools';
+import { Result } from 'src/lib/packages/backend/nest-tools/src/lib/return/result';
 
 @Injectable()
 export class TranslationsInterceptor implements NestInterceptor {

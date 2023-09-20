@@ -12,15 +12,15 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { Result } from '@nxtlvls/nest-tools';
 import { ApiBody, ApiQuery } from '@nestjs/swagger';
 import { Paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
 import { IBaseCmsService } from './service.type';
 import { BaseApiController } from '../../../types/controller.type';
 import { ControllerConfig } from '../../../types/controller-config.type';
 import { FileInjectInterceptor } from '@nxtlvls/file-handler';
-import { META } from '@nxtlvls/generic-types';
-import { JwtAuthGuard } from '@nxtlvls/nest-commons';
+import { META } from 'src/lib/packages/shared/generics/src/lib/helpers/meta-data.helper';
+import { JwtAuthGuard } from 'src/lib/packages/backend/nest-commons/src/lib/guards/jwt-auth.guard';
+import { Result } from 'src/lib/packages/backend/nest-tools/src/lib/return/result';
 
 export function GenericBaseCMSController<T extends Type<any>>(
   entity: T,

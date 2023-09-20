@@ -1,5 +1,5 @@
 import { Paginated, PaginateQuery } from 'nestjs-paginate';
-import { Result } from '@nxtlvls/nest-tools';
+import { Result } from 'src/lib/packages/backend/nest-tools/src/lib/return/result';
 export interface IBaseCmsService<T> {
   findAll(): Promise<Result<T[]>>;
   findOne(id: number): Promise<Result<T | null>>;

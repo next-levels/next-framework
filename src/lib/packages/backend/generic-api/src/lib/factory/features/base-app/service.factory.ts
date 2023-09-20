@@ -1,7 +1,6 @@
 import { Inject, Injectable, Request } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ObjectType, Repository, SelectQueryBuilder } from 'typeorm';
-import { Result } from '@nxtlvls/nest-tools';
 import {
   FilterOperator,
   paginate,
@@ -13,6 +12,7 @@ import { BaseApiService } from './../../../types/service.type';
 import { SoftDeleteQueryBuilder } from 'typeorm/query-builder/SoftDeleteQueryBuilder';
 import { getFilterFields } from '../../../helpers/fields.helper';
 import { HookRegistryService } from '../../../helpers/hook.regestry';
+import { Result } from 'src/lib/packages/backend/nest-tools/src/lib/return/result';
 export function GenericBaseApiService<T>(
   entity: ObjectType<T>,
   registryServiceToken: any,

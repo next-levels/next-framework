@@ -6,7 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { TranslationEntity } from './entities/translation.entity';
 import { TRANSLATE_FIELD_METADATA_KEY } from './decoretors/translatable-fields.decorator';
 import { UpdateTranslationDto } from './dtos/translation.dto';
-import { Result } from '@nxtlvls/nest-tools';
+import { Result } from '../../../nest-tools/src/lib/return/result';
 
 @Injectable()
 export class TranslationsService {
