@@ -17,6 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { TranslocoModule } from '@ngneat/transloco';
 import { ViewModalComponent } from './components/view-modal/view-modal.component';
 import { MatTableModule } from '@angular/material/table';
+import { FormBuilderModule } from '../../../form-builder/public_api';
 
 const store = new MinimizeStore();
 

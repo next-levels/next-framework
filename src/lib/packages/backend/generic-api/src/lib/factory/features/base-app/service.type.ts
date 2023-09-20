@@ -1,5 +1,5 @@
-import { Paginated, PaginateQuery } from 'nestjs-paginate';
 import { Result } from '@nxtlvls/nest-tools';
+import { Paginated, PaginateQuery } from 'nestjs-paginate';
 import { SoftDeleteQueryBuilder } from 'typeorm/query-builder/SoftDeleteQueryBuilder';
 export interface IBaseApiService<T> {
   findAll(req): Promise<Result<T[]>>;
