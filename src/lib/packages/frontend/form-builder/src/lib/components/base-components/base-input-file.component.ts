@@ -20,7 +20,7 @@ export class BaseInputFileComponent extends BaseInputComponent {
     public _httpClient: HttpClient,
     public override cdRef: ChangeDetectorRef,
     public override translateService: TranslateService,
-    private environmentStorage: EnvironmentStorageService
+    public environmentStorage: EnvironmentStorageService
   ) {
     super(cdRef, translateService);
     this.baseUrl = this.environmentStorage.baseUrl;

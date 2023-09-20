@@ -13,6 +13,7 @@ import { HttpClient } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { firstValueFrom } from 'rxjs';
 import { BaseInputFileComponent } from '../../../../public_api';
+import { EnvironmentStorageService } from '../../../../../angular-commons/src';
 
 @Component({
   selector: 'nxt-input-file',
@@ -37,9 +38,10 @@ export class InputFileComponent extends BaseInputFileComponent {
     public platform: Platform,
     private camera: Camera,
     public actionSheetController: ActionSheetController,
-    private http: HttpClient
+    private http: HttpClient,
+    public environmentStorage: EnvironmentStorageService
   ) {
-    super(_httpClient, cdRef, translateService);
+    super(_httpClient, cdRef, translateService, environmentStorage);
   }
 
   isNative() {
@@ -81,9 +83,9 @@ export class InputFileComponent extends BaseInputFileComponent {
 
   public async onFileSelect(event) {
     if (this.isNative()) {
-      await FilePicker.showFilePicker({
-        fileTypes: ['pdf', 'image'],
-      });
+      // await FilePicker.showFilePicker({ # TODO
+      //   fileTypes: ['pdf', 'image'],
+      // });
     }
 
     if (event.target.files.length > 0) {
