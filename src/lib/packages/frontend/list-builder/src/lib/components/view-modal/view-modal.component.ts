@@ -8,21 +8,18 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MatStepper } from '@angular/material/stepper';
+import { TranslateService } from '@ngx-translate/core';
+import { FormController } from '../../../../../form-builder/src';
 import {
   BUILDERFIELD_ALL_PREFIX,
   BUILDERFIELD_PREFIX,
-  LISTFIELD_PREFIX,
   ListOptions,
   ScopeFilter,
-  VISIBILITY_PREFIX,
   VISIBILITY_PREFIX_ALL,
-} from '@nxtlvls/generic-types';
-import { FormController } from '@nxtlvls/form-builder';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { MatStepper } from '@angular/material/stepper';
-import { ListController } from '@nxtlvls/list-builder';
-import { TranslateService } from '@ngx-translate/core';
+} from '../../../../../../shared/generics/src';
+import { ListController } from '../../controllers/ListController';
 
 @Component({
   selector: 'view-modal',

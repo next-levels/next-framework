@@ -20,34 +20,34 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BaseListComponent } from './components/base-list/base-list.component';
 import { ViewRelationComponent } from './components/view-items/view-relation/view-relation.component';
-import { ListComponents } from '@nxtlvls/generic-types';
 import { defaultListComponents } from './types/default-list-components.type';
 import { BaseViewComponent } from './components/view-items/base-view/base-view.component';
 import { ViewDateComponent } from './components/view-items/view-date/view-date.component';
 import { ViewFileComponent } from './components/view-items/view-file/view-file.component';
 import { ViewModalComponent } from './components/view-modal/view-modal.component';
 import { ViewDropdownComponent } from './components/view-items/view-dropdown/view-dropdown.component';
-import {MatExpansionModule} from "@angular/material/expansion";
+import { MatExpansionModule } from '@angular/material/expansion';
+import { ListComponents } from '../../../../shared/generics/src';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        TranslateModule,
-        MatSortModule,
-        MatTableModule,
-        MatPaginatorModule,
-        FormsModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
-        TranslocoModule,
-        ReactiveFormsModule,
-        MatDialogModule,
-        DatePipe,
-        NgOptimizedImage,
-        MatExpansionModule,
-    ],
+  imports: [
+    CommonModule,
+    TranslateModule,
+    MatSortModule,
+    MatTableModule,
+    MatPaginatorModule,
+    FormsModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    TranslocoModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    DatePipe,
+    NgOptimizedImage,
+    MatExpansionModule,
+  ],
   providers: [DatePipe],
   declarations: [
     ContractStateComponent,

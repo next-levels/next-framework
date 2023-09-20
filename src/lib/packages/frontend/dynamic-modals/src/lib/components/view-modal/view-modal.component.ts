@@ -11,19 +11,18 @@ import {
 
 import { SwalService } from '../../services/swal/swal.service';
 import { MinimizeService } from '../../services/minimize/minimize.service';
-import {
-  BUILDERFIELD_PREFIX,
-  LISTFIELD_PREFIX,
-  ListOptions,
-  ScopeFilter,
-  VISIBILITY_PREFIX,
-  VISIBILITY_PREFIX_ALL,
-} from '@nxtlvls/generic-types';
-import { FormController } from '@nxtlvls/form-builder';
+
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
-import { ListController } from '@nxtlvls/list-builder';
 import { TranslateService } from '@ngx-translate/core';
+import { FormController } from '../../../../../form-builder/src';
+import {
+  BUILDERFIELD_PREFIX,
+  ListOptions,
+  ScopeFilter,
+  VISIBILITY_PREFIX_ALL,
+} from '../../../../../../shared/generics/src';
+import { ListController } from '../../../../../list-builder/src';
 
 @Component({
   selector: 'view-modal',
@@ -112,11 +111,10 @@ export class ViewModalComponent implements AfterViewInit, OnInit {
         this.minimizeService.minimizeCurrentModal(
           Object.assign(Object.create(Object.getPrototypeOf(this)), this)
         );
-
-       } else if (result.isDenied) {
+      } else if (result.isDenied) {
         this._matDialog.closeAll();
-       } else if (result.isDismissed) {
-       }
+      } else if (result.isDismissed) {
+      }
     });
   }
 }

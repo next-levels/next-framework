@@ -1,10 +1,7 @@
 import 'reflect-metadata';
-import {
-  BasicFacade,
-  FacadeRegistry,
-} from 'libs/angular/features/generic-store/src';
 import { BaseController } from './BaseController';
-import { ScopeFilter } from '@nxtlvls/generic-types';
+import { ScopeFilter } from '../../../../../shared/generics/src';
+import { FacadeRegistry } from '../../../../generic-store/src';
 
 export class ListController extends BaseController {
   scope: ScopeFilter[] = [];

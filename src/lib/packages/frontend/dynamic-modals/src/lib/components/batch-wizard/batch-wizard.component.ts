@@ -4,15 +4,15 @@ import { io } from 'socket.io-client';
 import 'reflect-metadata';
 import { MinimizeService } from '../../services/minimize/minimize.service';
 import { NgProgress, NgProgressRef } from 'ngx-progressbar';
+import { MatDialog } from '@angular/material/dialog';
+import { FormController } from '../../../../../form-builder/src';
+import { BasicFacade, BatchFacade } from '../../../../../generic-store/src';
 import {
   ScopeFilter,
   UTIL,
   VISIBILITY_PREFIX,
   VISIBILITY_PREFIX_ALL,
-} from '@nxtlvls/generic-types';
-import { BasicFacade, BatchFacade } from '@nxtlvls/generic-store';
-import { FormController } from '@nxtlvls/form-builder';
-import { MatDialog } from '@angular/material/dialog';
+} from '../../../../../../shared/generics/src';
 
 @Component({
   selector: 'vosdellen-batch-wizard',
@@ -132,11 +132,10 @@ export class BatchWizardComponent implements AfterViewInit, OnInit {
         this.minimizeService.minimizeCurrentModal(
           Object.assign(Object.create(Object.getPrototypeOf(this)), this)
         );
-
-       } else if (result.isDenied) {
+      } else if (result.isDenied) {
         this._matDialog.closeAll();
-       } else if (result.isDismissed) {
-       }
+      } else if (result.isDismissed) {
+      }
     });
   }
 }

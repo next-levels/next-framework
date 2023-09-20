@@ -5,12 +5,8 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { ListController } from '@nxtlvls/list-builder';
-import {
-  BUILDERFIELD_PREFIX,
-  LISTFIELD_PREFIX,
-  ListOptions,
-} from '@nxtlvls/generic-types';
+import { ListController } from '../../../controllers/ListController';
+import { ListOptions } from '../../../../../../../shared/generics/src';
 
 @Component({
   template: '<ng-container ></ng-container>',

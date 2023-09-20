@@ -25,7 +25,7 @@ import { BaseInputNumberComponent } from './components/base-components/base-inpu
 import { BaseInputFileComponent } from './components/base-components/base-input-file.component';
 import { BaseInputRelationDropdownComponent } from './components/base-components/base-input-relation-dropdown.component';
 import { BaseInputComponent } from './components/base-components/base-input.component';
-import { FormComponents } from '@nxtlvls/generic-types';
+import { FormComponents } from '../../../../shared/generics/src';
 
 export interface FormBuilderConfig {
   environment: string;

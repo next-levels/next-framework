@@ -5,7 +5,7 @@ import {
   META,
   VISIBILITY_PREFIX,
   VisibilityOptions,
-} from '@nxtlvls/generic-types';
+} from '../../../../../shared/generics/src';
 
 export class FormController {
   protected model: any;
@@ -17,17 +17,17 @@ export class FormController {
   private beforeSaveFunction: (param: any) => any = null;
 
   constructor(model: any, facade: any = null, modelDefinition: any = null) {
-    if (facade){
+    if (facade) {
       this.store = facade.store;
       this.facade = facade;
     }
     this.model = model;
     if (modelDefinition) {
       this.modelDefinition = modelDefinition;
-    }else{
+    } else {
       this.modelDefinition = model;
     }
-     this.form = new UntypedFormGroup({}, null, null);
+    this.form = new UntypedFormGroup({}, null, null);
   }
 
   getClassName() {
@@ -63,7 +63,7 @@ export class FormController {
   }
 
   async create(scope: any[] = null) {
-      if (this.form.valid) {
+    if (this.form.valid) {
       try {
         await this.beforeSave();
         let entity = this.form.value;
@@ -73,7 +73,7 @@ export class FormController {
 
         this.facade.base.add(entity);
       } catch (err) {
-         // Handle error here.
+        // Handle error here.
       }
     }
   }

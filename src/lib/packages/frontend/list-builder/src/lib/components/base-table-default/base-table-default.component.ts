@@ -8,30 +8,20 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  Output, SimpleChanges,
-  ViewChild
-} from "@angular/core";
+  Output,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { debounceTime, merge, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, SortDirection } from '@angular/material/sort';
 import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-import {
-  BUILDERFIELD_ALL_PREFIX, EXPORT_PREFIX, EXPORT_PREFIX_ALL,
-  FilterOptions,
-  LISTFIELD_ALL_PREFIX,
-  META,
-  PaginationMeta,
-  SortDirection,
-} from '@nxtlvls/generic-types';
 import { TranslateService } from '@ngx-translate/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SelectionModel } from '@angular/cdk/collections';
-import { ListController } from '@nxtlvls/list-builder';
-import { CreateWizardComponent } from '@nxtlvls/dynamic-modals';
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
-import { BaseFacadeType } from '@nxtlvls/generic-store';
 import { ViewModalComponent } from '../view-modal/view-modal.component';
 import {
   trigger,
@@ -40,6 +30,18 @@ import {
   animate,
   transition,
 } from '@angular/animations';
+import { ListController } from '../../controllers/ListController';
+import { BaseFacadeType } from '../../../../../generic-store/src';
+import {
+  BUILDERFIELD_ALL_PREFIX,
+  EXPORT_PREFIX,
+  EXPORT_PREFIX_ALL,
+  FilterOptions,
+  LISTFIELD_ALL_PREFIX,
+  META,
+  PaginationMeta,
+} from '../../../../../../shared/generics/src';
+import { CreateWizardComponent } from '../../../../../dynamic-modals/src';
 @Component({
   template: '<ng-container></ng-container>',
   styleUrls: ['./base-table.scss'],
@@ -51,7 +53,7 @@ export class BaseTableDefaultComponent
   @Input() listController: ListController;
   @Input() showHeader = false;
   @Input() showSearch = true;
-  @Input() selector:string ;
+  @Input() selector: string;
   @Input() detailModal = false;
   @Input() route = '';
   @Input() childTable = false;
@@ -116,8 +118,8 @@ export class BaseTableDefaultComponent
     this.modelFacade = this.listController.getFacade();
     this.model = this.listController.getModelDefinition();
 
-    this.modelFacade?.notification?.updated$?.subscribe(timestamp => {
-      console.log("ModelFacade Timestamp:", timestamp);
+    this.modelFacade?.notification?.updated$?.subscribe((timestamp) => {
+      console.log('ModelFacade Timestamp:', timestamp);
     });
 
     const listFields =
@@ -148,11 +150,11 @@ export class BaseTableDefaultComponent
     }
 
     this.modelFacade?.base.filtered$.subscribe((entries: unknown) => {
-      this.dataSource.data = (entries as any[]).sort((a, b) => { return b.id - a.id; });
+      this.dataSource.data = (entries as any[]).sort((a, b) => {
+        return b.id - a.id;
+      });
       this.cdRef.detectChanges();
     });
-
-
 
     this.modelFacade?.base.pagination$.subscribe((paginationMeta) => {
       if (paginationMeta) {
@@ -182,16 +184,18 @@ export class BaseTableDefaultComponent
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.selector) {
       if (this.modelFacade?.selectors[changes.selector.currentValue]) {
-        const observable = this.modelFacade.selectors[changes.selector.currentValue] as unknown as Observable<any>;
+        const observable = this.modelFacade.selectors[
+          changes.selector.currentValue
+        ] as unknown as Observable<any>;
         observable.subscribe((entries: unknown) => {
           console.log(entries);
-          this.dataSource.data = (entries as any[]).sort((a, b) => { return b.id - a.id; });
+          this.dataSource.data = (entries as any[]).sort((a, b) => {
+            return b.id - a.id;
+          });
           this.cdRef.detectChanges();
         });
       }
       console.log('selector changed:', changes.selector.currentValue);
-
-
     }
   }
   ngAfterViewInit(): void {
@@ -227,8 +231,7 @@ export class BaseTableDefaultComponent
     return new Date(value).getTime();
   }
   public selectRow(row: any) {
-
-    if(this.detailModal){
+    if (this.detailModal) {
       this._matDialog.open(CreateWizardComponent, {
         minWidth: '50%',
         autoFocus: false,
@@ -241,8 +244,8 @@ export class BaseTableDefaultComponent
         },
       });
       this.cdRef.detectChanges();
-    }else {
-      if(this.route !== ''){
+    } else {
+      if (this.route !== '') {
         this.router.navigate([this.route + '/' + row.id]);
       }
     }
@@ -287,9 +290,7 @@ export class BaseTableDefaultComponent
     this.cdRef.detectChanges();
   }
 
-
   export() {
-
     const listFields =
       Reflect.getMetadata(
         LISTFIELD_ALL_PREFIX,
@@ -311,29 +312,34 @@ export class BaseTableDefaultComponent
     let fields = [...builderFields, ...listFields, ...exportFields];
 
     fields = fields.map((field) => {
-      let options = Reflect.getMetadata(
-        EXPORT_PREFIX,
-        this.listController.getModelDefinition(),
-        field
-      ) || {}
-      return { field, options }
+      let options =
+        Reflect.getMetadata(
+          EXPORT_PREFIX,
+          this.listController.getModelDefinition(),
+          field
+        ) || {};
+      return { field, options };
     });
 
     //filter out fields that have options.hidden set to true and return only the field names
     let headerFields = fields.filter((field) => {
-      return field.options.hidden !== true
+      return field.options.hidden !== true;
     });
 
     let csvData = this.ConvertToCSV(this.dataSource.data, headerFields);
-    let blob = new Blob(['\ufeff' + csvData], { type: 'text/csv;charset=utf-8;' });
-    let dwldLink = document.createElement("a");
+    let blob = new Blob(['\ufeff' + csvData], {
+      type: 'text/csv;charset=utf-8;',
+    });
+    let dwldLink = document.createElement('a');
     let url = URL.createObjectURL(blob);
-    let isSafariBrowser = navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1;
-    if (isSafariBrowser) {  //if Safari open in new window to save file with random filename.
-      dwldLink.setAttribute("target", "_blank");
+    let isSafariBrowser =
+      navigator.userAgent.indexOf('Safari') != -1 &&
+      navigator.userAgent.indexOf('Chrome') == -1;
+    if (isSafariBrowser) {
+      //if Safari open in new window to save file with random filename.
+      dwldLink.setAttribute('target', '_blank');
     }
-    dwldLink.setAttribute("href", url);
-
+    dwldLink.setAttribute('href', url);
 
     let name = '';
     this.translateService.get('test').subscribe((translated: string) => {
@@ -342,9 +348,11 @@ export class BaseTableDefaultComponent
       name = this.translateService.instant(labelCode);
     });
 
-
-    dwldLink.setAttribute("download", name+"_export_"+new Date().toDateString()+".csv");
-    dwldLink.style.visibility = "hidden";
+    dwldLink.setAttribute(
+      'download',
+      name + '_export_' + new Date().toDateString() + '.csv'
+    );
+    dwldLink.style.visibility = 'hidden';
     document.body.appendChild(dwldLink);
     dwldLink.click();
     document.body.removeChild(dwldLink);
@@ -358,13 +366,17 @@ export class BaseTableDefaultComponent
     for (let index in headerList) {
       let name = '';
       this.translateService.get('test').subscribe((translated: string) => {
-      let field = headerList[index].options.selector ?? headerList[index].field;
-       let labelCode = '';
+        let field =
+          headerList[index].options.selector ?? headerList[index].field;
+        let labelCode = '';
         if (field.includes('.')) {
-          labelCode = field.split('.')[0]+'.properties.'+field.split('.')[1];
-        }else{
           labelCode =
-            META.getNameByModel(this.listController.getModelDefinition()) + '.properties.' + field ;
+            field.split('.')[0] + '.properties.' + field.split('.')[1];
+        } else {
+          labelCode =
+            META.getNameByModel(this.listController.getModelDefinition()) +
+            '.properties.' +
+            field;
         }
 
         name = this.translateService.instant(labelCode);
@@ -375,19 +387,19 @@ export class BaseTableDefaultComponent
     str += row + '\r\n';
 
     for (let i = 0; i < array.length; i++) {
-      let line = (i+1)+'';
+      let line = i + 1 + '';
       for (let index in headerList) {
-        let head = headerList[index].options?.selector || headerList[index].field;
+        let head =
+          headerList[index].options?.selector || headerList[index].field;
         let value = '';
         if (head.includes('.')) {
           let split = head.split('.');
           let orgValue = array[i];
           value = orgValue[split[0]][split[1]];
           line += ',' + value;
-        }else {
+        } else {
           line += ',' + array[i][head];
         }
-
       }
       str += line + '\r\n';
     }
@@ -395,21 +407,22 @@ export class BaseTableDefaultComponent
   }
 
   public openViewModal(row: any) {
-    if(this.detailModal){
-    this._matDialog.open(ViewModalComponent, {
-      minWidth: '50%',
-      autoFocus: false,
-      data: {
-        model: this.model,
-        modelFacade: this.modelFacade,
-        values: row,
-      },
-    });
-    this.cdRef.detectChanges();
-    }else {
-      if(this.route !== ''){
-         this.router.navigate([this.route + '/' + row.id]);
-      }    }
+    if (this.detailModal) {
+      this._matDialog.open(ViewModalComponent, {
+        minWidth: '50%',
+        autoFocus: false,
+        data: {
+          model: this.model,
+          modelFacade: this.modelFacade,
+          values: row,
+        },
+      });
+      this.cdRef.detectChanges();
+    } else {
+      if (this.route !== '') {
+        this.router.navigate([this.route + '/' + row.id]);
+      }
+    }
   }
 
   public trackByFn(index: number, item: any): any {
@@ -466,6 +479,4 @@ export class BaseTableDefaultComponent
   batchEdit() {}
 
   getName(row: any, field: string) {}
-
-
 }

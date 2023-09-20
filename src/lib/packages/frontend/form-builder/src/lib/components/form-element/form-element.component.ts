@@ -10,15 +10,13 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { FormController } from '../../controller/form-controller';
-import {
-  BUILDERFIELD_ALL_PREFIX,
-  BUILDERFIELD_PREFIX,
-  FormComponents,
-  FORMFIELD_ALL_PREFIX,
-  FORMFIELD_PREFIX,
-  FormOptions,
-} from '@nxtlvls/generic-types';
 import { FormControl } from '@angular/forms';
+import {
+  BUILDERFIELD_PREFIX,
+  FORMFIELD_PREFIX,
+  FormComponents,
+  FormOptions,
+} from '../../../../../../shared/generics/src';
 
 @Component({
   selector: 'nxt-form-element',

@@ -2,8 +2,11 @@ import { Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { PaginationMeta, SortDirection } from '@nxtlvls/generic-types';
-import { FilterOptions } from '@nxtlvls/generic-types';
+import {
+  FilterOptions,
+  PaginationMeta,
+  SortDirection,
+} from '@nxtlvls/generic-types';
 
 @Component({ templateUrl: 'mat-pagination.std.html' })
 export class MatPaginationStd<T> {
