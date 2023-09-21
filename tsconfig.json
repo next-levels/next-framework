@@ -43,14 +43,12 @@
       "@nxtlvls/list-builder": [
         "src/lib/packages/frontend/list-builder/src/index.ts"
       ],
-
       "@nxtlvls/nest-commons": [
         "src/lib/packages/backend/nest-commons/src/index.ts"
       ],
       "@nxtlvls/nest-tools": [
         "src/lib/packages/backend/nest-tools/src/index.ts"
       ],
-
       "@nxtlvls/translation": [
         "src/lib/packages/backend/nxt-translation/src/index.ts"
       ],
