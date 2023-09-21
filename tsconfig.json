@@ -12,7 +12,7 @@
     "noImplicitAny": false,
     "skipLibCheck": true,
     "lib": ["ES2022", "dom"],
-    "outDir": "../out-tsc/app",
+    "outDir": "./out-tsc/app",
     "target": "ES2022",
     "module": "commonjs",
     "baseUrl": ".",

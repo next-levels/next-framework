@@ -1,9 +1,9 @@
 {
   "name": "@next-levels/next-framework",
   "description": "Rapid Development Framework Node.js Angular",
-  "version": "1.0.31",
-  "main": "src/fake-index.js",
-  "typings": "index.d.ts",
+  "version": "1.0.32",
+  "main": "src/index.js",
+  // "typings": "index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\""
   },
