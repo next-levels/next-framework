@@ -1,7 +1,7 @@
 {
   "name": "@next-levels/next-framework",
   "description": "Rapid Development Framework Node.js Angular",
-  "version": "1.0.30",
+  "version": "1.0.31",
   "main": "src/fake-index.js",
   "typings": "index.d.ts",
   "scripts": {
