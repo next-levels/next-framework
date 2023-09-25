@@ -18,6 +18,7 @@ class Result {
         Object.freeze(this);
     }
     static ok(value) {
+        console.log('value', value);
         return new Result(true, null, value);
     }
     static fail(error) {
