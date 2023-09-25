@@ -1,5 +1,5 @@
-import { VisibilityOptions } from '../types/VisibilityOptions';
 import 'reflect-metadata';
+import { VisibilityOptions } from '../../../../../shared/generics/src';
 
 export const VISIBILITY_PREFIX = 'fb:visibility';
 export const VISIBILITY_PREFIX_ALL = 'fb:visibility:all';
