@@ -3,10 +3,14 @@ import { ErrorCode } from './error-code';
 export class Result<T> {
   public isSuccess: boolean;
   public isFailure: boolean;
-  public error: ErrorCode;
+  public error: ErrorCode | null;
   private readonly _value: T;
 
-  private constructor(isSuccess: boolean, error?: ErrorCode, value?: T) {
+  private constructor(
+    isSuccess: boolean,
+    error: ErrorCode | null,
+    value: T = undefined as T
+  ) {
     if (isSuccess && error) {
       throw new Error(`InvalidOperation: A result cannot be
         successful and contain an error`);
