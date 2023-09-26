@@ -54,5 +54,4 @@ jobs:
       - name: Log configuration
         run: npm config get registry
       - run: npm ci
-      - run: tsc
       - run: npm publish
