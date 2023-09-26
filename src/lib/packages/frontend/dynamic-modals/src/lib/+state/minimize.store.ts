@@ -10,7 +10,7 @@ export class MinimizeStore extends BaseStore<
   MinimizedModal,
   GenericData<MinimizedModal>
 > {
-  baseActions: any;
+  override baseActions: any;
   constructor() {
     super('minimized');
 

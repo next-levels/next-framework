@@ -57,14 +57,14 @@ tslib_1.__decorate([
     (0, typeorm_1.UpdateDateColumn)({
         nullable: true,
     }),
-    tslib_1.__metadata("design:type", Object)
+    tslib_1.__metadata("design:type", String)
 ], DamageReport.prototype, "created_at", void 0);
 tslib_1.__decorate([
     (0, generic_types_1.Field)({ type: 'DATE', required: true }),
     (0, typeorm_1.CreateDateColumn)({
         nullable: true,
     }),
-    tslib_1.__metadata("design:type", Object)
+    tslib_1.__metadata("design:type", String)
 ], DamageReport.prototype, "updated_at", void 0);
 tslib_1.__decorate([
     (0, generic_types_1.Field)({

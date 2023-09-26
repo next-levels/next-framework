@@ -11,13 +11,13 @@ import { select, Store } from '@ngrx/store';
 export class ViewRelationComponent extends BaseViewComponent implements OnInit {
   detail_fields: any[] = [];
   constructor(
-    public cdRef: ChangeDetectorRef,
+    public override cdRef: ChangeDetectorRef,
     public router: Router,
     public store: Store<any>
   ) {
     super(cdRef);
   }
-  ngOnInit() {
+  override ngOnInit() {
     super.ngOnInit();
 
     if (
@@ -28,8 +28,11 @@ export class ViewRelationComponent extends BaseViewComponent implements OnInit {
     ) {
       if (this.listField.options.selector.includes('.')) {
         const fieldNameArray = this.listField.options.selector.split('.');
-        if(this.viewObject[fieldNameArray[0]] && this.viewObject[fieldNameArray[0]][fieldNameArray[1]])
-        this._value = this.viewObject[fieldNameArray[0]][fieldNameArray[1]];
+        if (
+          this.viewObject[fieldNameArray[0]] &&
+          this.viewObject[fieldNameArray[0]][fieldNameArray[1]]
+        )
+          this._value = this.viewObject[fieldNameArray[0]][fieldNameArray[1]];
       }
     }
 
@@ -74,7 +77,7 @@ export class ViewRelationComponent extends BaseViewComponent implements OnInit {
         this.listField.options.detail_fields,
         this.viewObject
       );
-     }
+    }
   }
 
   mapData(fields, data: any) {
@@ -99,7 +102,11 @@ export class ViewRelationComponent extends BaseViewComponent implements OnInit {
       field.split('.').forEach((key) => {
         value = value ? value[key] : null;
       });
-      if (value !== null) fieldValues.push({ label: field.split('.')[0]+'.properties.'+field.split('.')[1], value: value });
+      if (value !== null)
+        fieldValues.push({
+          label: field.split('.')[0] + '.properties.' + field.split('.')[1],
+          value: value,
+        });
     });
 
     return fieldValues;

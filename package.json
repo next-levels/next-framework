@@ -47,5 +47,8 @@
     "socket.io-client": "^4.7.2",
     "sweetalert2": "^11.7.27",
     "typescript": "^5.2.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.18"
   }
 }

@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { DependencyOptions } from '../types/dependency-options';
+import { DependencyOptions } from '../../../../../shared/generics/src';
 
 export const DEPENDENCY_PREFIX = 'fb:dependency';
 

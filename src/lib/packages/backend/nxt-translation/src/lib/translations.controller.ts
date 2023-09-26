@@ -5,7 +5,7 @@ import 'reflect-metadata';
 import { TranslationsService } from './translations.service';
 import { UpdateTranslationDto } from './dtos/translation.dto';
 import { TranslationEntity } from './entities/translation.entity';
-import { Result } from 'libs/nest/utility/nest-tools/src';
+import { Result } from '../../../nest-tools/src/lib/return/result';
 
 @Controller('translations')
 @ApiTags('Translations')

@@ -6,7 +6,7 @@ import { BaseInputHtmlComponent } from '../../../../public_api';
   templateUrl: './input-html.component.html',
 })
 export class InputHtmlComponent extends BaseInputHtmlComponent {
-  public quillConfiguration = {
+  public override quillConfiguration = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],
       ['blockquote', 'code-block'],
@@ -18,7 +18,7 @@ export class InputHtmlComponent extends BaseInputHtmlComponent {
     ],
   };
 
-  onEventChange(event: any) {
+  override onEventChange(event: any) {
     if (event.value) {
       this.dataOutput.emit(event.value.toISOString());
     }

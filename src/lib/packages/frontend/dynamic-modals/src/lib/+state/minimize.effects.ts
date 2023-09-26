@@ -11,7 +11,7 @@ export class MinimizeEffects extends GenericEffects<MinimizedModal> {
     actions$: Actions,
     private minimizeService: MinimizeService,
     private minimizeStore: MinimizeStore,
-    public translateService: TranslateService
+    public override translateService: TranslateService
   ) {
     super(
       actions$,

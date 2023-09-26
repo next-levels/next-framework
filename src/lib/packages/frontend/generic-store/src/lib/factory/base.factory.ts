@@ -10,7 +10,10 @@ import { LocalStorageEffects } from '../+state/local-storage.effects';
 import { EffectsConfig } from '../types/effects-config.type';
 import { TranslateService } from '@ngx-translate/core';
 import { BaseService } from '../types/base.service';
-import { EntityPaginated, FilterOptions } from '../../../../../shared/generics/src';
+import {
+  EntityPaginated,
+  FilterOptions,
+} from '../../../../../shared/generics/src';
 import { BaseStore } from './base.store';
 import { GenericData } from '../types/generic.data';
 import { createGenericReducer } from '../+state/generic.reducers';
@@ -94,7 +97,7 @@ export function createBaseEffects<T extends object>(
     constructor(
       public override actions$: Actions,
       @Inject(serviceToken) public service: BaseService<T>,
-      public translateService: TranslateService
+      public override translateService: TranslateService
     ) {
       super(actions$, service, actions, name, label, translateService);
     }

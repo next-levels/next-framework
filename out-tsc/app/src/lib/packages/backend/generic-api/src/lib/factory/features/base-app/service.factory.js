@@ -100,13 +100,13 @@ function GenericBaseApiService(entity, registryServiceToken, userScope = false) 
     tslib_1.__decorate([
         tslib_1.__param(2, (0, common_1.Request)()),
         tslib_1.__metadata("design:type", Function),
-        tslib_1.__metadata("design:paramtypes", [Object, Object, Object]),
+        tslib_1.__metadata("design:paramtypes", [Object, String, Object]),
         tslib_1.__metadata("design:returntype", Promise)
     ], GenericServiceHost.prototype, "findByFilter", null);
     tslib_1.__decorate([
         tslib_1.__param(2, (0, common_1.Request)()),
         tslib_1.__metadata("design:type", Function),
-        tslib_1.__metadata("design:paramtypes", [Object, Object, Object]),
+        tslib_1.__metadata("design:paramtypes", [Object, String, Object]),
         tslib_1.__metadata("design:returntype", Promise)
     ], GenericServiceHost.prototype, "_findByFilter", null);
     tslib_1.__decorate([

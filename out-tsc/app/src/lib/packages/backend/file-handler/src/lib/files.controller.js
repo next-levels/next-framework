@@ -1,5 +1,4 @@
 "use strict";
-var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FilesController = void 0;
 const tslib_1 = require("tslib");
@@ -13,7 +12,6 @@ const file_helper_1 = require("./file.helper");
 const file_dto_1 = require("./dtos/file.dto");
 require("reflect-metadata");
 const thumbnail_service_1 = require("./thumbnail.service");
-const express_1 = require("express");
 const src_1 = require("../../../nest-tools/src");
 const src_2 = require("../../../nest-commons/src");
 let FilesController = class FilesController {
@@ -87,7 +85,7 @@ tslib_1.__decorate([
     tslib_1.__param(3, (0, common_1.Query)('type')),
     tslib_1.__param(4, (0, common_1.Res)()),
     tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [Number, String, String, String, typeof (_a = typeof express_1.Response !== "undefined" && express_1.Response) === "function" ? _a : Object]),
+    tslib_1.__metadata("design:paramtypes", [Number, String, String, String, Object]),
     tslib_1.__metadata("design:returntype", Promise)
 ], FilesController.prototype, "serveThumbnail", null);
 tslib_1.__decorate([
@@ -95,7 +93,7 @@ tslib_1.__decorate([
     tslib_1.__param(0, (0, common_1.Param)('id')),
     tslib_1.__param(1, (0, common_1.Res)()),
     tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [Number, typeof (_b = typeof express_1.Response !== "undefined" && express_1.Response) === "function" ? _b : Object]),
+    tslib_1.__metadata("design:paramtypes", [Number, Object]),
     tslib_1.__metadata("design:returntype", Promise)
 ], FilesController.prototype, "downloadFile", null);
 tslib_1.__decorate([

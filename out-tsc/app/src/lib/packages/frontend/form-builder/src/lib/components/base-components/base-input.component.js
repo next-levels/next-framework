@@ -5,6 +5,7 @@ const tslib_1 = require("tslib");
 const core_1 = require("@angular/core");
 const forms_1 = require("@angular/forms");
 const core_2 = require("@ngx-translate/core");
+const form_controller_1 = require("../../controller/form-controller");
 let BaseInputComponent = class BaseInputComponent {
     constructor(cdRef, translateService) {
         this.cdRef = cdRef;
@@ -110,7 +111,7 @@ tslib_1.__decorate([
 ], BaseInputComponent.prototype, "formField", void 0);
 tslib_1.__decorate([
     (0, core_1.Input)(),
-    tslib_1.__metadata("design:type", Object)
+    tslib_1.__metadata("design:type", form_controller_1.FormController)
 ], BaseInputComponent.prototype, "formController", void 0);
 tslib_1.__decorate([
     (0, core_1.Output)(),

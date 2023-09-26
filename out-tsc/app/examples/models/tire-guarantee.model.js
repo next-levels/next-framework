@@ -15,11 +15,11 @@ tslib_1.__decorate([
 tslib_1.__decorate([
     (0, generic_types_1.Field)({ type: 'DATE' }),
     (0, typeorm_1.CreateDateColumn)(),
-    tslib_1.__metadata("design:type", Object)
+    tslib_1.__metadata("design:type", String)
 ], TireGuarantee.prototype, "created_at", void 0);
 tslib_1.__decorate([
     (0, typeorm_1.CreateDateColumn)(),
-    tslib_1.__metadata("design:type", Object)
+    tslib_1.__metadata("design:type", String)
 ], TireGuarantee.prototype, "updated_at", void 0);
 tslib_1.__decorate([
     (0, generic_types_1.Field)({

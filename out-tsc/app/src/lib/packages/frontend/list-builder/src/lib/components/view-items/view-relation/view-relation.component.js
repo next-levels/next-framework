@@ -22,7 +22,8 @@ let ViewRelationComponent = class ViewRelationComponent extends base_view_compon
             this.listField.options.selector) {
             if (this.listField.options.selector.includes('.')) {
                 const fieldNameArray = this.listField.options.selector.split('.');
-                if (this.viewObject[fieldNameArray[0]] && this.viewObject[fieldNameArray[0]][fieldNameArray[1]])
+                if (this.viewObject[fieldNameArray[0]] &&
+                    this.viewObject[fieldNameArray[0]][fieldNameArray[1]])
                     this._value = this.viewObject[fieldNameArray[0]][fieldNameArray[1]];
             }
         }
@@ -76,7 +77,10 @@ let ViewRelationComponent = class ViewRelationComponent extends base_view_compon
                 value = value ? value[key] : null;
             });
             if (value !== null)
-                fieldValues.push({ label: field.split('.')[0] + '.properties.' + field.split('.')[1], value: value });
+                fieldValues.push({
+                    label: field.split('.')[0] + '.properties.' + field.split('.')[1],
+                    value: value,
+                });
         });
         return fieldValues;
     }

@@ -18,13 +18,13 @@ export class ViewFileComponent extends BaseViewComponent implements OnInit {
 
   constructor(
     private datePipe: DatePipe,
-    public cdRef: ChangeDetectorRef,
+    public override cdRef: ChangeDetectorRef,
     private environmentStorage: EnvironmentStorageService
   ) {
     super(cdRef);
     this.baseUrl = this.environmentStorage.baseUrl;
   }
-  ngOnInit() {
+  override ngOnInit() {
     super.ngOnInit();
     this._value = this.baseUrl + '/files/' + this._value;
   }

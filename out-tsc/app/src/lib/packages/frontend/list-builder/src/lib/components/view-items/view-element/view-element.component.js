@@ -67,7 +67,7 @@ let ViewElementComponent = class ViewElementComponent {
 exports.ViewElementComponent = ViewElementComponent;
 tslib_1.__decorate([
     (0, core_1.ViewChild)('view', { read: core_1.ViewContainerRef }),
-    tslib_1.__metadata("design:type", Object)
+    tslib_1.__metadata("design:type", core_1.ViewContainerRef)
 ], ViewElementComponent.prototype, "view", void 0);
 tslib_1.__decorate([
     (0, core_1.Input)(),

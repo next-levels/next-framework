@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
 export class LocalAuthGuard extends AuthGuard('local') {
-  handleRequest(error, user) {
+  override handleRequest(error, user) {
     if (error && error.status === 409) {
       throw error;
     }

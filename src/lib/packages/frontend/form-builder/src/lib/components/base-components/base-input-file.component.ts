@@ -27,7 +27,7 @@ export class BaseInputFileComponent extends BaseInputComponent {
     this.baseApiUrl = this.baseUrl + '/files/';
   }
 
-  init() {
+  override init() {
     super.init();
     this.file_id = this.formController
       ?.getForm()

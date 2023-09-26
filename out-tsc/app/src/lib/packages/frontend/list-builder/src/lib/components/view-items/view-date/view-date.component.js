@@ -22,6 +22,7 @@ exports.ViewDateComponent = ViewDateComponent = tslib_1.__decorate([
         selector: 'vosdellen-view-date',
         templateUrl: './view-date.component.html',
     }),
-    tslib_1.__metadata("design:paramtypes", [common_1.DatePipe, core_1.ChangeDetectorRef])
+    tslib_1.__metadata("design:paramtypes", [common_1.DatePipe,
+        core_1.ChangeDetectorRef])
 ], ViewDateComponent);
 //# sourceMappingURL=view-date.component.js.map

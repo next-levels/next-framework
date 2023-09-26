@@ -43,7 +43,7 @@ export class InputSignComponent
     super(cdRef, translateService);
   }
 
-  init() {
+  override init() {
     this.formController.registerBeforeSaveFunction(this.beforeSave.bind(this));
   }
 

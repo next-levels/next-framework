@@ -12,10 +12,13 @@ import { DatePipe } from '@angular/common';
   templateUrl: './view-date.component.html',
 })
 export class ViewDateComponent extends BaseViewComponent implements OnInit {
-  constructor(private datePipe: DatePipe, public cdRef: ChangeDetectorRef) {
+  constructor(
+    private datePipe: DatePipe,
+    public override cdRef: ChangeDetectorRef
+  ) {
     super(cdRef);
   }
-  ngOnInit() {
+  override ngOnInit() {
     super.ngOnInit();
     this._value = this.datePipe.transform(this._value, 'dd.MM.yyyy HH:mm');
   }

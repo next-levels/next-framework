@@ -18,6 +18,10 @@
     "baseUrl": ".",
     "rootDir": ".",
     "strict": true,
+    "strictPropertyInitialization": false,
+    "strictNullChecks": false,
+    "strictBindCallApply": false,
+    "exactOptionalPropertyTypes": false,
     "paths": {
       "@nxtlvls/angular-commons": [
         "src/lib/packages/frontend/angular-commons/src/index.ts"

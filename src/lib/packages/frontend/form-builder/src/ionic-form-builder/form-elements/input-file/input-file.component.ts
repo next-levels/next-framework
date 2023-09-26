@@ -32,14 +32,14 @@ export class InputFileComponent extends BaseInputFileComponent {
   api: any = {};
 
   constructor(
-    public _httpClient: HttpClient,
+    public override _httpClient: HttpClient,
     public override cdRef: ChangeDetectorRef,
     public override translateService: TranslateService,
     public platform: Platform,
     private camera: Camera,
     public actionSheetController: ActionSheetController,
     private http: HttpClient,
-    public environmentStorage: EnvironmentStorageService
+    public override environmentStorage: EnvironmentStorageService
   ) {
     super(_httpClient, cdRef, translateService, environmentStorage);
   }
