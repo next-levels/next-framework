@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "importHelpers": true,
     "sourceMap": true,
     "declaration": true,
     "moduleResolution": "node",
@@ -11,10 +10,11 @@
     "useDefineForClassFields": false,
     "noImplicitAny": false,
     "skipLibCheck": true,
-    "lib": ["ES2022", "dom"],
     "outDir": "./out-tsc/app",
-    "target": "ES2022",
-    "module": "commonjs",
+    "target": "es2020",
+    "module": "esnext",
+    "lib": ["es2019", "dom"],
+    "importHelpers": true,
     "baseUrl": ".",
     "rootDir": ".",
     "strict": true,
