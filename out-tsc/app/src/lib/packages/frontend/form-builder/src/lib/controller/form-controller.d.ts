@@ -1,0 +1,35 @@
+import { FormControl, UntypedFormGroup } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { DependencyOptions, VisibilityOptions } from '../../../../../shared/generics/src';
+export declare class FormController {
+    protected model: any;
+    protected modelDefinition: any;
+    protected form: UntypedFormGroup;
+    protected store: Store<any>;
+    protected facade: any;
+    private beforeSaveFunction;
+    constructor(model: any, facade?: any, modelDefinition?: any);
+    getClassName(): string;
+    addFormControl(control: FormControl, name: string): void;
+    setModel(model: any): void;
+    makeFormGroupReadOnly(): void;
+    makeFormReadOnly(formGroup: UntypedFormGroup): void;
+    save(formValues?: any): void;
+    create(scope?: any[]): Promise<void>;
+    applyScope(scope: any): void;
+    getForm(): UntypedFormGroup;
+    extendForm(form: any): any;
+    load(): void;
+    beforeSave(): Promise<void>;
+    cleanForm(): void;
+    getModel(): any;
+    getStore(): Store<any>;
+    getControl(fieldName: string): FormControl;
+    getValue(name: string): any;
+    patchValues(values: any): void;
+    getModelDefinition(): any;
+    getElementLabel(fieldName: string): string;
+    getDependency(fieldName: string): DependencyOptions | null;
+    getVisibility(fieldName: string): VisibilityOptions | null;
+    registerBeforeSaveFunction(fn: (param: UntypedFormGroup) => UntypedFormGroup): void;
+}

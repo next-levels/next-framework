@@ -2,7 +2,7 @@
   "compilerOptions": {
     "importHelpers": true,
     "sourceMap": true,
-    "declaration": false,
+    "declaration": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "downlevelIteration": true,

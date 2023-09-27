@@ -1,0 +1,30 @@
+import { ChangeDetectorRef, EventEmitter, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+import { DependencyOptions, FormOptions, VisibilityOptions } from '../../../../../../shared/generics/src';
+import { FormController } from '../../controller/form-controller';
+export declare class BaseInputComponent implements OnInit {
+    cdRef: ChangeDetectorRef;
+    translateService: TranslateService;
+    class: string;
+    formField: FormOptions;
+    formController: FormController | undefined;
+    dataOutput: EventEmitter<any>;
+    protected fg: FormGroup | undefined;
+    protected formControl: FormControl | undefined;
+    protected changed: boolean;
+    protected dependency: DependencyOptions | null | undefined;
+    value: string;
+    disabled: boolean;
+    updateOn: 'change' | 'blur' | 'submit' | undefined;
+    visibilityOptions: VisibilityOptions;
+    comment: string | undefined;
+    headline: string | undefined;
+    constructor(cdRef: ChangeDetectorRef, translateService: TranslateService);
+    ngOnInit(): void;
+    private initFormControl;
+    private initDependency;
+    init(): void;
+    checkDependency(value: any): void;
+    changeValue(value: any): void;
+}

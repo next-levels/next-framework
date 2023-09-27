@@ -1,0 +1,31 @@
+import { AfterViewInit, ChangeDetectorRef, ElementRef } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { UntypedFormGroup } from '@angular/forms';
+import { ActionSheetController, Platform } from '@ionic/angular';
+import { Camera } from '@awesome-cordova-plugins/camera/ngx';
+import { HttpClient } from '@angular/common/http';
+import { BaseInputTextComponent } from '../../../../public_api';
+export declare class InputSignComponent extends BaseInputTextComponent implements AfterViewInit {
+    cdRef: ChangeDetectorRef;
+    translateService: TranslateService;
+    private elementRef;
+    baseUrl: string;
+    platform: Platform;
+    private camera;
+    actionSheetController: ActionSheetController;
+    private http;
+    signaturePadElement: any;
+    signaturePad: any;
+    canvasWidth: number;
+    canvasHeight: number;
+    constructor(cdRef: ChangeDetectorRef, translateService: TranslateService, elementRef: ElementRef, baseUrl: string, platform: Platform, camera: Camera, actionSheetController: ActionSheetController, http: HttpClient);
+    init(): void;
+    ngAfterViewInit(): void;
+    beforeSave(form: UntypedFormGroup): Promise<UntypedFormGroup>;
+    resizeCanvas(canvas: any): void;
+    saveSignature(): any;
+    save(): void;
+    isCanvasBlank(): boolean;
+    clear(): void;
+    undo(): void;
+}

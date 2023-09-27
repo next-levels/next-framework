@@ -1,0 +1,43 @@
+import { AfterViewInit, OnInit } from '@angular/core';
+import { SwalService } from '../../services/swal/swal.service';
+import 'reflect-metadata';
+import { MinimizeService } from '../../services/minimize/minimize.service';
+import { NgProgress, NgProgressRef } from 'ngx-progressbar';
+import { MatDialog } from '@angular/material/dialog';
+import { FormController } from '../../../../../form-builder/src';
+import { BasicFacade } from '../../../../../generic-store/src';
+import { ScopeFilter } from '../../../../../../shared/generics/src';
+export declare class BatchWizardComponent implements AfterViewInit, OnInit {
+    private swalService;
+    private readonly _matDialog;
+    minimizeService: MinimizeService;
+    private progress;
+    private socket;
+    formStepValid: boolean;
+    currentStep: number;
+    steps: {
+        index: number;
+        arrayIndex: number;
+        title: string;
+        description: string;
+        fields: any[];
+    }[];
+    model: any;
+    values: any;
+    state: any;
+    action: () => void;
+    edit: boolean;
+    formController: FormController;
+    modelFacade: BasicFacade<any>;
+    scope: ScopeFilter;
+    className: string;
+    progressRef: NgProgressRef;
+    constructor(swalService: SwalService, _matDialog: MatDialog, minimizeService: MinimizeService, progress: NgProgress);
+    ngOnInit(): void;
+    ngAfterViewInit(): void;
+    getSteps(fileFields: never[]): void;
+    nextStep(): void;
+    prevStep(): void;
+    fireAction(): void;
+    onDismiss(): void;
+}
