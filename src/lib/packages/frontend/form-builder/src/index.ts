@@ -14,6 +14,3 @@ export * from './lib/form-builder.module';
 export * from './ionic-form-builder/ionic-form-builder.module';
 export * from './fuse-angular-form-builder/fuse-angular-form-builder.module';
 export * from './lib/types/ValidationTypes';
-
-export * from './lib/decorator/model-class.decorator';
-export * from './lib/decorator/visibility.decorator';
