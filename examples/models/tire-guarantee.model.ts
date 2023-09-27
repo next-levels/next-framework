@@ -1,13 +1,13 @@
 import { Column, CreateDateColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { Field, FormField, Model } from '@nxtlvls/generic-types';
-import { FrontendUser } from './frontend-user';
-import { TireVariant } from './tire-variant';
+// import { FrontendUser } from './frontend-user'; # Commented to avoid release error!
+// import { TireVariant } from './tire-variant';
 import { DamageReport } from './damage-report.model';
 
 @Model({
   name: 'tire-guarantee',
   label: 'Reifen-Garantie',
-  features: ['base','notification'],
+  features: ['base', 'notification'],
   url: 'tire-guarantee',
 })
 export class TireGuarantee {
@@ -36,7 +36,7 @@ export class TireGuarantee {
   })
   @Column({ type: 'int', nullable: true })
   user_id: number;
-  user: FrontendUser;
+  // user: FrontendUser; # Commented to avoid release error!
 
   @Field({ type: 'TEXT', required: true })
   @Column({ type: 'varchar', nullable: true })
@@ -56,7 +56,7 @@ export class TireGuarantee {
   })
   @Column({ type: 'int' })
   tire_variant_id: number;
-  tire_variant: TireVariant;
+  // tire_variant: TireVariant; # Commented to avoid release error!
 
   @Field({ type: 'TEXT', required: true })
   @Column({ type: 'varchar', nullable: true })
