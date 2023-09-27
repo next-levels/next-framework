@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { META } from 'src/lib/packages/shared/generics/src/lib/helpers/meta-data.helper';
+import { META } from '@nxtlvls/generic-types';
 
 @Injectable({ providedIn: 'root' })
 export class InstanceRegistryService {
