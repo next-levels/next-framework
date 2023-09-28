@@ -28,12 +28,12 @@ export class ThumbnailService {
     }
 
     let buffer: Buffer;
-    // if (fileBuffer && type === 'png') {
-    //   buffer = await this.createPNG(fileBuffer, intWidth, intHeight);
-    // }
-    // if (fileBuffer && type === 'jpeg') {
-    //   buffer = await this.createJPEG(fileBuffer, intWidth, intHeight);
-    // }
+    if (fileBuffer && type === 'png') {
+      buffer = await this.createPNG(fileBuffer, intWidth, intHeight);
+    }
+    if (fileBuffer && type === 'jpeg') {
+      buffer = await this.createJPEG(fileBuffer, intWidth, intHeight);
+    }
     const readable = this.bufferToReadableStream(buffer);
 
     res.setHeader('Content-Type', 'image/' + type);
@@ -42,27 +42,27 @@ export class ThumbnailService {
     return Result.ok();
   }
 
-  // async createPNG(
-  //   buffer: Buffer,
-  //   width: number,
-  //   height: number
-  // ): Promise<Buffer> {
-  //   return await sharp(buffer)
-  //     .resize(width, height, { fit: 'cover' })
-  //     .toFormat('png')
-  //     .toBuffer();
-  // }
+  async createPNG(
+    buffer: Buffer,
+    width: number,
+    height: number
+  ): Promise<Buffer> {
+    return await sharp(buffer)
+      .resize(width, height, { fit: 'cover' })
+      .toFormat('png')
+      .toBuffer();
+  }
 
-  // async createJPEG(
-  //   buffer: Buffer,
-  //   width: number,
-  //   height: number
-  // ): Promise<Buffer> {
-  //   return await sharp(buffer)
-  //     .resize(width, height, { fit: 'cover' })
-  //     .jpeg({ quality: 80 })
-  //     .toBuffer();
-  // }
+  async createJPEG(
+    buffer: Buffer,
+    width: number,
+    height: number
+  ): Promise<Buffer> {
+    return await sharp(buffer)
+      .resize(width, height, { fit: 'cover' })
+      .jpeg({ quality: 80 })
+      .toBuffer();
+  }
 
   bufferToReadableStream(buffer: Buffer): Readable {
     const readableStream = new Readable();
