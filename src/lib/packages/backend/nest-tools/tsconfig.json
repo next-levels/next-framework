@@ -1,9 +1,6 @@
 {
   "extends": "../../../../../tsconfig.json",
   "compilerOptions": {
-    "importHelpers": true,
-    "lib": ["ES2022", "dom"],
-    "target": "ES2022",
     "module": "commonjs"
   },
   "files": [],
