@@ -56,4 +56,4 @@ jobs:
       - run: npm ci
       - run: rm -rf ./out-tsc/*
       - run: tsc
-      - run: npm publish
+      - run: npm publish --access public
