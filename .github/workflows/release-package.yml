@@ -33,7 +33,6 @@ jobs:
     steps:
       - name: Clear npm cache
         run: npm cache clean --force
-
       - uses: actions/checkout@v3
         with:
           path: .
@@ -52,6 +51,8 @@ jobs:
         run: echo $NODE_AUTH_TOKEN
       - name: Debug npm Config
         run: npm config list
+      - name: Show npm whoami
+        run: npm whoami
       - name: Log configuration
         run: npm config get registry
       - run: npm ci
