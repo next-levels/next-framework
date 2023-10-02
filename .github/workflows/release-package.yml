@@ -47,15 +47,7 @@ jobs:
       - name: Debug .npmrc
         run: |
           cat .npmrc
-      - name: Debug NODE_AUTH_TOKEN
-        run: echo $NODE_AUTH_TOKEN
-      - name: Debug npm Config
-        run: npm config list
-      - name: Show npm whoami
-        run: npm whoami
-      - name: Log configuration
-        run: npm config get registry
       - run: npm ci
       - run: rm -rf ./out-tsc/*
       - run: tsc
-      - run: npm publish --access public
+      - run: npm publish
