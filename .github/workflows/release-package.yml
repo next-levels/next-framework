@@ -41,6 +41,7 @@ jobs:
         with:
           node-version: 16
           registry-url: 'https://registry.npmjs.org'
+          scope: '@next-levels'
       - run: |
           echo "registry=https://registry.npmjs.org/" >> .npmrc
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NODE_TOKEN }}" >> .npmrc
