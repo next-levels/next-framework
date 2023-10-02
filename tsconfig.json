@@ -13,7 +13,7 @@
     "outDir": "./out-tsc/app",
     "target": "es2020",
     "module": "esnext",
-    "lib": ["es2019", "dom"],
+    "lib": ["ES2022", "dom"],
     "importHelpers": true,
     "baseUrl": ".",
     "rootDir": ".",
