@@ -27,9 +27,6 @@ jobs:
     permissions:
       packages: write
       contents: read
-
-    env:
-      NODE_AUTH_TOKEN: ${{secrets.NODE_TOKEN}}
     steps:
       - name: Clear npm cache
         run: npm cache clean --force
