@@ -43,7 +43,7 @@ jobs:
           scope: '@next-levels'
       - run: |
           echo "registry=https://registry.npmjs.org/" >> .npmrc
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NODE_TOKEN }}" >> .npmrc
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_NODE_TOKEN }}" >> .npmrc
       - name: Debug .npmrc
         run: |
           cat .npmrc
