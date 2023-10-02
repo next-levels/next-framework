@@ -20,7 +20,7 @@
     "url": "https://github.com/next-levels/next-framework/issues"
   },
   "homepage": "https://github.com/next-levels/next-framework#readme",
-  "dependencies": {
+  "devDependencies": {
     "@angular/common": "^16.2.4",
     "@angular/core": "^16.2.4",
     "@angular/material": "^16.2.3",
