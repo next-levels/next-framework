@@ -42,13 +42,6 @@ jobs:
           node-version: 16
           registry-url: 'https://registry.npmjs.org'
           scope: '@next-levels'
-      - run: |
-          echo "registry=https://registry.npmjs.org/" >> .npmrc
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NODE_TOKEN }}" >> .npmrc
-          echo "always-auth=true" >> .npmrc
-      - name: Debug .npmrc
-        run: |
-          cat .npmrc
       - name: Debug NODE_AUTH_TOKEN
         run: echo $NODE_AUTH_TOKEN
       - name: Debug npm Config
