@@ -1,11 +1,12 @@
 {
   "name": "@next-levels/next-framework",
   "description": "Rapid Development Framework Node.js Angular",
-  "version": "1.0.64",
+  "version": "1.0.65",
   "main": "out-tsc/app/src/index.js",
   "typings": "out-tsc/app/src/index.d.ts",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\""
