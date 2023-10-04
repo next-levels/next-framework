@@ -40,7 +40,7 @@ node_modules
 /src/typings/tsd/
 /typings/
 /tsd_typings/
-
+package-lock.json
 # Dist #
 /dist
 /public/__build__/
