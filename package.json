@@ -81,6 +81,7 @@
     "@softwaretechnik/dbml-renderer": "^1.0.27",
     "@swc/helpers": "~0.5.0",
     "@types/marked": "^4.0.8",
+    "@types/multer": "^1.4.8",
     "ajv-keywords": "^5.1.0",
     "angular-split": "^15.0.0",
     "apexcharts": "^3.37.1",
@@ -159,6 +160,7 @@
     "zone.js": "0.13.1"
   },
   "dependencies": {
+    "@capawesome/capacitor-file-picker": "^5.1.1",
     "typeorm": "^0.3.17"
   }
 }
