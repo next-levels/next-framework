@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 
 import { RELATION_ALL_PREFIX } from '../decorator/relation.decorator';
-import { BUILDERFIELD_ALL_PREFIX } from 'src/lib/packages/shared/generics/src/lib/decoraters/field.decorator';
+import { BUILDERFIELD_ALL_PREFIX } from '@nxtlvls/generic-types';
 
 export function getFilterFields(entity: any): any[] {
   const fileFields = Reflect.getMetadata(
