@@ -8,7 +8,8 @@
     "access": "public"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\""
+    "test": "echo \"Error: no test specified\"",
+    "postinstall": "ivy-ngcc"
   },
   "repository": {
     "type": "git",
@@ -28,11 +29,11 @@
     "@capawesome/capacitor-file-picker": "^5.1.1",
     "@ionic/angular": "^7.4.0",
     "@nestjs/axios": "^3.0.0",
-    "@nestjs/common": "^10.2.4",
+    "@nestjs/common": "^10.2.6",
     "@nestjs/event-emitter": "^2.0.2",
     "@nestjs/passport": "^10.0.0",
     "@nestjs/platform-express": "^10.2.5",
-    "@nestjs/swagger": "^7.1.11",
+    "@nestjs/swagger": "^7.1.13",
     "@nestjs/typeorm": "^10.0.0",
     "@nestjs/websockets": "^10.2.5",
     "@ngneat/transloco": "^5.0.7",
@@ -41,7 +42,7 @@
     "@ngrx/store": "^16.2.0",
     "@ngx-translate/core": "^15.0.0",
     "@types/multer": "^1.4.7",
-    "nestjs-paginate": "^8.3.0",
+    "nestjs-paginate": "^8.3.2",
     "ngx-progressbar": "^11.1.0",
     "ngx-quill": "^22.0.0",
     "reflect-metadata": "^0.1.13",
@@ -51,5 +52,8 @@
     "socket.io-client": "^4.7.2",
     "sweetalert2": "^11.7.27",
     "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "typeorm": "^0.3.17"
   }
 }

@@ -11,8 +11,8 @@
     "noImplicitAny": false,
     "skipLibCheck": true,
     "outDir": "./out-tsc/app",
-    "target": "ES2022",
-    "module": "commonjs",
+    "target": "es2015",
+    "module": "esnext",
     "lib": ["ES2022", "dom"],
     "importHelpers": true,
     "baseUrl": ".",
@@ -22,6 +22,10 @@
     "strictNullChecks": false,
     "strictBindCallApply": false,
     "exactOptionalPropertyTypes": false,
+    "angularCompilerOptions": {
+      "enableIvy": true,
+      "allowEmptyCodegenFiles": true
+    },
     "paths": {
       "@nxtlvls/angular-commons": [
         "src/lib/packages/frontend/angular-commons/src/index.ts"
