@@ -5,8 +5,9 @@ import {
   OnGatewayDisconnect,
   OnGatewayInit,
 } from '@nestjs/websockets';
-import { META } from '@nxtlvls/generic-types';
+
 import { Server } from 'socket.io';
+import { META } from '../../../../../../../../../../src/lib/packages/shared/generics/src/lib/helpers/meta-data.helper';
 
 export function GenericWebSocketGateway(
   entity: any,
