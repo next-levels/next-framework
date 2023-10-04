@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { META } from 'src/lib/packages/shared/generics/src/lib/helpers/meta-data.helper';
+import { META } from '../../../../../../../../src/lib/packages/shared/generics/src/lib/helpers/meta-data.helper';
 
 @Injectable()
 export class LifecycleEmitterService {
