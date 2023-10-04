@@ -44,7 +44,7 @@ jobs:
       - name: Debug .npmrc
         run: |
           cat .npmrc
-      - run: npm ci
+      - run: npm i
       - run: rm -rf ./out-tsc/*
       - run: tsc
       - run: npm publish
