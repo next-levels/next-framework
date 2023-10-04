@@ -22,10 +22,6 @@
     "strictNullChecks": false,
     "strictBindCallApply": false,
     "exactOptionalPropertyTypes": false,
-    "angularCompilerOptions": {
-      "enableIvy": true,
-      "allowEmptyCodegenFiles": true
-    },
     "paths": {
       "@nxtlvls/angular-commons": [
         "src/lib/packages/frontend/angular-commons/src/index.ts"

@@ -1,7 +1,7 @@
 {
   "name": "@next-levels/next-framework",
   "description": "Rapid Development Framework Node.js Angular",
-  "version": "1.0.81",
+  "version": "1.0.82",
   "main": "out-tsc/app/src/index.js",
   "typings": "out-tsc/app/src/index.d.ts",
   "publishConfig": {
