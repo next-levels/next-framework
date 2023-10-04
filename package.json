@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\"",
-    "postinstall": "ivy-ngcc"
+    "postinstall": "ngcc"
   },
   "repository": {
     "type": "git",
