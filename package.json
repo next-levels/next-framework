@@ -20,7 +20,7 @@
     "url": "https://github.com/next-levels/next-framework/issues"
   },
   "homepage": "https://github.com/next-levels/next-framework#readme",
-  "devDependencies": {
+  "peerDependencies": {
     "@angular/animations": "16.1.5",
     "@angular/cdk": "16.1.5",
     "@angular/common": "16.1.5",
