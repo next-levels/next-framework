@@ -1,15 +1,14 @@
 {
   "name": "@next-levels/next-framework",
   "description": "Rapid Development Framework Node.js Angular",
-  "version": "1.0.79",
+  "version": "1.0.80",
   "main": "out-tsc/app/src/index.js",
   "typings": "out-tsc/app/src/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\"",
-    "postinstall": "ivy-ngcc"
+    "test": "echo \"Error: no test specified\""
   },
   "repository": {
     "type": "git",
