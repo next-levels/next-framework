@@ -19,9 +19,9 @@ import { Paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
 import { IBaseApiService } from './service.type';
 import { BaseApiController } from '../../../types/controller.type';
 import { ControllerConfig } from '../../../types/controller-config.type';
-import { FileInjectInterceptor } from '@nxtlvls/file-handler';
+import { FileInjectInterceptor } from 'src/lib/packages/backend/file-handler/src/index';
 import { SoftDeleteQueryBuilder } from 'typeorm/query-builder/SoftDeleteQueryBuilder';
-import { FrontendJwtAuthGuard } from '@nxtlvls/nest-commons';
+import { FrontendJwtAuthGuard } from 'src/lib/packages/backend/nest-commons/src/index';
 import { META } from 'src/lib/packages/shared/generics/src/lib/helpers/meta-data.helper';
 import { Result } from 'src/lib/packages/backend/nest-tools/src/lib/return/result';
 

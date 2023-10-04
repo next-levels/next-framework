@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { PaginatorService } from '../pagination/service/paginator.service';
-import { SortDirection, State } from '@nxtlvls/generic-types';
+import { SortDirection, State } from 'src/lib/packages/shared/generics/src/index';
 
 export abstract class PaginationPart<
   P extends PaginatorService<any, State<any, any>>,

@@ -1,5 +1,5 @@
 import { Directive, EventEmitter, Input, Output } from '@angular/core';
-import { SortColumn, SortDirection, SortEvent } from '@nxtlvls/generic-types';
+import { SortColumn, SortDirection, SortEvent } from 'src/lib/packages/shared/generics/src/index';
 
 export const rotate: { [key: string]: SortDirection } = {
   asc: 'desc',
