@@ -21,6 +21,7 @@ import { FormBuilderModule } from '../../../form-builder/public_api';
 import { ListBuilderModule } from '../../../list-builder/src';
 import { HttpClientModule } from '@angular/common/http';
 import { InlineSVGModule } from 'ng-inline-svg-2';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 const store = new MinimizeStore();
 
@@ -45,6 +46,7 @@ const store = new MinimizeStore();
     ListBuilderModule,
     HttpClientModule,
     InlineSVGModule.forRoot(),
+    NgbTooltipModule,
   ],
   exports: [CreateWizardComponent, BatchWizardComponent, ViewModalComponent],
   providers: [
