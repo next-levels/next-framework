@@ -183,7 +183,7 @@ export class BaseTableDefaultComponent
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selector']) {
-      if (this.modelFacade?.selectors[changes.selector.currentValue]) {
+      if (this.modelFacade?.selectors[changes['selector'].currentValue]) {
         const observable = this.modelFacade.selectors[
           changes['selector'].currentValue
         ] as unknown as Observable<any>;

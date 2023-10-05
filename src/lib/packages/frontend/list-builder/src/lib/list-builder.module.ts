@@ -28,6 +28,8 @@ import { ViewModalComponent } from './components/view-modal/view-modal.component
 import { ViewDropdownComponent } from './components/view-items/view-dropdown/view-dropdown.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ListComponents } from '../../../../shared/generics/src';
+import { InlineSVGModule } from 'ng-inline-svg-2';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   imports: [
@@ -47,6 +49,8 @@ import { ListComponents } from '../../../../shared/generics/src';
     DatePipe,
     NgOptimizedImage,
     MatExpansionModule,
+    HttpClientModule,
+    InlineSVGModule.forRoot(),
   ],
   providers: [DatePipe],
   declarations: [
