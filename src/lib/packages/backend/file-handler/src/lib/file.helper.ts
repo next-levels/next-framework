@@ -1,6 +1,6 @@
+import { writeFile } from 'fs/promises';
 import { extname, join } from 'path';
 import 'reflect-metadata';
-import { writeFile } from 'fs/promises';
 
 export const imageFileFilter = (req, file, callback) => {
   if (!file.originalname.match(/\.(jpg|jpeg|png|gif|pdf)$/)) {
