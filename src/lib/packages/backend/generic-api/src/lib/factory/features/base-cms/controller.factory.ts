@@ -18,9 +18,9 @@ import { IBaseCmsService } from './service.type';
 import { BaseApiController } from '../../../types/controller.type';
 import { ControllerConfig } from '../../../types/controller-config.type';
 import { FileInjectInterceptor } from '@nxtlvls/file-handler';
-import { META } from 'src/lib/packages/shared/generics/src/lib/helpers/meta-data.helper';
-import { JwtAuthGuard } from 'src/lib/packages/backend/nest-commons/src/lib/guards/jwt-auth.guard';
-import { Result } from 'src/lib/packages/backend/nest-tools/src/lib/return/result';
+import { META } from '../../../../../../../../../../src/lib/packages/shared/generics/src/lib/helpers/meta-data.helper';
+import { JwtAuthGuard } from '../../../../../../../../../../src/lib/packages/backend/nest-commons/src/lib/guards/jwt-auth.guard';
+import { Result } from '../../../../../../../../../../src/lib/packages/backend/nest-tools/src/lib/return/result';
 
 export function GenericBaseCMSController<T extends Type<any>>(
   entity: T,
