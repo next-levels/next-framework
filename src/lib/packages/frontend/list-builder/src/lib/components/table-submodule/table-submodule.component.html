@@ -39,11 +39,11 @@
           {{ translateService.instant(listController.getElementLabel(field)) }}
         </th>
         <td mat-cell *matCellDef="let data" (click)="selectRow(data)">
-          <span *ngIf="getSettingsField(field).type == 'text'">
+          <span *ngIf="getSettingsField(field).type == 'TEXT'">
             {{ data[field] }}
           </span>
           <vosdellen-contract-state
-            *ngIf="getSettingsField(field).type == 'state'"
+            *ngIf="getSettingsField(field).type == 'STATE'"
             [value]="data[field]"
           >
           </vosdellen-contract-state>

@@ -12,6 +12,7 @@ export interface BaseComponents {
   FILE?: any;
   SIGN?: any;
   RADIO?: any;
+  STATE?: any;
 }
 
 export type BuilderComponentsKeys = keyof BaseComponents;
