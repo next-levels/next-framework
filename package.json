@@ -1,7 +1,7 @@
 {
   "name": "@next-levels/next-framework",
   "description": "Rapid Development Framework Node.js Angular",
-  "version": "1.0.92",
+  "version": "1.0.93",
   "main": "out-tsc/app/src/index.js",
   "typings": "out-tsc/app/src/index.d.ts",
   "publishConfig": {
@@ -72,7 +72,7 @@
     "@ngrx/schematics": "^16.0.1",
     "@ngrx/store": "^16.0.1",
     "@ngrx/store-devtools": "^16.0.1",
-    "@ngx-translate/core": "^14.0.0",
+    "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
     "@nx/devkit": "^16.5.2",
     "@nx/webpack": "^16.5.2",
