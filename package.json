@@ -1,7 +1,7 @@
 {
   "name": "@next-levels/next-framework",
   "description": "Rapid Development Framework Node.js Angular",
-  "version": "1.0.104",
+  "version": "1.0.105",
   "main": "out-tsc/app/src/index.js",
   "typings": "out-tsc/app/src/index.d.ts",
   "publishConfig": {
@@ -59,7 +59,7 @@
     "@nestjs/jwt": "^10.0.2",
     "@nestjs/passport": "^10.0.0",
     "@nestjs/platform-express": "10.2.6",
-    "@nestjs/platform-socket.io": "^10.2.2",
+    "@nestjs/platform-socket.io": "^10.2.7",
     "@nestjs/serve-static": "^4.0.0",
     "@nestjs/swagger": "^7.1.13",
     "@nestjs/typeorm": "^10.0.0",
