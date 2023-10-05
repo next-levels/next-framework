@@ -1,7 +1,7 @@
 {
   "name": "@next-levels/next-framework",
   "description": "Rapid Development Framework Node.js Angular",
-  "version": "1.0.93",
+  "version": "1.0.94",
   "main": "out-tsc/app/src/index.js",
   "typings": "out-tsc/app/src/index.d.ts",
   "publishConfig": {
@@ -129,7 +129,7 @@
     "ng-apexcharts": "^1.7.4",
     "ngx-ace-wrapper": "^14.0.0",
     "ngx-markdown": "^16.0.0",
-    "ngx-progressbar": "^10.0.0",
+    "ngx-progressbar": "^11.1.0",
     "ngx-quill": "^22.0.0",
     "nodemailer": "^6.9.3",
     "openai": "^3.2.1",
