@@ -19,6 +19,8 @@ import { ViewModalComponent } from './components/view-modal/view-modal.component
 import { MatTableModule } from '@angular/material/table';
 import { FormBuilderModule } from '../../../form-builder/public_api';
 import { ListBuilderModule } from '../../../list-builder/src';
+import { HttpClientModule } from '@angular/common/http';
+import { InlineSVGModule } from 'ng-inline-svg-2';
 
 const store = new MinimizeStore();
 
@@ -41,6 +43,8 @@ const store = new MinimizeStore();
     FormBuilderModule,
     MatTableModule,
     ListBuilderModule,
+    HttpClientModule,
+    InlineSVGModule.forRoot(),
   ],
   exports: [CreateWizardComponent, BatchWizardComponent, ViewModalComponent],
   providers: [
