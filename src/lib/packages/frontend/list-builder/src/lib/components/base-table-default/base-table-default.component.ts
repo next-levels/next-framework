@@ -182,10 +182,10 @@ export class BaseTableDefaultComponent
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.selector) {
+    if (changes['selector']) {
       if (this.modelFacade?.selectors[changes.selector.currentValue]) {
         const observable = this.modelFacade.selectors[
-          changes.selector.currentValue
+          changes['selector'].currentValue
         ] as unknown as Observable<any>;
         observable.subscribe((entries: unknown) => {
           console.log(entries);
@@ -195,7 +195,7 @@ export class BaseTableDefaultComponent
           this.cdRef.detectChanges();
         });
       }
-      console.log('selector changed:', changes.selector.currentValue);
+      console.log('selector changed:', changes['selector'].currentValue);
     }
   }
   ngAfterViewInit(): void {

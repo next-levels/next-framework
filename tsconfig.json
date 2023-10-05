@@ -23,15 +23,6 @@
     "strictBindCallApply": false,
     "exactOptionalPropertyTypes": false,
     "paths": {
-      "@nxtlvls/angular-commons": [
-        "src/lib/packages/frontend/angular-commons/src/index.ts"
-      ],
-      "@nxtlvls/angular-tools": [
-        "src/lib/packages/frontend/angular-tools/src/index.ts"
-      ],
-      "@nxtlvls/dynamic-modals": [
-        "src/lib/packages/frontend/dynamic-modals/src/index.ts"
-      ],
       "@nxtlvls/form-builder": [
         "src/lib/packages/frontend/form-builder/src/index.ts"
       ],

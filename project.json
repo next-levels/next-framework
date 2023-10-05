@@ -1,5 +1,5 @@
 {
-  "name": "dynamic-modals",
+  "name": "dynamic-modals-named",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "sourceRoot": "src",
