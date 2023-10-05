@@ -1,4 +1,4 @@
-import { Result } from 'src/lib/packages/backend/nest-tools/src/index';
+import { Result } from '../../../../../../../../../../src/lib/packages/backend/nest-tools/src/index';
 import { Paginated, PaginateQuery } from 'nestjs-paginate';
 import { SoftDeleteQueryBuilder } from 'typeorm/query-builder/SoftDeleteQueryBuilder';
 export interface IBaseApiService<T> {

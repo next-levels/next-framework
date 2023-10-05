@@ -10,7 +10,7 @@ import {
 import { IBaseCmsService } from './service.type';
 import { getFilterFields } from '../../../helpers/fields.helper';
 import { BaseApiService } from '../../../types/service.type';
-import { Result } from 'src/lib/packages/backend/nest-tools/src/lib/return/result';
+import { Result } from '../../../../../../../../../../src/lib/packages/backend/nest-tools/src/lib/return/result';
 
 export function GenericBaseCMSService<T>(entity: ObjectType<T>): any {
   @Injectable()

@@ -12,7 +12,8 @@ import { BaseApiService } from './../../../types/service.type';
 import { SoftDeleteQueryBuilder } from 'typeorm/query-builder/SoftDeleteQueryBuilder';
 import { getFilterFields } from '../../../helpers/fields.helper';
 import { HookRegistryService } from '../../../helpers/hook.regestry';
-import { Result } from 'src/lib/packages/backend/nest-tools/src/lib/return/result';
+import { Result } from '../../../../../../../../../../src/lib/packages/backend/nest-tools/src/lib/return/result';
+
 export function GenericBaseApiService<T>(
   entity: ObjectType<T>,
   registryServiceToken: any,
