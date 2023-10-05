@@ -18,6 +18,7 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { ViewModalComponent } from './components/view-modal/view-modal.component';
 import { MatTableModule } from '@angular/material/table';
 import { FormBuilderModule } from '../../../form-builder/public_api';
+import { ListBuilderModule } from '../../../list-builder/src';
 
 const store = new MinimizeStore();
 
@@ -39,6 +40,7 @@ const store = new MinimizeStore();
     TranslocoModule,
     FormBuilderModule,
     MatTableModule,
+    ListBuilderModule,
   ],
   exports: [CreateWizardComponent, BatchWizardComponent, ViewModalComponent],
   providers: [
