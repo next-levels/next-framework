@@ -76,7 +76,7 @@ export class FilesController {
     const file = await this._filesService.findOne(id);
     if (!file) {
       res.status(404).send('File not found');
-      return;
+      return undefined;
     }
     return await this._thumbnailService.downloadFile(file, res);
   }

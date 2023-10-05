@@ -174,9 +174,9 @@ export class FilesService {
    * @param localFile
    * @returns
    */
-  public async createFromUrl(filePath: string, url: any): Promise<FileEntity> {
-    return;
-  }
+  // public async createFromUrl(filePath: string, url: any): Promise<FileEntity> {
+  //   return;
+  // } // So far unused
 
   /**
    * Update a file
