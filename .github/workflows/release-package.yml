@@ -18,7 +18,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: npm ci
+      - run: npm i
       - run: npm test
 
   publish-gpr:
@@ -44,7 +44,7 @@ jobs:
       - name: Debug .npmrc
         run: |
           cat .npmrc
-      - run: npm ci
+      - run: npm i
       - run: rm -rf ./out-tsc/*
       - run: tsc
       - run: npm publish

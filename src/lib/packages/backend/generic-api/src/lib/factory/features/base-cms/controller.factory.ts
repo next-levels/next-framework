@@ -17,7 +17,7 @@ import { Paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
 import { IBaseCmsService } from './service.type';
 import { BaseApiController } from '../../../types/controller.type';
 import { ControllerConfig } from '../../../types/controller-config.type';
-import { FileInjectInterceptor } from '@nxtlvls/file-handler';
+import { FileInjectInterceptor } from '../../../../../../../../../../src/lib/packages/backend/file-handler/src/index';
 import { META } from '../../../../../../../../../../src/lib/packages/shared/generics/src/lib/helpers/meta-data.helper';
 import { JwtAuthGuard } from '../../../../../../../../../../src/lib/packages/backend/nest-commons/src/lib/guards/jwt-auth.guard';
 import { Result } from '../../../../../../../../../../src/lib/packages/backend/nest-tools/src/lib/return/result';

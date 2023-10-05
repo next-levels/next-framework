@@ -1,6 +1,6 @@
 import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { State } from '@nxtlvls/generic-types';
+import { State } from 'src/lib/packages/shared/generics/src/index';
 
 @Injectable({
   providedIn: 'root',

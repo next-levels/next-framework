@@ -6,7 +6,7 @@ import {
   FilterOptions,
   PaginationMeta,
   SortDirection,
-} from '@nxtlvls/generic-types';
+} from 'src/lib/packages/shared/generics/src/index';
 
 @Component({ templateUrl: 'mat-pagination.std.html' })
 export class MatPaginationStd<T> {
