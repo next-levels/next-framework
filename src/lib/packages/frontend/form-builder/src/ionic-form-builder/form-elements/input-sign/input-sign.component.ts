@@ -109,7 +109,7 @@ export class InputSignComponent
   isCanvasBlank(): boolean {
     if (this.signaturePad) {
       return this.signaturePad.isEmpty() ? true : false;
-    }
+    } else return false;
   }
 
   clear() {
