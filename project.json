@@ -23,5 +23,12 @@
       }
     }
   },
+  "architect": {
+  "build": {
+    "options": {
+      "extraWebpackConfig": "./custom-webpack.config.js"
+     }
+  }
+},
   "tags": []
 }

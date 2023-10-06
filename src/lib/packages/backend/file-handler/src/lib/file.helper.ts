@@ -1,4 +1,4 @@
-import { writeFile } from 'fs/promises';
+import { writeFile } from 'fs';
 import { extname, join } from 'path';
 import 'reflect-metadata';
 
@@ -61,7 +61,7 @@ export async function decodeBase64ToFile(
   const fileDestination = './uploads/frontenduser';
   const filePath = join(fileDestination, filename);
 
-  await writeFile(filePath, fileBuffer);
+  await writeFileAsync(filePath, fileBuffer);
 
   return {
     originalname: filename,
@@ -70,4 +70,13 @@ export async function decodeBase64ToFile(
     mimetype: mimeType,
     size: fileBuffer.length,
   } as Express.Multer.File;
+}
+
+function writeFileAsync(filePath: string, data: any): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    writeFile(filePath, data, (err) => {
+      if (err) reject(err);
+      else resolve();
+    });
+  });
 }
