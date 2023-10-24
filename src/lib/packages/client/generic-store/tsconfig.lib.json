@@ -1,0 +1,21 @@
+{
+  "extends": "/tsconfig.json",
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "esnext",
+    "experimentalDecorators": true,
+    "outDir": "../../dist/out-tsc",
+    "declaration": true,
+    "declarationMap": true,
+    "moduleResolution": "nodenext",
+    "inlineSources": true,
+    "types": []
+  },
+  "exclude": [
+    "src/test-setup.ts",
+    "**/*.spec.ts",
+    "jest.config.ts",
+    "**/*.test.ts"
+  ],
+  "include": ["**/*.ts"]
+}

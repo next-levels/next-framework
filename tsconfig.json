@@ -11,7 +11,7 @@
     "noImplicitAny": false,
     "skipLibCheck": true,
     "outDir": "./out-tsc/app",
-    "target": "es2015",
+    "target": "es2022",
     "module": "esnext",
     "lib": ["ES2022", "dom"],
     "importHelpers": true,
@@ -23,6 +23,10 @@
     "strictBindCallApply": false,
     "exactOptionalPropertyTypes": false,
     "paths": {
+      "@next-levels/next-framework": ["src/lib/packages/server/index.ts"],
+      "@next-levels/next-framework-client": ["src/lib/packages/client/index.ts"],
+      "@next-levels/types": ["src/lib/packages/types/index.ts"],
+
       "@nxtlvls/form-builder": [
         "src/lib/packages/frontend/form-builder/src/index.ts"
       ],
