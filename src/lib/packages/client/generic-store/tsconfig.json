@@ -12,12 +12,11 @@
     }
   ],
   "compilerOptions": {
-    "target": "es2020",
+    "target": "es2022",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
-    "useUnknownInCatchVariables": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true
   },

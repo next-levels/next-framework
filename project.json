@@ -1,9 +1,9 @@
 {
-  "name": "dynamic-modals-named",
-  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "name": "next-framework",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "sourceRoot": "src",
-  "prefix": "vosdellen",
+  "prefix": "next-framework",
   "targets": {
     "test": {
       "executor": "@nx/jest:jest",
@@ -24,11 +24,6 @@
     }
   },
   "architect": {
-  "build": {
-    "options": {
-      "extraWebpackConfig": "./custom-webpack.config.js"
-     }
-  }
 },
   "tags": []
 }

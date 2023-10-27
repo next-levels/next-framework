@@ -4,15 +4,16 @@ import { EffectsModule } from '@ngrx/effects';
 import {
   EnvironmentStorageService,
   InstanceRegistryService,
-} from '../../../angular-commons/src';
-import { META } from '@next-levels/types';
-import { getStoreFeatures } from './factory/generic.factory';
+} from '../../../angular-commons';
+ import { getStoreFeatures } from './factory/generic.factory';
 import { GenericData } from './types/generic.data';
 import {NotificationData} from "./+store-types/notifcation/notification.data";
+import {META} from "@next-levels/types";
 
 @NgModule({})
 export class RootStoreModule {
   static forFeature(model: Type<any>): ModuleWithProviders<RootStoreModule> {
+    console.log('model', model)
     const providers: any[] = [];
     const imports = [];
     let config = META.getOptionsByModel(model.prototype);
@@ -62,6 +63,7 @@ export class RootStoreModule {
         private registry: InstanceRegistryService,
         public NGRXstore: Store<any>
       ) {
+        console.log('DynamicStoreModule', model, store)
         this.registry.register(model, new store.facade(NGRXstore, store.store));
       }
     }
