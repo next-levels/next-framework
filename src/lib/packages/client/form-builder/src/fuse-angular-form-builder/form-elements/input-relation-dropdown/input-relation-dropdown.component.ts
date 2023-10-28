@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BaseInputRelationDropdownComponent } from '@next-levels/next-framework-client';
+import { BaseInputRelationDropdownComponent } from  "../../../index";
 
 @Component({
   selector: 'nxt-input-relation-dropdown',

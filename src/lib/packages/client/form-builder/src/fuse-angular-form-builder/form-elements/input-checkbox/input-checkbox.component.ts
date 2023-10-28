@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { BaseInputCheckboxComponent } from '@next-levels/next-framework-client';
-
+import { BaseInputCheckboxComponent } from  "../../../index";
 @Component({
   selector: 'nxt-input-checkbox',
   templateUrl: './input-checkbox.component.html',

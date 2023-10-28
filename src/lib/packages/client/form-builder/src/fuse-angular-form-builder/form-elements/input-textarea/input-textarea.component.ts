@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BaseInputTextareaComponent } from '@next-levels/next-framework-client';
+import {BaseInputTextareaComponent} from  "../../../index";
 
 @Component({
   selector: 'nxt-input-textarea',

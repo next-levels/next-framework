@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BaseInputNumberComponent } from '@next-levels/next-framework-client';
+import { BaseInputNumberComponent } from   "../../../index";
 
 @Component({
   selector: 'nxt-input-number',

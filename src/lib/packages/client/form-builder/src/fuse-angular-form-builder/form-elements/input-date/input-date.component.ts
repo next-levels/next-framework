@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { BaseInputTextComponent } from '@next-levels/next-framework-client';
+import {BaseInputTextComponent} from "../../../index";
 
 @Component({
   selector: 'nxt-input-date',

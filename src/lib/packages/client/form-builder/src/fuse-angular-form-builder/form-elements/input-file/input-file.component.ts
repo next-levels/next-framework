@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import {BaseInputFileComponent} from "@next-levels/next-framework-client";
+import {BaseInputFileComponent} from  "../../../index";
 
 @Component({
   selector: 'nxt-input-file',

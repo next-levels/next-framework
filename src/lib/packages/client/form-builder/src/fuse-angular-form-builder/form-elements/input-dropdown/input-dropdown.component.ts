@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BaseInputDropdownComponent } from '@next-levels/next-framework-client';
+import { BaseInputDropdownComponent } from  "../../../index";
 
 @Component({
   selector: 'nxt-input-dropdown',

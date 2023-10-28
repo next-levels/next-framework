@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BaseInputHtmlComponent } from '@next-levels/next-framework-client';
+import { BaseInputHtmlComponent } from  "../../../index";
 
 @Component({
   selector: 'nxt-input-html',
