@@ -23,8 +23,9 @@ export class RootStoreModule {
     });
     const storedEnvironment = injector.get(EnvironmentStorageService);
 
-    const apiUrl = `${storedEnvironment.baseUrl}/${config.url}`; // wird später aktualisiert
+    const apiUrl = `${storedEnvironment.baseUrl}/api/${config.url}`; // wird später aktualisiert
 
+    console.log('apiUrl', apiUrl)
     const store = getStoreFeatures<
       typeof model,
       {
