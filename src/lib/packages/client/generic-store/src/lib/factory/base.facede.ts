@@ -43,7 +43,7 @@ export class BaseFacade<EntityType, StateType>
   }
 
   select(entityId: number) {
-    this.store.dispatch(
+     this.store.dispatch(
       this.baseActions.selectEntity({ payload: { entityId } })
     );
   }

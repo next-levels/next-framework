@@ -30,6 +30,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { ListComponents } from '@next-levels/types';
 import { InlineSVGModule } from 'ng-inline-svg-2';
 import { HttpClientModule } from '@angular/common/http';
+import {QuerySearchModule} from "./components/query-search/query-search.module";
 
 @NgModule({
   imports: [
@@ -51,6 +52,7 @@ import { HttpClientModule } from '@angular/common/http';
     MatExpansionModule,
     HttpClientModule,
     InlineSVGModule.forRoot(),
+    QuerySearchModule
   ],
   providers: [DatePipe],
   declarations: [

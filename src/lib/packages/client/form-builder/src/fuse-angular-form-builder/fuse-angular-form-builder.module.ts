@@ -64,8 +64,7 @@ export class FuseAngularFormBuilderModule {
   static forRoot(
     baseUri: string
   ): ModuleWithProviders<FuseAngularFormBuilderModule> {
-    console.log('FuseAngularFormBuilderModule.forRoot', baseUri)
-    return {
+     return {
       ngModule: FuseAngularFormBuilderModule,
       providers: [
         {

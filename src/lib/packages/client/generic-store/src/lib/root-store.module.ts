@@ -13,7 +13,6 @@ import {META} from "@next-levels/types";
 @NgModule({})
 export class RootStoreModule {
   static forFeature(model: Type<any>): ModuleWithProviders<RootStoreModule> {
-    console.log('model', model)
     const providers: any[] = [];
     const imports = [];
     let config = META.getOptionsByModel(model.prototype);
@@ -25,8 +24,7 @@ export class RootStoreModule {
 
     const apiUrl = `${storedEnvironment.baseUrl}/api/${config.url}`; // wird später aktualisiert
 
-    console.log('apiUrl', apiUrl)
-    const store = getStoreFeatures<
+     const store = getStoreFeatures<
       typeof model,
       {
         base: GenericData<typeof model>;
@@ -64,8 +62,7 @@ export class RootStoreModule {
         private registry: InstanceRegistryService,
         public NGRXstore: Store<any>
       ) {
-        console.log('DynamicStoreModule', model, store)
-        this.registry.register(model, new store.facade(NGRXstore, store.store));
+         this.registry.register(model, new store.facade(NGRXstore, store.store));
       }
     }
 

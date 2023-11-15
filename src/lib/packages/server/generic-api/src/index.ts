@@ -10,3 +10,4 @@ export * from './lib/factory/features/base-cms/controller.factory';
 export * from './lib/factory/features/base-cms/service.factory';
 export * from './lib/factory/features/base-app/controller.factory';
 export * from './lib/factory/features/base-app/service.factory';
+export * from './lib/factory/features/base-sockets/generic-socket.gateway';

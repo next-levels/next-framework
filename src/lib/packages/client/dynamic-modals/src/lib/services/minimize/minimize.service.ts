@@ -154,8 +154,7 @@ export class MinimizeService implements BaseService<MinimizedModal> {
         seenObjects.push(obj);
         for (var key in obj) {
           if (obj.hasOwnProperty(key) && detect(obj[key])) {
-            console.log(obj, 'is cyclic at key', key);
-            return true;
+             return true;
           }
         }
       }

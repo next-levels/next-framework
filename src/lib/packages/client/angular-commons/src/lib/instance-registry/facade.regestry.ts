@@ -6,8 +6,6 @@ export class InstanceRegistryService {
   private instanceMap: Map<string, any> = new Map();
 
   register(model: any, instance: any): void {
-    console.log('register',model, instance);
-
     const options = META.getOptionsByModel(new model());
     let key = '';
     if (options) {
@@ -17,8 +15,6 @@ export class InstanceRegistryService {
   }
 
   retrieve(model: any): typeof model | undefined {
-    console.log('retrieve',model);
-
     let key = '';
     if (typeof model === 'string') {
       key = model;

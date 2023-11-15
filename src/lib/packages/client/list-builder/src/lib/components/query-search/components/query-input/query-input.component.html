@@ -1,0 +1,75 @@
+<div
+  class="card rounded-0 bgi-no-repeat bgi-position-x-end bgi-size-cover query-search-wrapper"
+  [ngStyle]="style"
+>
+  <form
+    class="rounded d-flex flex-column flex-lg-row pt-3 me-lg-10 mt-3"
+    (submit)="onSubmit()"
+  >
+    <div class="search-input-wrapper mb-3 mb-lg-0">
+      <mat-form-field class="example-40-width" subscriptSizing="dynamic">
+        <input type="hidden" [formControl]="hiddenCtrl" />
+
+        <input
+          [formControl]="myControl"
+          [matAutocomplete]="auto"
+          class="form-control"
+          type="text"
+          placeholder="Suche"
+          matInput
+          style="
+            -webkit-background-clip: text;
+            -moz-background-clip: text;
+            background-clip: text;
+          "
+          (keydown)="onKeypressEvent($event)"
+          (click)="onClickEvent($event)"
+        />
+
+        <mat-autocomplete
+          autoActiveFirstOption
+          #auto="matAutocomplete"
+          [displayWith]="displayFn.bind(this)"
+        >
+          <mat-option
+            *ngFor="let option of filteredOptions | async"
+            [value]="option"
+          >
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <div class="pt-1 d-flex justify-content-end align-items-center" *ngIf="false">
+        <a
+          href="https://vmms.scrollhelp.site/intro/tutorials-suchen"
+          target="_blank"
+          class="smallbutton px-1"
+        >
+          <span
+            class="svg-icon"
+            inlineSVG="./assets/media/icons/duotune/general/gen046.svg"
+          >
+          </span>
+        </a>
+        <a
+          class="smallbutton px-1 cursor-pointer"
+          (click)="openQueryRowsModal()"
+        >
+          Gespeicherte Suchen
+        </a>
+        <button
+          class="smallbutton px-1 cursor-pointer btn btn-link"
+          (click)="addSearchQuery()"
+          [disabled]="!user || !myControl.value"
+          type="button"
+        >
+          Suche speichern
+        </button>
+      </div>
+    </div>
+
+    <div class="px-5" *ngIf="false">
+      <button type="submit" class="btn btn-light">Suchen</button>
+    </div>
+  </form>
+</div>

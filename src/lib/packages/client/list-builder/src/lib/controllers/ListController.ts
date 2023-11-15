@@ -5,6 +5,7 @@ import { FacadeRegistry } from '../../../../generic-store';
 
 export class ListController extends BaseController {
   scope: ScopeFilter[] = [];
+  config: any;
 
   constructor(model: any);
   constructor(model: any, facade: any);
@@ -27,6 +28,14 @@ export class ListController extends BaseController {
 
   setScope(key: string, operation: string, value: any) {
     this.scope.push({ key: key, operation: operation, value: value });
+  }
+
+  setConfig(config: any) {
+    this.config = config;
+  }
+
+  getConfig() {
+    return this.config;
   }
 
   getScope() {

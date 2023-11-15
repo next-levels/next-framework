@@ -66,7 +66,7 @@ export function createBaseReducers<
       };
     }),
     on(actions.selectEntitySuccess, (state, { payload }) => {
-      return entityAdapter.setOne(payload.entity as EntityType, {
+       return entityAdapter.setOne(payload.entity as EntityType, {
         ...state,
         loaded: true,
         loading: false,
