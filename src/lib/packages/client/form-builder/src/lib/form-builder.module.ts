@@ -70,8 +70,7 @@ export class FormBuilderModule {
     components: FormComponents,
     baseUrl: string
   ): ModuleWithProviders<FormBuilderModule> {
-    console.log('FormBuilderModule.forRoot', components, baseUrl);
-    return {
+     return {
       ngModule: FormBuilderModule,
       providers: [
         { provide: 'formBuilderComponents', useValue: components },

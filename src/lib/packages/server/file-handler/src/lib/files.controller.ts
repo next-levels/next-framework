@@ -44,7 +44,7 @@ export class FilesController {
   @Get(':id')
   public async serveLocalFile(
     @Param('id', ParseIntPipe) id: number,
-    @Res() res: Response
+    @Res() res: ExpressResponse
   ): Promise<Result<void>> {
     if (!id) return Result.ok();
     return await this._filesService.serveFile(id, res);

@@ -14,6 +14,8 @@ import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { FormController } from '../../../../../form-builder/src';
 import {
+  BUILDERFIELD_ALL_PREFIX,
+  LISTFIELD_ALL_PREFIX,
   ScopeFilter,
   VISIBILITY_PREFIX,
   VISIBILITY_PREFIX_ALL,
@@ -43,6 +45,7 @@ export class CreateWizardComponent implements AfterViewInit, OnInit {
   @Input() formController: FormController;
   @Input() modelFacade: any;
   @Input() scope: ScopeFilter[];
+  @Input() config: any[];
 
   className = '';
 
@@ -59,6 +62,7 @@ export class CreateWizardComponent implements AfterViewInit, OnInit {
       formController: FormController;
       edit: boolean;
       values: any;
+      config: any[];
     },
     public minimizeService: MinimizeService,
     private cdRef: ChangeDetectorRef
@@ -69,6 +73,7 @@ export class CreateWizardComponent implements AfterViewInit, OnInit {
     this.edit = data.edit;
     this.values = data.values;
     this.formController = data.formController;
+    this.config = data.config;
   }
 
   ngOnInit(): void {}
@@ -83,7 +88,33 @@ export class CreateWizardComponent implements AfterViewInit, OnInit {
     }
 
     this.className = this.formController.getClassName() ?? '';
-    this.getSteps(Reflect.getMetadata(VISIBILITY_PREFIX_ALL, this.model));
+    const fileFields = Reflect.getMetadata(VISIBILITY_PREFIX_ALL, this.model)
+    if(fileFields){
+      this.getSteps(fileFields);
+    }else {
+
+      const listFields =
+          Reflect.getMetadata(
+              LISTFIELD_ALL_PREFIX,
+              this.formController.getModelDefinition()
+          ) || [];
+
+      const builderFields =
+          Reflect.getMetadata(
+              BUILDERFIELD_ALL_PREFIX,
+              this.formController.getModelDefinition()
+          ) || [];
+
+      let fields = [...builderFields, ...listFields];
+
+       if (this.config && this.config.length > 0) {
+        fields = this.config.filter((item: any) => item.create === true).map((item: any) => item.field);
+
+        this.getStepsConfig(fields);
+      }
+
+
+    }
 
     this.cdRef.detectChanges();
   }
@@ -106,6 +137,28 @@ export class CreateWizardComponent implements AfterViewInit, OnInit {
           arrayIndex: this.steps.length + 1,
           title: field.showModal,
           description: field.showDetail ?? '',
+          fields: [],
+        };
+        this.steps.push(currentStep);
+      }
+
+      currentStep.fields.push(fileFields[i]);
+    }
+  }
+
+  getStepsConfig(fileFields: any[]) {
+    for (let i = 0; i < fileFields.length; i++) {
+      const field = fileFields[i];
+      let currentStep = this.steps.find(
+          (step) => step.title === field.group
+      );
+
+      if (!currentStep) {
+        currentStep = {
+          index: field.index,
+          arrayIndex: this.steps.length + 1,
+          title: field.group,
+          description:  '',
           fields: [],
         };
         this.steps.push(currentStep);

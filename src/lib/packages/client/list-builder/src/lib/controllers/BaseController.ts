@@ -13,8 +13,6 @@ export class BaseController {
     this.model = model;
     this.modelDefinition = modelDefinition;
     this.modelClassName = META.getNameByModel(this.modelDefinition);
-
-    console.log(this.facade);
   }
 
   getClassName() {

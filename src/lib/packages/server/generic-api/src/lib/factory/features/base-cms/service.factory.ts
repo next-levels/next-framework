@@ -76,9 +76,12 @@ export function GenericBaseCMSService<T>(entity: ObjectType<T>): any {
       );
     }
 
-    findOne(id: number): Promise<Result<T | null>> {
-      return Promise.resolve(undefined);
-    }
+    async findOne(id: number): Promise<Result<any | null>> {
+      // @ts-ignore
+      return Result.ok(await this.repository.findOne({
+        where: { id:id } as any,
+       }));
+     }
 
     update(id: number, data: Partial<T>): Promise<Result<T>> {
       return Promise.resolve(undefined);

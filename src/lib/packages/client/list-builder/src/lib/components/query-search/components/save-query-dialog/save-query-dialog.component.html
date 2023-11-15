@@ -1,0 +1,40 @@
+<form [formGroup]="searchQueryForm" (submit)="onSubmit()">
+  <div class="modal-header">
+    <h2 class="modal-title">Suche speichern</h2>
+
+    <div
+      class="btn btn-sm btn-icon btn-active-color-primary"
+      (click)="onDismiss()"
+    >
+      <span
+        class="svg-icon svg-icon-1"
+        inlineSVG="./assets/media/icons/duotune/arrows/arr061.svg"
+      >
+      </span>
+    </div>
+  </div>
+
+  <div class="modal-body">
+    <label for="search-query-name" class="fw-bold fs-6 mb-1">
+      Name der Suche
+    </label>
+
+    <input
+      id="search-query-name"
+      class="form-control form-control-lg form-control-solid"
+      type="name"
+      formControlName="name"
+      placeholder="Name"
+    />
+  </div>
+
+  <div class="modal-footer">
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="searchQueryForm.invalid"
+    >
+      Speichern
+    </button>
+  </div>
+</form>

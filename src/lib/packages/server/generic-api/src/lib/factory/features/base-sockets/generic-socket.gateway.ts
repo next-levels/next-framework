@@ -25,21 +25,34 @@ export function GenericWebSocketGateway(
     @WebSocketServer()
     server: Server;
 
-    constructor() {}
-
-    afterInit(server: Server) {
-      const options = META.getOptionsByModel(new entity());
-      let name = '';
-      if (options) {
-        name = options.name;
-      }
-
-      event.on('events:' + name, (data) => {
-        this.server.emit(data.method, data.data);
-      });
+    constructor() {
+      console.log('GenericGateway', namespace);
     }
 
-    handleConnection(client: any, ...args: any[]): any {}
+    afterInit(server: Server) {
+      console.log('entity:' + entity)
+
+      if (entity){
+        const options = META.getOptionsByModel(new entity());
+        let name = '';
+        if (options) {
+          name = options.name;
+        }
+
+        event.on('events:' + name, (data) => {
+          this.server.emit(data.method, data.data);
+        });
+      }else {
+        console.log('events:' + namespace)
+        event.on('events:' + namespace, (data) => {
+          console.log('events:' + namespace, data)
+          this.server.emit(data.method, data.data);
+        });      }
+
+    }
+
+    handleConnection(client: any, ...args: any[]): any {
+     }
 
     handleDisconnect(client: any): any {
       // Hier könnte allgemeine Logik für die Trennung eingefügt werden
