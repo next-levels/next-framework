@@ -5,7 +5,7 @@ import { Action, ActionReducer } from '@ngrx/store';
 import { GenericData } from '../types/generic.data';
 import { createGenericActions } from '../+state/generic.actions';
 import { createGenericSelectors } from '../+state/generic.selectors';
-import { createGenericReducer } from '../+state/generic.reducers';
+ import {createBaseReducers} from "../+state/base.reducers";
 
 export abstract class BaseStore<
   EntityType extends any,
@@ -29,7 +29,7 @@ export abstract class BaseStore<
   }
 
   public get baseReducer(): ActionReducer<EntityState<EntityType>, Action> {
-    return createGenericReducer(
+    return createBaseReducers(
       this.entityName,
       this.baseActions as unknown as ReturnType<typeof createGenericActions>,
       this.adapter

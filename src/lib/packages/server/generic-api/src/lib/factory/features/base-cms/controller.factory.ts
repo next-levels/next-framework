@@ -4,7 +4,7 @@ import {
   Delete,
   Get,
   Inject,
-  Param,
+  Param, Patch,
   Post,
   Query,
   Req,
@@ -83,6 +83,25 @@ export function GenericBaseCMSController<T extends Type<any>>(
       if (event !== null) {
         event.emit('events:' + name, {
           method: 'post',
+          data: result.getValue(),
+        });
+      }
+      return result;
+    }
+
+    @Patch(':id')
+    @ApiBody({ type: entity })
+    public async update(@Param('id') id: number,@Body() dto: T): Promise<Result<T>> {
+      const result = await this.service.update(id,dto);
+
+      const options = META.getOptionsByModel(new entity());
+      let name = '';
+      if (options) {
+        name = options.name;
+      }
+      if (event !== null) {
+        event.emit('events:' + name, {
+          method: 'patch',
           data: result.getValue(),
         });
       }

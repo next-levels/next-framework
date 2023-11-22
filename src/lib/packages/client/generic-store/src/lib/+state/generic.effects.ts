@@ -217,7 +217,7 @@ export class GenericEffects<EntityType extends object> {
           this.entityService
             .updateEntity(
               +action.payload.entity.id,
-              action.payload.entity.changes
+              action.payload.entity as EntityType
             )
             .pipe(
               map(() => {

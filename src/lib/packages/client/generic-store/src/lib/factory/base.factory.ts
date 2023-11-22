@@ -13,8 +13,6 @@ import { BaseService } from '../types/base.service';
 
 import { BaseStore } from './base.store';
 import { GenericData } from '../types/generic.data';
-import { createGenericReducer } from '../+state/generic.reducers';
-import { createGenericActions } from '../+state/generic.actions';
 import { GenericEffects } from '../+state/generic.effects';
 import { BaseFacade } from './base.facede';
 import {EntityPaginated, FilterOptions} from "@next-levels/types";
@@ -49,6 +47,8 @@ export function createBaseService<T extends object>(modelUrl: string) {
     }
 
     updateEntity(id: number, data: Partial<T>): Observable<T> {
+      console.log('data', data)
+
       return this._http.patch<T>(modelUrl + '/' + id, data);
     }
   }
@@ -56,33 +56,6 @@ export function createBaseService<T extends object>(modelUrl: string) {
   return GenericService;
 }
 
-export function createStore<T extends object>(modelName: string) {
-  class GenericStore extends BaseStore<T, GenericData<T>> {
-    constructor() {
-      super(modelName);
-
-      this.baseReducers = createGenericReducer(
-        this.entityName,
-        this.baseActions as ReturnType<typeof createGenericActions>,
-        this.adapter
-      );
-    }
-
-    static getReducers() {
-      return new this().baseReducers;
-    }
-
-    static getActions() {
-      return new this().baseActions;
-    }
-
-    static getSelectors() {
-      return new this().baseSelectors;
-    }
-  }
-
-  return GenericStore;
-}
 
 export function createBaseEffects<T extends object>(
   serviceToken: InjectionToken<BaseService<T>>,
@@ -102,41 +75,6 @@ export function createBaseEffects<T extends object>(
   }
 
   return GenericEffectsClass;
-}
-
-export function createLocalStorageEffects<T extends object>(
-  serviceToken: InjectionToken<BaseService<T>>,
-  storeToken: InjectionToken<BaseStore<T, GenericData<T>>>,
-  modelName: string
-) {
-  @Injectable()
-  class GenericEffectsClass extends LocalStorageEffects<T> {
-    constructor(
-      public override actions$: Actions,
-      @Inject(serviceToken) public service: BaseService<T>,
-      @Inject(storeToken) public store: BaseStore<T, GenericData<T>>
-    ) {
-      super(actions$, service, store.baseActions as any, modelName);
-    }
-  }
-
-  return GenericEffectsClass;
-}
-
-export function createBaseFacade<T>(
-  storeClass: any,
-  actions: BaseActions<T>,
-  selectors: BaseSelectors<T, GenericData<T>>
-) {
-  @Injectable({
-    providedIn: 'root',
-  })
-  class GenericFacade extends BaseFacade<T, GenericData<T>> {
-    constructor(public override store: Store<GenericData<T>>) {
-      super(store, actions, selectors);
-    }
-  }
-  return GenericFacade;
 }
 
 export function createBaseFacadeInstance<T, S>(

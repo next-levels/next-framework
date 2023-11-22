@@ -93,10 +93,12 @@ export function createBaseReducers<
 
     // Edit
     on(actions.editEntity, (state, { payload: { entity } }) => {
+      console.log('entity', entity)
+      console.log('entity.changes', entity.changes)
       return entityAdapter.updateOne(
         {
           id: entity.id as number,
-          changes: entity.changes as EntityType,
+          changes: entity as EntityType,
         },
         {
           ...state,

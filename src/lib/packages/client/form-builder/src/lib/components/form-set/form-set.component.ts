@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChanges} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormController } from '../../controller/form-controller';
 import { FormOptions } from '@next-levels/types';
@@ -16,6 +16,23 @@ export class FormSetComponent implements OnInit {
   @Input() submitted = false;
   @Output() formValid = new EventEmitter<boolean>();
   fg: FormGroup;
+
+  constructor(private changeDetectorRef: ChangeDetectorRef) {}
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['fields']) {
+      this.changeDetectorRef.markForCheck();
+    }
+    if (changes['controller']) {
+      console.log(changes['controller'])
+      this.changeDetectorRef.detectChanges();
+
+    }
+  }
+
+  trackByFn(index, item) {
+    return item.id; // or any unique property of the items
+  }
 
   ngOnInit(): void {
     if (this.formFields || this.fields) {

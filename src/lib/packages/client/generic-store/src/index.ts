@@ -1,6 +1,5 @@
 export * from './lib/+state/generic.actions';
 export * from './lib/+state/generic.effects';
-export * from './lib/+state/generic.reducers';
 export * from './lib/+state/generic.selectors';
 export * from './lib/helper/generic.helper';
 export * from './lib/types/generic.data';

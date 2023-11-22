@@ -2,9 +2,9 @@ import {
   BaseStore,
   GenericData,
   createGenericActions,
-  createGenericReducer,
-} from '../../../../generic-store/src';
+ } from '../../../../generic-store/src';
 import { MinimizedModal } from '../data-models/minimized';
+import {createBaseReducers} from "../../../../generic-store/src/lib/+state/base.reducers";
 
 export class MinimizeStore extends BaseStore<
   MinimizedModal,
@@ -14,7 +14,7 @@ export class MinimizeStore extends BaseStore<
   constructor() {
     super('minimized');
 
-    this.baseReducers = createGenericReducer(
+    this.baseReducers = createBaseReducers(
       this.entityName,
       this.baseActions as unknown as ReturnType<typeof createGenericActions>,
       this.adapter
