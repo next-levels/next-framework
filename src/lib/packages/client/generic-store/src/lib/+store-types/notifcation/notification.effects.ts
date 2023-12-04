@@ -1,6 +1,5 @@
 import { Actions, createEffect } from '@ngrx/effects';
-import { createGenericActions } from '../../+state/generic.actions';
-import { Observable } from 'rxjs';
+ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Action } from '@ngrx/store';
 import { customOfType } from '../../+state/generic.effects';

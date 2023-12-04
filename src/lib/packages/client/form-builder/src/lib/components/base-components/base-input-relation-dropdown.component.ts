@@ -4,7 +4,8 @@ import {FormControl, Validators} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
 import {InstanceRegistryService} from '../../../../../angular-commons';
 import {BaseInputComponent} from './base-input.component';
-import {ModelRelationOptions} from '@next-levels/types';
+import {FilterOptions, ModelRelationOptions, PaginationMeta} from '@next-levels/types';
+import {SortDirection} from "@angular/material/sort";
 
 @Component({
     selector: 'nxt-input-relation-dropdown',
@@ -22,6 +23,23 @@ export class BaseInputRelationDropdownComponent
     selected: string | number;
 
     facade: any;
+
+    public pagination: PaginationMeta = {
+        currentPage: 1,
+        itemsPerPage: 20,
+        totalPages: 0,
+        totalItems: 0,
+        sortBy: [['id', 'DESC' as SortDirection]],
+    };
+
+    public filterOptions: FilterOptions = {
+        page: this.pagination.currentPage,
+        limit: this.pagination.itemsPerPage,
+        sortBy: `${
+            this.pagination.sortBy[0][0]
+        }:${this.pagination.sortBy[0][1].toUpperCase()}`,
+        search: '',
+    };
 
     constructor(
         public store: Store<any>,
@@ -48,9 +66,9 @@ export class BaseInputRelationDropdownComponent
         this.settings = this.formController
             .getModelDefinition()
             .relations(this.formField.name);
-
         this.fg = this.formController?.getForm();
         this.formField.label = this.formField.label ?? this.formField.name;
+        this.value = this.formController?.getValue(this.formField.name);
         this.dependency = this.formController?.getDependency(this.formField.name);
         this.visibilityOptions = this.formController?.getVisibility(
             this.formField.name
@@ -67,6 +85,13 @@ export class BaseInputRelationDropdownComponent
                 });
         }
 
+
+        this._value = '';
+        this.formControl = new FormControl(this.value, [Validators.required]);
+        if (this.formController && this.formField.name) {
+            this.formController.addFormControl(this.formControl, this.formField.name);
+        }
+
         if (
             this.settings.action !== undefined &&
             this.settings.selector !== undefined
@@ -78,23 +103,27 @@ export class BaseInputRelationDropdownComponent
                 this.mapData(data);
             });
         } else {
-            if (this.registry.retrieve(this.formController.getClassName())) {
-                this.facade = this.registry.retrieve(
-                    this.formController.getClassName()
-                );
-                this.facade.base.loadFiltered();
+            const model = this.settings.model;
+            if (this.registry.retrieve(model)) {
+                this.facade = this.registry.retrieve(model);
+
+
+                if (this.settings.scope) {
+                    this.filterOptions['filter.' + this.settings.scope.key] =
+                        this.settings.scope.operation + ':' + this.settings.scope.value;
+                    this.facade.base.loadFiltered(this.filterOptions);
+                }else {
+                    this.facade.base.loadFiltered();
+                }
 
                 this.facade.base.filtered$.subscribe((data) => this.mapData(data));
             }
         }
 
-        this._value = '';
-        this.formControl = new FormControl(this._value, [Validators.required]);
-        if (this.formController && this.formField.name) {
-            this.formController.addFormControl(this.formControl, this.formField.name);
-        }
+
         this.fg = this.formController.getForm();
         this.initFilter();
+        this.initDependency();
     }
 
     private initFilter() {
@@ -108,7 +137,6 @@ export class BaseInputRelationDropdownComponent
                     this.mapData(
                         this.filterArrayByProperty(this.data, this.dependency?.field, value)
                     );
-                    this.cdRef.detectChanges();
                 }
             );
         }
@@ -146,6 +174,7 @@ export class BaseInputRelationDropdownComponent
             if (index > -1) {
                 this.selected = this.options[index].value;
             }
+            this.cdRef.markForCheck();
         }
     }
 }

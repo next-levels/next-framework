@@ -21,5 +21,4 @@ export * from './lib/+store-types/notifcation/notification.factory';
 export * from './lib/+store-types/notifcation/notification.reducers';
 export * from './lib/+store-types/notifcation/notification.selectors';
 export * from './lib/+store-types/notifcation/notification.service';
-export * from './lib/+store-types/notifcation/notification.store';
 export * from './lib/root-store.module';

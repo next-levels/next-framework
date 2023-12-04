@@ -6,11 +6,11 @@ export interface BaseService<EntityType extends object> {
   findByFilter(
     filterOptions: FilterOptions
   ): Observable<EntityPaginated<EntityType>>;
-  getEntity(entityId: number): Observable<EntityType>;
+  getEntity(entityId: number | string): Observable<EntityType>;
   addEntity(entity: EntityType): Observable<EntityType>;
   deleteEntity(entity: EntityType): Observable<EntityType>;
   updateEntity(
-    entityId: number,
+    entityId: number | string,
     changes: Partial<EntityType>
   ): Observable<EntityType>;
 }

@@ -21,11 +21,10 @@ export class FormSetComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['fields']) {
-      this.changeDetectorRef.markForCheck();
+      this.changeDetectorRef.detectChanges();
     }
     if (changes['controller']) {
-      console.log(changes['controller'])
-      this.changeDetectorRef.detectChanges();
+       this.changeDetectorRef.markForCheck();
 
     }
   }

@@ -3,8 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { Actions } from '@ngrx/effects';
 import { NotificationService } from './notification.service';
-import { NotificationData } from './notification.data';
-import { NotificationStore } from './notification.store';
 import { NotificationEffects } from './notification.effects';
 import { NotificationFacade } from './notification.facede';
 import { Observable } from 'rxjs';
@@ -24,28 +22,6 @@ export function createNotificationService<T extends object>(modelUrl: string) {
   return ModuleService;
 }
 
-export function createNotificationStore<T extends object>(modelName: string) {
-  class ModuleStore extends NotificationStore<T, NotificationData<T>> {
-    constructor() {
-      super(modelName);
-    }
-
-    static getReducers() {
-      return new this().baseReducers;
-    }
-
-    static getActions() {
-      return new this().baseActions;
-    }
-
-    static getSelectors() {
-      return new this().baseSelectors;
-    }
-  }
-
-  return ModuleStore;
-}
-
 export function createNotificationEffects<T extends object>(
   serviceToken: InjectionToken<NotificationService<T>>,
   actions: any,
@@ -62,27 +38,6 @@ export function createNotificationEffects<T extends object>(
   }
 
   return ModuleEffectsClass;
-}
-
-export function createNotificationFacade2<T>(
-  storeClass: any,
-  actions: any,
-  selectors: any
-) {
-  return new NotificationFacade<T, NotificationData<T>>(
-    storeClass,
-    actions,
-    selectors
-  );
-  @Injectable({
-    providedIn: 'root',
-  })
-  class ModuleFacade extends NotificationFacade<T, NotificationData<T>> {
-    constructor(public override store: Store<NotificationData<T>>) {
-      super(store, actions, selectors);
-    }
-  }
-  return ModuleFacade;
 }
 
 export function createNotificationFacade<T, S>(

@@ -1,14 +1,9 @@
 import { Injectable, InjectionToken } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import { createReducers } from './reducer.factory';
 import { EffectsConfig } from '../types/effects-config.type';
 import { createGenericFacade } from './generic.facade';
-import { BaseService } from '../types/base.service';
 import {
-  EntityPaginated,
-  FilterOptions,
   META,
 } from '@next-levels/types';
 import { createBaseEffectServicePair } from './base.factory';
@@ -32,43 +27,6 @@ type ReducerType<T, S> = (
 
 export interface Type<T = any> extends Function {
   new (...args: any[]): T;
-}
-
-export function createService<T extends object>(modelUrl: string) {
-  @Injectable({
-    providedIn: 'root',
-  })
-  class GenericService implements BaseService<T> {
-    constructor(public _http: HttpClient) {}
-
-    getEntity(id: number): Observable<T> {
-      return this._http.get<T>(modelUrl + '/' + id);
-    }
-
-    getAll(): Observable<T[]> {
-      return this._http.get<T[]>(modelUrl);
-    }
-
-    findByFilter(filter: FilterOptions): Observable<EntityPaginated<T>> {
-      return this._http.get<EntityPaginated<T>>(`${modelUrl}/filter`, {
-        params: { ...filter },
-      });
-    }
-
-    addEntity(data: T): Observable<T> {
-      return this._http.post<T>(modelUrl, data);
-    }
-
-    deleteEntity(entity: T): Observable<T> {
-      return this._http.delete<T>(modelUrl + '/' + (entity as any).id);
-    }
-
-    updateEntity(id: number, data: Partial<T>): Observable<T> {
-      return this._http.patch<T>(modelUrl + '/' + id, data);
-    }
-  }
-
-  return GenericService;
 }
 
 export function createGenericStore<T extends object, S>(

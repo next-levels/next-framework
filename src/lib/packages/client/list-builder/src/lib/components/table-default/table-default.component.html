@@ -66,8 +66,7 @@
       class="w-full bg-transparent list-builder-table"
       mat-table
       matSort
-      [matSortActive]="pagination.sortBy[0][0]"
-      [matSortDirection]="$any(pagination.sortBy[0][1] | lowercase)"
+
       [dataSource]="dataSource"
       [trackBy]="trackByFn"
       [matSortDisableClear]="true"

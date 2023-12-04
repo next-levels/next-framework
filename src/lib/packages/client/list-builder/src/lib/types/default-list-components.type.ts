@@ -20,4 +20,6 @@ export let defaultListComponents: ListComponents = {
   RELATION: ViewRelationComponent,
   FILE: ViewFileComponent,
   SIGN: ViewFileComponent,
+  JSON: ViewTextComponent,
+  CODE: ViewTextComponent,
 };

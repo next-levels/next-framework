@@ -3,7 +3,7 @@ import {Result} from "@next-levels/next-framework";
 export interface IBaseCmsService<T> {
   findAll(): Promise<Result<T[]>>;
   findOne(id: number): Promise<Result<T | null>>;
-  findByFilter(
+  findByFilter?(
     query: PaginateQuery,
     country: string | undefined
   ): Promise<Result<Paginated<T>>>;

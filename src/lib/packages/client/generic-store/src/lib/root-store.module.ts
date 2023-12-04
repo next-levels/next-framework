@@ -62,7 +62,7 @@ export class RootStoreModule {
         private registry: InstanceRegistryService,
         public NGRXstore: Store<any>
       ) {
-         this.registry.register(model, new store.facade(NGRXstore, store.store));
+          this.registry.register(model, new store.facade(NGRXstore, store.store));
       }
     }
 

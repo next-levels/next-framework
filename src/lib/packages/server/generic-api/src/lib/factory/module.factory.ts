@@ -9,6 +9,8 @@ import { GenericBaseApiService } from './features/base-app/service.factory';
 import { HookRegistryService } from '../helpers/hook.regestry';
 import { GenericWebSocketGateway } from "./features/base-sockets/generic-socket.gateway";
 import { EventEmitter2 } from "@nestjs/event-emitter";
+import {GenericBaseCMSControllerCreatorMongo} from "./features/base-cms-mongo/controller.factory";
+import {GenericBaseCMSServiceMongo} from "./features/base-cms-mongo/service-mongo.factory";
 
 const globalEventEmitter = new EventEmitter2();
 export function getFeatures<T extends Type<any>>(
@@ -68,6 +70,12 @@ function getFeature(
       return {
         controller: GenericBaseCMSControllerCreator(config,globalEventEmitter),
         service: GenericBaseCMSService(entity),
+        serviceToken: serviceToken,
+      };
+    case 'cms-mongo':
+      return {
+        controller: GenericBaseCMSControllerCreatorMongo(config,globalEventEmitter),
+        service: GenericBaseCMSServiceMongo(entity),
         serviceToken: serviceToken,
       };
     case 'app':

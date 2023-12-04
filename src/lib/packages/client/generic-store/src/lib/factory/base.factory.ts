@@ -4,15 +4,10 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { Actions } from '@ngrx/effects';
 
-import { BaseActions } from '../types/base.actions';
-import { BaseSelectors } from '../types/base.selectors';
-import { LocalStorageEffects } from '../+state/local-storage.effects';
 import { EffectsConfig } from '../types/effects-config.type';
 import { TranslateService } from '@ngx-translate/core';
 import { BaseService } from '../types/base.service';
 
-import { BaseStore } from './base.store';
-import { GenericData } from '../types/generic.data';
 import { GenericEffects } from '../+state/generic.effects';
 import { BaseFacade } from './base.facede';
 import {EntityPaginated, FilterOptions} from "@next-levels/types";
@@ -24,7 +19,7 @@ export function createBaseService<T extends object>(modelUrl: string) {
   class GenericService implements BaseService<T> {
     constructor(public _http: HttpClient) {}
 
-    getEntity(id: number): Observable<T> {
+    getEntity(id: number|string): Observable<T> {
       return this._http.get<T>(modelUrl + '/' + id);
     }
 
@@ -46,9 +41,8 @@ export function createBaseService<T extends object>(modelUrl: string) {
       return this._http.delete<T>(modelUrl + '/' + (entity as any).id);
     }
 
-    updateEntity(id: number, data: Partial<T>): Observable<T> {
-      console.log('data', data)
-
+    updateEntity(id: number|string, data: Partial<T>): Observable<T> {
+      console.log('updateEntity', id, data)
       return this._http.patch<T>(modelUrl + '/' + id, data);
     }
   }
