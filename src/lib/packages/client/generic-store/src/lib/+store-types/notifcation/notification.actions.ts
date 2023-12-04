@@ -1,5 +1,4 @@
 import { createAction, props } from '@ngrx/store';
-
 export function createNotificationActions<EntityType>(entityName: string) {
   return {
     setEntity: createAction(

@@ -1,6 +1,5 @@
 export * from './lib/+state/generic.actions';
 export * from './lib/+state/generic.effects';
-export * from './lib/+state/generic.reducers';
 export * from './lib/+state/generic.selectors';
 export * from './lib/helper/generic.helper';
 export * from './lib/types/generic.data';
@@ -22,5 +21,4 @@ export * from './lib/+store-types/notifcation/notification.factory';
 export * from './lib/+store-types/notifcation/notification.reducers';
 export * from './lib/+store-types/notifcation/notification.selectors';
 export * from './lib/+store-types/notifcation/notification.service';
-export * from './lib/+store-types/notifcation/notification.store';
 export * from './lib/root-store.module';

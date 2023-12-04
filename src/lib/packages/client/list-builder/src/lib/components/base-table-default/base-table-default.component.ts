@@ -114,9 +114,7 @@ export class BaseTableDefaultComponent
          this.modelFacade = this.listController.getFacade();
         this.model = this.listController.getModelDefinition();
         this.modelReference = this.listController.getClassName();
-        console.log('modelReference:', this.modelReference)
-        this.modelFacade?.notification?.updated$?.subscribe((timestamp) => {
-            console.log('ModelFacade Timestamp:', timestamp);
+         this.modelFacade?.notification?.updated$?.subscribe((timestamp) => {
         });
 
         const listFields =

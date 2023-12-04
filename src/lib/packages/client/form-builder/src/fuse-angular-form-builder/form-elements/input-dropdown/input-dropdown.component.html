@@ -1,10 +1,10 @@
-<div class="input-dropdown-wrapper mt-1" [formGroup]="fg">
+<div class="input-dropdown-wrapper mt-1" [formGroup]="fg" >
   <mat-form-field floatLabel="always" class="flex-auto gt-xs:pr-3 w-full">
     <mat-label>{{ formField.label }}</mat-label>
 
     <mat-select [formControlName]="formField.name" (change)="logChange($event)">
-      <mat-option *ngFor="let option of this.options" [value]="option">
-        {{ option }}
+      <mat-option *ngFor="let option of this.options" [value]="option.value">
+        {{ option.label }}
       </mat-option>
     </mat-select>
   </mat-form-field>

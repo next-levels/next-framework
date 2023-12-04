@@ -15,7 +15,7 @@ import {
 export function customOfType(...allowedTypes: any[]) {
   return filter((action: any) =>
     allowedTypes.some((typeOrActionCreator) => {
-      if (!typeOrActionCreator) {
+       if (!typeOrActionCreator) {
         return false; // Skip this undefined action or type
       }
 
@@ -216,8 +216,8 @@ export class GenericEffects<EntityType extends object> {
         exhaustMap((action: { payload: { entity: Update<EntityType> } }) =>
           this.entityService
             .updateEntity(
-              +action.payload.entity.id,
-              action.payload.entity.changes
+              action.payload.entity.id,
+              action.payload.entity as EntityType
             )
             .pipe(
               map(() => {

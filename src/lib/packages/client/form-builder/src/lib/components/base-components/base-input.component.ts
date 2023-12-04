@@ -8,14 +8,10 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
-import {
-  DependencyOptions,
-  FormOptions,
-  VisibilityOptions,
-} from '@next-levels/types';
-import { FormController } from '../../controller/form-controller';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {TranslateService} from '@ngx-translate/core';
+import {DependencyOptions, FormOptions, VisibilityOptions,} from '@next-levels/types';
+import {FormController} from '../../controller/form-controller';
 
 @Component({
   template: '<ng-container ></ng-container>',
@@ -40,7 +36,8 @@ export class BaseInputComponent implements OnInit {
   constructor(
     public cdRef: ChangeDetectorRef,
     public translateService: TranslateService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     if (this.formField && this.formField.name) {
@@ -50,6 +47,7 @@ export class BaseInputComponent implements OnInit {
       this.value = this.formController?.getValue(this.formField.name);
       this.disabled = this.formField.disabled ?? this.disabled;
       this.updateOn = this.formField.updateOn;
+
       this.visibilityOptions = this.formController?.getVisibility(
         this.formField.name
       );
@@ -76,6 +74,7 @@ export class BaseInputComponent implements OnInit {
       this.init();
     }
   }
+
   private initFormControl() {
     const validators = [];
 
@@ -91,7 +90,7 @@ export class BaseInputComponent implements OnInit {
 
           if (this.formField?.required) {
             validators.push(Validators.required);
-            this.formField.label = this.formField.label + '*';
+            //   this.formField.label = this.formField.label + '*';
           }
         });
     }
@@ -116,7 +115,7 @@ export class BaseInputComponent implements OnInit {
     }
   }
 
-  private initDependency() {
+  protected initDependency() {
     if (this.dependency?.field && this.fg?.controls[this.dependency.field]) {
       // Get initial value of the dependency and check if the dependency is valid
       const initalValue = this.formController?.getValue(this.dependency.field);
@@ -134,7 +133,8 @@ export class BaseInputComponent implements OnInit {
   init() {
     // override this method in child classes
   }
-  checkDependency(value: any) {
+
+  protected checkDependency(value: any) {
     if (this.dependency?.field && this.formField) {
       if (this.fg?.controls[this.dependency.field]) {
         const dependencyValue = this.dependency.value;

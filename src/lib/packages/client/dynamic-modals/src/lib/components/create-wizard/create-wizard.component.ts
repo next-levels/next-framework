@@ -79,7 +79,7 @@ export class CreateWizardComponent implements AfterViewInit, OnInit {
   ngOnInit(): void {}
 
   ngAfterViewInit() {
-    if (!this.formController) {
+     if (!this.formController) {
       this.formController = new FormController(
         this.values ?? this.model,
         this.modelFacade,
@@ -107,12 +107,12 @@ export class CreateWizardComponent implements AfterViewInit, OnInit {
 
       let fields = [...builderFields, ...listFields];
 
-       if (this.config && this.config.length > 0) {
-        fields = this.config.filter((item: any) => item.create === true).map((item: any) => item.field);
 
-        this.getStepsConfig(fields);
+      if (this.config && this.config.length > 0) {
+        fields = this.config.filter((item: any) => item.create === true).map((item: any) => item.field);
       }
 
+      this.getStepsConfig(fields);
 
     }
 
@@ -186,6 +186,7 @@ export class CreateWizardComponent implements AfterViewInit, OnInit {
   isValid() {}
   fireAction() {
     const form = this.formController.getForm().value;
+    console.log('form', form)
     if (this.scope && this.scope.length > 0) {
       form[this.scope[0].key] = this.scope[0].value;
     }

@@ -63,6 +63,7 @@ export class FormElementComponent implements AfterViewInit {
       const componentRef = this.view.createComponent(
         this.formBuilderComponents[this.formField.type]
       );
+
       this.initComponent(componentRef);
     }
   }

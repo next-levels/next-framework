@@ -1,23 +1,17 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { ObjectType, Repository } from 'typeorm';
-import {
-  FilterOperator,
-  paginate,
-  Paginated,
-  PaginateQuery,
-} from 'nestjs-paginate';
-import { IBaseCmsService } from './service.type';
-import { getFilterFields } from '../../../helpers/fields.helper';
-import { BaseApiService } from '../../../types/service.type';
+import {Injectable} from '@nestjs/common';
+import {InjectRepository} from '@nestjs/typeorm';
+import {ObjectType, Repository} from 'typeorm';
+import {FilterOperator, paginate, Paginated, PaginateQuery,} from 'nestjs-paginate';
+import {IBaseCmsService} from './service.type';
+import {getFilterFields} from '../../../helpers/fields.helper';
+import {BaseApiService} from '../../../types/service.type';
 import {Result} from "../../../../../../nest-tools";
 
 export function GenericBaseCMSService<T>(entity: ObjectType<T>): any {
   @Injectable()
   class GenericServiceHost
     extends BaseApiService
-    implements IBaseCmsService<T>
-  {
+    implements IBaseCmsService<T> {
     constructor(
       @InjectRepository(entity)
       private readonly repository: Repository<T>
@@ -27,6 +21,18 @@ export function GenericBaseCMSService<T>(entity: ObjectType<T>): any {
 
     async create(data: T): Promise<Result<T>> {
       return Result.ok(await this.saveWithRelations(data));
+    }
+
+    async update(id: number, data: Partial<T>): Promise<Result<T>> {
+      const existingEntity = await this.repository.findOne({where: {id: id} as any});
+      if (!existingEntity) {
+        throw new Error('Entity not found');
+      }
+      const updatedEntity = Object.assign(existingEntity, data);
+
+      await this.repository.save(updatedEntity);
+
+      return Result.ok(updatedEntity);
     }
 
     async delete(id: number): Promise<Result<any>> {
@@ -42,6 +48,7 @@ export function GenericBaseCMSService<T>(entity: ObjectType<T>): any {
     ): Promise<Result<Paginated<T>>> {
       return this._findByFilter(query);
     }
+
     public async _findByFilter(
       query: PaginateQuery
     ): Promise<Result<Paginated<any>>> {
@@ -78,14 +85,15 @@ export function GenericBaseCMSService<T>(entity: ObjectType<T>): any {
 
     async findOne(id: number): Promise<Result<any | null>> {
       // @ts-ignore
+      const relationFields = this.repository.metadata.relations.map(
+        (relation) => relation.propertyName as any
+      );
       return Result.ok(await this.repository.findOne({
-        where: { id:id } as any,
-       }));
-     }
-
-    update(id: number, data: Partial<T>): Promise<Result<T>> {
-      return Promise.resolve(undefined);
+        where: {id: id} as any,
+        relations: relationFields,
+      }));
     }
+
 
     async saveWithRelations(entity: any): Promise<any> {
       const newEntity = await this.repository.save(entity);
@@ -96,7 +104,7 @@ export function GenericBaseCMSService<T>(entity: ObjectType<T>): any {
 
       // Step 2: Fetch it back with relations
       return this.repository.findOne({
-        where: { id: newEntity.id } as any,
+        where: {id: newEntity.id} as any,
         relations: relationFields, // Include the relations you want
       });
     }
