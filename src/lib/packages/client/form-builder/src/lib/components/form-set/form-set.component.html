@@ -2,6 +2,7 @@
   *ngFor="let field of fields"
   [fieldName]="field"
   [formController]="controller"
+  [readOnly]="readOnly"
   (change)="isFormValid($event)"
   (dataOutput)="isFormValid($event)"
 ></nxt-form-element>
