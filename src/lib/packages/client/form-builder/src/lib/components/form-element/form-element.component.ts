@@ -31,6 +31,8 @@ export class FormElementComponent implements AfterViewInit {
   @Input() formController!: FormController;
   @Input() fieldName = '';
   @Output() dataOutput = new EventEmitter<any>();
+  @Input() readOnly = false;
+
 
   constructor(
     private cdRef: ChangeDetectorRef,
@@ -69,6 +71,11 @@ export class FormElementComponent implements AfterViewInit {
   }
 
   initComponent(componentRef: any) {
+
+    if (this.readOnly) {
+      this.formField.disabled = true;
+    }
+
     componentRef.instance.formField = this.formField;
     componentRef.instance.formController = this.formController;
     componentRef.instance.dataOutput = this.dataOutput;
