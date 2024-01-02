@@ -67,6 +67,12 @@ export class FormElementComponent implements AfterViewInit {
       );
 
       this.initComponent(componentRef);
+    }else if (this.view !== undefined && this.formField) {
+      const componentRef = this.view.createComponent(
+        this.formBuilderComponents[this.formField.type]
+      );
+
+      this.initComponent(componentRef);
     }
   }
 
