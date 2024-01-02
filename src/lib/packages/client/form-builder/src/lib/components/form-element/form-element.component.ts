@@ -42,8 +42,7 @@ export class FormElementComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     let componentRef;
-
-    if (this.view !== undefined && this.fieldName) {
+     if (this.view !== undefined && this.fieldName) {
       this.formField = Reflect.getMetadata(
         FORMFIELD_PREFIX,
         this.formController?.getModelDefinition(),

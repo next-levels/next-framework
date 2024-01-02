@@ -3,6 +3,7 @@ import {BaseViewComponent} from "./base-view.component";
 import {BoxElement, ButtonElement} from "@next-levels/next-framework-client";
 
 @Component({
+  selector: 'view-button',
   template: '<div  [classList]="_styles" [innerHTML]=" element.config.content"></div >',
 })
 export class ViewButtonComponent extends BaseViewComponent implements AfterViewInit {
