@@ -4,7 +4,7 @@
 >
     <div
             *ngIf="showHeader == true"
-            class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between px-3 "
+            class="relative flex flex-col sm:flex-row flex-0 sm:justify-around px-3 justify-between items-center border-l-1"
     >
         <!-- Title -->
         <ng-container *transloco="let t">
@@ -50,7 +50,7 @@
     </div>
 
     <!-- Main -->
-    <div class="relative p-10 bg-slate-100 h-screen " style="height: 92vh;    overflow-x: auto;">
+    <div class="relative p-6 bg-slate-100 h-screen shadow-inner" style="height: 100vh;    overflow-x: auto;">
         <div
                 class="pt-1 d-flex justify-content-end selectedRowsButton"
                 *ngIf="isOneSelected()"
@@ -62,9 +62,9 @@
                 Alle bearbeiten
             </a>
         </div>
-        <div class="bg-white list-builder-table ng-star-inserted border-white rounded-2xl  grid content-between" style="    min-height: 60vh;    padding-top: 18px;">
+        <div class="bg-white list-builder-table ng-star-inserted border-white rounded-xl  grid content-between items-start  " style=" overflow-x: auto;   min-height: 75vh;max-height: 75vh;    padding-top: 8px;">
         <table
-                class="w-full   list-builder-table bg-white list-builder-table ng-star-inserted border-white rounded-2xl"
+                class="w-full   list-builder-table bg-white list-builder-table border-white rounded-xl  self-start "
                 mat-table
                 matSort
 
@@ -75,7 +75,7 @@
                 *ngIf="dataSource.data.length > 0; else noGuarantees"
         >
             <ng-container matColumnDef="select">
-                <th mat-header-cell *matHeaderCellDef class="w-25px">
+                <th mat-header-cell *matHeaderCellDef class="w-25px w-0">
                     <div
                             class="form-check form-check-sm form-check-custom form-check-solid"
                     >
@@ -133,7 +133,7 @@
               <mat-icon
                       style="color: #1e293b;"
                       class="icon-size-5 text-slate-800"
-                      [svgIcon]="'heroicons_solid:eye'"
+                      [svgIcon]="'heroicons_outline:eye'"
               ></mat-icon>
             </a>
 
@@ -145,7 +145,7 @@
               <mat-icon
                       style="color: #1e293b;"
                       class="icon-size-5"
-                      [svgIcon]="'heroicons_solid:trash'"
+                      [svgIcon]="'heroicons_outline:trash'"
               ></mat-icon>
             </a>
           </span>

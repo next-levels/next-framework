@@ -1,10 +1,9 @@
-import { Column, PrimaryGeneratedColumn } from 'typeorm';
 import {Field, Model} from "@next-levels/types";
 
 @Model('search_queries')
 export class SearchQuery{
   @Field({ type: 'TEXT' })
-  @PrimaryGeneratedColumn('increment')
+ // @PrimaryGeneratedColumn('increment')
   id: number;
 
   created_at: Date;

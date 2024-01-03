@@ -1,5 +1,4 @@
 import {Field, Model} from "@next-levels/types";
-import {Column} from "typeorm";
 import {BaseElementModel} from "../types/base.element.model";
 
 const key = 'text-element';
@@ -8,7 +7,6 @@ const key = 'text-element';
 export class TextElement extends BaseElementModel {
 
   @Field({type: 'HTML', required: true})
-  @Column({type: 'text', nullable: true})
   content: string;
 
   getSettings() {

@@ -1,5 +1,4 @@
 import { Field, Model} from "@next-levels/types";
-import {Column} from "typeorm";
 import {BaseElementModel} from "../types/base.element.model";
 
 const key = 'image-element';
@@ -8,7 +7,6 @@ export class ImageElement extends BaseElementModel
 {
 
   @Field({ type: 'FILE', required: true })
-  @Column({ type: 'text', nullable: true })
   content: any;
 
   getSettings(){

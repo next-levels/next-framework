@@ -1,5 +1,4 @@
 import { Field, Model} from "@next-levels/types";
-import {Column} from "typeorm";
 import {BaseElementModel} from "../types/base.element.model";
 
 const key = 'button-element';
@@ -8,7 +7,6 @@ export class ButtonElement extends BaseElementModel
 {
 
   @Field({ type: 'TEXTAREA', required: true })
-  @Column({ type: 'text', nullable: true })
   content: number;
 
   getSettings(){
