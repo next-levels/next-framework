@@ -33,11 +33,9 @@ export function GenericBaseCMSControllerMongo<T extends Type<any>>(
             super();
         }
 
-        @Get('frontend')
+        @Get('all')
         @UseInterceptors(FileInjectInterceptor)
-        public async frontendFindAll(
-            @Query('country') country: string
-        ): Promise<Result<T[]>> {
+        public async frontendFindAll(): Promise<Result<T[]>> {
             return await this.service.findAll();
         }
 
