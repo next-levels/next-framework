@@ -24,7 +24,7 @@ export class BaseInputFileComponent extends BaseInputComponent {
   ) {
     super(cdRef, translateService);
     this.baseUrl = this.environmentStorage.baseUrl;
-    this.baseApiUrl = this.baseUrl + '/files/';
+    this.baseApiUrl = this.baseUrl + '/api/files/';
   }
 
   override init() {
@@ -55,7 +55,7 @@ export class BaseInputFileComponent extends BaseInputComponent {
     formData.append('image', file, file.name);
 
     firstValueFrom(
-      this._httpClient.post(`${this.baseUrl}/files/upload`, formData)
+      this._httpClient.post(`${this.baseApiUrl}upload`, formData)
     ).then((response: any) => {
       this.toggleEditMode(false);
       const tempPatch = {};
