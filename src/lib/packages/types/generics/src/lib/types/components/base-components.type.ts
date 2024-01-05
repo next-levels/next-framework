@@ -9,6 +9,7 @@ export interface BaseComponents {
   NUMBER?: any;
   CHECKBOX?: any;
   RELATION?: any;
+  IMAGE?: any;
   FILE?: any;
   SIGN?: any;
   RADIO?: any;

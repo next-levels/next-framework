@@ -18,6 +18,13 @@ export class BaseInputHtmlComponent extends BaseInputComponent {
     ],
   };
 
+  override init() {
+    super.init();
+    if (this.formField && this.formField?.required) {
+      this.formField.label = this.formField.label + '*';
+    }
+  }
+
   onEventChange(event: any) {
     if (event.value) {
       this.dataOutput.emit(event.value.toISOString());

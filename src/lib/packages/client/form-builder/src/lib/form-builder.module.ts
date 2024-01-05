@@ -26,8 +26,8 @@ import { BaseInputFileComponent } from './components/base-components/base-input-
 import { BaseInputRelationDropdownComponent } from './components/base-components/base-input-relation-dropdown.component';
 import { BaseInputComponent } from './components/base-components/base-input.component';
 import { FormComponents } from '@next-levels/types';
-import {BaseInputCodeeditorComponent} from "./components/base-components/base-input-codeeditor.component";
-import {BaseInputJsoneditorComponent} from "./components/base-components/base-input-jsoneditor.component";
+import { BaseInputCodeeditorComponent } from './components/base-components/base-input-codeeditor.component';
+import { BaseInputJsoneditorComponent } from './components/base-components/base-input-jsoneditor.component';
 
 export interface FormBuilderConfig {
   environment: string;
@@ -66,7 +66,7 @@ export interface FormBuilderConfig {
     BaseInputFileComponent,
     BaseInputRelationDropdownComponent,
     BaseInputCodeeditorComponent,
-    BaseInputJsoneditorComponent
+    BaseInputJsoneditorComponent,
   ],
 })
 export class FormBuilderModule {
@@ -74,7 +74,7 @@ export class FormBuilderModule {
     components: FormComponents,
     baseUrl: string
   ): ModuleWithProviders<FormBuilderModule> {
-     return {
+    return {
       ngModule: FormBuilderModule,
       providers: [
         { provide: 'formBuilderComponents', useValue: components },

@@ -1,11 +1,5 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { BaseViewComponent } from '../base-view/base-view.component';
-import { DatePipe } from '@angular/common';
 import { EnvironmentStorageService } from '../../../../../../angular-commons/src/lib/environment-storage/environment-storage.service';
 
 @Component({
@@ -17,7 +11,6 @@ export class ViewFileComponent extends BaseViewComponent implements OnInit {
   baseUrl = '';
 
   constructor(
-    private datePipe: DatePipe,
     public override cdRef: ChangeDetectorRef,
     private environmentStorage: EnvironmentStorageService
   ) {
@@ -26,6 +19,8 @@ export class ViewFileComponent extends BaseViewComponent implements OnInit {
   }
   override ngOnInit() {
     super.ngOnInit();
-    this._value = this.baseUrl + '/files/' + this._value;
+    this._value = this._value
+      ? this.baseUrl + '/api/files/' + this._value
+      : false;
   }
 }

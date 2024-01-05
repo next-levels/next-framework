@@ -1,0 +1,766 @@
+{
+  "nodes": {
+    "angular-tools": {
+      "name": "angular-tools",
+      "type": "lib",
+      "data": {
+        "root": "src/lib/packages/client/angular-commons",
+        "name": "angular-tools",
+        "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+        "projectType": "library",
+        "sourceRoot": "src",
+        "prefix": "vosdellen",
+        "targets": {
+          "test": {
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "executor": "@nx/jest:jest",
+            "outputs": [
+              "coverage/libs/angular/angular-tools"
+            ],
+            "options": {
+              "jestConfig": "libs/angular/angular-tools/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {}
+          },
+          "lint": {
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json"
+            ],
+            "executor": "@nx/linter:eslint",
+            "options": {
+              "lintFilePatterns": [
+                "libs/angular/angular-tools/**/*.ts",
+                "libs/angular/angular-tools/**/*.html"
+              ]
+            },
+            "configurations": {}
+          }
+        },
+        "tags": [],
+        "implicitDependencies": []
+      }
+    },
+    "nxt-translation": {
+      "name": "nxt-translation",
+      "type": "lib",
+      "data": {
+        "root": "src/lib/packages/server/nxt-translation",
+        "name": "nxt-translation",
+        "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "libs/nxt-translation/src",
+        "projectType": "library",
+        "targets": {
+          "lint": {
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json"
+            ],
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+              "{options.outputFile}"
+            ],
+            "options": {
+              "lintFilePatterns": [
+                "libs/nxt-translation/**/*.ts"
+              ]
+            },
+            "configurations": {}
+          },
+          "test": {
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "executor": "@nx/jest:jest",
+            "outputs": [
+              "{workspaceRoot}/coverage/{projectRoot}"
+            ],
+            "options": {
+              "jestConfig": "libs/nxt-translation/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {
+              "ci": {
+                "ci": true,
+                "codeCoverage": true
+              }
+            }
+          }
+        },
+        "tags": [],
+        "implicitDependencies": []
+      }
+    },
+    "dynamic-modals": {
+      "name": "dynamic-modals",
+      "type": "lib",
+      "data": {
+        "root": "src/lib/packages/client/dynamic-modals",
+        "name": "dynamic-modals",
+        "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+        "projectType": "library",
+        "sourceRoot": "src",
+        "prefix": "vosdellen",
+        "targets": {
+          "test": {
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "executor": "@nx/jest:jest",
+            "outputs": [
+              "coverage/libs/dynamic-modals"
+            ],
+            "options": {
+              "jestConfig": "libs/libs/dynamic-modals/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {}
+          },
+          "lint": {
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json"
+            ],
+            "executor": "@nx/linter:eslint",
+            "options": {
+              "lintFilePatterns": [
+                "libs/dynamic-modals/**/*.ts",
+                "libs/dynamic-modals/**/*.html"
+              ]
+            },
+            "configurations": {}
+          }
+        },
+        "tags": [],
+        "implicitDependencies": []
+      }
+    },
+    "angular-angular-tools": {
+      "name": "angular-angular-tools",
+      "type": "lib",
+      "data": {
+        "root": "src/lib/packages/client/angular-tools",
+        "name": "angular-angular-tools",
+        "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+        "projectType": "library",
+        "sourceRoot": "src",
+        "prefix": "vosdellen",
+        "targets": {
+          "test": {
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "executor": "@nx/jest:jest",
+            "outputs": [
+              "coverage/libs/angular/angular-tools"
+            ],
+            "options": {
+              "jestConfig": "libs/angular/angular-tools/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {}
+          },
+          "lint": {
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json"
+            ],
+            "executor": "@nx/linter:eslint",
+            "options": {
+              "lintFilePatterns": [
+                "libs/angular/angular-tools/**/*.ts",
+                "libs/angular/angular-tools/**/*.html"
+              ]
+            },
+            "configurations": {}
+          }
+        },
+        "tags": [],
+        "implicitDependencies": []
+      }
+    },
+    "generic-store": {
+      "name": "generic-store",
+      "type": "lib",
+      "data": {
+        "root": "src/lib/packages/client/generic-store",
+        "name": "generic-store",
+        "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+        "projectType": "library",
+        "sourceRoot": "src",
+        "prefix": "vosdellen",
+        "targets": {
+          "test": {
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "executor": "@nx/jest:jest",
+            "outputs": [
+              "coverage/libs/generic-store"
+            ],
+            "options": {
+              "jestConfig": "libs/generic-store/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {}
+          },
+          "lint": {
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json"
+            ],
+            "executor": "@nx/linter:eslint",
+            "options": {
+              "lintFilePatterns": [
+                "libs/generic-store/**/*.ts",
+                "libs/generic-store/**/*.html"
+              ]
+            },
+            "configurations": {}
+          }
+        },
+        "tags": [],
+        "implicitDependencies": []
+      }
+    },
+    "@nest-commons-nest-commons": {
+      "name": "@nest-commons-nest-commons",
+      "type": "lib",
+      "data": {
+        "root": "src/lib/packages/server/nest-commons",
+        "name": "@nest-commons-nest-commons",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "src",
+        "projectType": "library",
+        "targets": {
+          "lint": {
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json"
+            ],
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+              "{options.outputFile}"
+            ],
+            "options": {
+              "lintFilePatterns": [
+                "libs/@nest-commons/nest-commons/**/*.ts"
+              ]
+            },
+            "configurations": {}
+          },
+          "test": {
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "executor": "@nx/jest:jest",
+            "outputs": [
+              "{workspaceRoot}/coverage/{projectRoot}"
+            ],
+            "options": {
+              "jestConfig": "libs/@nest-commons/nest-commons/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {
+              "ci": {
+                "ci": true,
+                "codeCoverage": true
+              }
+            }
+          }
+        },
+        "tags": [],
+        "implicitDependencies": []
+      }
+    },
+    "form-builder": {
+      "name": "form-builder",
+      "type": "lib",
+      "data": {
+        "root": "src/lib/packages/client/form-builder",
+        "name": "form-builder",
+        "targets": {
+          "nx-release-publish": {
+            "dependsOn": [
+              "^nx-release-publish"
+            ],
+            "executor": "@nx/js:release-publish",
+            "options": {},
+            "configurations": {}
+          },
+          "test": {
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "executor": "@nx/jest:jest",
+            "outputs": [
+              "coverage/libs/form-builder"
+            ],
+            "options": {
+              "jestConfig": "libs/form-builder/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {}
+          },
+          "lint": {
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json"
+            ],
+            "executor": "@nx/linter:eslint",
+            "options": {
+              "lintFilePatterns": [
+                "libs/form-builder/**/*.ts",
+                "libs/form-builder/**/*.html"
+              ]
+            },
+            "configurations": {}
+          }
+        },
+        "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+        "projectType": "library",
+        "sourceRoot": "libs/form-builder/src",
+        "prefix": "nxt-lvls",
+        "tags": [],
+        "implicitDependencies": []
+      }
+    },
+    "list-builder": {
+      "name": "list-builder",
+      "type": "lib",
+      "data": {
+        "root": "src/lib/packages/client/list-builder",
+        "name": "list-builder",
+        "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+        "projectType": "library",
+        "sourceRoot": "src",
+        "prefix": "vosdellen",
+        "targets": {
+          "test": {
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "executor": "@nx/jest:jest",
+            "outputs": [
+              "coverage/libs/list-builder"
+            ],
+            "options": {
+              "jestConfig": "libs/list-builder/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {}
+          },
+          "lint": {
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json"
+            ],
+            "executor": "@nx/linter:eslint",
+            "options": {
+              "lintFilePatterns": [
+                "libs/list-builder/**/*.ts",
+                "libs/list-builder/**/*.html"
+              ]
+            },
+            "configurations": {}
+          }
+        },
+        "tags": [],
+        "implicitDependencies": []
+      }
+    },
+    "nest-features-file-handler": {
+      "name": "nest-features-file-handler",
+      "type": "lib",
+      "data": {
+        "root": "src/lib/packages/server/file-handler",
+        "name": "nest-features-file-handler",
+        "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "libs/nest/features/file-handler/src",
+        "projectType": "library",
+        "targets": {
+          "lint": {
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json"
+            ],
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+              "{options.outputFile}"
+            ],
+            "options": {
+              "lintFilePatterns": [
+                "libs/nest/features/file-handler/**/*.ts"
+              ]
+            },
+            "configurations": {}
+          },
+          "test": {
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "executor": "@nx/jest:jest",
+            "outputs": [
+              "{workspaceRoot}/coverage/{projectRoot}"
+            ],
+            "options": {
+              "jestConfig": "libs/nest/features/file-handler/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {
+              "ci": {
+                "ci": true,
+                "codeCoverage": true
+              }
+            }
+          }
+        },
+        "tags": [],
+        "implicitDependencies": []
+      }
+    },
+    "page-builder": {
+      "name": "page-builder",
+      "type": "lib",
+      "data": {
+        "root": "src/lib/packages/client/page-builder",
+        "name": "page-builder",
+        "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+        "projectType": "library",
+        "sourceRoot": "src",
+        "prefix": "next",
+        "targets": {
+          "test": {
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "executor": "@nx/jest:jest",
+            "outputs": [
+              "coverage/libs/page-builder"
+            ],
+            "options": {
+              "jestConfig": "libs/page-builder/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {}
+          },
+          "lint": {
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json"
+            ],
+            "executor": "@nx/linter:eslint",
+            "options": {
+              "lintFilePatterns": [
+                "libs/page-builder/**/*.ts",
+                "libs/page-builder/**/*.html"
+              ]
+            },
+            "configurations": {}
+          }
+        },
+        "tags": [],
+        "implicitDependencies": []
+      }
+    },
+    "nest-features-generic-api": {
+      "name": "nest-features-generic-api",
+      "type": "lib",
+      "data": {
+        "root": "src/lib/packages/server/generic-api",
+        "name": "nest-features-generic-api",
+        "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "libs/nest/features/generic-api/src",
+        "projectType": "library",
+        "targets": {
+          "lint": {
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json"
+            ],
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+              "{options.outputFile}"
+            ],
+            "options": {
+              "lintFilePatterns": [
+                "libs/nest/features/generic-api/**/*.ts"
+              ]
+            },
+            "configurations": {}
+          },
+          "test": {
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "executor": "@nx/jest:jest",
+            "outputs": [
+              "{workspaceRoot}/coverage/{projectRoot}"
+            ],
+            "options": {
+              "jestConfig": "libs/nest/features/generic-api/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {
+              "ci": {
+                "ci": true,
+                "codeCoverage": true
+              }
+            }
+          }
+        },
+        "tags": [],
+        "implicitDependencies": []
+      }
+    },
+    "apps-nest-utility-nest-tools": {
+      "name": "apps-nest-utility-nest-tools",
+      "type": "lib",
+      "data": {
+        "root": "src/lib/packages/server/nest-tools",
+        "name": "apps-nest-utility-nest-tools",
+        "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "src",
+        "projectType": "library",
+        "targets": {
+          "lint": {
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json"
+            ],
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+              "{options.outputFile}"
+            ],
+            "options": {
+              "lintFilePatterns": [
+                "libs/apps/nest/utility/nest-tools/**/*.ts"
+              ]
+            },
+            "configurations": {}
+          },
+          "test": {
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "executor": "@nx/jest:jest",
+            "outputs": [
+              "{workspaceRoot}/coverage/{projectRoot}"
+            ],
+            "options": {
+              "jestConfig": "libs/apps/nest/utility/nest-tools/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {
+              "ci": {
+                "ci": true,
+                "codeCoverage": true
+              }
+            }
+          }
+        },
+        "tags": [],
+        "implicitDependencies": []
+      }
+    },
+    "nest-features-nest-auth": {
+      "name": "nest-features-nest-auth",
+      "type": "lib",
+      "data": {
+        "root": "src/lib/packages/server/nest-auth",
+        "name": "nest-features-nest-auth",
+        "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "libs/nest/features/nest-auth/src",
+        "projectType": "library",
+        "targets": {
+          "lint": {
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json"
+            ],
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+              "{options.outputFile}"
+            ],
+            "options": {
+              "lintFilePatterns": [
+                "libs/nest/features/nest-auth/**/*.ts"
+              ]
+            },
+            "configurations": {}
+          },
+          "test": {
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "executor": "@nx/jest:jest",
+            "outputs": [
+              "{workspaceRoot}/coverage/{projectRoot}"
+            ],
+            "options": {
+              "jestConfig": "libs/nest/features/nest-auth/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {
+              "ci": {
+                "ci": true,
+                "codeCoverage": true
+              }
+            }
+          }
+        },
+        "tags": [],
+        "implicitDependencies": []
+      }
+    },
+    "generics": {
+      "name": "generics",
+      "type": "lib",
+      "data": {
+        "root": "src/lib/packages/types/generics",
+        "name": "generics",
+        "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+        "projectType": "library",
+        "sourceRoot": "src",
+        "prefix": "vosdellen",
+        "targets": {
+          "test": {
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "executor": "@nx/jest:jest",
+            "outputs": [
+              "coverage/libs/generics"
+            ],
+            "options": {
+              "jestConfig": "libs/generics/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {}
+          },
+          "lint": {
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json"
+            ],
+            "executor": "@nx/linter:eslint",
+            "options": {
+              "lintFilePatterns": [
+                "libs/generics/**/*.ts",
+                "libs/generics/**/*.html"
+              ]
+            },
+            "configurations": {}
+          }
+        },
+        "tags": [],
+        "implicitDependencies": []
+      }
+    },
+    "next-framework": {
+      "name": "next-framework",
+      "type": "lib",
+      "data": {
+        "root": ".",
+        "name": "next-framework",
+        "targets": {
+          "test": {
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ],
+            "executor": "@nx/jest:jest",
+            "outputs": [
+              "coverage/libs/dynamic-modals"
+            ],
+            "options": {
+              "jestConfig": "libs/libs/dynamic-modals/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {}
+          },
+          "nx-release-publish": {
+            "dependsOn": [
+              "^nx-release-publish"
+            ],
+            "executor": "@nx/js:release-publish",
+            "options": {},
+            "configurations": {}
+          },
+          "lint": {
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json"
+            ],
+            "executor": "@nx/linter:eslint",
+            "options": {
+              "lintFilePatterns": [
+                "libs/dynamic-modals/**/*.ts",
+                "libs/dynamic-modals/**/*.html"
+              ]
+            },
+            "configurations": {}
+          }
+        },
+        "$schema": "../node_modules/nx/schemas/project-schema.json",
+        "projectType": "library",
+        "sourceRoot": "src",
+        "prefix": "next-framework",
+        "architect": {},
+        "tags": [],
+        "implicitDependencies": []
+      }
+    }
+  },
+  "externalNodes": {},
+  "dependencies": {
+    "angular-tools": [],
+    "nxt-translation": [],
+    "dynamic-modals": [],
+    "angular-angular-tools": [],
+    "generic-store": [],
+    "@nest-commons-nest-commons": [],
+    "form-builder": [],
+    "list-builder": [],
+    "nest-features-file-handler": [],
+    "page-builder": [],
+    "nest-features-generic-api": [],
+    "apps-nest-utility-nest-tools": [],
+    "nest-features-nest-auth": [],
+    "generics": [],
+    "next-framework": []
+  },
+  "version": "6.0"
+}

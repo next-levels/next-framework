@@ -1,0 +1,52 @@
+<!-- <ng-container [formGroup]="fg">
+  <div class="relative">
+    <p class="mb-1 font-medium ng-star-inserted">{{ formField.label }}</p>
+    <input
+      currencyMask
+      [options]="{
+        suffix: ' €',
+        prefix: '',
+        thousands: '.',
+        decimal: ',',
+        align: 'left',
+        precision: 2
+      }"
+      formControlName="{{ formField.name }}"
+      type="{{ formField.type }}"
+      class="form-control form-control-lg form-control-solid"
+      placeholder="{{ formField.label }}"
+    />
+  </div>
+</ng-container> -->
+
+<div class="input-text-wrapper mt-1 input-wrapper" [formGroup]="fg">
+  <mat-form-field floatLabel="always">
+    <mat-label>{{ formField.label }}</mat-label>
+    <input
+      matInput
+      currencyMask
+      [options]="{
+        suffix: ' €',
+        prefix: '',
+        thousands: '.',
+        decimal: ',',
+        align: 'left',
+        precision: 2
+      }"
+      formControlName="{{ formField.name }}"
+      placeholder="{{ formField.label }}"
+      [spellcheck]="false"
+    />
+  </mat-form-field>
+</div>
+<!-- <div class="input-text-wrapper mt-1 input-wrapper" [formGroup]="fg">
+  <mat-form-field floatLabel="always">
+    <mat-label>{{ formField.label }}</mat-label>
+    <input
+      matInput
+      formControlName="{{ formField.name }}"
+      placeholder="{{ formField.label }}"
+      [spellcheck]="false"
+    />
+  </mat-form-field>
+</div> -->

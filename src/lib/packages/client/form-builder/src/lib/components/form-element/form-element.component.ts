@@ -33,7 +33,6 @@ export class FormElementComponent implements AfterViewInit {
   @Output() dataOutput = new EventEmitter<any>();
   @Input() readOnly = false;
 
-
   constructor(
     private cdRef: ChangeDetectorRef,
     @Inject('formBuilderComponents')
@@ -41,8 +40,7 @@ export class FormElementComponent implements AfterViewInit {
   ) {}
 
   ngAfterViewInit() {
-    let componentRef;
-     if (this.view !== undefined && this.fieldName) {
+    if (this.view !== undefined && this.fieldName) {
       this.formField = Reflect.getMetadata(
         FORMFIELD_PREFIX,
         this.formController?.getModelDefinition(),
@@ -66,7 +64,7 @@ export class FormElementComponent implements AfterViewInit {
       );
 
       this.initComponent(componentRef);
-    }else if (this.view !== undefined && this.formField) {
+    } else if (this.view !== undefined && this.formField) {
       const componentRef = this.view.createComponent(
         this.formBuilderComponents[this.formField.type]
       );
@@ -76,11 +74,9 @@ export class FormElementComponent implements AfterViewInit {
   }
 
   initComponent(componentRef: any) {
-
     if (this.readOnly) {
       this.formField.disabled = true;
     }
-
     componentRef.instance.formField = this.formField;
     componentRef.instance.formController = this.formController;
     componentRef.instance.dataOutput = this.dataOutput;

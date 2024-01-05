@@ -15,6 +15,7 @@ export class BaseInputFileComponent extends BaseInputComponent {
   baseApiUrl = '';
   baseUrl = '';
   file_id: number;
+  file_name = '';
 
   constructor(
     public _httpClient: HttpClient,
@@ -32,6 +33,9 @@ export class BaseInputFileComponent extends BaseInputComponent {
     this.file_id = this.formController
       ?.getForm()
       .get(this.formField.name)?.value;
+    if (this.formField && this.formField?.required) {
+      this.formField.label = this.formField.label + '*';
+    }
   }
 
   /**
@@ -44,7 +48,7 @@ export class BaseInputFileComponent extends BaseInputComponent {
       return;
     }
 
-    const allowedTypes = ['image/jpeg', 'image/png'];
+    const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
     const file = fileList[0];
 
     if (!allowedTypes.includes(file.type)) {
@@ -61,8 +65,8 @@ export class BaseInputFileComponent extends BaseInputComponent {
       const tempPatch = {};
       tempPatch[this.formField.name] = response.id;
       this.formController?.getForm().patchValue(tempPatch);
-
       this.file_id = response.id;
+      this.file_name = response.name;
     });
   }
 

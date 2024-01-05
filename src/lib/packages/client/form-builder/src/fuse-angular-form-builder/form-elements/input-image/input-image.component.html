@@ -16,7 +16,7 @@
             class="absolute h-0 w-0 opacity-0 invisible pointer-events-none"
             type="file"
             [multiple]="false"
-            [accept]="'application/pdf, image/jpeg, image/png'"
+            [accept]="'image/jpeg, image/png'"
             (change)="uploadAvatar(avatarFileInput.files)"
             #avatarFileInput
           />
@@ -42,9 +42,11 @@
       </div>
     </ng-container>
 
-    <div class="object-cover w-full h-full" *ngIf="file_id">
-      {{ file_name }}
-    </div>
+    <img
+      class="object-cover w-full h-full"
+      *ngIf="file_id"
+      [src]="baseApiUrl + file_id"
+    />
     <div
       class="flex items-center justify-center p-4 w-full h-full rounded overflow-hidden uppercase text-6xl font-bold leading-none bg-gray-100 text-gray-600 dark:bg-primary-700 dark:text-gray-200"
       *ngIf="!file_id"
