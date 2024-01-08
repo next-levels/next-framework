@@ -3,11 +3,14 @@ import { BaseViewComponent } from '../base-view/base-view.component';
 import { EnvironmentStorageService } from '../../../../../../angular-commons/src/lib/environment-storage/environment-storage.service';
 
 @Component({
-  selector: 'vosdellen-view-file',
-  templateUrl: './view-file.component.html',
-  styleUrls: ['./view-file.component.scss'],
+  selector: 'vosdellen-view-imagefile',
+  templateUrl: './view-imagefile.component.html',
+  styleUrls: ['./view-imagefile.component.scss'],
 })
-export class ViewFileComponent extends BaseViewComponent implements OnInit {
+export class ViewImageFileComponent
+  extends BaseViewComponent
+  implements OnInit
+{
   baseUrl = '';
 
   constructor(
@@ -20,7 +23,7 @@ export class ViewFileComponent extends BaseViewComponent implements OnInit {
   override ngOnInit() {
     super.ngOnInit();
     this._value = this._value
-      ? this.viewObject[this.fieldName.replace('_id', '')]?.name
-      : '-';
+      ? this.baseUrl + '/api/files/' + this._value
+      : false;
   }
 }

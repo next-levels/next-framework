@@ -1,17 +1,1 @@
-<div
-  class="view-file-wrapper"
-  [ngClass]="{ 'dark-transparent': listField?.options?.image_transparent }"
->
-  <a
-    class="cursor-pointer view-file-wrapper__view-button"
-    target="_blank"
-    [href]="_value"
-    *ngIf="_value"
-  >
-    <mat-icon
-      class="icon-size-4 view-file-wrapper__view-icon"
-      [svgIcon]="'heroicons_solid:eye'"
-    ></mat-icon>
-  </a>
-  <img src="{{ _value }}" style="max-width: 200px" alt="" />
-</div>
+{{ _value }}

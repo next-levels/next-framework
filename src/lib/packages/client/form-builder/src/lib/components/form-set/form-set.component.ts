@@ -1,4 +1,12 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChanges} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormController } from '../../controller/form-controller';
 import { FormOptions } from '@next-levels/types';
@@ -24,8 +32,7 @@ export class FormSetComponent implements OnInit {
       this.changeDetectorRef.detectChanges();
     }
     if (changes['controller']) {
-       this.changeDetectorRef.markForCheck();
-
+      this.changeDetectorRef.markForCheck();
     }
   }
 
@@ -37,6 +44,10 @@ export class FormSetComponent implements OnInit {
     if (this.formFields || this.fields) {
       this.fg = this.controller.getForm();
     }
+
+    console.log('this.formFields', this.formFields);
+    console.log('this.fields', this.fields);
+    console.log('this.controller', this.controller);
   }
 
   isFormValid(event: any) {

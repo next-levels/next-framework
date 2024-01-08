@@ -6,23 +6,15 @@ import { BaseInputComponent } from './base-input.component';
 import { EnvironmentStorageService } from '../../../../../angular-commons/src';
 
 @Component({
-  selector: 'nxt-input-file',
+  selector: 'nxt-input-imagefile',
   template: '<ng-container ></ng-container>',
 })
-export class BaseInputFileComponent extends BaseInputComponent {
+export class BaseInputImageFileComponent extends BaseInputComponent {
   editMode = false;
   edit = true;
   baseApiUrl = '';
   baseUrl = '';
   file_id: number;
-  file_name = '';
-  allowedTypes = [
-    'application/msword',
-    'application/vnd.ms-excel',
-    'application/vnd.ms-powerpoint',
-    'text/plain',
-    'application/pdf',
-  ];
 
   constructor(
     public _httpClient: HttpClient,
@@ -40,15 +32,8 @@ export class BaseInputFileComponent extends BaseInputComponent {
     this.file_id = this.formController
       ?.getForm()
       .get(this.formField.name)?.value;
-    if (this.file_id) {
-      this._httpClient.get(`${this.baseApiUrl}upload`);
-    }
-
-    if (this.formField?.required) {
+    if (this.formField && this.formField?.required) {
       this.formField.label = this.formField.label + '*';
-    }
-    if (this.formField?.options?.allowedTypes?.length) {
-      this.allowedTypes = this.formField?.options?.allowedTypes;
     }
   }
 
@@ -62,9 +47,10 @@ export class BaseInputFileComponent extends BaseInputComponent {
       return;
     }
 
+    const allowedTypes = ['image/jpeg', 'image/png'];
     const file = fileList[0];
 
-    if (!this.allowedTypes.includes(file.type)) {
+    if (!allowedTypes.includes(file.type)) {
       return;
     }
 
@@ -79,7 +65,6 @@ export class BaseInputFileComponent extends BaseInputComponent {
       tempPatch[this.formField.name] = response.id;
       this.formController?.getForm().patchValue(tempPatch);
       this.file_id = response.id;
-      this.file_name = response.name;
     });
   }
 

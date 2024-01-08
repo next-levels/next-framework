@@ -30,8 +30,8 @@ import { NgJsonEditorModule } from 'ang-jsoneditor';
 import { InputJsoneditorComponent } from './form-elements/input-jsoneditor/input-jsoneditor.component';
 import { CodeEditorModule } from '@ngstack/code-editor';
 import { InputCurrencyComponent } from './form-elements/input-currency/input-currency.component';
-import { InputImageComponent } from './form-elements/input-image/input-image.component';
 import { NgxCurrencyDirective } from 'ngx-currency';
+import { InputImageFileComponent } from './form-elements/input-imagefile/input-imagefile.component';
 
 @NgModule({
   imports: [
@@ -67,7 +67,7 @@ import { NgxCurrencyDirective } from 'ngx-currency';
     InputNumberComponent,
     InputRelationDropdownComponent,
     InputFileComponent,
-    InputImageComponent,
+    InputImageFileComponent,
     InputCheckboxComponent,
     InputDateComponent,
     InputCodeeditorComponent,
@@ -99,7 +99,7 @@ export class FuseAngularFormBuilderModule {
             CHECKBOX: InputCheckboxComponent,
             RELATION: InputRelationDropdownComponent,
             FILE: InputFileComponent,
-            IMAGE: InputImageComponent,
+            IMAGEFILE: InputImageFileComponent,
             SIGN: InputFileComponent,
             CODE: InputCodeeditorComponent,
             JSON: InputJsoneditorComponent,

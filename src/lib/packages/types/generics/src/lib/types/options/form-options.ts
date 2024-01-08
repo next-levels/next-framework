@@ -8,7 +8,7 @@ export interface FormOptions {
   validation?: ValidationType;
   required?: boolean;
   hidden?: boolean;
-  options?: {};
+  options?: any;
   disabled?: boolean;
   updateOn?: 'change' | 'blur' | 'submit';
 }

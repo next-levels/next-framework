@@ -23,14 +23,15 @@ import { ViewRelationComponent } from './components/view-items/view-relation/vie
 import { defaultListComponents } from './types/default-list-components.type';
 import { BaseViewComponent } from './components/view-items/base-view/base-view.component';
 import { ViewDateComponent } from './components/view-items/view-date/view-date.component';
-import { ViewFileComponent } from './components/view-items/view-file/view-file.component';
 import { ViewModalComponent } from './components/view-modal/view-modal.component';
 import { ViewDropdownComponent } from './components/view-items/view-dropdown/view-dropdown.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ListComponents } from '@next-levels/types';
 import { InlineSVGModule } from 'ng-inline-svg-2';
 import { HttpClientModule } from '@angular/common/http';
-import {QuerySearchModule} from "./components/query-search/query-search.module";
+import { QuerySearchModule } from './components/query-search/query-search.module';
+import { ViewImageFileComponent } from './components/view-items/view-imagefile/view-imagefile.component';
+import { ViewFileComponent } from './components/view-items/view-file/view-file.component';
 
 @NgModule({
   imports: [
@@ -52,7 +53,7 @@ import {QuerySearchModule} from "./components/query-search/query-search.module";
     MatExpansionModule,
     HttpClientModule,
     InlineSVGModule.forRoot(),
-    QuerySearchModule
+    QuerySearchModule,
   ],
   providers: [DatePipe],
   declarations: [
@@ -68,6 +69,7 @@ import {QuerySearchModule} from "./components/query-search/query-search.module";
     BaseViewComponent,
     ViewRelationComponent,
     ViewDateComponent,
+    ViewImageFileComponent,
     ViewFileComponent,
     ViewModalComponent,
     ViewDropdownComponent,
@@ -85,6 +87,7 @@ import {QuerySearchModule} from "./components/query-search/query-search.module";
     BaseViewComponent,
     ViewRelationComponent,
     ViewDateComponent,
+    ViewImageFileComponent,
     ViewFileComponent,
     ViewDropdownComponent,
   ],

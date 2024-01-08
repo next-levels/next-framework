@@ -8,10 +8,14 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {TranslateService} from '@ngx-translate/core';
-import {DependencyOptions, FormOptions, VisibilityOptions,} from '@next-levels/types';
-import {FormController} from '../../controller/form-controller';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+import {
+  DependencyOptions,
+  FormOptions,
+  VisibilityOptions,
+} from '@next-levels/types';
+import { FormController } from '../../controller/form-controller';
 
 @Component({
   template: '<ng-container ></ng-container>',
@@ -36,8 +40,7 @@ export class BaseInputComponent implements OnInit {
   constructor(
     public cdRef: ChangeDetectorRef,
     public translateService: TranslateService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     if (this.formField && this.formField.name) {

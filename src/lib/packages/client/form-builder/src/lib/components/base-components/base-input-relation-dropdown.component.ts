@@ -78,7 +78,6 @@ export class BaseInputRelationDropdownComponent
     this.visibilityOptions = this.formController?.getVisibility(
       this.formField.name
     );
-
     if (this.formField) {
       this.translateService
         .get(this.formController.getElementLabel(this.formField.name))
@@ -129,13 +128,15 @@ export class BaseInputRelationDropdownComponent
   }
 
   private initFilter() {
+    console.log('this.dependency', this.dependency);
     if (
       this.dependency?.field &&
-      this.fg?.controls[this.dependency.field] &&
-      this.dependency?.value === undefined
+      this.fg?.controls[this.dependency.field]
+      // && this.dependency?.value === undefined
     ) {
       this.fg.controls[this.dependency.field].valueChanges.subscribe(
         (value: any) => {
+          console.log('params', this.data, this.dependency?.field, value);
           this.mapData(
             this.filterArrayByProperty(this.data, this.dependency?.field, value)
           );

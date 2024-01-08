@@ -1,7 +1,7 @@
 <div class="input-file-wrapper mt-1" [formGroup]="fg">
-  <mat-label>{{ formField.label }}</mat-label>
+  <mat-label>{{ formField.label }} hallo</mat-label>
 
-  <div class="relative w-32 h-32 mr-4 rounded-md overflow-hidden">
+  <div class="relative mr-4 rounded-md overflow-hidden">
     <ng-container *ngIf="edit" [ngTemplateOutlet]="editToggler"></ng-container>
     <ng-container *ngIf="editMode">
       <!-- Upload / Remove avatar -->
@@ -16,7 +16,7 @@
             class="absolute h-0 w-0 opacity-0 invisible pointer-events-none"
             type="file"
             [multiple]="false"
-            [accept]="'application/pdf, image/jpeg, image/png'"
+            [accept]="allowedTypes.join(', ')"
             (change)="uploadAvatar(avatarFileInput.files)"
             #avatarFileInput
           />
@@ -42,8 +42,17 @@
       </div>
     </ng-container>
 
-    <div class="object-cover w-full h-full" *ngIf="file_id">
+    <div
+      class="bg-black bg-opacity-50 flex items-center justify-center z-20"
+      *ngIf="file_name"
+    >
       {{ file_name }}
+    </div>
+    <div
+      class="bg-black bg-opacity-50 flex items-center justify-center z-20"
+      *ngIf="file_id && !file_name"
+    >
+      {{ file_id }}
     </div>
     <div
       class="flex items-center justify-center p-4 w-full h-full rounded overflow-hidden uppercase text-6xl font-bold leading-none bg-gray-100 text-gray-600 dark:bg-primary-700 dark:text-gray-200"

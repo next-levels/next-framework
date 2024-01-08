@@ -21,19 +21,24 @@ export class ViewRelationComponent extends BaseViewComponent implements OnInit {
     super.ngOnInit();
 
     if (
-      this.listField &&
-      this.listField.type === 'RELATION' &&
-      this.listField.options &&
-      this.listField.options.selector
+      this.listField?.type === 'RELATION' &&
+      this.listField?.options?.selector
     ) {
-      if (this.listField.options.selector.includes('.')) {
-        const fieldNameArray = this.listField.options.selector.split('.');
-        if (
-          this.viewObject[fieldNameArray[0]] &&
-          this.viewObject[fieldNameArray[0]][fieldNameArray[1]]
-        )
-          this._value = this.viewObject[fieldNameArray[0]][fieldNameArray[1]];
-      }
+      const displayValues = [];
+      const selectors = Array.isArray(this.listField.options.selector)
+        ? this.listField.options.selector
+        : [this.listField.options.selector];
+      selectors.forEach((selector) => {
+        if (selector.includes('.')) {
+          const fieldNameArray = selector.split('.');
+          if (this.viewObject[fieldNameArray[0]]?.[fieldNameArray[1]]) {
+            displayValues.push(
+              this.viewObject[fieldNameArray[0]]?.[fieldNameArray[1]]
+            );
+          }
+        }
+      });
+      this._value = displayValues.join(' ');
     }
 
     if (
@@ -42,10 +47,10 @@ export class ViewRelationComponent extends BaseViewComponent implements OnInit {
       this.listField.options &&
       this.listField.options.map
     ) {
-      let forign_id;
+      let foreign_id;
       if (this.listField.options.map.includes('.')) {
         const fieldNameArray = this.listField.options.map.split('.');
-        forign_id = this.viewObject[fieldNameArray[0]][fieldNameArray[1]];
+        foreign_id = this.viewObject[fieldNameArray[0]][fieldNameArray[1]];
       }
 
       let settings = this.listController
@@ -59,7 +64,7 @@ export class ViewRelationComponent extends BaseViewComponent implements OnInit {
           if (!data || data.length === 0) return;
           this._value = this.mapData(
             settings.fields,
-            data.find((item: any) => item.id === forign_id)
+            data.find((item: any) => item.id === foreign_id)
           );
           this.cdRef.detectChanges();
         });
