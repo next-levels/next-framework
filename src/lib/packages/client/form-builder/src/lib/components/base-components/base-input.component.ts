@@ -80,9 +80,8 @@ export class BaseInputComponent implements OnInit {
 
   private initFormControl() {
     const validators = [];
-
     if (this.formField?.validation && this.formField.validation.validation) {
-      validators.push(this.formField.validation.validation);
+      validators.push(Validators.pattern(this.formField.validation.validation));
     }
 
     if (this.formField) {
@@ -141,7 +140,7 @@ export class BaseInputComponent implements OnInit {
     if (this.dependency?.field && this.formField) {
       if (this.fg?.controls[this.dependency.field]) {
         const dependencyValue = this.dependency.value;
-        this.formField.hidden = dependencyValue !== value;
+        this.formField.hidden = dependencyValue !== value && dependencyValue;
       }
     }
   }

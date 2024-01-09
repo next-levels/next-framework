@@ -78,6 +78,7 @@ export class BaseInputRelationDropdownComponent
     this.visibilityOptions = this.formController?.getVisibility(
       this.formField.name
     );
+
     if (this.formField) {
       this.translateService
         .get(this.formController.getElementLabel(this.formField.name))
@@ -103,7 +104,7 @@ export class BaseInputRelationDropdownComponent
 
       this.store.pipe(select(this.settings.selector)).subscribe((data) => {
         this.data = data;
-        this.mapData(data);
+        if (!this.initFilter()) this.mapData(data);
       });
     } else {
       const model = this.settings.model;
@@ -118,30 +119,39 @@ export class BaseInputRelationDropdownComponent
           this.facade.base.loadFiltered();
         }
 
-        this.facade.base.filtered$.subscribe((data) => this.mapData(data));
+        this.facade.base.filtered$.subscribe((data) => {
+          this.data = data;
+          if (!this.initFilter()) this.mapData(data);
+        });
       }
     }
-
     this.fg = this.formController.getForm();
-    this.initFilter();
     this.initDependency();
   }
 
   private initFilter() {
-    console.log('this.dependency', this.dependency);
     if (
       this.dependency?.field &&
-      this.fg?.controls[this.dependency.field]
-      // && this.dependency?.value === undefined
+      this.fg?.controls[this.dependency.field] &&
+      this.dependency?.value === undefined
     ) {
       this.fg.controls[this.dependency.field].valueChanges.subscribe(
         (value: any) => {
-          console.log('params', this.data, this.dependency?.field, value);
           this.mapData(
             this.filterArrayByProperty(this.data, this.dependency?.field, value)
           );
         }
       );
+      this.mapData(
+        this.filterArrayByProperty(
+          this.data,
+          this.dependency?.field,
+          this.fg?.controls[this.dependency.field].value
+        )
+      );
+      return true;
+    } else {
+      return false;
     }
   }
 

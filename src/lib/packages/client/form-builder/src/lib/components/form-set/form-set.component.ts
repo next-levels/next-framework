@@ -44,10 +44,6 @@ export class FormSetComponent implements OnInit {
     if (this.formFields || this.fields) {
       this.fg = this.controller.getForm();
     }
-
-    console.log('this.formFields', this.formFields);
-    console.log('this.fields', this.fields);
-    console.log('this.controller', this.controller);
   }
 
   isFormValid(event: any) {

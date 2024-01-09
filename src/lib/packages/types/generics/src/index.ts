@@ -6,6 +6,7 @@ export * from './lib/types/GenericPagination';
 export * from './lib/types/FilterOptions';
 export * from './lib/types/ScopeFilter';
 export * from './lib/types/ValidationType';
+export * from './lib/types/ValidationTypes';
 export * from './lib/pagnination/entity.type';
 export * from './lib/pagnination/sort.type';
 export * from './lib/pagnination/state.type';

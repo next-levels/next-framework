@@ -9,7 +9,7 @@ import { select, Store } from '@ngrx/store';
   styleUrls: ['./view-relation.component.scss'],
 })
 export class ViewRelationComponent extends BaseViewComponent implements OnInit {
-  detail_fields: any[] = [];
+  detailFields: any[] = [];
   constructor(
     public override cdRef: ChangeDetectorRef,
     public router: Router,
@@ -28,6 +28,7 @@ export class ViewRelationComponent extends BaseViewComponent implements OnInit {
       const selectors = Array.isArray(this.listField.options.selector)
         ? this.listField.options.selector
         : [this.listField.options.selector];
+      console.log('selectors', selectors);
       selectors.forEach((selector) => {
         if (selector.includes('.')) {
           const fieldNameArray = selector.split('.');
@@ -71,6 +72,7 @@ export class ViewRelationComponent extends BaseViewComponent implements OnInit {
       }
     }
 
+    // this.detailView = true;
     if (
       this.listField &&
       this.detailView &&
@@ -78,7 +80,7 @@ export class ViewRelationComponent extends BaseViewComponent implements OnInit {
       this.listField.options &&
       this.listField.options.detail_fields
     ) {
-      this.detail_fields = this.mapDataDetails(
+      this.detailFields = this.mapDataDetails(
         this.listField.options.detail_fields,
         this.viewObject
       );
