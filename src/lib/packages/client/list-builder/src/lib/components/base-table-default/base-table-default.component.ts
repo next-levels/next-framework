@@ -34,7 +34,10 @@ import {
   META,
   PaginationMeta,
 } from '@next-levels/types';
-import { CreateWizardComponent } from '../../../../../dynamic-modals';
+import {
+  BatchWizardComponent,
+  CreateWizardComponent,
+} from '../../../../../dynamic-modals';
 
 @Component({
   template: '<ng-container></ng-container>',
@@ -272,6 +275,26 @@ export class BaseTableDefaultComponent
     });
   }
 
+  public duplicate(data: any) {
+    Swal.fire({
+      text: 'Sind Sie sich sicher, dass Sie diesen Eintrag duplizieren möchten?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Ja, duplizieren!',
+      cancelButtonText: 'Nein, abbrechen',
+    }).then((result) => {
+      if (result.value) {
+        const duplicate = JSON.parse(JSON.stringify(data));
+        delete duplicate.id;
+        if (duplicate.name) {
+          duplicate.name += ' COPY';
+        }
+        this.modelFacade.base.add(duplicate);
+      } else if (result.isDismissed) {
+      }
+    });
+  }
+
   public openAddInsurersModal() {
     this.rowCreate.emit();
   }
@@ -484,7 +507,51 @@ export class BaseTableDefaultComponent
     return numSelected > 0;
   }
 
-  batchEdit() {}
+  batchEdit() {
+    this._matDialog.open(BatchWizardComponent, {
+      minWidth: '50%',
+      autoFocus: false,
+      data: {
+        model: this.model,
+        modelFacade: this.modelFacade,
+        scope: this.listController.scope,
+        config: this.listController.getConfig(),
+      },
+    });
+    this.cdRef.detectChanges();
+  }
+
+  batchDelete() {
+    let name = '';
+    this.translateService.get('test').subscribe((translated: string) => {
+      const labelCode =
+        META.getNameByModel(this.listController.getModelDefinition()) + '.name';
+      name = this.translateService.instant(labelCode);
+    });
+
+    console.log('this.selection.selected()', this.selection.selected);
+    Swal.fire({
+      text:
+        'Sind Sie sich sicher, dass Sie die ausgewählten Einträge vom Typ ' +
+        name +
+        ' löschen möchten?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Ja, löschen!',
+      cancelButtonText: 'Nein, abbrechen',
+    }).then((result) => {
+      if (result.value) {
+        this.selection.selected.forEach((data) => {
+          this.modelFacade.base.delete(data);
+        });
+      } else if (result.isDismissed) {
+      }
+    });
+  }
+
+  navigateSettings() {
+    this.router.navigate([this.router.url + '/settings']);
+  }
 
   getName(row: any, field: string) {}
 }
