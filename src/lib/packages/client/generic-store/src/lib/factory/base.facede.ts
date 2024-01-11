@@ -3,10 +3,7 @@ import { Observable } from 'rxjs';
 import { BaseSelectors } from '../types/base.selectors';
 import { Update } from '@ngrx/entity';
 import { BasicFacade } from '../types/base.type';
-import {
-  FilterOptions,
-  PaginationMeta,
-} from '@next-levels/types';
+import { FilterOptions, PaginationMeta } from '@next-levels/types';
 
 export abstract class StoreFacade {}
 export class BaseFacade<EntityType, StateType>
@@ -43,7 +40,7 @@ export class BaseFacade<EntityType, StateType>
   }
 
   select(entityId: number) {
-     this.store.dispatch(
+    this.store.dispatch(
       this.baseActions.selectEntity({ payload: { entityId } })
     );
   }
@@ -58,5 +55,17 @@ export class BaseFacade<EntityType, StateType>
 
   delete(entity: EntityType) {
     this.store.dispatch(this.baseActions.deleteEntity({ payload: { entity } }));
+  }
+
+  batchDelete(entities: EntityType[]) {
+    this.store.dispatch(
+      this.baseActions.batchDeleteEntities({ payload: { entities } })
+    );
+  }
+
+  batchEdit(ids: number[], changes: Partial<EntityType>): void {
+    this.store.dispatch(
+      this.baseActions.batchEditEntities({ payload: { ids, changes } })
+    );
   }
 }

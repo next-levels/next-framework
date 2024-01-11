@@ -106,6 +106,36 @@ export class BaseStore<T, S> implements GenericStore {
         props<{ error: any }>()
       ),
 
+      batchDeleteEntities: createAction(
+        `[${this.entityName} Page] Batch Delete Entity`,
+        props<{ payload: { entities: T[] } }>()
+      ),
+
+      batchDeleteEntitiesSuccess: createAction(
+        `[${this.entityName} API] Batch Delete Entity Success`,
+        props<{ payload: { entities: T[] } }>()
+      ),
+
+      batchDeleteEntitiesFail: createAction(
+        `[${this.entityName} API] Batch Delete Entity Fail`,
+        props<{ error: any }>()
+      ),
+
+      batchEditEntities: createAction(
+        `[${this.entityName} Page] Batch Edit Entity`,
+        props<{ payload: { entity: Update<T> } }>()
+      ),
+
+      batchEditEntitiesSuccess: createAction(
+        `[${this.entityName} Page] Batch Edit Entity Success`,
+        props<{ payload: { entity: T } }>()
+      ),
+
+      batchEditEntitiesFail: createAction(
+        `[${this.entityName} Page] Batch Edit Entity Fail`,
+        props<{ error: any }>()
+      ),
+
       exportEntities: createAction(
         `[${this.entityName} Page] Export Entities`,
         props<{ payload: { entities: T[] } }>()

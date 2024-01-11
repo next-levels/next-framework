@@ -508,14 +508,17 @@ export class BaseTableDefaultComponent
   }
 
   batchEdit() {
+    console.log('');
     this._matDialog.open(BatchWizardComponent, {
       minWidth: '50%',
       autoFocus: false,
       data: {
         model: this.model,
         modelFacade: this.modelFacade,
+        edit: true,
         scope: this.listController.scope,
         config: this.listController.getConfig(),
+        values: this.selection.selected,
       },
     });
     this.cdRef.detectChanges();
@@ -528,8 +531,6 @@ export class BaseTableDefaultComponent
         META.getNameByModel(this.listController.getModelDefinition()) + '.name';
       name = this.translateService.instant(labelCode);
     });
-
-    console.log('this.selection.selected()', this.selection.selected);
     Swal.fire({
       text:
         'Sind Sie sich sicher, dass Sie die ausgewählten Einträge vom Typ ' +
@@ -541,9 +542,7 @@ export class BaseTableDefaultComponent
       cancelButtonText: 'Nein, abbrechen',
     }).then((result) => {
       if (result.value) {
-        this.selection.selected.forEach((data) => {
-          this.modelFacade.base.delete(data);
-        });
+        this.modelFacade.base.batchDelete(this.selection.selected);
       } else if (result.isDismissed) {
       }
     });

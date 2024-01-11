@@ -10,7 +10,7 @@ import { BaseService } from '../types/base.service';
 
 import { GenericEffects } from '../+state/generic.effects';
 import { BaseFacade } from './base.facede';
-import {EntityPaginated, FilterOptions} from "@next-levels/types";
+import { EntityPaginated, FilterOptions } from '@next-levels/types';
 
 export function createBaseService<T extends object>(modelUrl: string) {
   @Injectable({
@@ -19,7 +19,7 @@ export function createBaseService<T extends object>(modelUrl: string) {
   class GenericService implements BaseService<T> {
     constructor(public _http: HttpClient) {}
 
-    getEntity(id: number|string): Observable<T> {
+    getEntity(id: number | string): Observable<T> {
       return this._http.get<T>(modelUrl + '/' + id);
     }
 
@@ -41,15 +41,27 @@ export function createBaseService<T extends object>(modelUrl: string) {
       return this._http.delete<T>(modelUrl + '/' + (entity as any).id);
     }
 
-    updateEntity(id: number|string, data: Partial<T>): Observable<T> {
-      console.log('updateEntity', id, data)
+    batchDeleteEntities(entities: T[]): Observable<T[]> {
+      return this._http.put<T[]>(modelUrl + '/batch-delete', {
+        entities: entities,
+      });
+    }
+
+    batchEditEntities(ids: number[], changes: Partial<T>): Observable<T> {
+      return this._http.put<T>(modelUrl + '/batch', {
+        ids: ids,
+        partial: changes,
+      });
+    }
+
+    updateEntity(id: number | string, data: Partial<T>): Observable<T> {
+      console.log('updateEntity', id, data);
       return this._http.patch<T>(modelUrl + '/' + id, data);
     }
   }
 
   return GenericService;
 }
-
 
 export function createBaseEffects<T extends object>(
   serviceToken: InjectionToken<BaseService<T>>,

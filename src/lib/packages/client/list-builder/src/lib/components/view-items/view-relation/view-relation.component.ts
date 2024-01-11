@@ -28,7 +28,6 @@ export class ViewRelationComponent extends BaseViewComponent implements OnInit {
       const selectors = Array.isArray(this.listField.options.selector)
         ? this.listField.options.selector
         : [this.listField.options.selector];
-      console.log('selectors', selectors);
       selectors.forEach((selector) => {
         if (selector.includes('.')) {
           const fieldNameArray = selector.split('.');

@@ -90,6 +90,36 @@ export function createGenericActions<T>(entityName: string) {
       props<{ error: any }>()
     ),
 
+    batchDeleteEntities: createAction(
+      `[${entityName} Page] Batch Delete Entity`,
+      props<{ payload: { entities: T[] } }>()
+    ),
+
+    batchDeleteEntitiesSuccess: createAction(
+      `[${entityName} API] Batch Delete Entity Success`,
+      props<{ payload: { entities: T[] } }>()
+    ),
+
+    batchDeleteEntitiesFail: createAction(
+      `[${entityName} API] Batch Delete Entity Fail`,
+      props<{ error: any }>()
+    ),
+
+    batchEditEntities: createAction(
+      `[${entityName} Page] Batch Edit Entity`,
+      props<{ payload: { ids: number[]; changes: Partial<T> } }>()
+    ),
+
+    batchEditEntitiesSuccess: createAction(
+      `[${entityName} Page] Batch Edit Entity Success`,
+      props<{ payload: { entities: T[] } }>()
+    ),
+
+    batchEditEntitiesFail: createAction(
+      `[${entityName} Page] Batch Edit Entity Fail`,
+      props<{ error: any }>()
+    ),
+
     exportEntities: createAction(
       `[${entityName} Page] Export Entities`,
       props<{ payload: { entities: T[] } }>()

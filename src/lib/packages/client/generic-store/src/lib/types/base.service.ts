@@ -13,4 +13,9 @@ export interface BaseService<EntityType extends object> {
     entityId: number | string,
     changes: Partial<EntityType>
   ): Observable<EntityType>;
+  batchDeleteEntities(entities: EntityType[]): Observable<EntityType[]>;
+  batchEditEntities(
+    entityIds: number[],
+    changes: Partial<EntityType>
+  ): Observable<EntityType>;
 }

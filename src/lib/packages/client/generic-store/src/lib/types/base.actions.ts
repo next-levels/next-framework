@@ -25,6 +25,14 @@ export type BaseActions<EntityType> = {
   deleteEntitySuccess: ReturnType<typeof createAction>;
   deleteEntityFail: ReturnType<typeof createAction>;
 
+  batchDeleteEntities: ReturnType<typeof createAction>;
+  batchDeleteEntitiesSuccess: ReturnType<typeof createAction>;
+  batchDeleteEntitiesFail: ReturnType<typeof createAction>;
+
+  batchEditEntities: ReturnType<typeof createAction>;
+  batchEditEntitiesSuccess: ReturnType<typeof createAction>;
+  batchEditEntitiesFail: ReturnType<typeof createAction>;
+
   exportEntities: ReturnType<typeof createAction>;
   exportEntitiesSuccess: ReturnType<typeof createAction>;
   exportEntitiesFail: ReturnType<typeof createAction>;

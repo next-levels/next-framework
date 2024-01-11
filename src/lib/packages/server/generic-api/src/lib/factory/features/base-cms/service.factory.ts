@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ObjectType, Repository } from 'typeorm';
+import { ObjectType, Repository, In } from 'typeorm';
 import {
   FilterOperator,
   FilterSuffix,
@@ -46,6 +46,23 @@ export function GenericBaseCMSService<T>(entity: ObjectType<T>): any {
 
     async delete(id: number): Promise<Result<any>> {
       return Result.ok(await this.repository.delete(id));
+    }
+
+    async batchDelete(entities: T[]): Promise<Result<any>> {
+      return Result.ok(await this.repository.remove(entities));
+    }
+
+    async batchEdit(ids: number[], changes: Partial<T>): Promise<Result<any>> {
+      for (let i = 0; i < ids.length; i++) {
+        await this.update(ids[i], changes);
+        // const progress = ((i + 1) * 100) / ids.length;
+        // this.batchGateway.server.emit('batch', progress);
+      }
+      return Result.ok(
+        await this.repository.find({
+          where: { id: In(ids) } as any,
+        })
+      );
     }
 
     async findAll(): Promise<Result<T[]>> {

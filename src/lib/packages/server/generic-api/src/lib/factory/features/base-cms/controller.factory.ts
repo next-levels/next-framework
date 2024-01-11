@@ -4,8 +4,10 @@ import {
   Delete,
   Get,
   Inject,
-  Param, Patch,
+  Param,
+  Patch,
   Post,
+  Put,
   Query,
   Req,
   Type,
@@ -17,10 +19,10 @@ import { Paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
 import { IBaseCmsService } from './service.type';
 import { BaseApiController } from '../../../types/controller.type';
 import { ControllerConfig } from '../../../types/controller-config.type';
-import {FileInjectInterceptor} from "../../../../../../file-handler";
-import {Result} from "../../../../../../nest-tools";
-import {JwtAuthGuard} from "../../../../../../nest-commons";
-import {META} from "@next-levels/types";
+import { FileInjectInterceptor } from '../../../../../../file-handler';
+import { Result } from '../../../../../../nest-tools';
+import { JwtAuthGuard } from '../../../../../../nest-commons';
+import { META } from '@next-levels/types';
 
 export function GenericBaseCMSController<T extends Type<any>>(
   entity: T,
@@ -91,8 +93,11 @@ export function GenericBaseCMSController<T extends Type<any>>(
 
     @Patch(':id')
     @ApiBody({ type: entity })
-    public async update(@Param('id') id: number,@Body() dto: T): Promise<Result<T>> {
-      const result = await this.service.update(id,dto);
+    public async update(
+      @Param('id') id: number,
+      @Body() dto: T
+    ): Promise<Result<T>> {
+      const result = await this.service.update(id, dto);
 
       const options = META.getOptionsByModel(new entity());
       let name = '';
@@ -117,6 +122,22 @@ export function GenericBaseCMSController<T extends Type<any>>(
     @UseInterceptors(FileInjectInterceptor)
     public async frontendFindOne(@Param('id') id: number): Promise<Result<T>> {
       return await this.service.findOne(id);
+    }
+
+    @Put('batch')
+    @ApiBody({ type: [entity] })
+    public async batchEdit(
+      @Body() data: { ids: number[]; partial: T }
+    ): Promise<Result<T[]>> {
+      return await this.service.batchEdit(data.ids, data.partial);
+    }
+
+    @Put('batch-delete')
+    @ApiBody({ type: [entity] })
+    public async batchRemove(
+      @Body('entities') entities: T[]
+    ): Promise<Result<any>> {
+      return await this.service.batchDelete(entities);
     }
   }
 
