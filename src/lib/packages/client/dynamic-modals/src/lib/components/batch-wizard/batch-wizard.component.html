@@ -42,7 +42,7 @@
               </div>
               <nxtlvls-form-set
                 *ngIf="formController"
-                [formFields]="step.fields"
+                [fields]="step.fields"
                 [controller]="formController"
                 (formValid)="formStepValid = $event"
               ></nxtlvls-form-set>
@@ -90,7 +90,6 @@
               <button
                 type="button"
                 class="btn btn-lg btn-primary"
-                [disabled]="!formStepValid"
                 *ngIf="currentStep === steps.length"
                 (click)="fireAction()"
               >

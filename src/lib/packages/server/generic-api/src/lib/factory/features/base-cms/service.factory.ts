@@ -1,17 +1,24 @@
-import {Injectable} from '@nestjs/common';
-import {InjectRepository} from '@nestjs/typeorm';
-import {ObjectType, Repository} from 'typeorm';
-import {FilterOperator, paginate, Paginated, PaginateQuery,} from 'nestjs-paginate';
-import {IBaseCmsService} from './service.type';
-import {getFilterFields} from '../../../helpers/fields.helper';
-import {BaseApiService} from '../../../types/service.type';
-import {Result} from "../../../../../../nest-tools";
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ObjectType, Repository, In } from 'typeorm';
+import {
+  FilterOperator,
+  FilterSuffix,
+  paginate,
+  Paginated,
+  PaginateQuery,
+} from 'nestjs-paginate';
+import { IBaseCmsService } from './service.type';
+import { getFilterFields } from '../../../helpers/fields.helper';
+import { BaseApiService } from '../../../types/service.type';
+import { Result } from '../../../../../../nest-tools';
 
 export function GenericBaseCMSService<T>(entity: ObjectType<T>): any {
   @Injectable()
   class GenericServiceHost
     extends BaseApiService
-    implements IBaseCmsService<T> {
+    implements IBaseCmsService<T>
+  {
     constructor(
       @InjectRepository(entity)
       private readonly repository: Repository<T>
@@ -24,7 +31,9 @@ export function GenericBaseCMSService<T>(entity: ObjectType<T>): any {
     }
 
     async update(id: number, data: Partial<T>): Promise<Result<T>> {
-      const existingEntity = await this.repository.findOne({where: {id: id} as any});
+      const existingEntity = await this.repository.findOne({
+        where: { id: id } as any,
+      });
       if (!existingEntity) {
         throw new Error('Entity not found');
       }
@@ -37,6 +46,23 @@ export function GenericBaseCMSService<T>(entity: ObjectType<T>): any {
 
     async delete(id: number): Promise<Result<any>> {
       return Result.ok(await this.repository.delete(id));
+    }
+
+    async batchDelete(entities: T[]): Promise<Result<any>> {
+      return Result.ok(await this.repository.remove(entities));
+    }
+
+    async batchEdit(ids: number[], changes: Partial<T>): Promise<Result<any>> {
+      for (let i = 0; i < ids.length; i++) {
+        await this.update(ids[i], changes);
+        // const progress = ((i + 1) * 100) / ids.length;
+        // this.batchGateway.server.emit('batch', progress);
+      }
+      return Result.ok(
+        await this.repository.find({
+          where: { id: In(ids) } as any,
+        })
+      );
     }
 
     async findAll(): Promise<Result<T[]>> {
@@ -55,10 +81,10 @@ export function GenericBaseCMSService<T>(entity: ObjectType<T>): any {
       const relationFields = this.repository.metadata.relations.map(
         (relation) => relation.propertyName as any
       );
-      const filterableColumns = relationFields.reduce((acc, field) => {
-        acc[field + '_id'] = [FilterOperator.EQ, FilterOperator.GT];
-        return acc;
-      }, {} as { [key: string]: FilterOperator[] });
+      // const filterableColumns = relationFields.reduce((acc, field) => {
+      //   acc[field + '_id'] = [FilterOperator.EQ, FilterOperator.GT];
+      //   return acc;
+      // }, {} as { [key: string]: FilterOperator[] });
 
       const allColumnNames = this.repository.metadata.columns.map(
         (column) => column.propertyName
@@ -66,6 +92,17 @@ export function GenericBaseCMSService<T>(entity: ObjectType<T>): any {
       const filterFields = getFilterFields(entity).filter((field) =>
         allColumnNames.includes(field)
       );
+
+      const filterableColumns = filterFields.reduce((acc, field) => {
+        acc[field] = [
+          FilterOperator.EQ,
+          FilterOperator.ILIKE,
+          FilterOperator.GT,
+          FilterOperator.LT,
+          FilterSuffix.NOT,
+        ];
+        return acc;
+      }, {} as { [key: string]: FilterOperator[] });
 
       let repo = this.repository.createQueryBuilder('entity');
 
@@ -88,12 +125,13 @@ export function GenericBaseCMSService<T>(entity: ObjectType<T>): any {
       const relationFields = this.repository.metadata.relations.map(
         (relation) => relation.propertyName as any
       );
-      return Result.ok(await this.repository.findOne({
-        where: {id: id} as any,
-        relations: relationFields,
-      }));
+      return Result.ok(
+        await this.repository.findOne({
+          where: { id: id } as any,
+          relations: relationFields,
+        })
+      );
     }
-
 
     async saveWithRelations(entity: any): Promise<any> {
       const newEntity = await this.repository.save(entity);
@@ -104,7 +142,7 @@ export function GenericBaseCMSService<T>(entity: ObjectType<T>): any {
 
       // Step 2: Fetch it back with relations
       return this.repository.findOne({
-        where: {id: newEntity.id} as any,
+        where: { id: newEntity.id } as any,
         relations: relationFields, // Include the relations you want
       });
     }

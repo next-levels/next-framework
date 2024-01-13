@@ -7,15 +7,12 @@ import { Update } from '@ngrx/entity';
 import Swal from 'sweetalert2';
 import { BaseService } from '../types/base.service';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  EntityPaginated,
-  FilterOptions,
-} from '@next-levels/types';
+import { EntityPaginated, FilterOptions } from '@next-levels/types';
 
 export function customOfType(...allowedTypes: any[]) {
   return filter((action: any) =>
     allowedTypes.some((typeOrActionCreator) => {
-       if (!typeOrActionCreator) {
+      if (!typeOrActionCreator) {
         return false; // Skip this undefined action or type
       }
 
@@ -209,6 +206,45 @@ export class GenericEffects<EntityType extends object> {
     { dispatch: false }
   );
 
+  batchDeleteEntities$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        customOfType(this.entityActions.batchDeleteEntities),
+        exhaustMap((action: any) =>
+          this.entityService.batchDeleteEntities(action.payload.entities).pipe(
+            map(() =>
+              this.entityActions.batchDeleteEntitiesSuccess({
+                payload: { entities: action.payload.entities },
+              })
+            ),
+            catchError((error) =>
+              of(this.entityActions.batchDeleteEntitiesFail({ error }))
+            )
+          )
+        )
+      ) as Observable<Action>
+  );
+
+  batchDeleteEntitiesSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        customOfType(this.entityActions.batchDeleteEntitiesSuccess),
+        map((action: any) => action),
+        tap(() => {
+          Swal.fire({
+            text: 'Sie haben die Einträge erfolgreich gelöscht!',
+            icon: 'success',
+            buttonsStyling: false,
+            confirmButtonText: 'Verstanden!',
+            customClass: {
+              confirmButton: 'btn fw-bold btn-primary',
+            },
+          });
+        })
+      ),
+    { dispatch: false }
+  );
+
   editEntities$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -237,6 +273,49 @@ export class GenericEffects<EntityType extends object> {
     () =>
       this.actions$.pipe(
         customOfType(this.entityActions.editEntitySuccess),
+        map((action: any) => action),
+        tap((action: any) => {
+          Swal.fire({
+            title: 'Erfolgreich!',
+            text: 'Sie haben erfolgreich die Stammdaten gespeichert.',
+            icon: 'success',
+            confirmButtonText: 'Verstanden',
+            heightAuto: false,
+          });
+        })
+      ),
+    { dispatch: false }
+  );
+
+  batchEditEntities$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        customOfType(this.entityActions.batchEditEntities),
+        exhaustMap(
+          (action: {
+            payload: { ids: number[]; changes: Partial<EntityType> };
+          }) =>
+            this.entityService
+              .batchEditEntities(action.payload.ids, action.payload.changes)
+              .pipe(
+                map((entities) => {
+                  console.log('entities', entities);
+                  return this.entityActions.batchEditEntitiesSuccess({
+                    payload: { entities: entities as unknown[] },
+                  });
+                }),
+                catchError((error) =>
+                  of(this.entityActions.batchEditEntitiesFail({ error }))
+                )
+              )
+        )
+      ) as Observable<Action>
+  );
+
+  batchEditEntitiesSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        customOfType(this.entityActions.batchEditEntitiesSuccess),
         map((action: any) => action),
         tap((action: any) => {
           Swal.fire({

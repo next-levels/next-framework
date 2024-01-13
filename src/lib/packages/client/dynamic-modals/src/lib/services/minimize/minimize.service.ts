@@ -5,8 +5,8 @@ import { MinimizedModal } from '../../data-models/minimized';
 import { CreateWizardComponent } from '../../components/create-wizard/create-wizard.component';
 import { MatDialog } from '@angular/material/dialog';
 import { BaseService } from '../../../../../generic-store';
- import { FormController } from '../../../../../form-builder';
-import {META} from '@next-levels/types';
+import { FormController } from '../../../../../form-builder';
+import { META } from '@next-levels/types';
 
 export enum ComponentInstanceTypes {
   AgencyModel = 'Agentur',
@@ -78,6 +78,14 @@ export class MinimizeService implements BaseService<MinimizedModal> {
       JSON.stringify(minimizedModals)
     );
 
+    return of({} as any);
+  }
+
+  batchEditEntities(modal: any) {
+    return of({} as any);
+  }
+
+  batchDeleteEntities(modal: any) {
     return of({} as any);
   }
 
@@ -154,7 +162,7 @@ export class MinimizeService implements BaseService<MinimizedModal> {
         seenObjects.push(obj);
         for (var key in obj) {
           if (obj.hasOwnProperty(key) && detect(obj[key])) {
-             return true;
+            return true;
           }
         }
       }
