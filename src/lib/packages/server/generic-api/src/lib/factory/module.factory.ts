@@ -88,7 +88,7 @@ function getFeature(
        return {
         controller: GenericBaseApiControllerCreator(config),
          service: GenericWebSocketGateway(entity,`${route}`, {
-           origin: ['http://localhost:4200', 'https://some-website.com'],
+           origin: ['http://localhost:4200', 'http://localhost:4222'],
            credentials: true,
          },globalEventEmitter),
          serviceToken: serviceToken,
