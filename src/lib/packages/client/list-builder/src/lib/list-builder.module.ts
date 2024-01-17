@@ -32,6 +32,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { QuerySearchModule } from './components/query-search/query-search.module';
 import { ViewImageFileComponent } from './components/view-items/view-imagefile/view-imagefile.component';
 import { ViewFileComponent } from './components/view-items/view-file/view-file.component';
+import {SimpleListComponent} from "./components/simple-list/simple-list.component";
+import {RouterLink} from "@angular/router";
+import {CardListComponent} from "./components/card-list/card-list.component";
+
 
 @NgModule({
   imports: [
@@ -54,11 +58,14 @@ import { ViewFileComponent } from './components/view-items/view-file/view-file.c
     HttpClientModule,
     InlineSVGModule.forRoot(),
     QuerySearchModule,
+    RouterLink
   ],
   providers: [DatePipe],
   declarations: [
     ContractStateComponent,
     TableDefaultComponent,
+    SimpleListComponent,
+    CardListComponent,
     TableSubmoduleComponent,
     ContractStateComponent,
     ViewCurrencyComponent,
@@ -72,11 +79,13 @@ import { ViewFileComponent } from './components/view-items/view-file/view-file.c
     ViewImageFileComponent,
     ViewFileComponent,
     ViewModalComponent,
-    ViewDropdownComponent,
+    ViewDropdownComponent
   ],
   exports: [
     ContractStateComponent,
     TableDefaultComponent,
+    SimpleListComponent,
+    CardListComponent,
     TableSubmoduleComponent,
     ContractStateComponent,
     ViewCurrencyComponent,
@@ -89,7 +98,7 @@ import { ViewFileComponent } from './components/view-items/view-file/view-file.c
     ViewDateComponent,
     ViewImageFileComponent,
     ViewFileComponent,
-    ViewDropdownComponent,
+    ViewDropdownComponent
   ],
 })
 export class ListBuilderModule {
