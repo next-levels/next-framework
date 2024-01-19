@@ -5,7 +5,7 @@ import {
   EventEmitter,
   Inject,
   Input,
-  Output,
+  Output, SimpleChanges,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
@@ -30,8 +30,18 @@ export class FormElementComponent implements AfterViewInit {
   @Input() formField: FormOptions;
   @Input() formController!: FormController;
   @Input() fieldName = '';
-  @Output() dataOutput = new EventEmitter<any>();
+   @Output() dataOutput = new EventEmitter<any>();
   @Input() readOnly = false;
+
+  ngOnChanges(changes: SimpleChanges) {
+     if (changes['fieldName']) {
+      this.cdRef.detectChanges();
+    }
+    if (changes['formController']) {
+      this.rebuild();
+      this.cdRef.markForCheck();
+    }
+  }
 
   constructor(
     private cdRef: ChangeDetectorRef,
@@ -71,6 +81,11 @@ export class FormElementComponent implements AfterViewInit {
 
       this.initComponent(componentRef);
     }
+  }
+
+  rebuild() {
+    this.view?.clear();
+    this.ngAfterViewInit();
   }
 
   initComponent(componentRef: any) {

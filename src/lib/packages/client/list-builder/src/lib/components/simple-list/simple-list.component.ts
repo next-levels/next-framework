@@ -1,16 +1,15 @@
 import {
-  AfterViewInit, ChangeDetectorRef,
+  AfterViewInit,
+  ChangeDetectorRef,
   Component,
-  ComponentFactoryResolver,
   EventEmitter,
   Input,
   OnDestroy,
   OnInit,
-  Output, SimpleChanges,
+  Output,
+  SimpleChanges,
   ViewChild
 } from '@angular/core';
-
-import { BaseTableDefaultComponent } from '../base-table-default/base-table-default.component';
 import {ListController} from "../../controllers/ListController";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort, SortDirection} from "@angular/material/sort";
@@ -19,7 +18,8 @@ import {FormControl} from "@angular/forms";
 import {MatTableDataSource} from "@angular/material/table";
 import {BaseFacadeType} from "../../../../../generic-store";
 import {
-  BUILDERFIELD_ALL_PREFIX, EXPORT_PREFIX,
+  BUILDERFIELD_ALL_PREFIX,
+  EXPORT_PREFIX,
   EXPORT_PREFIX_ALL,
   FilterOptions,
   LISTFIELD_ALL_PREFIX,
@@ -39,7 +39,7 @@ import {ViewModalComponent} from "../view-modal/view-modal.component";
   templateUrl: './simple-list.component.html',
   styleUrls: ['../base-table-default/base-table.scss'],
 })
-export class SimpleListComponent   implements OnInit, OnDestroy, AfterViewInit {
+export class SimpleListComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() listController: ListController;
   @Input() showHeader = false;
   @Input() showSearch = true;
@@ -95,9 +95,12 @@ export class SimpleListComponent   implements OnInit, OnDestroy, AfterViewInit {
     private activeRoute: ActivatedRoute,
     public router: Router,
     public readonly _matDialog: MatDialog,
-    private componentFactoryResolver: ComponentFactoryResolver,
     private cdRef: ChangeDetectorRef
   ) {
+  }
+
+  isActive(contactId: string): boolean {
+    return this.router.url.includes('/data/' + this.listController.getClassName() + `/detail/${contactId}`);
   }
 
   ngOnInit() {

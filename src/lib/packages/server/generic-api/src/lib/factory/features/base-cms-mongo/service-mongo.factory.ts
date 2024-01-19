@@ -50,10 +50,11 @@ export function GenericBaseCMSServiceMongo<T extends Document>(entity: any): any
 
              const data = documents.map(doc => {
                  return {
-                    id: doc.id,
+                    id: doc._id.toString(),
                     ...doc.toObject({ virtuals: true, versionKey: false }),
                 };
             });
+            console.log(data)
 
             const response = {
                 data: data,
@@ -72,16 +73,16 @@ export function GenericBaseCMSServiceMongo<T extends Document>(entity: any): any
             return Result.ok(response);
         }
 
-        private transformQueryFilter(queryFilter) {
-            const transformedFilter = {...queryFilter};
+      private transformQueryFilter(queryFilter) {
+        const transformedFilter = {...queryFilter};
+        Object.keys(transformedFilter).forEach(key => {
+          if (typeof transformedFilter[key] === 'string' && transformedFilter[key].startsWith('$eq:')) {
+            transformedFilter[key] = transformedFilter[key].substring(4); // Remove the first 4 characters ('$eq:')
+          }
+        });
 
-             if (transformedFilter.key && transformedFilter.key.startsWith('$eq:')) {
-                transformedFilter.key = transformedFilter.key.substring(4); // Entfernen der ersten 4 Zeichen ('$eq:')
-            }
-
-            return transformedFilter;
-        }
-
+        return transformedFilter;
+      }
         async findOne(key: string): Promise<Result<any | null>> {
             const entity = await this.model.findOne({key: key}).lean().exec();
             return Result.ok(entity);

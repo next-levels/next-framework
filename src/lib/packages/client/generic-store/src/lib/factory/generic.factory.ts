@@ -115,7 +115,7 @@ function getEffectService(
       return createNotificationEffectServicePair(config);
 
     default:
-      throw new Error(`Feature ${feature} not found`);
+      return null;
   }
 }
 
@@ -127,7 +127,7 @@ function getAction(feature: string) {
       return createNotificationActions;
 
     default:
-      throw new Error(`Feature ${feature} not found`);
+      return null;
   }
 }
 
@@ -139,7 +139,7 @@ function getSelector(feature: string) {
       return createNotificationSelectorsFeature;
 
     default:
-      throw new Error(`Feature ${feature} not found`);
+      return null;
   }
 }
 

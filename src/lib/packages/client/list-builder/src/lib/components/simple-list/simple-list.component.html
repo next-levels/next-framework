@@ -1,8 +1,9 @@
 <div
-   class="relative flex flex-col sm:flex-row flex-0 sm:justify-around px-3 justify-between items-center border-l-1 mt-10 mb-4"
+   class=" relative flex flex-col sm:flex-row flex-0 sm:justify-around px-3 justify-between items-center border-l-1 mt-10 mb-4"
 >
 <query-input
   [style]="{ flex: '1' }"
+  style="width: 100%"
   [model]="model"
   (queryChange)="setQuery($event)"
   [placeholder]="'Suche'"
@@ -16,16 +17,10 @@
   <ng-container *ngIf="this.modelFacade && this.modelFacade.base.filtered$ | async as contacts">
     <ng-container *ngIf="contacts.length; else noContacts">
       <ng-container *ngFor="let contact of contacts; let i = index; trackBy: trackByFn">
-        <!-- Group
-        <ng-container *ngIf="i === 0 || contact.name.charAt(0) !== contacts[i - 1].name.charAt(0)">
-          <div class="z-10 sticky top-0 -mt-px px-6 py-1 md:px-8 border-t border-b font-medium uppercase text-secondary bg-gray-50 dark:bg-gray-900">
-            {{contact.name.charAt(0)}}
-          </div>
-        </ng-container>
-     Contact -->
+
         <a
-          class="z-20 flex items-center px-6 py-4 md:px-8 cursor-pointer border-b"
-          [ngClass]="'hover:bg-gray-100 dark:hover:bg-hover'"
+          class="z-20 flex items-center px-6 py-4 md:px-8 cursor-pointer border-b simple-menu-item"
+          [class.active]=" isActive(contact.id)"
           [routerLink]="[router.url.split('detail')[0] + '/detail/' + contact.id]">
 
           <div class="min-w-0 ml-4">

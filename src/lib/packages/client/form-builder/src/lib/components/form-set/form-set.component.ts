@@ -22,13 +22,13 @@ export class FormSetComponent implements OnInit {
   @Input() readOnly = false;
   @Input() noLabel = false;
   @Input() submitted = false;
-  @Output() formValid = new EventEmitter<boolean>();
+   @Output() formValid = new EventEmitter<boolean>();
   fg: FormGroup;
 
   constructor(private changeDetectorRef: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['fields']) {
+    if (changes['changeHash']) {
       this.changeDetectorRef.detectChanges();
     }
     if (changes['controller']) {
