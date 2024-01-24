@@ -41,7 +41,7 @@ export class FormSetComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.formFields || this.fields) {
+    if ((this.formFields || this.fields) && this.controller) {
       this.fg = this.controller.getForm();
     }
   }
