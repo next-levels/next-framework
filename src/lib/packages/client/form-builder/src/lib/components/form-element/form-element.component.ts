@@ -29,13 +29,20 @@ export class FormElementComponent implements AfterViewInit {
     @Output() dataOutput = new EventEmitter<any>();
     @Input() readOnly = false;
 
+    firstChange = true;
+
     ngOnChanges(changes: SimpleChanges) {
         if (changes['fieldName']) {
             this.cdRef.detectChanges();
         }
         if (changes['formController']) {
+            console.log(this.firstChange)
+            if (!this.firstChange) {
             this.rebuild();
             this.cdRef.markForCheck();
+            }else {
+                this.firstChange = false;
+            }
         }
     }
 
