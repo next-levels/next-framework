@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { Constructor } from '../types/Constructor';
-import {decorator_models, decorator_models_options} from '../helpers/meta-data.helper';
+import {decorator_models, decorator_models_key, decorator_models_options} from '../helpers/meta-data.helper';
 import { ModelOptions } from '../types/options/model-options';
 export const MODELCLASS_PREFIX = 'fb:models';
 export const MODELCLASS_OPTIONS_PREFIX = 'fb:models:options';
@@ -26,6 +26,11 @@ export function Model(config: string | ModelOptions) {
     Reflect.defineMetadata(MODELCLASS_ALL_PREFIX, variables, constructor);
     Reflect.defineMetadata(MODELCLASS_PREFIX, name, constructor);
     Reflect.defineMetadata(MODELCLASS_OPTIONS_PREFIX, options, constructor);
+
+    if(!decorator_models_key.has(name) && typeof config === 'string'){
+      decorator_models_key.set(name, constructor);
+    }
+     // push the constructor to the array
     decorator_models_options.push(options); // push the constructor to the array
     decorator_models.push(constructor); // push the constructor to the array
   };

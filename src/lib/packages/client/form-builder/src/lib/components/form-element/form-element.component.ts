@@ -33,10 +33,9 @@ export class FormElementComponent implements AfterViewInit {
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes['fieldName']) {
-            this.cdRef.detectChanges();
+            this.cdRef.markForCheck();
         }
         if (changes['formController']) {
-            console.log(this.firstChange)
             if (!this.firstChange) {
             this.rebuild();
             this.cdRef.markForCheck();
@@ -45,7 +44,6 @@ export class FormElementComponent implements AfterViewInit {
             }
         }
     }
-
     constructor(
         private cdRef: ChangeDetectorRef,
         @Inject('formBuilderComponents')
@@ -88,9 +86,6 @@ export class FormElementComponent implements AfterViewInit {
     }
 
     rebuild() {
-        console.log('rebuild')
-        console.log('fieldName',this.fieldName)
-        console.log('formController',this.formController)
         this.view?.clear();
         this.ngAfterViewInit();
     }
@@ -110,9 +105,9 @@ export class FormElementComponent implements AfterViewInit {
     }
 
     getFormControl(): FormControl | null {
-        if (this.formController && this.fieldName) {
+         if (this.formController && this.fieldName) {
             return this.formController.getControl(this.fieldName);
-        }
+         }
 
         return null;
     }

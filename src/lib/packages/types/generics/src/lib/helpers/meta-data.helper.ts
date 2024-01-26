@@ -4,6 +4,7 @@ import { MODELCLASS_OPTIONS_PREFIX } from '../decoraters/model-class.decorator';
 import { ModelOptions } from '../types/options/model-options';
 export const decorator_models: Constructor[] = [];
 export const decorator_models_options: any[] = [];
+export const decorator_models_key: Map<string, any> = new Map();
 
 const MODELCLASS_PREFIX = 'fb:models';
 

@@ -1,8 +1,32 @@
-<nxt-form-element
-  *ngFor="let field of fields"
-  [fieldName]="field"
-  [formController]="controller"
-  [readOnly]="readOnly"
-   (change)="isFormValid($event)"
-  (dataOutput)="isFormValid($event)"
-></nxt-form-element>
+<div class="form-set" [class.small-form]="controller && controller.formOptions && controller.formOptions.small" >
+    <ng-container *ngIf="!groups_active">
+        <nxt-form-element
+                *ngFor="let field of fields"
+                [fieldName]="field"
+                [formController]="controller"
+                [readOnly]="readOnly"
+                (change)="isFormValid($event)"
+                (dataOutput)="isFormValid($event)"
+        ></nxt-form-element>
+    </ng-container>
+
+    <ng-container *ngIf="groups_active">
+        <ng-container *ngFor="let group of groups">
+            <div class="w-full mb-2 mt-6" *ngIf="group.title">
+                <div class="form-set-title">{{group.title}}</div>
+                <div *ngIf="group.description" class="form-set-title-secondary text-secondary">{{group.description}}</div>
+            </div>
+            <nxt-form-element
+                    *ngFor="let field of group.fields"
+                    [fieldName]="field.name"
+                    [formController]="controller"
+                    [readOnly]="readOnly"
+                    (change)="isFormValid($event)"
+                    (dataOutput)="isFormValid($event)"
+            ></nxt-form-element>
+        </ng-container>
+    </ng-container>
+</div>
+
+
+
