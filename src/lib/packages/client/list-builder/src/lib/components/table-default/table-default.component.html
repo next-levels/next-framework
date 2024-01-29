@@ -1,10 +1,10 @@
 <div
-  class="flex flex-col flex-auto min-w-0 sm:overflow-hidden bg-card dark:bg-transparent"
+  class="flex flex-col flex-auto min-w-0 sm:overflow-hidden bg-card dark:bg-gray-800"
   [ngClass]="{ '': !childTable }"
 >
   <div
     *ngIf="showHeader == true"
-    class="relative flex flex-col sm:flex-row flex-0 sm:justify-around px-3 justify-between items-center border-b "
+    class="relative flex flex-col sm:flex-row flex-0 sm:justify-around px-3 justify-between items-center  dark:bg-gray-800"
   >
     <!-- Title -->
     <ng-container *transloco="let t">
@@ -71,7 +71,7 @@
       </a>
     </div>
     <div
-      class="bg-white list-builder-table ng-star-inserted border-white rounded-xl grid content-between items-start"
+      class="bg-white list-builder-table ng-star-inserted border-white rounded-xl grid content-between items-start dark:bg-gray-800 border-t"
       style="
         overflow-x: auto;
         min-height: 90vh;
@@ -80,7 +80,7 @@
       "
     >
       <table
-        class="w-full list-builder-table bg-white list-builder-table border-white rounded-xl self-start"
+        class="w-full list-builder-table bg-white list-builder-table border-white rounded-xl self-start dark:bg-gray-800"
         mat-table
         matSort
         [dataSource]="dataSource"
@@ -129,7 +129,7 @@
             mat-cell
             *matCellDef="let data"
             (click)="selectRow(data)"
-            class="border-1 border-slate-100"
+            class="border-1 border-slate-100 text-gray-900 dark:text-white"
           >
             <nxtlvls-view-element
               [fieldName]="field"
@@ -203,7 +203,7 @@
         </ng-container>
 
         <tr
-          class="text-md font-semibold text-secondary dark:bg-black dark:bg-opacity-5 bg-white"
+          class="text-md dark:bg-black dark:bg-opacity-5 bg-white text-gray-900 dark:text-white"
           mat-header-row
           *matHeaderRowDef="displayedColumns"
         ></tr>
@@ -217,7 +217,7 @@
         ></tr>
       </table>
       <mat-paginator
-        class="border-b sm:border-t sm:border-b-0 z-10 dark:bg-transparent bottom-0 w-full self-end"
+        class="border-b sm:border-t sm:border-b-0 z-10 dark:bg-gray-800 bottom-0 w-full self-end text-gray-900 dark:text-white"
         showFirstLastButtons
         [ngClass]="{ 'pointer-events-none': (loading$ | async) }"
         [pageSizeOptions]="[5, 10, 25, 100]"
