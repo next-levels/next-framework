@@ -1,8 +1,6 @@
 <ng-container [formGroup]="fg">
   <div class="relative">
-    <p class="mb-1 font-medium ng-star-inserted">
-      {{ formField.label }}
-    </p>
+    <span class="custom-label">{{ formField.label }}</span>
     <quill-editor
       class="w-full"
       [formControlName]="formField.name"

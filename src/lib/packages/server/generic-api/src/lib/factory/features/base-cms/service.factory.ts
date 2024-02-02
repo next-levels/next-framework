@@ -40,6 +40,10 @@ export function GenericBaseCMSService<T>(entity: ObjectType<T>): any {
       const updatedEntity = Object.assign(existingEntity, data);
 
       await this.repository.save(updatedEntity);
+      console.log(this.repository.save(updatedEntity))
+      console.log(await this.repository.findOne({
+        where: { id: id } as any
+      }));
 
       return Result.ok(updatedEntity);
     }

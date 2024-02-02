@@ -2,27 +2,45 @@ import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, Simpl
 import {FormGroup} from '@angular/forms';
 import {FormController} from '../../controller/form-controller';
 import {
-    BUILDERFIELD_PREFIX,
-    decorator_models, decorator_models_key, decorator_models_options,
-    FormOptions,
-    VISIBILITY_PREFIX,
-    VISIBILITY_PREFIX_ALL
+  BUILDERFIELD_ALL_PREFIX,
+  BUILDERFIELD_PREFIX,
+  decorator_models_key,
+  FormOptions, META,
+  VISIBILITY_PREFIX,
+  VISIBILITY_PREFIX_ALL
 } from '@next-levels/types';
 import {TranslateService} from "@ngx-translate/core";
+import {InstanceRegistryService} from "@next-levels/next-framework-client";
+
+class FormSettings {
+    fields?: string[];
+    readOnly? = false;
+    noLabel? = false;
+    submitted? = false;
+    formSmall? = false;
+    scope?: any;
+}
 
 @Component({
-    selector: 'nxtlvls-form-set',
-    templateUrl: './form-set.component.html',
+    selector: 'nxtlvls-form',
+    templateUrl: './form.component.html',
 })
-export class FormSetComponent implements OnInit {
-    @Input() formFields!: FormOptions[];
-    @Input() fields: string[];
+export class FormComponent implements OnInit {
+
+    @Input() formModel: string;
+    @Input() data: any;
+    @Input() settings: FormSettings;
+
+
+    model: any;
+    formFields!: FormOptions[];
+    fields: string[];
     _fields: string[];
-    @Input() controller: FormController;
-    @Input() readOnly = false;
-    @Input() noLabel = false;
-    @Input() submitted = false;
-    @Output() formValid = new EventEmitter<boolean>();
+    controller: FormController;
+    readOnly = false;
+    noLabel = false;
+    submitted = false;
+    formValid = new EventEmitter<boolean>();
     fg: FormGroup;
 
     groups_active = false;
@@ -37,7 +55,7 @@ export class FormSetComponent implements OnInit {
         fields: any[];
     }[] = [];
 
-    constructor(private changeDetectorRef: ChangeDetectorRef, private translate: TranslateService) {
+    constructor(private changeDetectorRef: ChangeDetectorRef, private translate: TranslateService,private registry:InstanceRegistryService) {
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -59,8 +77,6 @@ export class FormSetComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log(this.controller)
-        console.log(this.fields)
 
         if ((this.formFields || this.fields) && this.controller) {
             this.fg = this.controller.getForm();
@@ -80,12 +96,29 @@ export class FormSetComponent implements OnInit {
                     )};
                 });
 
+                  this.initForm();
                 this.rebuildForm();
             }else {
                 this._fields = this.fields ?? this.formFields.map((field) => field.name);
+                this.initForm();
             }
          }
     }
+
+  initForm() {
+    this.model =META.getModelByName(this.formModel)
+
+    if(!this.data){
+      this.data = new this.model();
+    }
+       this.controller = new FormController(
+        this.data,
+        this.registry.retrieve(this.model),
+        new this.model(),
+        {small: true}
+      );
+       this.changeDetectorRef.detectChanges();
+  }
 
     rebuildForm() {
         const className = this.controller.getClassName() ?? '';

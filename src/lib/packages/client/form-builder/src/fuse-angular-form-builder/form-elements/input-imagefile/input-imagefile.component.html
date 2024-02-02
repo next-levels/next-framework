@@ -1,5 +1,5 @@
 <div class="input-file-wrapper mt-1" [formGroup]="fg">
-  <mat-label>{{ formField.label }}</mat-label>
+  <span class="custom-label">{{ formField.label }}</span>
 
   <button mat-icon-button aria-label="Generate with KI"   [color]="'primary'"  (click)="openAiModal()">
     <mat-icon [svgIcon]="'heroicons_outline:sparkles'"></mat-icon>
@@ -75,7 +75,7 @@
         type="button"
         color="accent"
       >
-        <mat-icon [svgIcon]="'heroicons_solid:pencil-alt'"></mat-icon>
+        <mat-icon [svgIcon]="'heroicons_solid:pencil'"></mat-icon>
       </button>
     </ng-container>
     <ng-container *ngIf="editMode">
@@ -86,7 +86,7 @@
         type="button"
         color="warn"
       >
-        <mat-icon [svgIcon]="'heroicons_solid:x'"></mat-icon>
+        <mat-icon [svgIcon]="'heroicons_solid:x-mark'"></mat-icon>
       </button>
     </ng-container>
   </div>
