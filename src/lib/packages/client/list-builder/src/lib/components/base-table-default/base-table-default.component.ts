@@ -249,7 +249,7 @@ export class BaseTableDefaultComponent
       });
       this.cdRef.detectChanges();
     } else {
-      console.log(this.router.url + '/detail/' + row.id)
+      console.log(this.router.url + '/detail/' + row.id);
       this.router.navigate([this.router.url + '/detail/' + row.id]);
     }
   }
