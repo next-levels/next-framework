@@ -6,8 +6,7 @@
     *ngIf="showHeader == true"
     class="relative flex flex-col sm:flex-row flex-0 sm:justify-around px-3 justify-between items-center dark:bg-gray-800"
   >
-    <!-- Title -->
-    <ng-container *transloco="let t">
+     <ng-container *transloco="let t">
       <div class="tracking-tight w-full">
         <query-input
           [style]="{ flex: '1' }"
@@ -143,24 +142,12 @@
         <!-- actions -->
         <ng-container matColumnDef="actions" *transloco="let t">
           <th mat-header-cell *matHeaderCellDef>
-            <span
-              ><a
-                class="min-w-10 min-h-7 h-7 px-2 leading-6 cursor-pointer"
-                (click)="navigateSettings()"
-                style="pointer-events: all"
-              >
-                <mat-icon
-                  style="color: #1e293b"
-                  class="icon-size-5"
-                  [svgIcon]="'heroicons_outline:cog-6-tooth'"
-                ></mat-icon> </a
-            ></span>
-          </th>
+           </th>
           <td
             mat-cell
             *matCellDef="let data"
             class="action-cell border-1 border-slate-100"
-            style="width: 140px"
+            style="width: 150px"
           >
             <span class="items-center">
               <a
@@ -169,8 +156,7 @@
                 style="pointer-events: all"
               >
                 <mat-icon
-                  style="color: #64758b"
-                  class="icon-size-5 text-slate-800 action-icon"
+                   class="icon-size-5 text-slate-800 action-icon"
                   [svgIcon]="'heroicons_outline:eye'"
                 ></mat-icon>
               </a>
@@ -181,8 +167,7 @@
                 style="pointer-events: all"
               >
                 <mat-icon
-                  style="color: #64758b"
-                  class="icon-size-5 action-icon"
+                   class="icon-size-5 action-icon"
                   [svgIcon]="'heroicons_outline:trash'"
                 ></mat-icon>
               </a>
@@ -193,8 +178,7 @@
                 style="pointer-events: all"
               >
                 <mat-icon
-                  style="color: #64758b"
-                  class="icon-size-5 action-icon"
+                   class="icon-size-5 action-icon"
                   [svgIcon]="'heroicons_outline:document-duplicate'"
                 ></mat-icon>
               </a>

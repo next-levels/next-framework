@@ -13,3 +13,5 @@ export * from './lib/components/base-components/base-input-relation-dropdown.com
 export * from './lib/form-builder.module';
 export * from './fuse-angular-form-builder/fuse-angular-form-builder.module';
 export * from './lib/types/ValidationTypes';
+
+export * from './lib/helper/form.helper';

@@ -14,3 +14,4 @@ export * from './lib/factory/features/base-sockets/generic-socket.gateway';
 export * from './lib/factory/features/base-cms-mongo/controller.factory';
 export * from './lib/factory/features/base-cms-mongo/service-mongo.factory';
 export * from './lib/factory/features/base-cms-mongo/service.type';
+export * from './lib/root-api.module';
