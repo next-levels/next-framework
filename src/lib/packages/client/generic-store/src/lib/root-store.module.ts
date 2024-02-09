@@ -22,7 +22,7 @@ export class RootStoreModule {
     });
     const storedEnvironment = injector.get(EnvironmentStorageService);
 
-    const apiUrl = `${storedEnvironment.baseUrl}/api/${config.url}`; // wird später aktualisiert
+    const apiUrl = `${storedEnvironment.baseUrl}/api/${config.name}/admin`; // wird später aktualisiert
 
      const store = getStoreFeatures<
       typeof model,
@@ -33,6 +33,7 @@ export class RootStoreModule {
     >(model, {
       ...config,
       route: apiUrl,
+       features: ['base', 'notifications'],
     });
 
     providers.push({
