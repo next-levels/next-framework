@@ -21,5 +21,6 @@ export enum Scope {
 export enum Features {
   HISTORY = 'history',
   DATA = 'data',
-  SOCKET = 'socket'
+  SOCKET = 'socket',
+  CRUD = 'crud',
 }

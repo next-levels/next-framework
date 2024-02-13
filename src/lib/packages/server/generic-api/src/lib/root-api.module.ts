@@ -6,8 +6,7 @@ import {getFeatures} from "@next-levels/next-framework";
 @Global()
 @Module({})
 export class RootApiModule {
-  static forFeature(models: any[],providers:any[] = []): DynamicModule {
-    const controllers = [];
+  static forFeature(models: any[],providers:any[] = [],controllers:any[] = []): DynamicModule {
     const services = [];
     for (let model of models) {
       if (!model.prototype) {
@@ -23,7 +22,7 @@ export class RootApiModule {
       module: RootApiModule,
       controllers: controllers,
       providers: [...services, ...providers],
-      exports: [...services, ...providers],
+      exports: [TypeOrmModule.forFeature(models),...services, ...providers],
     };
   }
 
