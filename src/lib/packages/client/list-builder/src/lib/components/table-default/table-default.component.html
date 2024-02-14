@@ -6,7 +6,7 @@
     *ngIf="showHeader == true"
     class="relative flex flex-col sm:flex-row flex-0 sm:justify-around px-3 justify-between items-center dark:bg-gray-800"
   >
-     <ng-container *transloco="let t">
+    <ng-container *transloco="let t">
       <div class="tracking-tight w-full">
         <query-input
           [style]="{ flex: '1' }"
@@ -76,6 +76,7 @@
         min-height: 90vh;
         max-height: 90vh;
         padding-top: 8px;
+        width: calc(100% - 250px); /* reduce to fit calendar */
       "
     >
       <table
@@ -141,8 +142,7 @@
 
         <!-- actions -->
         <ng-container matColumnDef="actions" *transloco="let t">
-          <th mat-header-cell *matHeaderCellDef>
-           </th>
+          <th mat-header-cell *matHeaderCellDef></th>
           <td
             mat-cell
             *matCellDef="let data"
@@ -156,7 +156,7 @@
                 style="pointer-events: all"
               >
                 <mat-icon
-                   class="icon-size-5 text-slate-800 action-icon"
+                  class="icon-size-5 text-slate-800 action-icon"
                   [svgIcon]="'heroicons_outline:eye'"
                 ></mat-icon>
               </a>
@@ -167,7 +167,7 @@
                 style="pointer-events: all"
               >
                 <mat-icon
-                   class="icon-size-5 action-icon"
+                  class="icon-size-5 action-icon"
                   [svgIcon]="'heroicons_outline:trash'"
                 ></mat-icon>
               </a>
@@ -178,7 +178,7 @@
                 style="pointer-events: all"
               >
                 <mat-icon
-                   class="icon-size-5 action-icon"
+                  class="icon-size-5 action-icon"
                   [svgIcon]="'heroicons_outline:document-duplicate'"
                 ></mat-icon>
               </a>
@@ -210,6 +210,13 @@
         [pageIndex]="pagination.currentPage - 1"
         [pageSize]="pagination.itemsPerPage"
       ></mat-paginator>
+    </div>
+
+    <!-- Calendar -->
+    <div class="w-64 bg-white rounded-xl shadow-lg dark:bg-gray-800">
+      <div class="p-4">
+        <p>Calendar Content</p>
+      </div>
     </div>
 
     <ng-template #noGuarantees>
