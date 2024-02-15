@@ -1,222 +1,232 @@
-<div
-  class="flex flex-col flex-auto min-w-0 sm:overflow-hidden bg-card dark:bg-gray-800"
-  [ngClass]="{ '': !childTable }"
->
+<div class="flex flex-row">
+  <!-- Liste -->
   <div
-    *ngIf="showHeader == true"
-    class="relative flex flex-col sm:flex-row flex-0 sm:justify-around px-3 justify-between items-center dark:bg-gray-800"
+    class="flex flex-col flex-auto min-w-0 sm:overflow-hidden bg-card dark:bg-gray-800"
+    [ngClass]="{ '': !childTable }"
   >
-    <ng-container *transloco="let t">
-      <div class="tracking-tight w-full">
-        <query-input
-          [style]="{ flex: '1' }"
-          [model]="model"
-          (queryChange)="setQuery($event)"
-          [placeholder]="'Suche'"
-          [modelReference]="modelReference"
-          (openQueryRowsModalEvent)="openQueryRowsModal()"
-          [searchQuery]="searchQuery"
-        >
-        </query-input>
-      </div>
-    </ng-container>
+    <!-- Header -->
+    <div
+      *ngIf="showHeader == true"
+      class="relative flex flex-col sm:flex-row flex-0 sm:justify-around px-3 justify-between items-center dark:bg-gray-800"
+    >
+      <!-- Query Input -->
+      <ng-container *transloco="let t">
+        <div class="tracking-tight w-full">
+          <query-input
+            [style]="{ flex: '1' }"
+            [model]="model"
+            (queryChange)="setQuery($event)"
+            [placeholder]="'Suche'"
+            [modelReference]="modelReference"
+            (openQueryRowsModalEvent)="openQueryRowsModal()"
+            [searchQuery]="searchQuery"
+          >
+          </query-input>
+        </div>
+      </ng-container>
 
-    <ng-container *transloco="let t">
-      <div class="flex shrink-0 items-center sm:ml-4 ng-star-inserted my-5">
-        <button
-          class="ml-4 rounded-md"
-          mat-flat-button
-          [color]="'primary'"
-          (click)="openAddModal()"
-        >
-          <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-          <span class="ml-2 mr-1">{{ t('button.add') }}</span>
-        </button>
+      <!-- Buttons -->
+      <ng-container *transloco="let t">
+        <div class="flex shrink-0 items-center sm:ml-4 ng-star-inserted my-5">
+          <button
+            class="ml-4 rounded-md"
+            mat-flat-button
+            [color]="'primary'"
+            (click)="openAddModal()"
+          >
+            <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+            <span class="ml-2 mr-1">{{ t('button.add') }}</span>
+          </button>
 
-        <button
-          class="ml-4 rounded-md"
-          mat-flat-button
-          [color]="'accent'"
-          (click)="export()"
+          <button
+            class="ml-4 rounded-md"
+            mat-flat-button
+            [color]="'accent'"
+            (click)="export()"
+          >
+            <mat-icon
+              [svgIcon]="'heroicons_outline:arrow-down-tray'"
+            ></mat-icon>
+            <span class="ml-2 mr-1">Export</span>
+          </button>
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- Main -->
+    <div
+      class="relative p-4 pt-1 h-screen shadow-inner"
+      style="height: 100vh; overflow-x: auto"
+    >
+      <div
+        class="pt-1 d-flex justify-content-end selectedRowsButton"
+        *ngIf="isOneSelected()"
+      >
+        <a
+          class="btn btn-primary me-2 mr-0 pr-0 smallbutton"
+          (click)="batchEdit()"
         >
-          <mat-icon [svgIcon]="'heroicons_outline:arrow-down-tray'"></mat-icon>
-          <span class="ml-2 mr-1">Export</span>
-        </button>
+          Ausgewählte bearbeiten
+        </a>
+        ·
+        <a
+          class="btn btn-primary me-2 mr-0 pr-0 smallbutton"
+          (click)="batchDelete()"
+        >
+          Ausgewählte löschen
+        </a>
       </div>
-    </ng-container>
+      <div
+        class="bg-white list-builder-table ng-star-inserted border-white rounded-xl grid content-between items-start dark:bg-gray-800 border-t"
+        style="
+          overflow-x: auto;
+          min-height: 90vh;
+          max-height: 90vh;
+          padding-top: 8px;
+        "
+      >
+        <!-- Table Content -->
+        <table
+          class="w-full list-builder-table bg-white list-builder-table border-white rounded-xl self-start dark:bg-gray-800"
+          mat-table
+          matSort
+          [dataSource]="dataSource"
+          [trackBy]="trackByFn"
+          [matSortDisableClear]="true"
+          #participantsTable
+          *ngIf="dataSource.data.length > 0; else noGuarantees"
+        >
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef class="w-25px w-0">
+              <div
+                class="form-check form-check-sm form-check-custom form-check-solid"
+              >
+                <input
+                  class="form-check-input widget-13-check"
+                  type="checkbox"
+                  [checked]="selection.hasValue() && isAllSelected()"
+                  (click)="masterToggle()"
+                />
+              </div>
+            </th>
+
+            <td mat-cell *matCellDef="let data">
+              <div
+                class="form-check form-check-sm form-check-custom form-check-solid w-40px"
+              >
+                <input
+                  class="form-check-input widget-13-check"
+                  type="checkbox"
+                  (click)="$event.stopPropagation()"
+                  (change)="$event ? selection.toggle(data) : null"
+                  [checked]="selection.isSelected(data)"
+                />
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container *ngFor="let field of fields" matColumnDef="{{ field }}">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef>
+              {{
+                translateService.instant(listController.getElementLabel(field))
+              }}
+            </th>
+
+            <td
+              mat-cell
+              *matCellDef="let data"
+              (click)="selectRow(data)"
+              class="border-1 border-slate-100 text-gray-900 dark:text-white"
+            >
+              <nxtlvls-view-element
+                [fieldName]="field"
+                [listController]="listController"
+                [viewObject]="data"
+              >
+              </nxtlvls-view-element>
+            </td>
+          </ng-container>
+
+          <!-- actions -->
+          <ng-container matColumnDef="actions" *transloco="let t">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td
+              mat-cell
+              *matCellDef="let data"
+              class="action-cell border-1 border-slate-100"
+              style="width: 150px"
+            >
+              <span class="items-center">
+                <a
+                  class="min-w-10 min-h-7 h-7 px-2 leading-6 cursor-pointer"
+                  (click)="selectRow(data)"
+                  style="pointer-events: all"
+                >
+                  <mat-icon
+                    class="icon-size-5 text-slate-800 action-icon"
+                    [svgIcon]="'heroicons_outline:eye'"
+                  ></mat-icon>
+                </a>
+
+                <a
+                  class="min-w-10 min-h-7 h-7 px-2 leading-6 cursor-pointer"
+                  (click)="delete(data)"
+                  style="pointer-events: all"
+                >
+                  <mat-icon
+                    class="icon-size-5 action-icon"
+                    [svgIcon]="'heroicons_outline:trash'"
+                  ></mat-icon>
+                </a>
+
+                <a
+                  class="min-w-10 min-h-7 h-7 px-2 leading-6 cursor-pointer"
+                  (click)="duplicate(data)"
+                  style="pointer-events: all"
+                >
+                  <mat-icon
+                    class="icon-size-5 action-icon"
+                    [svgIcon]="'heroicons_outline:document-duplicate'"
+                  ></mat-icon>
+                </a>
+              </span>
+            </td>
+          </ng-container>
+
+          <tr
+            class="text-md dark:bg-black dark:bg-opacity-5 bg-white text-gray-900 dark:text-white"
+            mat-header-row
+            *matHeaderRowDef="displayedColumns"
+          ></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns"
+            [class.row-animate]="
+              (modelFacade?.notification?.updated$ | async) <
+              getTimestamp(row.updated_at)
+            "
+          ></tr>
+        </table>
+        <mat-paginator
+          class="border-b sm:border-t sm:border-b-0 z-10 dark:bg-gray-800 bottom-0 w-full self-end text-gray-900 dark:text-white"
+          showFirstLastButtons
+          [ngClass]="{ 'pointer-events-none': (loading$ | async) }"
+          [pageSizeOptions]="[5, 10, 25, 100]"
+          [showFirstLastButtons]
+          [length]="pagination.totalItems"
+          [pageIndex]="pagination.currentPage - 1"
+          [pageSize]="pagination.itemsPerPage"
+        ></mat-paginator>
+      </div>
+    </div>
   </div>
 
-  <!-- Main -->
-  <div
-    class="relative p-4 pt-1 h-screen shadow-inner"
-    style="height: 100vh; overflow-x: auto"
-  >
-    <div
-      class="pt-1 d-flex justify-content-end selectedRowsButton"
-      *ngIf="isOneSelected()"
-    >
-      <a
-        class="btn btn-primary me-2 mr-0 pr-0 smallbutton"
-        (click)="batchEdit()"
-      >
-        Ausgewählte bearbeiten
-      </a>
-      ·
-      <a
-        class="btn btn-primary me-2 mr-0 pr-0 smallbutton"
-        (click)="batchDelete()"
-      >
-        Ausgewählte löschen
-      </a>
-    </div>
-    <div
-      class="bg-white list-builder-table ng-star-inserted border-white rounded-xl grid content-between items-start dark:bg-gray-800 border-t"
-      style="
-        overflow-x: auto;
-        min-height: 90vh;
-        max-height: 90vh;
-        padding-top: 8px;
-        width: calc(100% - 250px); /* reduce to fit calendar */
-      "
-    >
-      <table
-        class="w-full list-builder-table bg-white list-builder-table border-white rounded-xl self-start dark:bg-gray-800"
-        mat-table
-        matSort
-        [dataSource]="dataSource"
-        [trackBy]="trackByFn"
-        [matSortDisableClear]="true"
-        #participantsTable
-        *ngIf="dataSource.data.length > 0; else noGuarantees"
-      >
-        <ng-container matColumnDef="select">
-          <th mat-header-cell *matHeaderCellDef class="w-25px w-0">
-            <div
-              class="form-check form-check-sm form-check-custom form-check-solid"
-            >
-              <input
-                class="form-check-input widget-13-check"
-                type="checkbox"
-                [checked]="selection.hasValue() && isAllSelected()"
-                (click)="masterToggle()"
-              />
-            </div>
-          </th>
-
-          <td mat-cell *matCellDef="let data">
-            <div
-              class="form-check form-check-sm form-check-custom form-check-solid w-40px"
-            >
-              <input
-                class="form-check-input widget-13-check"
-                type="checkbox"
-                (click)="$event.stopPropagation()"
-                (change)="$event ? selection.toggle(data) : null"
-                [checked]="selection.isSelected(data)"
-              />
-            </div>
-          </td>
-        </ng-container>
-
-        <ng-container *ngFor="let field of fields" matColumnDef="{{ field }}">
-          <th mat-header-cell mat-sort-header *matHeaderCellDef>
-            {{
-              translateService.instant(listController.getElementLabel(field))
-            }}
-          </th>
-
-          <td
-            mat-cell
-            *matCellDef="let data"
-            (click)="selectRow(data)"
-            class="border-1 border-slate-100 text-gray-900 dark:text-white"
-          >
-            <nxtlvls-view-element
-              [fieldName]="field"
-              [listController]="listController"
-              [viewObject]="data"
-            >
-            </nxtlvls-view-element>
-          </td>
-        </ng-container>
-
-        <!-- actions -->
-        <ng-container matColumnDef="actions" *transloco="let t">
-          <th mat-header-cell *matHeaderCellDef></th>
-          <td
-            mat-cell
-            *matCellDef="let data"
-            class="action-cell border-1 border-slate-100"
-            style="width: 150px"
-          >
-            <span class="items-center">
-              <a
-                class="min-w-10 min-h-7 h-7 px-2 leading-6 cursor-pointer"
-                (click)="selectRow(data)"
-                style="pointer-events: all"
-              >
-                <mat-icon
-                  class="icon-size-5 text-slate-800 action-icon"
-                  [svgIcon]="'heroicons_outline:eye'"
-                ></mat-icon>
-              </a>
-
-              <a
-                class="min-w-10 min-h-7 h-7 px-2 leading-6 cursor-pointer"
-                (click)="delete(data)"
-                style="pointer-events: all"
-              >
-                <mat-icon
-                  class="icon-size-5 action-icon"
-                  [svgIcon]="'heroicons_outline:trash'"
-                ></mat-icon>
-              </a>
-
-              <a
-                class="min-w-10 min-h-7 h-7 px-2 leading-6 cursor-pointer"
-                (click)="duplicate(data)"
-                style="pointer-events: all"
-              >
-                <mat-icon
-                  class="icon-size-5 action-icon"
-                  [svgIcon]="'heroicons_outline:document-duplicate'"
-                ></mat-icon>
-              </a>
-            </span>
-          </td>
-        </ng-container>
-
-        <tr
-          class="text-md dark:bg-black dark:bg-opacity-5 bg-white text-gray-900 dark:text-white"
-          mat-header-row
-          *matHeaderRowDef="displayedColumns"
-        ></tr>
-        <tr
-          mat-row
-          *matRowDef="let row; columns: displayedColumns"
-          [class.row-animate]="
-            (modelFacade?.notification?.updated$ | async) <
-            getTimestamp(row.updated_at)
-          "
-        ></tr>
-      </table>
-      <mat-paginator
-        class="border-b sm:border-t sm:border-b-0 z-10 dark:bg-gray-800 bottom-0 w-full self-end text-gray-900 dark:text-white"
-        showFirstLastButtons
-        [ngClass]="{ 'pointer-events-none': (loading$ | async) }"
-        [pageSizeOptions]="[5, 10, 25, 100]"
-        [showFirstLastButtons]
-        [length]="pagination.totalItems"
-        [pageIndex]="pagination.currentPage - 1"
-        [pageSize]="pagination.itemsPerPage"
-      ></mat-paginator>
-    </div>
-
-    <!-- Calendar -->
-    <div class="w-64 bg-white rounded-xl shadow-lg dark:bg-gray-800">
-      <div class="p-4">
-        <p>Calendar Content</p>
-      </div>
+  <!-- Kalender -->
+  <div class="w-64 bg-white rounded-xl shadow-lg dark:bg-gray-800">
+    <!-- Kalender-Inhalt -->
+    <!-- Hier kommt der Kalenderinhalt hin -->
+    <div class="p-4">
+      <p>Dies ist der Kalender.</p>
     </div>
 
     <ng-template #noGuarantees>
