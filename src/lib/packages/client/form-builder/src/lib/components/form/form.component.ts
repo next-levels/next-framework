@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, SimpleChanges,} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChanges,} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {FormController} from '../../controller/form-controller';
 import {BUILDERFIELD_ALL_PREFIX} from '@next-levels/types';
@@ -23,6 +23,9 @@ export class FormComponent implements OnInit {
   @Input() formModel: any;
   @Input() data: any;
   @Input() settings: FormSettings;
+
+  @Output() dataOutput = new EventEmitter<any>();
+
 
   model: any;
   fields: string[] = [];
@@ -110,6 +113,7 @@ export class FormComponent implements OnInit {
   }
 
   isFormValid(event: any) {
+    this.dataOutput.emit(this.controller?.getForm().value);
     if (!event) {
       return this.formValid.emit(false);
     }
