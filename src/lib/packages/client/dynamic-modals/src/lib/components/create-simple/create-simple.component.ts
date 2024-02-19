@@ -13,14 +13,7 @@ import {ScopeFilter,} from '@next-levels/types';
 export class CreateSimpleComponent implements AfterViewInit, OnInit {
   public formStepValid = false;
 
-  public currentStep = 1;
-  public steps: {
-    index: number;
-    arrayIndex: number;
-    title: string;
-    description: string;
-    fields: any[];
-  }[] = [];
+  formController: FormController;
 
   @Input() model: any;
   @Input() values: any;
@@ -36,7 +29,7 @@ export class CreateSimpleComponent implements AfterViewInit, OnInit {
   constructor(
     private swalService: SwalService,
     public dialogRef: MatDialogRef<CreateSimpleComponent>,
-  private readonly _matDialog: MatDialog,
+    private readonly _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA)
     public data: {
       model: any;
@@ -71,12 +64,12 @@ export class CreateSimpleComponent implements AfterViewInit, OnInit {
   }
 
   fireAction() {
-    this.dialogRef.close(this.state);
-    }
+    console.log(this.formController.getForm().value)
+    this.dialogRef.close(this.formController.getForm().value);
+  }
 
-  saveState($event) {
-    console.log($event)
-    this.state = $event;
+  dataOutput(event: FormController) {
+    this.formController = event;
   }
 
   onDismiss() {
