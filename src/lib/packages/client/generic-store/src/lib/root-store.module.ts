@@ -17,12 +17,7 @@ export class RootStoreModule {
     const imports = [];
     let config = META.getOptionsByModel(model.prototype);
 
-    const injector = Injector.create({
-      providers: [{ provide: EnvironmentStorageService, deps: [] }],
-    });
-    const storedEnvironment = injector.get(EnvironmentStorageService);
-
-    const apiUrl = `${storedEnvironment.baseUrl}/api/${config.name}/admin`; // wird später aktualisiert
+    const apiUrl = `/api/${META.getOptionsByModel(model.prototype).name}/admin`;
 
      const store = getStoreFeatures<
       typeof model,
