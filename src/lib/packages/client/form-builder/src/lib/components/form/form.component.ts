@@ -24,7 +24,7 @@ export class FormComponent implements OnInit {
   @Input() data: any;
   @Input() settings: FormSettings;
 
-  @Output() dataOutput = new EventEmitter<any>();
+  @Output() dataOutput = new EventEmitter<FormController>();
 
 
   model: any;
@@ -67,12 +67,15 @@ export class FormComponent implements OnInit {
       if (!this.data) {
         this.data = this.model;
       }
+
       this.controller = new FormController(
         this.data,
-        this.registry.retrieve(this.model),
+        this.registry.retrieve(this.formModel),
         this.model,
         {small: true}
       );
+
+      this.dataOutput.emit(this.controller);
 
       this.fg = this.controller.getForm();
       const className = this.controller.getClassName() ?? '';
@@ -113,8 +116,7 @@ export class FormComponent implements OnInit {
   }
 
   isFormValid(event: any) {
-    this.dataOutput.emit(this.controller?.getForm().value);
-    if (!event) {
+     if (!event) {
       return this.formValid.emit(false);
     }
 
