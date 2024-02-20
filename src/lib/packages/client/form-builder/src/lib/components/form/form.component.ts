@@ -111,7 +111,7 @@ export class FormComponent implements OnInit {
 
       }
 
-      this.changeDetectorRef.detectChanges();
+       this.changeDetectorRef.detectChanges();
     }
   }
 
