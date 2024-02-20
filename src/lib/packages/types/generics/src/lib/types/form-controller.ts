@@ -7,5 +7,5 @@ export interface FormController<T> {
   relations(field: string): ModelRelationOptions;
 
   createFields(): Array<{[key: string]: Array<keyof T>}>;
-  detailFields(): Array<{[key: string]: Array<keyof T>}>;
+  detailFields?(): Array<{[key: string]: Array<keyof T>}>;
 }
