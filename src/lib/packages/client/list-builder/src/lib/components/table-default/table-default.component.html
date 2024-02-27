@@ -1,3 +1,4 @@
+<!-- Liste -->
 <div
   class="flex  flex-col flex-auto min-w-0 sm:overflow-hidden bg-grey-50 dark:bg-gray-800"
   [ngClass]="{ '': !childTable }"
@@ -22,6 +23,7 @@
       </div>
     </ng-container>
 
+    <!-- Buttons -->
     <ng-container *transloco="let t">
       <div class="flex shrink-0 items-center sm:ml-4 ng-star-inserted my-5">
         <button
@@ -353,14 +355,16 @@
         [pageSize]="pagination.itemsPerPage"
       ></mat-paginator>
     </div>
-
-    <ng-template #noGuarantees>
-      <div
-        class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center"
-        *transloco="let t"
-      >
-        Keine {{ t(listController.getModelClassName() + '.name') }}
-      </div>
-    </ng-template>
   </div>
+</div>
+
+<div class="w-64 bg-white rounded-xl shadow-lg dark:bg-gray-800">
+  <ng-template #noGuarantees>
+    <div
+      class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center"
+      *transloco="let t"
+    >
+      Keine {{ t(listController.getModelClassName() + '.name') }}
+    </div>
+  </ng-template>
 </div>
