@@ -26,6 +26,7 @@ export class BaseFacade<EntityType, StateType>
     this.all$ = this.store.select(this.baseSelectors.getEntities);
     this.filtered$ = this.store.select(this.baseSelectors.getEntities);
     this.selected$ = this.store.select(this.baseSelectors.getSelectedEntity);
+
     this.pagination$ = this.store.select(this.baseSelectors.getPagination);
   }
 
@@ -40,7 +41,7 @@ export class BaseFacade<EntityType, StateType>
   }
 
   select(entityId: number) {
-    this.store.dispatch(
+     this.store.dispatch(
       this.baseActions.selectEntity({ payload: { entityId } })
     );
   }

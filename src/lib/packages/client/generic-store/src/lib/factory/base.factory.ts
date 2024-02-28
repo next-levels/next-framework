@@ -24,7 +24,7 @@ export function createBaseService<T extends object>(modelUrl: string) {
     }
 
     getEntity(id: number | string): Observable<T> {
-      return this._http.get<T>(this.envService.baseUrl + modelUrl + '/' + id);
+       return this._http.get<T>(this.envService.baseUrl + modelUrl + '/' + id);
     }
 
     getAll(): Observable<T[]> {
@@ -59,8 +59,7 @@ export function createBaseService<T extends object>(modelUrl: string) {
     }
 
     updateEntity(id: number | string, data: Partial<T>): Observable<T> {
-      console.log('updateEntity', id, data);
-      return this._http.patch<T>(this.envService.baseUrl + modelUrl + '/' + id, data);
+       return this._http.patch<T>(this.envService.baseUrl + modelUrl + '/' + id, data);
     }
   }
 

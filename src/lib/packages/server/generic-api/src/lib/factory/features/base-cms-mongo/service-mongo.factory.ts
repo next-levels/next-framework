@@ -85,7 +85,12 @@ export function GenericBaseCMSServiceMongo<T extends Document>(entity: any): any
       }
         async findOne(key: string): Promise<Result<any | null>> {
             const entity = await this.model.findOne({key: key}).lean().exec();
-            return Result.ok(entity);
+
+            console.log(entity)
+             return Result.ok({
+                id: entity._id.toString(),
+                ...entity
+            });
         }
 
         async saveWithRelations(entity: T): Promise<T> {

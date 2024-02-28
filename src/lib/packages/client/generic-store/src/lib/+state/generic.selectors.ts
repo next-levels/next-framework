@@ -2,6 +2,8 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Dictionary, EntityAdapter } from '@ngrx/entity';
 import { GenericData } from '../types/generic.data';
 import { BaseSelectors } from '../types/base.selectors';
+import * as CryptoJS from 'crypto-js';
+
 export function createGenericSelectors<
   EntityType,
   StateType extends GenericData<EntityType>
@@ -67,7 +69,7 @@ export function createGenericSelectors<
 }
 
 export function createGenericSelectorsFeature<
-  EntityType,
+    EntityType,
   StateType extends object
 >(featureKey: string, entityAdapter: EntityAdapter<EntityType>) {
   const getFeatureState = createFeatureSelector<StateType>(featureKey);
@@ -87,12 +89,22 @@ export function createGenericSelectorsFeature<
     ): Record<number, EntityType> => {
       return Object.fromEntries(
         Object.entries(entitiesDictionary).map(([key, value]) => [
-          parseInt(key),
+          stringToUniqueInt(key),
           value,
         ])
       ) as Record<number, EntityType>;
     }
   );
+
+  function stringToUniqueInt(str) {
+    if(!Number.isNaN(+str)) {
+        return +str;
+    }
+    const hash = CryptoJS.SHA256(str).toString(CryptoJS.enc.Hex);
+    const intHash = parseInt(hash.substring(0, 12), 16);
+
+    return intHash;
+  }
 
   const getEntityLoading = createSelector(
     getEntityState,
@@ -117,6 +129,16 @@ export function createGenericSelectorsFeature<
     getEntityEntities,
     getSelectedEntityId,
     (entitiesDictionary, id) => {
+
+      const entitiesArray = Object.values(entitiesDictionary);
+      console.log(Number.isNaN(+id) && entitiesArray[0] !== undefined && "key" in (entitiesArray[0] as any))
+      if (Number.isNaN(+id) && entitiesArray[0] !== undefined && "key" in (entitiesArray[0] as any)) {
+        const entitiesArray = Object.values(entitiesDictionary);
+        const matchingEntity = entitiesArray.find((entity: any) => (entity as EntityType & { key: string }).key === id);
+        return matchingEntity as EntityType ?? null;
+      }
+
+      console.log(entitiesDictionary, id, entitiesDictionary[+id] ?? null)
       return entitiesDictionary[+id] ?? null;
     }
   );

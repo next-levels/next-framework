@@ -51,6 +51,7 @@ export class FormComponent implements OnInit {
       this.changeDetectorRef.detectChanges();
     }
     if (changes['data']) {
+      console.log('data changed')
       this.ngOnInit();
       this.changeDetectorRef.markForCheck();
     }
