@@ -1,19 +1,29 @@
-<div class="form-set" [class.small-form]="controller && controller.formOptions && controller.formOptions.small">
+<div
+  class="form-set"
+  [class.small-form]="
+    controller && controller.formOptions && controller.formOptions.small
+  "
+>
   <ng-container *ngFor="let group of groups">
     <div class="w-full mb-2 mt-2" *ngIf="group.title">
-      <div class="form-set-title">{{group.title}}</div>
-      <div *ngIf="group.description" class="form-set-title-secondary text-secondary">{{group.description}}</div>
+      <div class="form-set-title">{{ group.title }}</div>
+      <div
+        *ngIf="group.description"
+        class="form-set-title-secondary text-secondary"
+      >
+        {{ group.description }}
+      </div>
     </div>
-    <nxt-form-element
-      *ngFor="let field of group.fields"
-      [fieldName]="field"
-      [formController]="controller"
-      [readOnly]="readOnly"
-      (change)="isFormValid($event)"
-      (dataOutput)="isFormValid($event)"
-    ></nxt-form-element>
+    <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
+      <div class="sm:col-span-2" *ngFor="let field of group.fields">
+        <nxt-form-element
+          [fieldName]="field"
+          [formController]="controller"
+          [readOnly]="readOnly"
+          (change)="isFormValid($event)"
+          (dataOutput)="isFormValid($event)"
+        ></nxt-form-element>
+      </div>
+    </div>
   </ng-container>
 </div>
-
-
-
