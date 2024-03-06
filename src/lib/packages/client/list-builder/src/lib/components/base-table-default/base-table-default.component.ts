@@ -508,7 +508,6 @@ export class BaseTableDefaultComponent
   }
 
   batchEdit() {
-    console.log('');
     this._matDialog.open(BatchWizardComponent, {
       minWidth: '50%',
       autoFocus: false,
