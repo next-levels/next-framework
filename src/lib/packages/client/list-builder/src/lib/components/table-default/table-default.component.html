@@ -102,11 +102,20 @@
                             <tr
                                     mat-row
                                     *matRowDef="let row; columns: displayedColumns"
+                            ></tr>
+
+
+                            <ng-container   *ngIf="false">
+                            <tr
+                                    mat-row
+                                    *matRowDef="let row; columns: displayedColumns"
                                     [class.row-animate]="
             (modelFacade?.notification?.updated$ | async) <
             getTimestamp(row.updated_at)
           "
                             ></tr>
+                            </ng-container>
+
                             </thead>
                             <tbody>
 
@@ -219,126 +228,6 @@
                     </div>
                 </div>
             </div>
-
-
-            <table
-                    class="w-full list-builder-table bg-white list-builder-table border-white rounded-xl self-start dark:bg-gray-800"
-                    mat-table
-                    matSort
-                    [dataSource]="dataSource"
-                    [trackBy]="trackByFn"
-                    [matSortDisableClear]="true"
-                    #participantsTable
-                    *ngIf="false"
-            >
-                <ng-container matColumnDef="select">
-                    <th mat-header-cell *matHeaderCellDef class="w-25px w-0">
-                        <div
-                                class="form-check form-check-sm form-check-custom form-check-solid"
-                        >
-                            <input
-                                    class="form-check-input widget-13-check"
-                                    type="checkbox"
-                                    [checked]="selection.hasValue() && isAllSelected()"
-                                    (click)="masterToggle()"
-                            />
-                        </div>
-                    </th>
-
-                    <td mat-cell *matCellDef="let data">
-                        <div
-                                class="form-check form-check-sm form-check-custom form-check-solid w-40px"
-                        >
-                            <input
-                                    class="form-check-input widget-13-check"
-                                    type="checkbox"
-                                    (click)="$event.stopPropagation()"
-                                    (change)="$event ? selection.toggle(data) : null"
-                                    [checked]="selection.isSelected(data)"
-                            />
-                        </div>
-                    </td>
-                </ng-container>
-
-                <ng-container *ngFor="let field of fields" matColumnDef="{{ field }}">
-                    <th mat-header-cell mat-sort-header *matHeaderCellDef>
-                        {{
-                        translateService.instant(listController.getElementLabel(field))
-                        }}
-                    </th>
-
-                    <td
-                            mat-cell
-                            *matCellDef="let data"
-                            (click)="selectRow(data)"
-                            class="border-1 border-slate-100 text-gray-900 dark:text-white"
-                    >
-                        <nxtlvls-view-element
-                                [fieldName]="field"
-                                [listController]="listController"
-                                [viewObject]="data"
-                        >
-                        </nxtlvls-view-element>
-                    </td>
-                </ng-container>
-
-                <!-- actions -->
-                <ng-container matColumnDef="actions" *transloco="let t">
-                    <th mat-header-cell *matHeaderCellDef>
-                    </th>
-                    <td
-                            mat-cell
-                            *matCellDef="let data"
-                            class="action-cell border-1 border-slate-100"
-                            style="width: 150px"
-                    >
-            <span class="items-center">
-              <a
-                      class="min-w-10 min-h-7 h-7 px-2 leading-6 cursor-pointer"
-                      (click)="selectRow(data)"
-                      style="pointer-events: all"
-              >
-                <mat-icon
-                        class="icon-size-5 text-slate-800 action-icon"
-                        [svgIcon]="'heroicons_outline:eye'"
-                ></mat-icon>
-              </a>
-
-              <a
-                      class="min-w-10 min-h-7 h-7 px-2 leading-6 cursor-pointer"
-                      (click)="delete(data)"
-                      style="pointer-events: all"
-              >
-                <mat-icon
-                        class="icon-size-5 action-icon"
-                        [svgIcon]="'heroicons_outline:trash'"
-                ></mat-icon>
-              </a>
-
-              <a
-                      class="min-w-10 min-h-7 h-7 px-2 leading-6 cursor-pointer"
-                      (click)="duplicate(data)"
-                      style="pointer-events: all"
-              >
-                <mat-icon
-                        class="icon-size-5 action-icon"
-                        [svgIcon]="'heroicons_outline:document-duplicate'"
-                ></mat-icon>
-              </a>
-            </span>
-                    </td>
-                </ng-container>
-
-                <tr
-                        class="text-md dark:bg-black dark:bg-opacity-5 bg-white text-gray-900 dark:text-white"
-                        mat-header-row
-                        *matHeaderRowDef="displayedColumns"
-                ></tr>
-                <tr
-                        mat-row
-                        *matRowDef="let row; columns: displayedColumns"
-                 ></tr>
-            </table>
 
             <mat-paginator
                     class="border-b sm:border-t sm:border-b-0 z-10 dark:bg-gray-800 bottom-0 w-full self-end text-gray-500 dark:text-white"
