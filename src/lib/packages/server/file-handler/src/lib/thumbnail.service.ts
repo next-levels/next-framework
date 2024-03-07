@@ -4,6 +4,7 @@ import { Readable } from 'stream';
 import { FileEntity } from './entities/file.entity';
 import { Response } from 'express';
 import { ErrorCode, Result } from '../../../nest-tools';
+import sharp = require('sharp');
 
 @Injectable()
 export class ThumbnailService {
@@ -18,11 +19,49 @@ export class ThumbnailService {
   ): Promise<Result<void>> {
     const intWidth = parseInt(width);
     const intHeight = parseInt(height);
+    const fileBuffer = await this.fileToBuffer(file);
 
+    if (!fileBuffer) {
+      res.status(404).send('File not found');
+      return Result.fail(new ErrorCode('FILE_NOT_FOUND', 404));
+    }
+
+    let buffer: Buffer;
+    if (fileBuffer && type === 'png') {
+      buffer = await this.createPNG(fileBuffer, intWidth, intHeight);
+    }
+    if (fileBuffer && type === 'jpeg') {
+      buffer = await this.createJPEG(fileBuffer, intWidth, intHeight);
+    }
+    const readable = this.bufferToReadableStream(buffer);
+
+    res.setHeader('Content-Type', 'image/' + type);
+    readable.pipe(res);
 
     return Result.ok();
   }
 
+  async createJPEG(
+      buffer: Buffer,
+      width: number,
+      height: number
+  ): Promise<Buffer> {
+    return await sharp(buffer)
+        .resize(width, height, { fit: 'cover' })
+        .toFormat('jpg')
+        .toBuffer();
+  }
+
+  async createPNG(
+      buffer: Buffer,
+      width: number,
+      height: number
+  ): Promise<Buffer> {
+    return await sharp(buffer)
+        .resize(width, height, { fit: 'cover' })
+        .toFormat('png')
+        .toBuffer();
+  }
 
 
   bufferToReadableStream(buffer: Buffer): Readable {

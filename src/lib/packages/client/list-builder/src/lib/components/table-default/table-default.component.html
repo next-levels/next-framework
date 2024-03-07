@@ -77,13 +77,12 @@
                 style="
         overflow-x: auto;
          max-height: 80vh;
-        padding-top: 2px;
       ">
 
             <div
                     class="relative flex flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
                 <div class="flex-auto px-0 pt-0 pb-2">
-                    <div class="p-0 overflow-x-auto">
+                    <div class="p-0">
                         <table
                                 mat-table
                                 matSort
@@ -95,9 +94,9 @@
                                 class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
                             <thead class="align-bottom">
                             <tr
-                                    class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap  "
+                                    class="px-6 py-3 font-bold text-left uppercase align-middle bg-white border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap  "
                                     mat-header-row
-                                    *matHeaderRowDef="displayedColumns"
+                                    *matHeaderRowDef="displayedColumns;sticky: true"
                             ></tr>
                             <tr
                                     mat-row
@@ -105,83 +104,85 @@
                             ></tr>
 
 
-                            <ng-container   *ngIf="false">
-                            <tr
-                                    mat-row
-                                    *matRowDef="let row; columns: displayedColumns"
-                                    [class.row-animate]="
+                            <ng-container *ngIf="false">
+                                <tr
+                                        mat-row
+                                        *matRowDef="let row; columns: displayedColumns"
+                                        [class.row-animate]="
             (modelFacade?.notification?.updated$ | async) <
             getTimestamp(row.updated_at)
           "
-                            ></tr>
+                                ></tr>
                             </ng-container>
 
                             </thead>
-                            <tbody>
+
+                            <div class="body-container">
+                                <tbody>
 
 
-                            <ng-container matColumnDef="select">
-                                <th mat-header-cell *matHeaderCellDef class="w-25px w-0">
-                                    <div
-                                            class="form-check form-check-sm form-check-custom form-check-solid"
-                                    >
-                                        <input
-                                                class="form-check-input widget-13-check "
-                                                type="checkbox"
-                                                [checked]="selection.hasValue() && isAllSelected()"
-                                                (click)="masterToggle()"
-                                        />
-                                    </div>
-                                </th>
-
-                                <td mat-cell *matCellDef="let data">
-                                    <div
-                                            class="form-check form-check-sm form-check-custom form-check-solid w-40px"
-                                    >
-                                        <input
-                                                class="form-check-input widget-13-check"
-                                                type="checkbox"
-                                                (click)="$event.stopPropagation()"
-                                                (change)="$event ? selection.toggle(data) : null"
-                                                [checked]="selection.isSelected(data)"
-                                        />
-                                    </div>
-                                </td>
-                            </ng-container>
-
-                            <ng-container *ngFor="let field of fields" matColumnDef="{{ field }}">
-                                <th mat-header-cell mat-sort-header *matHeaderCellDef>
-                                    {{
-                                    translateService.instant(listController.getElementLabel(field))
-                                    }}
-                                </th>
-
-                                <td
-                                        mat-cell
-                                        *matCellDef="let data"
-                                        (click)="selectRow(data)"
-                                        class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent"
-                                >
-                                    <div class="flex px-2 py-1">
-                                        <nxtlvls-view-element
-                                                [fieldName]="field"
-                                                [listController]="listController"
-                                                [viewObject]="data"
+                                <ng-container matColumnDef="select">
+                                    <th mat-header-cell *matHeaderCellDef class="w-25px w-0">
+                                        <div
+                                                class="form-check form-check-sm form-check-custom form-check-solid"
                                         >
-                                        </nxtlvls-view-element>
-                                    </div>
-                                </td>
-                            </ng-container>
+                                            <input
+                                                    class="form-check-input widget-13-check "
+                                                    type="checkbox"
+                                                    [checked]="selection.hasValue() && isAllSelected()"
+                                                    (click)="masterToggle()"
+                                            />
+                                        </div>
+                                    </th>
 
-                            <ng-container matColumnDef="actions" *transloco="let t">
-                                <th mat-header-cell *matHeaderCellDef>
-                                </th>
-                                <td
-                                        mat-cell
-                                        *matCellDef="let data"
-                                        class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent action-cell"
-                                        style="width: 150px"
-                                >
+                                    <td mat-cell *matCellDef="let data">
+                                        <div
+                                                class="form-check form-check-sm form-check-custom form-check-solid w-40px"
+                                        >
+                                            <input
+                                                    class="form-check-input widget-13-check"
+                                                    type="checkbox"
+                                                    (click)="$event.stopPropagation()"
+                                                    (change)="$event ? selection.toggle(data) : null"
+                                                    [checked]="selection.isSelected(data)"
+                                            />
+                                        </div>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container *ngFor="let field of fields" matColumnDef="{{ field }}">
+                                    <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                                        {{
+                                        translateService.instant(listController.getElementLabel(field))
+                                        }}
+                                    </th>
+
+                                    <td
+                                            mat-cell
+                                            *matCellDef="let data"
+                                            (click)="selectRow(data)"
+                                            class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent"
+                                    >
+                                        <div class="flex px-2 py-1">
+                                            <nxtlvls-view-element
+                                                    [fieldName]="field"
+                                                    [listController]="listController"
+                                                    [viewObject]="data"
+                                            >
+                                            </nxtlvls-view-element>
+                                        </div>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="actions" *transloco="let t">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                    </th>
+                                    <td
+                                            mat-cell
+                                            *matCellDef="let data"
+                                            class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent action-cell"
+                                            style="width: 150px"
+                                    >
             <span class="items-center">
 
               <a
@@ -220,17 +221,18 @@
 
 
             </span>
-                                </td>
-                            </ng-container>
+                                    </td>
+                                </ng-container>
 
-                            </tbody>
+                                </tbody>
+                            </div>
                         </table>
                     </div>
                 </div>
             </div>
 
             <mat-paginator
-                    class="border-b sm:border-t sm:border-b-0 z-10 dark:bg-gray-800 bottom-0 w-full self-end text-gray-500 dark:text-white"
+                    class="mat-paginator-sticky border-b sm:border-t sm:border-b-0 z-10 dark:bg-gray-800 bottom-0 w-full self-end text-gray-500 dark:text-white"
                     showFirstLastButtons
                     [ngClass]="{ 'pointer-events-none': (loading$ | async) }"
                     [pageSizeOptions]="[5, 10, 25, 100]"
