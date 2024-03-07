@@ -154,9 +154,7 @@ export class BaseTableDefaultComponent
     }
 
     this.modelFacade?.base.filtered$.subscribe((entries: unknown) => {
-      this.dataSource.data = (entries as any[]).sort((a, b) => {
-        return b.id - a.id;
-      });
+      this.dataSource.data = entries as any[];
       this.cdRef.detectChanges();
     });
 
@@ -192,9 +190,7 @@ export class BaseTableDefaultComponent
           changes['selector'].currentValue
         ] as unknown as Observable<any>;
         observable.subscribe((entries: unknown) => {
-          this.dataSource.data = (entries as any[]).sort((a, b) => {
-            return b.id - a.id;
-          });
+          this.dataSource.data = entries as any[];
           this.cdRef.detectChanges();
         });
       }
@@ -202,32 +198,35 @@ export class BaseTableDefaultComponent
   }
 
   ngAfterViewInit(): void {
-    if (this.sort && this.paginator) {
-      this.sort.sortChange.subscribe(() => {
-        this.paginator.pageIndex = 0;
-      });
+    setTimeout(() => {
+      // Because this hook is not the lifecycle of an extending component like table-default but of this component which has its own template
+      if (this.sort && this.paginator) {
+        this.sort.sortChange.subscribe(() => {
+          this.paginator.pageIndex = 0;
+        });
 
-      merge(this.sort.sortChange, this.paginator.page)
-        .pipe(
-          takeUntil(this._unsubscribeAll),
-          tap(() => {
-            this.filterOptions = {
-              ...this.filterOptions,
-              page: this.paginator.pageIndex + 1,
-              limit: this.paginator.pageSize,
-              sortBy: `${
-                this.sort.active
-              }:${this.sort.direction.toUpperCase()}`,
-            };
+        merge(this.sort.sortChange, this.paginator.page)
+          .pipe(
+            takeUntil(this._unsubscribeAll),
+            tap(() => {
+              this.filterOptions = {
+                ...this.filterOptions,
+                page: this.paginator.pageIndex + 1,
+                limit: this.paginator.pageSize,
+                sortBy: `${
+                  this.sort.active
+                }:${this.sort.direction.toUpperCase()}`,
+              };
 
-            if (this.modelFacade) {
-              this.modelFacade.base.loadFiltered(this.filterOptions);
-            }
-          })
-        )
-        .subscribe();
-    }
-    this.cdRef.detectChanges();
+              if (this.modelFacade) {
+                this.modelFacade.base.loadFiltered(this.filterOptions);
+              }
+            })
+          )
+          .subscribe();
+      }
+      this.cdRef.detectChanges();
+    }, 100);
   }
 
   getTimestamp(value) {
@@ -509,7 +508,6 @@ export class BaseTableDefaultComponent
   }
 
   batchEdit() {
-    console.log('');
     this._matDialog.open(BatchWizardComponent, {
       minWidth: '50%',
       autoFocus: false,
