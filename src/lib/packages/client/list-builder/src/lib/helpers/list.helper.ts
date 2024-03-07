@@ -10,3 +10,7 @@ export function getFilterOptions(pagination): FilterOptions {
     search: '',
   };
 }
+
+export function haslistFields(obj: any): boolean {
+  return "listFields" in obj;
+}

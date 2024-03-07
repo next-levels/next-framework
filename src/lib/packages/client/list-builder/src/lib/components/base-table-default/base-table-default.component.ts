@@ -4,7 +4,7 @@ import {
   ChangeDetectorRef,
   Component,
   ComponentFactoryResolver,
-  EventEmitter,
+  EventEmitter, HostListener,
   Input,
   OnDestroy,
   OnInit,
@@ -38,6 +38,7 @@ import {
   BatchWizardComponent,
   CreateWizardComponent,
 } from '../../../../../dynamic-modals';
+import {haslistFields} from "../../helpers/list.helper";
 
 @Component({
   template: '<ng-container></ng-container>',
@@ -140,6 +141,14 @@ export class BaseTableDefaultComponent
         .map((item: any) => item.field);
     }
 
+
+    if (haslistFields(this.model)) {
+      console.log(this.model)
+      this.fields = this.fields.filter(field =>
+          this.model.listFields().includes(field)
+      );
+    }
+
     if (this.fields) {
       this.displayedColumns.push('select');
       this.displayedColumns = [...this.displayedColumns, ...this.fields];
@@ -201,6 +210,30 @@ export class BaseTableDefaultComponent
     }
   }
 
+  private ongoingTouches: PointerEvent[] = [];
+
+  @HostListener('pointerdown', ['$event'])
+  onPointerDown(event: PointerEvent) {
+    if (event.pointerType === 'touch') {
+      this.ongoingTouches.push(event);
+    }
+  }
+
+  @HostListener('pointermove', ['$event'])
+  onPointerMove(event: PointerEvent) {
+    if (event.pointerType === 'touch' && this.ongoingTouches.length > 1) {
+      // Handle two-finger swipe gesture
+      console.log('Two-finger swipe gesture detected');
+      // Implement your logic here
+    }
+  }
+
+  @HostListener('pointerup', ['$event'])
+  onPointerUp(event: PointerEvent) {
+    if (event.pointerType === 'touch') {
+      this.ongoingTouches = this.ongoingTouches.filter(touch => touch.pointerId !== event.pointerId);
+    }
+  }
   ngAfterViewInit(): void {
     if (this.sort && this.paginator) {
       this.sort.sortChange.subscribe(() => {
