@@ -69,7 +69,7 @@ function getFeature(
     case 'cms':
       return {
         controller: GenericBaseCMSControllerCreator(config, globalEventEmitter),
-        service: GenericBaseCMSService(entity),
+        service: GenericBaseCMSService(entity,registryServiceToken),
         serviceToken: serviceToken,
       };
     case 'cms-mongo':

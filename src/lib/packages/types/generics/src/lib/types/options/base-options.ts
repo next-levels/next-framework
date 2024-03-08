@@ -6,6 +6,9 @@ export interface BuilderOptions {
   name?: string;
   type: BuilderComponentsKeys;
   validation?: ValidationType;
+  prompt?: any;
+  translatable?: boolean;
+  size?: "small" | "half" | "full";
   required?: boolean;
   hidden?: boolean;
   options?: any;

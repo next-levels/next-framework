@@ -14,8 +14,8 @@
         {{ group.description }}
       </div>
     </div>
-    <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
-      <div class="sm:col-span-2" *ngFor="let field of group.fields">
+    <div class="flex flex-wrap w-full mt-8">
+      <div class="basis-1/2 pr-5" *ngFor="let field of group.fields">
         <nxt-form-element
           [fieldName]="field"
           [formController]="controller"
@@ -25,5 +25,6 @@
         ></nxt-form-element>
       </div>
     </div>
+    <div class="my-10 border-t"></div>
   </ng-container>
 </div>
