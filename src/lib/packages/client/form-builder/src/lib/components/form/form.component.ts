@@ -22,6 +22,7 @@ export class FormComponent implements OnInit {
 
     @Input() formModel: any;
     @Input() data: any;
+    @Input() tab: string;
     @Input() settings: FormSettings;
 
     @Output() dataOutput = new EventEmitter<FormController>();
@@ -72,7 +73,7 @@ export class FormComponent implements OnInit {
                 this.data,
                 this.registry.retrieve(this.formModel),
                 this.model,
-                {small: true}
+                this.settings
             );
 
             this.dataOutput.emit(this.controller);
@@ -80,7 +81,14 @@ export class FormComponent implements OnInit {
             this.fg = this.controller.getForm();
             const className = this.controller.getClassName() ?? '';
             let fileFields = FORM.hasDetailFields(this.model) ? this.model.detailFields() : null
+            console.log(fileFields)
 
+            if(this.tab) {
+                fileFields = fileFields.tabs[this.tab];
+            }
+
+            console.log(this.tab)
+            console.log(fileFields)
 
             if (!fileFields) {
                 let visibilityFields = Reflect.getMetadata(BUILDERFIELD_ALL_PREFIX, this.model);
@@ -88,6 +96,7 @@ export class FormComponent implements OnInit {
             }
 
             if (fileFields) {
+
                 this.groups = fileFields.map((field: any, index: number) => {
                     const firstKey = Object.keys(field)[0];
 
