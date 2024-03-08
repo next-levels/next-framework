@@ -11,7 +11,17 @@ import {
 import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
+<<<<<<< HEAD
 import { KEY_LEFT, KEY_RETURN, KEY_SPACE, KEY_TAB } from 'keycode-js';
+=======
+import {
+  KEY_BACK_SPACE,
+  KEY_LEFT,
+  KEY_RETURN,
+  KEY_SPACE,
+  KEY_TAB,
+} from 'keycode-js';
+>>>>>>> feature/quereyinput
 import { Observable, Subject } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
@@ -232,6 +242,10 @@ export class QueryInputComponent implements OnInit, OnChanges {
     if (
       this.currentEvent === 'Value' &&
       this.isCurrentlyTypedIn &&
+<<<<<<< HEAD
+=======
+      !this.isExpectingSpace &&
+>>>>>>> feature/quereyinput
       (event.keyCode === KEY_RETURN ||
         event.keyCode === KEY_TAB ||
         event.keyCode === KEY_SPACE)
@@ -248,6 +262,10 @@ export class QueryInputComponent implements OnInit, OnChanges {
     if (
       this.restrictedEditMode &&
       event.keyCode !== KEY_SPACE &&
+<<<<<<< HEAD
+=======
+      event.keyCode !== KEY_BACK_SPACE &&
+>>>>>>> feature/quereyinput
       this.isExpectingSpace
     ) {
       Swal.fire({
