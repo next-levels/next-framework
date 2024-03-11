@@ -14,16 +14,18 @@
         {{ group.description }}
       </div>
     </div>
-    <div class="flex flex-wrap w-full mt-8">
-      <div class="basis-1/2 pr-5" *ngFor="let field of group.fields">
+    <div class="flex w-full mt-8" [class.flex-wrap]="!settings.nowrap">
+
         <nxt-form-element
+          *ngFor="let field of group.fields"
+          class="pr-5"
           [fieldName]="field"
           [formController]="controller"
           [readOnly]="readOnly"
           (change)="isFormValid($event)"
           (dataOutput)="isFormValid($event)"
         ></nxt-form-element>
-      </div>
+
     </div>
     <div class="my-10 border-t"></div>
   </ng-container>

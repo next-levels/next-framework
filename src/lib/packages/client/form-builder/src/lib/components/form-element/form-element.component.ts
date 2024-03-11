@@ -1,14 +1,14 @@
 import {
-    AfterViewInit,
-    ChangeDetectorRef,
-    Component,
-    EventEmitter,
-    Inject,
-    Input,
-    Output,
-    SimpleChanges,
-    ViewChild,
-    ViewContainerRef,
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter, HostBinding,
+  Inject,
+  Input,
+  Output,
+  SimpleChanges,
+  ViewChild,
+  ViewContainerRef,
 } from '@angular/core';
 import {FormController} from '../../controller/form-controller';
 import {FormControl} from '@angular/forms';
@@ -44,6 +44,13 @@ export class FormElementComponent implements AfterViewInit {
             }
         }
     }
+
+  @HostBinding('class.basis-1/1') get applyLarge() {
+    return this.formField?.options?.size === 'full'; // 'my-class' will be applied based on this condition
+  }
+  @HostBinding('class.basis-1/2') get applyDefault() {
+    return !this.formField?.options?.size || this.formField?.options?.size === 'default'; // 'my-class' will be applied based on this condition
+  }
     constructor(
         private cdRef: ChangeDetectorRef,
         @Inject('formBuilderComponents')

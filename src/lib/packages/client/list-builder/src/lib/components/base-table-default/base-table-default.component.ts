@@ -144,8 +144,8 @@ export class BaseTableDefaultComponent
 
     if (haslistFields(this.model)) {
       console.log(this.model)
-      this.fields = this.fields.filter(field =>
-          this.model.listFields().includes(field)
+      this.fields = this.model.listFields().filter(field =>
+        this.fields.includes(field)
       );
     }
 
@@ -157,8 +157,13 @@ export class BaseTableDefaultComponent
 
     if (this.listController.scope.length > 0) {
       this.listController.scope.forEach((scope) => {
-        this.filterOptions['filter.' + scope.key] =
-          scope.operation + ':' + scope.value;
+        if(scope.value){
+          this.filterOptions['filter.' + scope.key] =
+              scope.operation + ':' + scope.value;
+        }else {
+          this.filterOptions['filter.' + scope.key] =
+              scope.operation ;
+        }
       });
     }
 

@@ -1,5 +1,5 @@
 export interface ScopeFilter {
   key: string;
   operation: string;
-  value: any;
+  value?: any;
 }

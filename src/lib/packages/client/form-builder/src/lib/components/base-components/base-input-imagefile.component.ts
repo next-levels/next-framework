@@ -34,7 +34,6 @@ export class BaseInputImageFileComponent extends BaseInputComponent {
   ) {
     super(cdRef, translateService);
     this.baseUrl = this.environment.baseUrl;
-    this.baseApiUrl = this.baseUrl + '/api/files/';
   }
 
   override init() {
@@ -42,6 +41,13 @@ export class BaseInputImageFileComponent extends BaseInputComponent {
     this.file_id = this.formController
       ?.getForm()
       .get(this.formField.name)?.value;
+
+    if(this.formField?.options?.base_path){
+      this.baseApiUrl = this.baseUrl  + this.formField.options.base_path;
+    }else {
+      this.baseApiUrl = this.baseUrl + '/api/files/';
+    }
+
     if (this.formField && this.formField?.required) {
       this.formField.label = this.formField.label + '*';
     }

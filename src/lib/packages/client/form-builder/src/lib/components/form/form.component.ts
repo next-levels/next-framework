@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChanges,} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {FormController} from '../../controller/form-controller';
-import {BUILDERFIELD_ALL_PREFIX} from '@next-levels/types';
+import {BUILDERFIELD_ALL_PREFIX, FORMFIELD_PREFIX} from '@next-levels/types';
 import {TranslateService} from "@ngx-translate/core";
 import {FORM, InstanceRegistryService} from "@next-levels/next-framework-client";
 
@@ -11,6 +11,7 @@ class FormSettings {
     noLabel? = false;
     submitted? = false;
     formSmall? = false;
+    nowrap? = true;
     scope?: any;
 }
 
@@ -23,7 +24,7 @@ export class FormComponent implements OnInit {
     @Input() formModel: any;
     @Input() data: any;
     @Input() tab: string;
-    @Input() settings: FormSettings;
+    @Input() settings: FormSettings = new FormSettings();
 
     @Output() dataOutput = new EventEmitter<FormController>();
 
@@ -76,19 +77,22 @@ export class FormComponent implements OnInit {
                 this.settings
             );
 
+
             this.dataOutput.emit(this.controller);
 
             this.fg = this.controller.getForm();
             const className = this.controller.getClassName() ?? '';
             let fileFields = FORM.hasDetailFields(this.model) ? this.model.detailFields() : null
-            console.log(fileFields)
 
             if(this.tab) {
+              if(this.tab === 'header') {
+                fileFields = fileFields.header;
+              }else {
                 fileFields = fileFields.tabs[this.tab];
+              }
             }
 
-            console.log(this.tab)
-            console.log(fileFields)
+
 
             if (!fileFields) {
                 let visibilityFields = Reflect.getMetadata(BUILDERFIELD_ALL_PREFIX, this.model);
@@ -137,4 +141,5 @@ export class FormComponent implements OnInit {
 
         this.formValid.emit(true);
     }
+
 }

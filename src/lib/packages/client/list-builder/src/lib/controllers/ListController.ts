@@ -26,7 +26,7 @@ export class ListController extends BaseController {
     super(model, facade, modelDefinition);
   }
 
-  setScope(key: string, operation: string, value: any) {
+  setScope(key: string, operation: string, value: any = null) {
     this.scope.push({ key: key, operation: operation, value: value });
   }
 
