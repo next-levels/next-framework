@@ -5,4 +5,8 @@ export class FORM {
   static hasDetailFields(obj: any): boolean {
     return "detailFields" in obj;
   }
+
+  static hasListFilters(obj: any): boolean {
+    return "listFilters" in obj;
+  }
 }
