@@ -6,11 +6,12 @@ import { FlatTreeControl } from "@angular/cdk/tree";
 import { SelectionModel } from "@angular/cdk/collections";
 import { MatCheckboxChange } from "@angular/material/checkbox";
 import { CdkDragDrop } from "@angular/cdk/drag-drop";
-import { Observable, of as observableOf } from "rxjs";
+import {debounceTime, Observable, of as observableOf, takeUntil, tap} from "rxjs";
 
 export class CategoryNode {
   children: CategoryNode[];
   name: string;
+  parent_api_id: string;
   type: any; // Assuming you have a specific type or use 'any' if it's dynamic
   id: string;
 }
@@ -42,30 +43,79 @@ export class TableTreeComponent extends BaseTableDefaultComponent {
   validateDrop = false;
   dataLoaded = false;
 
-  transformer = (node: CategoryNode, level: number) => {
-    return new CategoryFlatNode(!!node.children, node.name, level, node.type, node.id);
-  }
-
-  private _getLevel = (node: CategoryFlatNode) => node.level;
-  private _isExpandable = (node: CategoryFlatNode) => node.expandable;
-  private _getChildren = (node: CategoryNode): Observable<CategoryNode[]> => observableOf(node.children);
-  hasChild = (_: number, _nodeData: CategoryFlatNode) => _nodeData.expandable;
+  override itemsPerPage = 1000;
 
   override ngOnInit() {
-    super.ngOnInit();
-    this.treeFlattener = new MatTreeFlattener(this.transformer, this._getLevel, this._isExpandable, this._getChildren);
-    this.treeControl = new FlatTreeControl<CategoryFlatNode>(this._getLevel, this._isExpandable);
+    //super.ngOnInit();
+    this.modelFacade = this.listController.getFacade();
+    this.model = this.listController.getModelDefinition();
+    this.modelReference = this.listController.getClassName();
+    this.modelFacade?.notification?.updated$?.subscribe((timestamp) => {});
+
+    this.treeFlattener = new MatTreeFlattener(
+      this.transformer,
+      node => node.level,
+      node => node.expandable,
+      node => this.findChildren(node.id)
+    );
+
+    this.treeControl = new FlatTreeControl<CategoryFlatNode>(node => node.level, node => node.expandable);
     this.dataSourceTree = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
+
     this.modelFacade?.base.filtered$.subscribe((categories: unknown) => {
-      this.dataSourceTree.data = categories as CategoryNode[];
+      this.dataSourceTree.data = (categories as any).map((category) => ({
+        ...category,
+        id: category.api_id // Map api_id to id
+      })) as CategoryNode[];
+
       console.log(this.dataSourceTree.data)
       if (this.dataSourceTree.data.length > 0) {
         this.dataLoaded = true;
       }
       this.cdRef.detectChanges();
     });
+
+    if (this.modelFacade) {
+      console.log(this.filterOptions)
+      this.filterOptions = { ...this.filterOptions, limit: this.itemsPerPage };
+      this.modelFacade.base.loadFiltered(this.filterOptions);
+      this.loading$ = this.modelFacade.base.loaded$;
+    }
+
+    this.searchInputControl.valueChanges
+      .pipe(
+        takeUntil(this._unsubscribeAll),
+        debounceTime(300),
+        tap((search: string) => {
+          this.filterOptions = { ...this.filterOptions, search };
+          if (this.modelFacade) {
+            this.modelFacade.base.loadFiltered(this.filterOptions);
+          }
+        })
+      )
+      .subscribe();
   }
+
+  transformer = (node: CategoryNode, level: number) => {
+    return new CategoryFlatNode(
+      this.findChildren(node.id).length > 0, // expandable if it has children
+      node.name,
+      level,
+      node.type,
+      node.id
+    );
+  }
+
+  private _getLevel = (node: CategoryFlatNode) => node.level;
+  private _isExpandable = (node: CategoryFlatNode) => node.expandable;
+  private _getChildren = (node: CategoryNode): Observable<CategoryNode[]> => observableOf(node.children);
+  hasChild = (_: number, _nodeData: CategoryFlatNode) => _nodeData.expandable;
+  findChildren(parentId: string): CategoryNode[] {
+    // Assuming `categories` is your array of categories
+    return this.dataSourceTree.data.filter(node => node.parent_api_id === parentId);
+  }
+
 
   visibleNodes(): CategoryNode[] {
     const result: CategoryNode[] = [];

@@ -47,6 +47,8 @@ import {
   MatTreeNodeToggle
 } from "@angular/material/tree";
 import {CdkDrag, CdkDropList} from "@angular/cdk/drag-drop";
+import {ViewResultComponent} from "./components/view-items/view-result.component";
+import {ViewCheckboxComponent} from "./components/view-items/view-checkbox/view-checkbox.component";
 
 @NgModule({
   imports: [
@@ -102,7 +104,9 @@ import {CdkDrag, CdkDropList} from "@angular/cdk/drag-drop";
     ViewFileComponent,
     ViewModalComponent,
     ViewDropdownComponent,
-    TableTreeComponent
+    TableTreeComponent,
+    ViewResultComponent,
+    ViewCheckboxComponent
   ],
   exports: [
     ContractStateComponent,
@@ -123,7 +127,9 @@ import {CdkDrag, CdkDropList} from "@angular/cdk/drag-drop";
     ViewImageFileComponent,
     ViewFileComponent,
     ViewDropdownComponent,
-    TableTreeComponent
+    TableTreeComponent,
+    ViewResultComponent,
+    ViewCheckboxComponent
   ],
 })
 export class ListBuilderModule {

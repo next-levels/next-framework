@@ -7,6 +7,7 @@ import { ViewDropdownComponent } from '../components/view-items/view-dropdown/vi
 import { ListComponents } from '@next-levels/types';
 import { ViewCheckboxComponent } from '../components/view-items/view-checkbox/view-checkbox.component';
 import { ViewFileComponent } from '../components/view-items/view-file/view-file.component';
+import {ViewResultComponent} from "../components/view-items/view-result.component";
 
 export let defaultListComponents: ListComponents = {
   HIDDEN: ViewTextComponent,
@@ -25,4 +26,5 @@ export let defaultListComponents: ListComponents = {
   SIGN: ViewImageFileComponent,
   JSON: ViewTextComponent,
   CODE: ViewTextComponent,
+  RESULT: ViewResultComponent,
 };

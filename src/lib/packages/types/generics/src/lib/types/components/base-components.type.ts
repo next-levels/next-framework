@@ -16,6 +16,7 @@ export interface BaseComponents {
   STATE?: any;
   CODE?: any;
   JSON?: any;
+  RESULT?: any;
 }
 
 export type BuilderComponentsKeys = keyof BaseComponents;
