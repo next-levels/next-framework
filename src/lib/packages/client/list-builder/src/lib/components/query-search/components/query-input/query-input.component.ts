@@ -233,12 +233,12 @@ export class QueryInputComponent implements OnInit, OnChanges {
     }
     if (event.keyCode !== KEY_RETURN) {
       this.isCurrentlyTypedIn = true;
-      this.isSuccessfullySubmitted = false;
     }
     if (
       this.currentEvent === 'Value' &&
       this.isCurrentlyTypedIn &&
       !this.isExpectingSpace &&
+      !this.isSuccessfullySubmitted &&
       (event.keyCode === KEY_RETURN ||
         event.keyCode === KEY_TAB ||
         event.keyCode === KEY_SPACE)
@@ -248,6 +248,9 @@ export class QueryInputComponent implements OnInit, OnChanges {
       this.myControl.setValue(
         this.myControl.value + this.autoTrigger.activeOption.value
       );
+    }
+    if (event.keyCode !== KEY_RETURN) {
+      this.isSuccessfullySubmitted = false;
     }
     if (event.keyCode === KEY_SPACE) {
       this.isExpectingSpace = false;
@@ -434,7 +437,7 @@ export class QueryInputComponent implements OnInit, OnChanges {
     if (this.currentEvent === 'Field') {
       if (
         this.searchList.length >= 4 &&
-        this.searchList[this.searchList.length - 1].Value === 'ODER'
+        this.searchList[this.searchList.length - 1].Value === 'OR'
       ) {
         limitation = this.searchList[this.searchList.length - 4].Value;
       }
