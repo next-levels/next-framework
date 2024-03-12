@@ -143,8 +143,7 @@ export class BaseTableDefaultComponent
 
 
     if (haslistFields(this.model)) {
-      console.log(this.model)
-      this.fields = this.model.listFields().filter(field =>
+       this.fields = this.model.listFields().filter(field =>
         this.fields.includes(field)
       );
     }
