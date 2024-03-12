@@ -104,7 +104,7 @@ export class BaseTableDefaultComponent
     private router: Router,
     public readonly _matDialog: MatDialog,
     private componentFactoryResolver: ComponentFactoryResolver,
-    private cdRef: ChangeDetectorRef
+    public cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
