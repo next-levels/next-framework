@@ -75,9 +75,13 @@ export class FormController {
   }
 
   update(formValues: any = null): void {
-    if (this.form.valid) {
+     if (this.form.valid) {
       this.facade.base.update(formValues);
-    }
+    }else {
+       this.form.updateValueAndValidity();
+       this.form.markAllAsTouched();
+       this.getForm().markAsPristine();
+     }
   }
 
   async create(scope: any[] = null) {

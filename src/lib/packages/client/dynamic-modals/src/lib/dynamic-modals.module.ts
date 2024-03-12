@@ -22,6 +22,7 @@ import { ListBuilderModule } from '../../../list-builder/src';
 import { HttpClientModule } from '@angular/common/http';
 import { InlineSVGModule } from 'ng-inline-svg-2';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import {CreateSimpleComponent} from "./components/create-simple/create-simple.component";
 
 const store = new MinimizeStore();
 
@@ -30,6 +31,7 @@ const store = new MinimizeStore();
     CreateWizardComponent,
     BatchWizardComponent,
     ViewModalComponent,
+    CreateSimpleComponent
   ],
   imports: [
     CommonModule,
@@ -48,7 +50,7 @@ const store = new MinimizeStore();
     InlineSVGModule.forRoot(),
     NgbTooltipModule,
   ],
-  exports: [CreateWizardComponent, BatchWizardComponent, ViewModalComponent],
+  exports: [CreateWizardComponent, BatchWizardComponent, ViewModalComponent,CreateSimpleComponent],
   providers: [
     {
       provide: MinimizeStore,

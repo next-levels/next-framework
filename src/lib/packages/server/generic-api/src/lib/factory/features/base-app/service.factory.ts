@@ -81,15 +81,13 @@ export function GenericBaseApiService<T>(
 
     public async findByFilter(
       query: PaginateQuery,
-      country: string | undefined,
       @Request() req
     ): Promise<Result<Paginated<T>>> {
-      return this._findByFilter(query, country, req);
+      return this._findByFilter(query, req);
     }
 
     public async _findByFilter(
       query: PaginateQuery,
-      country: string | undefined,
       @Request() req
     ): Promise<Result<Paginated<any>>> {
       const relationFields = this.repository.metadata.relations.map(

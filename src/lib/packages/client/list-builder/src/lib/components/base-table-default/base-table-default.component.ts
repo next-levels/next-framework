@@ -4,7 +4,7 @@ import {
   ChangeDetectorRef,
   Component,
   ComponentFactoryResolver,
-  EventEmitter,
+  EventEmitter, HostListener,
   Input,
   OnDestroy,
   OnInit,
@@ -38,6 +38,7 @@ import {
   BatchWizardComponent,
   CreateWizardComponent,
 } from '../../../../../dynamic-modals';
+import {haslistFields} from "../../helpers/list.helper";
 
 @Component({
   template: '<ng-container></ng-container>',
@@ -140,6 +141,14 @@ export class BaseTableDefaultComponent
         .map((item: any) => item.field);
     }
 
+
+    if (haslistFields(this.model)) {
+      console.log(this.model)
+      this.fields = this.model.listFields().filter(field =>
+        this.fields.includes(field)
+      );
+    }
+
     if (this.fields) {
       this.displayedColumns.push('select');
       this.displayedColumns = [...this.displayedColumns, ...this.fields];
@@ -148,15 +157,18 @@ export class BaseTableDefaultComponent
 
     if (this.listController.scope.length > 0) {
       this.listController.scope.forEach((scope) => {
-        this.filterOptions['filter.' + scope.key] =
-          scope.operation + ':' + scope.value;
+        if(scope.value){
+          this.filterOptions['filter.' + scope.key] =
+              scope.operation + ':' + scope.value;
+        }else {
+          this.filterOptions['filter.' + scope.key] =
+              scope.operation ;
+        }
       });
     }
 
     this.modelFacade?.base.filtered$.subscribe((entries: unknown) => {
-      this.dataSource.data = (entries as any[]).sort((a, b) => {
-        return b.id - a.id;
-      });
+      this.dataSource.data = entries as any[];
       this.cdRef.detectChanges();
     });
 
@@ -192,42 +204,67 @@ export class BaseTableDefaultComponent
           changes['selector'].currentValue
         ] as unknown as Observable<any>;
         observable.subscribe((entries: unknown) => {
-          this.dataSource.data = (entries as any[]).sort((a, b) => {
-            return b.id - a.id;
-          });
+          this.dataSource.data = entries as any[];
           this.cdRef.detectChanges();
         });
       }
     }
   }
 
-  ngAfterViewInit(): void {
-    if (this.sort && this.paginator) {
-      this.sort.sortChange.subscribe(() => {
-        this.paginator.pageIndex = 0;
-      });
+  private ongoingTouches: PointerEvent[] = [];
 
-      merge(this.sort.sortChange, this.paginator.page)
-        .pipe(
-          takeUntil(this._unsubscribeAll),
-          tap(() => {
-            this.filterOptions = {
-              ...this.filterOptions,
-              page: this.paginator.pageIndex + 1,
-              limit: this.paginator.pageSize,
-              sortBy: `${
-                this.sort.active
-              }:${this.sort.direction.toUpperCase()}`,
-            };
-
-            if (this.modelFacade) {
-              this.modelFacade.base.loadFiltered(this.filterOptions);
-            }
-          })
-        )
-        .subscribe();
+  @HostListener('pointerdown', ['$event'])
+  onPointerDown(event: PointerEvent) {
+    if (event.pointerType === 'touch') {
+      this.ongoingTouches.push(event);
     }
-    this.cdRef.detectChanges();
+  }
+
+  @HostListener('pointermove', ['$event'])
+  onPointerMove(event: PointerEvent) {
+    if (event.pointerType === 'touch' && this.ongoingTouches.length > 1) {
+      // Handle two-finger swipe gesture
+      console.log('Two-finger swipe gesture detected');
+      // Implement your logic here
+    }
+  }
+
+  @HostListener('pointerup', ['$event'])
+  onPointerUp(event: PointerEvent) {
+    if (event.pointerType === 'touch') {
+      this.ongoingTouches = this.ongoingTouches.filter(touch => touch.pointerId !== event.pointerId);
+    }
+  }
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      // Because this hook is not the lifecycle of an extending component like table-default but of this component which has its own template
+      if (this.sort && this.paginator) {
+        this.sort.sortChange.subscribe(() => {
+          this.paginator.pageIndex = 0;
+        });
+
+        merge(this.sort.sortChange, this.paginator.page)
+          .pipe(
+            takeUntil(this._unsubscribeAll),
+            tap(() => {
+              this.filterOptions = {
+                ...this.filterOptions,
+                page: this.paginator.pageIndex + 1,
+                limit: this.paginator.pageSize,
+                sortBy: `${
+                  this.sort.active
+                }:${this.sort.direction.toUpperCase()}`,
+              };
+
+              if (this.modelFacade) {
+                this.modelFacade.base.loadFiltered(this.filterOptions);
+              }
+            })
+          )
+          .subscribe();
+      }
+      this.cdRef.detectChanges();
+    }, 100);
   }
 
   getTimestamp(value) {
@@ -249,6 +286,7 @@ export class BaseTableDefaultComponent
       });
       this.cdRef.detectChanges();
     } else {
+      console.log(this.router.url + '/detail/' + row.id);
       this.router.navigate([this.router.url + '/detail/' + row.id]);
     }
   }
@@ -508,7 +546,6 @@ export class BaseTableDefaultComponent
   }
 
   batchEdit() {
-    console.log('');
     this._matDialog.open(BatchWizardComponent, {
       minWidth: '50%',
       autoFocus: false,

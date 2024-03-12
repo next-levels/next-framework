@@ -15,11 +15,8 @@ export class InputCodeeditorComponent extends BaseInputTextareaComponent {
 
     public editorOptions: JsonEditorOptions;
     public data: any;
-
     theme = 'vs-dark';
-
     model: CodeModel;
-
     options = {
         contextmenu: true,
         minimap: {

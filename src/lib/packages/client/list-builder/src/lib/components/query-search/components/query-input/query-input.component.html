@@ -1,21 +1,20 @@
 <div
   class="card rounded-0 bgi-no-repeat bgi-position-x-end bgi-size-cover query-search-wrapper"
-  [ngStyle]="style"
 >
-  <form
-    class="rounded d-flex flex-column flex-lg-row me-lg-10"
-    (submit)="onSubmit()"
-  >
+  <form class="rounded d-flex flex-column flex-lg-row me-lg-10">
     <div class="search-input-wrapper">
-      <mat-form-field class="example-40-width" subscriptSizing="dynamic">
-        <input type="hidden" [formControl]="hiddenCtrl" />
-
+      <mat-form-field
+        class="example-40-width"
+        subscriptSizing="dynamic"
+        [style]="styleExpression"
+      >
         <input
           [formControl]="myControl"
           [matAutocomplete]="auto"
           class="form-control"
           type="text"
           placeholder="Suche"
+          #typeahead
           matInput
           style="
             -webkit-background-clip: text;
@@ -38,8 +37,19 @@
             {{ option }}
           </mat-option>
         </mat-autocomplete>
+
+        <a
+          class="smallbutton px-1 cursor-pointer"
+          (click)="emptyQuery()"
+          *ngIf="myControl.value"
+        >
+          x
+        </a>
       </mat-form-field>
-      <div class="pt-1 d-flex justify-content-end align-items-center" *ngIf="false">
+      <div
+        class="pt-1 d-flex justify-content-end align-items-center"
+        *ngIf="user"
+      >
         <a
           href="https://vmms.scrollhelp.site/intro/tutorials-suchen"
           target="_blank"
@@ -69,7 +79,9 @@
     </div>
 
     <div class="px-5" *ngIf="false">
-      <button type="submit" class="btn btn-light">Suchen</button>
+      <button type="submit" class="btn btn-light" (click)="submitFunction()">
+        Suchen
+      </button>
     </div>
   </form>
 </div>

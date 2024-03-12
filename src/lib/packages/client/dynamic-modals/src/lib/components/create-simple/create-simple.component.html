@@ -1,0 +1,22 @@
+<div class="grid gap-4" *transloco="let t">
+  <nxtlvls-form
+    [formModel]="this.model"
+    [data]="this.values"
+    (dataOutput)="dataOutput($event)"
+    [settings]="{}"
+  ></nxtlvls-form>
+
+  <button
+    mat-flat-button
+    [color]="'primary'"
+    type="submit"
+    (click)="fireAction()"
+  >
+    <span class="mr-1.5" >{{ t('button.create') }}</span>
+     <mat-icon
+      class="icon-size-5 text-current"
+      [svgIcon]="'heroicons_solid:plus'"
+    ></mat-icon>
+  </button>
+
+</div>

@@ -5,9 +5,7 @@ import { SoftDeleteQueryBuilder } from 'typeorm/query-builder/SoftDeleteQueryBui
   findAll(req): Promise<Result<T[]>>;
   findOne(id: number, req): Promise<Result<T | null>>;
   findByFilter(
-    query: PaginateQuery,
-    country: string | undefined,
-    req
+    query: PaginateQuery,req
   ): Promise<Result<Paginated<T>>>;
   create(data: T & { user_id?: any }, req: any): Promise<Result<T>>;
   update(id: number, data: Partial<T>, req): Promise<Result<T>>;

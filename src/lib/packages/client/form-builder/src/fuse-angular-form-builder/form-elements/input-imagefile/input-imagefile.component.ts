@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {ChangeDetectionStrategy, Component, TemplateRef, ViewChild} from '@angular/core';
 import { BaseInputImageFileComponent } from '../../../lib/components/base-components/base-input-imagefile.component';
 
 @Component({
@@ -6,4 +6,8 @@ import { BaseInputImageFileComponent } from '../../../lib/components/base-compon
   templateUrl: './input-imagefile.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class InputImageFileComponent extends BaseInputImageFileComponent {}
+export class InputImageFileComponent extends BaseInputImageFileComponent {
+
+
+
+}

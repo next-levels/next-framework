@@ -1,5 +1,10 @@
 <div class="input-file-wrapper mt-1" [formGroup]="fg">
-  <mat-label>{{ formField.label }}</mat-label>
+  <span class="custom-label">{{ formField.label }}</span>
+
+  <button mat-icon-button aria-label="Generate with KI"   [color]="'primary'"  (click)="openAiModal()">
+    <mat-icon [svgIcon]="'heroicons_outline:sparkles'"></mat-icon>
+  </button>
+
 
   <div class="relative w-32 h-32 mr-4 rounded-md overflow-hidden">
     <ng-container *ngIf="edit" [ngTemplateOutlet]="editToggler"></ng-container>
@@ -47,6 +52,12 @@
       *ngIf="file_id"
       [src]="baseApiUrl + file_id"
     />
+
+    <img
+      class="object-cover w-full h-full"
+      *ngIf="this.generatedImage"
+      [src]="this.generatedImage"
+    />
     <div
       class="flex items-center justify-center p-4 w-full h-full rounded overflow-hidden uppercase text-6xl font-bold leading-none bg-gray-100 text-gray-600 dark:bg-primary-700 dark:text-gray-200"
       *ngIf="!file_id"
@@ -64,7 +75,7 @@
         type="button"
         color="accent"
       >
-        <mat-icon [svgIcon]="'heroicons_solid:pencil-alt'"></mat-icon>
+        <mat-icon [svgIcon]="'heroicons_solid:pencil'"></mat-icon>
       </button>
     </ng-container>
     <ng-container *ngIf="editMode">
@@ -75,8 +86,26 @@
         type="button"
         color="warn"
       >
-        <mat-icon [svgIcon]="'heroicons_solid:x'"></mat-icon>
+        <mat-icon [svgIcon]="'heroicons_solid:x-mark'"></mat-icon>
       </button>
     </ng-container>
   </div>
+</ng-template>
+
+<ng-template #modalTemplate let-item>
+  <form (ngSubmit)="generateOpenAi()">
+    <textarea class="w-full border" style="height: 300px;" [(ngModel)]="textareaValue" name="textarea"></textarea>
+    <div class="flex  justify-end">
+      <button
+        class="ml-4 rounded-md "
+        mat-stroked-button
+        [color]="'primary'"
+        type="submit">
+        <mat-icon [svgIcon]="'heroicons_outline:sparkles'"></mat-icon>
+        <span *ngIf="!isLoading" class="ml-2 mr-1 ">Generieren</span>
+        <div *ngIf="isLoading" class="loading-animation">Anfrage wird verarbeitet...</div>
+      </button>
+
+    </div>
+  </form>
 </ng-template>

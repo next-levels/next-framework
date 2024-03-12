@@ -27,4 +27,8 @@ export class InstanceRegistryService {
     }
     return this.instanceMap.get(key) as typeof model;
   }
+
+  log(): void {
+    console.log(this.instanceMap);
+  }
 }

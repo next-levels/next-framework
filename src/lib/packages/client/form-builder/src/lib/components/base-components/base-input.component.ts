@@ -43,7 +43,7 @@ export class BaseInputComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.formField && this.formField.name) {
+    if (this.formField && this.formField.name && this.formController) {
       this.fg = this.formController?.getForm();
       this.formField.label = this.formField.label ?? this.formField.name;
       this.dependency = this.formController?.getDependency(this.formField.name);

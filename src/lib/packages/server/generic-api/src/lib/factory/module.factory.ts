@@ -7,10 +7,10 @@ import { GenericBaseCMSService } from './features/base-cms/service.factory';
 import { GenericBaseApiControllerCreator } from './features/base-app/controller.factory';
 import { GenericBaseApiService } from './features/base-app/service.factory';
 import { HookRegistryService } from '../helpers/hook.regestry';
-import { GenericWebSocketGateway } from "./features/base-sockets/generic-socket.gateway";
-import { EventEmitter2 } from "@nestjs/event-emitter";
-import {GenericBaseCMSControllerCreatorMongo} from "./features/base-cms-mongo/controller.factory";
-import {GenericBaseCMSServiceMongo} from "./features/base-cms-mongo/service-mongo.factory";
+import { GenericWebSocketGateway } from './features/base-sockets/generic-socket.gateway';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { GenericBaseCMSControllerCreatorMongo } from './features/base-cms-mongo/controller.factory';
+import { GenericBaseCMSServiceMongo } from './features/base-cms-mongo/service-mongo.factory';
 
 const globalEventEmitter = new EventEmitter2();
 export function getFeatures<T extends Type<any>>(
@@ -68,30 +68,38 @@ function getFeature(
   switch (feature) {
     case 'cms':
       return {
-        controller: GenericBaseCMSControllerCreator(config,globalEventEmitter),
-        service: GenericBaseCMSService(entity),
+        controller: GenericBaseCMSControllerCreator(config, globalEventEmitter),
+        service: GenericBaseCMSService(entity,registryServiceToken),
         serviceToken: serviceToken,
       };
     case 'cms-mongo':
       return {
-        controller: GenericBaseCMSControllerCreatorMongo(config,globalEventEmitter),
+        controller: GenericBaseCMSControllerCreatorMongo(
+          config,
+          globalEventEmitter
+        ),
         service: GenericBaseCMSServiceMongo(entity),
         serviceToken: serviceToken,
       };
     case 'app':
       return {
-        controller: GenericBaseApiControllerCreator(config,globalEventEmitter),
+        controller: GenericBaseApiControllerCreator(config, globalEventEmitter),
         service: GenericBaseApiService(entity, registryServiceToken, userScope),
         serviceToken: serviceToken,
       };
     case 'notification':
-       return {
+      return {
         controller: GenericBaseApiControllerCreator(config),
-         service: GenericWebSocketGateway(entity,`${route}`, {
-           origin: ['http://localhost:4200', 'http://localhost:4222'],
-           credentials: true,
-         },globalEventEmitter),
-         serviceToken: serviceToken,
+        service: GenericWebSocketGateway(
+          entity,
+          `${route}`,
+          {
+            origin: ['http://localhost:4200',process.env['CMS_URL'], 'http://localhost:4222','http://127.0.0.1:4222'],
+            credentials: true,
+          },
+          globalEventEmitter
+        ),
+        serviceToken: serviceToken,
       };
     default:
       throw new Error(`Feature ${feature} not found`);

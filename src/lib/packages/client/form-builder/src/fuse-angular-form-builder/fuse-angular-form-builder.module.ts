@@ -1,4 +1,4 @@
-import { ReactiveFormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
@@ -34,29 +34,30 @@ import { NgxCurrencyDirective } from 'ngx-currency';
 import { InputImageFileComponent } from './form-elements/input-imagefile/input-imagefile.component';
 
 @NgModule({
-  imports: [
-    ReactiveFormsModule,
-    CommonModule,
-    RouterModule,
-    TranslateModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatAutocompleteModule,
-    MatSortModule,
-    MatPaginatorModule,
-    MatTableModule,
-    MatCheckboxModule,
-    MatSelectModule,
-    MatInputModule,
-    QuillEditorComponent,
-    MatIconModule,
-    MatButtonModule,
-    MatRippleModule,
-    NgJsonEditorModule,
-    CodeEditorModule.forRoot(),
-    NgxCurrencyDirective,
-  ],
+    imports: [
+        ReactiveFormsModule,
+        CommonModule,
+        RouterModule,
+        TranslateModule,
+        MatInputModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatAutocompleteModule,
+        MatSortModule,
+        MatPaginatorModule,
+        MatTableModule,
+        MatCheckboxModule,
+        MatSelectModule,
+        MatInputModule,
+        QuillEditorComponent,
+        MatIconModule,
+        MatButtonModule,
+        MatRippleModule,
+        NgJsonEditorModule,
+        CodeEditorModule.forRoot(),
+        NgxCurrencyDirective,
+        FormsModule,
+    ],
   exports: [],
   declarations: [
     InputTextComponent,

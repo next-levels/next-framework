@@ -11,52 +11,55 @@ import { BaseService } from '../types/base.service';
 import { GenericEffects } from '../+state/generic.effects';
 import { BaseFacade } from './base.facede';
 import { EntityPaginated, FilterOptions } from '@next-levels/types';
+import {EnvironmentStorageService} from "../../../../angular-commons";
 
 export function createBaseService<T extends object>(modelUrl: string) {
   @Injectable({
     providedIn: 'root',
   })
   class GenericService implements BaseService<T> {
-    constructor(public _http: HttpClient) {}
+    envService: EnvironmentStorageService;
+    constructor(public _http: HttpClient) {
+      this.envService = EnvironmentStorageService.getInstance();
+    }
 
     getEntity(id: number | string): Observable<T> {
-      return this._http.get<T>(modelUrl + '/' + id);
+       return this._http.get<T>(this.envService.baseUrl + modelUrl + '/' + id);
     }
 
     getAll(): Observable<T[]> {
-      return this._http.get<T[]>(modelUrl);
+      return this._http.get<T[]>(this.envService.baseUrl + modelUrl);
     }
 
     findByFilter(filter: FilterOptions): Observable<EntityPaginated<T>> {
-      return this._http.get<EntityPaginated<T>>(`${modelUrl}/filter`, {
+      return this._http.get<EntityPaginated<T>>(`${this.envService.baseUrl + modelUrl}/filter`, {
         params: { ...filter },
       });
     }
 
     addEntity(data: T): Observable<T> {
-      return this._http.post<T>(modelUrl, data);
+      return this._http.post<T>(this.envService.baseUrl + modelUrl, data);
     }
 
     deleteEntity(entity: T): Observable<T> {
-      return this._http.delete<T>(modelUrl + '/' + (entity as any).id);
+      return this._http.delete<T>(this.envService.baseUrl + modelUrl + '/' + (entity as any).id);
     }
 
     batchDeleteEntities(entities: T[]): Observable<T[]> {
-      return this._http.put<T[]>(modelUrl + '/batch-delete', {
+      return this._http.put<T[]>(this.envService.baseUrl + modelUrl + '/batch-delete', {
         entities: entities,
       });
     }
 
     batchEditEntities(ids: number[], changes: Partial<T>): Observable<T> {
-      return this._http.put<T>(modelUrl + '/batch', {
+      return this._http.put<T>(this.envService.baseUrl + modelUrl + '/batch', {
         ids: ids,
         partial: changes,
       });
     }
 
     updateEntity(id: number | string, data: Partial<T>): Observable<T> {
-      console.log('updateEntity', id, data);
-      return this._http.patch<T>(modelUrl + '/' + id, data);
+       return this._http.patch<T>(this.envService.baseUrl + modelUrl + '/' + id, data);
     }
   }
 

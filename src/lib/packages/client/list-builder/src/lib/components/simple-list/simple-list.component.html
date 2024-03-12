@@ -1,0 +1,26 @@
+<div class=" relative flex flex-col sm:flex-row flex-0 sm:justify-around px-3 justify-between items-center border-l-1 mt-5 mb-4">
+    <query-input
+            [style]="{ flex: '1' }"
+            style="width: 100%"
+            [model]="model"
+            (queryChange)="setQuery($event)"
+            [placeholder]="'Suche'"
+            [modelReference]="modelReference"
+            (openQueryRowsModalEvent)="openQueryRowsModal()"
+            [searchQuery]="searchQuery">
+    </query-input>
+</div>
+
+<div class="relative p-0 rounded-xl m-3 pt-2.5 pb-2.5">
+        <ng-container *ngFor="let item of items; let i = index; trackBy: trackByFn">
+            <a class="z-20 flex items-center py-2 cursor-pointer border-b simple-menu-item"
+                    [class.active]=" isActive(item.id)"
+                    [routerLink]="[router.url.split('detail')[0] + '/detail/' + item.id+'/base']">
+
+                <div class="min-w-0 ml-2">
+                    <div class="leading-5 truncate text-sm">{{getName(item.id)}}</div>
+                </div>
+            </a>
+        </ng-container>
+</div>
+
