@@ -104,6 +104,7 @@ export class FuseAngularFormBuilderModule {
             SIGN: InputFileComponent,
             CODE: InputCodeeditorComponent,
             JSON: InputJsoneditorComponent,
+            RESULT: InputNumberComponent,
           },
           baseUri
         ).providers,

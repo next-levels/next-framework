@@ -37,6 +37,18 @@ import { RouterLink } from '@angular/router';
 import { CardListComponent } from './components/card-list/card-list.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { TableCalendarComponent } from './components/table-calendar/table-calendar.component';
+import {TableTreeComponent} from "./components/table-tree/table-tree.component";
+import {
+  MatTree,
+  MatTreeModule,
+  MatTreeNode,
+  MatTreeNodeDef,
+  MatTreeNodePadding,
+  MatTreeNodeToggle
+} from "@angular/material/tree";
+import {CdkDrag, CdkDropList} from "@angular/cdk/drag-drop";
+import {ViewResultComponent} from "./components/view-items/view-result.component";
+import {ViewCheckboxComponent} from "./components/view-items/view-checkbox/view-checkbox.component";
 
 @NgModule({
   imports: [
@@ -61,6 +73,15 @@ import { TableCalendarComponent } from './components/table-calendar/table-calend
     InlineSVGModule.forRoot(),
     QuerySearchModule,
     RouterLink,
+    MatTree,
+    MatTreeNode,
+    CdkDropList,
+    CdkDrag,
+    MatTreeNodePadding,
+    MatTreeNodeToggle,
+    MatTreeNodeDef,
+    MatTreeModule,
+
   ],
   providers: [DatePipe],
   declarations: [
@@ -83,6 +104,9 @@ import { TableCalendarComponent } from './components/table-calendar/table-calend
     ViewFileComponent,
     ViewModalComponent,
     ViewDropdownComponent,
+    TableTreeComponent,
+    ViewResultComponent,
+    ViewCheckboxComponent
   ],
   exports: [
     ContractStateComponent,
@@ -103,6 +127,9 @@ import { TableCalendarComponent } from './components/table-calendar/table-calend
     ViewImageFileComponent,
     ViewFileComponent,
     ViewDropdownComponent,
+    TableTreeComponent,
+    ViewResultComponent,
+    ViewCheckboxComponent
   ],
 })
 export class ListBuilderModule {

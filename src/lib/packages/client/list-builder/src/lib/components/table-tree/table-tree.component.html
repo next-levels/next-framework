@@ -1,0 +1,124 @@
+<!-- Liste -->
+<div
+        class="flex  flex-col flex-auto min-w-0 sm:overflow-hidden bg-grey-50 dark:bg-gray-800"
+        [ngClass]="{ '': !childTable }"
+>
+
+    <div
+            *ngIf="showHeader == true"
+            class="relative bg-grey-50 flex flex-col sm:flex-row flex-0 sm:justify-around px-5 justify-between items-center dark:bg-gray-800 mt-5"
+    >
+        <ng-container *transloco="let t">
+            <div class="tracking-tight w-full">
+                <query-input
+                        [style]="{ flex: '1' }"
+                        [model]="model"
+                        (queryChange)="setQuery($event)"
+                        [placeholder]="'Suche'"
+                        [modelReference]="modelReference"
+                        (openQueryRowsModalEvent)="openQueryRowsModal()"
+                        [searchQuery]="searchQuery"
+                >
+                </query-input>
+            </div>
+        </ng-container>
+
+        <!-- Buttons -->
+        <ng-container *transloco="let t">
+            <div class="flex shrink-0 items-center sm:ml-4 ng-star-inserted my-5">
+                <button
+                        class="ml-4 rounded-md"
+                        mat-flat-button
+                        [color]="'primary'"
+                        (click)="openAddModal()"
+                >
+                    <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                    <span class="ml-2 mr-1">{{ t('button.add') }}</span>
+                </button>
+
+                <button
+                        class="ml-4 rounded-md"
+                        mat-flat-button
+                        [color]="'accent'"
+                        (click)="export()"
+                >
+                    <mat-icon [svgIcon]="'heroicons_outline:arrow-down-tray'"></mat-icon>
+                    <span class="ml-2 mr-1">Export</span>
+                </button>
+            </div>
+        </ng-container>
+    </div>
+
+    <!-- Main -->
+    <div
+            class="relative p-5 h-full  "
+            style="height: 100vh; overflow-x: auto"
+    >
+        <div
+                class="pt-1 d-flex justify-content-end selectedRowsButton"
+                *ngIf="isOneSelected()"
+        >
+            <a
+                    class="btn btn-primary me-2 mr-0 pr-0 smallbutton"
+                    (click)="batchEdit()"
+            >
+                Ausgewählte bearbeiten
+            </a>
+            ·
+            <a
+                    class="btn btn-primary me-2 mr-0 pr-0 smallbutton"
+                    (click)="batchDelete()"
+            >
+                Ausgewählte löschen
+            </a>
+        </div>
+        <div
+                class="bg-white list-builder-table ng-star-inserted border-white rounded-xl grid content-between items-start dark:bg-gray-800 border-t"
+                style="
+        overflow-x: auto;
+         max-height: 80vh;
+      ">
+
+            <div
+                    class="relative flex flex-col w-full min-w-0 mb-0 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
+                <div class="flex-auto px-0 pt-0 pb-2">
+                    <div class="p-0">
+
+
+                      <mat-tree *ngIf="dataLoaded" [dataSource]="dataSourceTree" [treeControl]="treeControl" cdkDropList (cdkDropListDropped)="drop($event)">
+                        <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding cdkDrag [cdkDragData]="node" (mouseenter)="dragHover(node)" (mouseleave)="dragHoverEnd()" (cdkDragStarted)="dragStart()" (cdkDragReleased)="dragEnd()">
+                          <button mat-icon-button disabled></button>
+                          {{node.name}} : {{node.type}}
+                        </mat-tree-node>
+
+                        <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding cdkDrag [cdkDragData]="node" (mouseenter)="dragHover(node)" (mouseleave)="dragHoverEnd()" (cdkDragStarted)="dragStart()" (cdkDragReleased)="dragEnd()">
+                          <button mat-icon-button matTreeNodeToggle (click)="expansionModel.toggle(node.id)"
+                                  [attr.aria-label]="'toggle ' + node.name">
+                            <mat-icon class="mat-icon-rtl-mirror">
+                              {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                            </mat-icon>
+                          </button>
+                          {{node.name}} : {{node.type}}
+                        </mat-tree-node>
+                      </mat-tree>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="w-64 bg-white rounded-xl dark:bg-gray-800">
+    <ng-template #noGuarantees>
+        <div
+                class="p-8 sm:p-16 text-2xl tracking-tight text-center"
+                *transloco="let t"
+        >
+            Keine {{ t(listController.getModelClassName() + '.name') }} vorhanden
+        </div>
+    </ng-template>
+</div>

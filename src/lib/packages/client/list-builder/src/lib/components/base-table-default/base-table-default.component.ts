@@ -67,7 +67,7 @@ export class BaseTableDefaultComponent
   @ViewChild(MatSort) sort: MatSort;
 
   public loading$: Observable<boolean>;
-  private _unsubscribeAll: Subject<any> = new Subject<any>();
+  public _unsubscribeAll: Subject<any> = new Subject<any>();
 
   public searchInputControl: FormControl = new FormControl<string | null>(null);
   public statusFilterControl: FormControl = new FormControl<string>('');
@@ -79,9 +79,11 @@ export class BaseTableDefaultComponent
   model: any;
   modelReference: string;
 
+  itemsPerPage = 20;
+
   public pagination: PaginationMeta = {
     currentPage: 1,
-    itemsPerPage: 20,
+    itemsPerPage: this.itemsPerPage,
     totalPages: 0,
     totalItems: 0,
     sortBy: [['id', 'DESC' as SortDirection]],
@@ -104,7 +106,7 @@ export class BaseTableDefaultComponent
     private router: Router,
     public readonly _matDialog: MatDialog,
     private componentFactoryResolver: ComponentFactoryResolver,
-    private cdRef: ChangeDetectorRef
+    public cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -143,8 +145,7 @@ export class BaseTableDefaultComponent
 
 
     if (haslistFields(this.model)) {
-      console.log(this.model)
-      this.fields = this.model.listFields().filter(field =>
+       this.fields = this.model.listFields().filter(field =>
         this.fields.includes(field)
       );
     }
