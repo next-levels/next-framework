@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BaseViewComponent } from '../base-view/base-view.component';
 
 @Component({

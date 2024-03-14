@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { BaseViewComponent } from '../base-view/base-view.component';
 
 @Component({
@@ -17,7 +17,7 @@ import { BaseViewComponent } from '../base-view/base-view.component';
     }
   `,
 })
-export class ViewCheckboxComponent extends BaseViewComponent implements OnInit {
+export class ViewCheckboxComponent extends BaseViewComponent {
   // override ngOnInit() {
   //   super.ngOnInit();
   //   this._value = this._value ? 'Ja' : 'Nein';

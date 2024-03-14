@@ -10,5 +10,6 @@ export interface FormOptions {
   hidden?: boolean;
   options?: any;
   disabled?: boolean;
+  noLabel?: boolean;
   updateOn?: 'change' | 'blur' | 'submit';
 }

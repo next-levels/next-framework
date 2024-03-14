@@ -43,6 +43,7 @@ export class BaseInputComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log('this.formField', this.formField);
     if (this.formField && this.formField.name && this.formController) {
       this.fg = this.formController?.getForm();
       this.formField.label = this.formField.label ?? this.formField.name;
@@ -90,6 +91,9 @@ export class BaseInputComponent implements OnInit {
         .subscribe((translated: string) => {
           this.formField.label = translated ?? this.formField.name;
 
+          if (this.formField.noLabel) {
+            this.formField.label = null;
+          }
           if (this.formField?.required) {
             validators.push(Validators.required);
             //   this.formField.label = this.formField.label + '*';
