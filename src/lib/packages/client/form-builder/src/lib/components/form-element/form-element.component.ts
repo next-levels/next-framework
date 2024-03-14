@@ -26,6 +26,7 @@ export class FormElementComponent implements AfterViewInit {
     @Input() formField: FormOptions;
     @Input() formController!: FormController;
     @Input() fieldName = '';
+    @Input() model:any;
     @Output() dataOutput = new EventEmitter<any>();
     @Input() readOnly = false;
 
@@ -60,29 +61,34 @@ export class FormElementComponent implements AfterViewInit {
 
     ngAfterViewInit() {
         if (this.view !== undefined && this.fieldName) {
+          let formModel = this.formController?.getModelDefinition();
+          if(!formModel && this.model){
+            formModel = this.model;
+          }
             this.formField = Reflect.getMetadata(
-                FORMFIELD_PREFIX,
-                this.formController?.getModelDefinition(),
-                this.fieldName
+              FORMFIELD_PREFIX,
+              formModel,
+              this.fieldName
             );
 
             let baseField = Reflect.getMetadata(
-                BUILDERFIELD_PREFIX,
-                this.formController?.getModelDefinition(),
-                this.fieldName
+              BUILDERFIELD_PREFIX,
+              formModel,
+              this.fieldName
             );
 
             this.formField = {...this.formField, ...baseField};
             this.formField.name = this.fieldName;
             if (!this.formField.type) {
-                return;
+              return;
             }
 
             const componentRef = this.view.createComponent(
-                this.formBuilderComponents[this.formField.type]
+              this.formBuilderComponents[this.formField.type]
             );
 
             this.initComponent(componentRef);
+
         } else if (this.view !== undefined && this.formField) {
             const componentRef = this.view.createComponent(
                 this.formBuilderComponents[this.formField.type]
