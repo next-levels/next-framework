@@ -43,7 +43,6 @@ export class BaseInputComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('this.formField', this.formField);
     if (this.formField && this.formField.name && this.formController) {
       this.fg = this.formController?.getForm();
       this.formField.label = this.formField.label ?? this.formField.name;
