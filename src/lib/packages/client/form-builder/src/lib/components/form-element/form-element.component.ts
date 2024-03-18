@@ -69,7 +69,6 @@ export class FormElementComponent implements AfterViewInit {
   ) {}
 
   ngAfterViewInit() {
-    console.log('this.noLabel', this.noLabel);
     if (this.view !== undefined && this.fieldName) {
       let formModel = this.formController?.getModelDefinition();
       if (!formModel && this.model) {
