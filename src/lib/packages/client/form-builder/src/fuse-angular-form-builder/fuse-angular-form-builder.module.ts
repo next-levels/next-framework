@@ -1,4 +1,4 @@
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
@@ -32,32 +32,33 @@ import { CodeEditorModule } from '@ngstack/code-editor';
 import { InputCurrencyComponent } from './form-elements/input-currency/input-currency.component';
 import { NgxCurrencyDirective } from 'ngx-currency';
 import { InputImageFileComponent } from './form-elements/input-imagefile/input-imagefile.component';
+import { ListSelectorComponent } from './list-selector/list-selector.component';
 
 @NgModule({
-    imports: [
-        ReactiveFormsModule,
-        CommonModule,
-        RouterModule,
-        TranslateModule,
-        MatInputModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        MatAutocompleteModule,
-        MatSortModule,
-        MatPaginatorModule,
-        MatTableModule,
-        MatCheckboxModule,
-        MatSelectModule,
-        MatInputModule,
-        QuillEditorComponent,
-        MatIconModule,
-        MatButtonModule,
-        MatRippleModule,
-        NgJsonEditorModule,
-        CodeEditorModule.forRoot(),
-        NgxCurrencyDirective,
-        FormsModule,
-    ],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    RouterModule,
+    TranslateModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatAutocompleteModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatCheckboxModule,
+    MatSelectModule,
+    MatInputModule,
+    QuillEditorComponent,
+    MatIconModule,
+    MatButtonModule,
+    MatRippleModule,
+    NgJsonEditorModule,
+    CodeEditorModule.forRoot(),
+    NgxCurrencyDirective,
+    FormsModule,
+  ],
   exports: [],
   declarations: [
     InputTextComponent,
@@ -73,6 +74,7 @@ import { InputImageFileComponent } from './form-elements/input-imagefile/input-i
     InputDateComponent,
     InputCodeeditorComponent,
     InputJsoneditorComponent,
+    ListSelectorComponent,
   ],
 })
 export class FuseAngularFormBuilderModule {
@@ -105,6 +107,7 @@ export class FuseAngularFormBuilderModule {
             CODE: InputCodeeditorComponent,
             JSON: InputJsoneditorComponent,
             RESULT: InputNumberComponent,
+            LISTSELECTOR: ListSelectorComponent,
           },
           baseUri
         ).providers,

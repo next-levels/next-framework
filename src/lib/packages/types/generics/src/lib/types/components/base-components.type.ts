@@ -18,6 +18,7 @@ export interface BaseComponents {
   JSON?: any;
   RESULT?: any;
   INLINE_EDIT?: any;
+  LISTSELECTOR?: any;
 }
 
 export type BuilderComponentsKeys = keyof BaseComponents;
