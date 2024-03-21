@@ -90,6 +90,9 @@ export class BaseInputComponent implements OnInit {
         .subscribe((translated: string) => {
           this.formField.label = translated ?? this.formField.name;
 
+          if (this.formField.noLabel) {
+            this.formField.label = null;
+          }
           if (this.formField?.required) {
             validators.push(Validators.required);
             //   this.formField.label = this.formField.label + '*';

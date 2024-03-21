@@ -1,24 +1,31 @@
 <div class="input-textarea-wrapper mt-1 input-wrapper" [formGroup]="fg">
-    <mat-label>{{ formField.label }} </mat-label>
+  <mat-label *ngIf="!formField.noLabel">{{ formField.label }} </mat-label>
 
-     <button *ngIf="formController?.formOptions?.small == true" mat-mini-fab (click)="openEditor(value)" class="block mt-3">
-        <mat-icon [svgIcon]="'heroicons_outline:code-bracket'"></mat-icon>
-    </button>
+  <button
+    *ngIf="formController?.formOptions?.small == true"
+    mat-mini-fab
+    (click)="openEditor(value)"
+    class="block mt-3"
+  >
+    <mat-icon [svgIcon]="'heroicons_outline:code-bracket'"></mat-icon>
+  </button>
 
-    <json-editor *ngIf="formController?.formOptions?.small == false" [options]="editorOptions" [data]="data"
-                 (change)="getData($event)"></json-editor>
-
+  <json-editor
+    *ngIf="formController?.formOptions?.small == false"
+    [options]="editorOptions"
+    [data]="data"
+    (change)="getData($event)"
+  ></json-editor>
 </div>
 
 <ng-template #modalTemplate let-item>
-    <json-editor [options]="editorOptions" [data]="data" (change)="getData($event)"></json-editor>
-    <button
-            class="ml-4"
-            mat-flat-button
-            [color]="'primary'"
-            (click)="save()"
-    >
-        <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-        <span class="ml-2 mr-1">Speichern</span>
-    </button>
+  <json-editor
+    [options]="editorOptions"
+    [data]="data"
+    (change)="getData($event)"
+  ></json-editor>
+  <button class="ml-4" mat-flat-button [color]="'primary'" (click)="save()">
+    <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+    <span class="ml-2 mr-1">Speichern</span>
+  </button>
 </ng-template>

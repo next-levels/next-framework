@@ -1,10 +1,16 @@
 <div class="input-file-wrapper mt-1" [formGroup]="fg">
-  <span class="custom-label">{{ formField.label }}</span>
+  <span class="custom-label" *ngIf="!formField.noLabel">{{
+    formField.label
+  }}</span>
 
-  <button mat-icon-button aria-label="Generate with KI"   [color]="'primary'"  (click)="openAiModal()">
+  <button
+    mat-icon-button
+    aria-label="Generate with KI"
+    [color]="'primary'"
+    (click)="openAiModal()"
+  >
     <mat-icon [svgIcon]="'heroicons_outline:sparkles'"></mat-icon>
   </button>
-
 
   <div class="relative w-32 h-32 mr-4 rounded-md overflow-hidden">
     <ng-container *ngIf="edit" [ngTemplateOutlet]="editToggler"></ng-container>
@@ -94,18 +100,25 @@
 
 <ng-template #modalTemplate let-item>
   <form (ngSubmit)="generateOpenAi()">
-    <textarea class="w-full border" style="height: 300px;" [(ngModel)]="textareaValue" name="textarea"></textarea>
-    <div class="flex  justify-end">
+    <textarea
+      class="w-full border"
+      style="height: 300px"
+      [(ngModel)]="textareaValue"
+      name="textarea"
+    ></textarea>
+    <div class="flex justify-end">
       <button
-        class="ml-4 rounded-md "
+        class="ml-4 rounded-md"
         mat-stroked-button
         [color]="'primary'"
-        type="submit">
+        type="submit"
+      >
         <mat-icon [svgIcon]="'heroicons_outline:sparkles'"></mat-icon>
-        <span *ngIf="!isLoading" class="ml-2 mr-1 ">Generieren</span>
-        <div *ngIf="isLoading" class="loading-animation">Anfrage wird verarbeitet...</div>
+        <span *ngIf="!isLoading" class="ml-2 mr-1">Generieren</span>
+        <div *ngIf="isLoading" class="loading-animation">
+          Anfrage wird verarbeitet...
+        </div>
       </button>
-
     </div>
   </form>
 </ng-template>

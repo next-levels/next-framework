@@ -23,6 +23,7 @@ import { ViewRelationComponent } from './components/view-items/view-relation/vie
 import { defaultListComponents } from './types/default-list-components.type';
 import { BaseViewComponent } from './components/view-items/base-view/base-view.component';
 import { ViewDateComponent } from './components/view-items/view-date/view-date.component';
+import { ViewInlineEditComponent } from './components/view-items/view-inline-edit/view-inline-edit.component';
 import { ViewModalComponent } from './components/view-modal/view-modal.component';
 import { ViewDropdownComponent } from './components/view-items/view-dropdown/view-dropdown.component';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -37,18 +38,20 @@ import { RouterLink } from '@angular/router';
 import { CardListComponent } from './components/card-list/card-list.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { TableCalendarComponent } from './components/table-calendar/table-calendar.component';
-import {TableTreeComponent} from "./components/table-tree/table-tree.component";
+import { TableTreeComponent } from './components/table-tree/table-tree.component';
 import {
   MatTree,
   MatTreeModule,
   MatTreeNode,
   MatTreeNodeDef,
   MatTreeNodePadding,
-  MatTreeNodeToggle
-} from "@angular/material/tree";
-import {CdkDrag, CdkDropList} from "@angular/cdk/drag-drop";
-import {ViewResultComponent} from "./components/view-items/view-result.component";
-import {ViewCheckboxComponent} from "./components/view-items/view-checkbox/view-checkbox.component";
+  MatTreeNodeToggle,
+} from '@angular/material/tree';
+import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
+import { ViewResultComponent } from './components/view-items/view-result.component';
+import { ViewCheckboxComponent } from './components/view-items/view-checkbox/view-checkbox.component';
+import { TableInlineEditComponent } from './components/table-inline-edit/table-inline-edit.component';
+import { FormBuilderModule } from '../../../form-builder';
 
 @NgModule({
   imports: [
@@ -81,12 +84,13 @@ import {ViewCheckboxComponent} from "./components/view-items/view-checkbox/view-
     MatTreeNodeToggle,
     MatTreeNodeDef,
     MatTreeModule,
-
+    FormBuilderModule,
   ],
   providers: [DatePipe],
   declarations: [
     ContractStateComponent,
     TableDefaultComponent,
+    TableInlineEditComponent,
     TableCalendarComponent,
     SimpleListComponent,
     CardListComponent,
@@ -102,15 +106,17 @@ import {ViewCheckboxComponent} from "./components/view-items/view-checkbox/view-
     ViewDateComponent,
     ViewImageFileComponent,
     ViewFileComponent,
+    ViewInlineEditComponent,
     ViewModalComponent,
     ViewDropdownComponent,
     TableTreeComponent,
     ViewResultComponent,
-    ViewCheckboxComponent
+    ViewCheckboxComponent,
   ],
   exports: [
     ContractStateComponent,
     TableDefaultComponent,
+    TableInlineEditComponent,
     TableCalendarComponent,
     SimpleListComponent,
     CardListComponent,
@@ -126,10 +132,11 @@ import {ViewCheckboxComponent} from "./components/view-items/view-checkbox/view-
     ViewDateComponent,
     ViewImageFileComponent,
     ViewFileComponent,
+    ViewInlineEditComponent,
     ViewDropdownComponent,
     TableTreeComponent,
     ViewResultComponent,
-    ViewCheckboxComponent
+    ViewCheckboxComponent,
   ],
 })
 export class ListBuilderModule {

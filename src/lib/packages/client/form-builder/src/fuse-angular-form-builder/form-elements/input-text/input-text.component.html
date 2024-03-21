@@ -1,6 +1,6 @@
 <div class="input-text-wrapper mt-1 input-wrapper" [formGroup]="fg">
   <mat-form-field floatLabel="always">
-    <mat-label>{{ formField.label }}</mat-label>
+    <mat-label *ngIf="!formField.noLabel">{{ formField.label }}</mat-label>
     <input
       matInput
       formControlName="{{ formField.name }}"

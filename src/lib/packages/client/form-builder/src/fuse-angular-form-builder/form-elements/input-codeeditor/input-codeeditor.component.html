@@ -1,23 +1,29 @@
 <div class="input-textarea-wrapper mt-1 input-wrapper" [formGroup]="fg">
-
-    <mat-label>{{ formField.label }}</mat-label>
-    <button *ngIf="formController?.formOptions?.small == true" mat-mini-fab (click)="openEditor(value)" class="block mt-3">
-        <mat-icon [svgIcon]="'heroicons_outline:code-bracket'"></mat-icon>
-    </button>
-    <ngs-code-editor
-            *ngIf="formController?.formOptions?.small == false"
-            [theme]="theme"
-            [codeModel]="model"
-            [options]="options"
-            (valueChanged)="onCodeChanged($event)">
-    </ngs-code-editor>
+  <mat-label *ngIf="!formField.noLabel">{{ formField.label }}</mat-label>
+  <button
+    *ngIf="formController?.formOptions?.small == true"
+    mat-mini-fab
+    (click)="openEditor(value)"
+    class="block mt-3"
+  >
+    <mat-icon [svgIcon]="'heroicons_outline:code-bracket'"></mat-icon>
+  </button>
+  <ngs-code-editor
+    *ngIf="formController?.formOptions?.small == false"
+    [theme]="theme"
+    [codeModel]="model"
+    [options]="options"
+    (valueChanged)="onCodeChanged($event)"
+  >
+  </ngs-code-editor>
 </div>
 
 <ng-template #modalTemplate let-item>
-    <ngs-code-editor
-            [theme]="theme"
-            [codeModel]="model"
-            [options]="options"
-            (valueChanged)="onCodeChanged($event)">
-    </ngs-code-editor>
+  <ngs-code-editor
+    [theme]="theme"
+    [codeModel]="model"
+    [options]="options"
+    (valueChanged)="onCodeChanged($event)"
+  >
+  </ngs-code-editor>
 </ng-template>
