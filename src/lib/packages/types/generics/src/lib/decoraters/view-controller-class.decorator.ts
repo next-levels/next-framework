@@ -25,7 +25,7 @@ export function ViewController(config: ViewControllerOptions) {
     Reflect.defineMetadata(VIEWCLASS_PREFIX, name, constructor);
     Reflect.defineMetadata(VIEWCLASS_OPTIONS_PREFIX, options, constructor);
 
-    if(!view_controller_models_key.has(name)){
+    if(!view_controller_models_key.has(name) && typeof config === 'string'){
       view_controller_models_key.set(name, constructor);
     }
    };
