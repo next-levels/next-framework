@@ -41,7 +41,6 @@ export function GenericWebSocketGateway(
                 });
             } else {
                  event.on('events:' + namespace, (data) => {
-                     console.log('events:' + namespace, data)
                      this.server.emit(data.method, data.data);
                 });
             }
