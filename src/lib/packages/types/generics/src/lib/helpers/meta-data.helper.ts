@@ -1,10 +1,12 @@
 import 'reflect-metadata';
-import { Constructor } from '../types/Constructor';
-import { MODELCLASS_OPTIONS_PREFIX } from '../decoraters/model-class.decorator';
-import { ModelOptions } from '../types/options/model-options';
+import {Constructor} from '../types/Constructor';
+import {MODELCLASS_OPTIONS_PREFIX} from '../decoraters/model-class.decorator';
+import {ModelOptions} from '../types/options/model-options';
+
 export const decorator_models: Constructor[] = [];
 export const decorator_models_options: any[] = [];
 export const decorator_models_key: Map<string, any> = new Map();
+export const view_controller_models_key: Map<string, any> = new Map();
 
 const MODELCLASS_PREFIX = 'fb:models';
 
@@ -25,7 +27,21 @@ export class META {
     return undefined;
   }
 
-  static getModelsForFeature(key:string): any[] {
+  static getViewControllerByName(name: string): Constructor | undefined {
+    const model = view_controller_models_key.get(name);
+
+    if (model) {
+      return new model();
+    } else {
+      // Handle the case where no model was found.
+      console.log('No model found with the given name.');
+    }
+
+    // if no model found, return undefined
+    return undefined;
+  }
+
+  static getModelsForFeature(key: string): any[] {
     return decorator_models_options.filter(model => model.features.includes(key));
   }
 
