@@ -28,7 +28,8 @@ export function GenericBaseCMSServiceMongo<T extends Document>(entity: any): any
         }
 
         async update(_id: string, data: Partial<T>): Promise<Result<any>> {
-            const updatedEntity = await this.model.findOneAndUpdate({_id: _id}, data, {new: true}).lean().exec();
+            // @ts-ignore
+          const updatedEntity = await this.model.findOneAndUpdate({_id: _id}, data, {new: true}).lean().exec();
             if (!updatedEntity) {
                 throw new Error('Entity not found');
             }
@@ -36,7 +37,8 @@ export function GenericBaseCMSServiceMongo<T extends Document>(entity: any): any
         }
 
         async delete(_id: string): Promise<Result<any>> {
-             await this.model.findOneAndDelete({_id: _id}).exec();
+             // @ts-ignore
+          await this.model.findOneAndDelete({_id: _id}).exec();
             return Result.ok({_id});
         }
 
@@ -84,11 +86,11 @@ export function GenericBaseCMSServiceMongo<T extends Document>(entity: any): any
         return transformedFilter;
       }
         async findOne(key: string): Promise<Result<any | null>> {
-            const entity = await this.model.findOne({key: key}).lean().exec();
+            // @ts-ignore
+          const entity = await this.model.findOne({key: key}).lean().exec();
 
-            console.log(entity)
-             return Result.ok({
-                id: entity._id.toString(),
+              return Result.ok({
+                id: (entity as any)._id.toString(),
                 ...entity
             });
         }
