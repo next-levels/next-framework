@@ -114,9 +114,6 @@ export class BaseInputRelationDropdownComponent
         if (this.settings.scope) {
           this.filterOptions['filter.' + this.settings.scope.key] =
             this.settings.scope.operation + ':' + this.settings.scope.value;
-          this.facade.base.loadFiltered(this.filterOptions);
-        } else {
-          this.facade.base.loadFiltered();
         }
 
         this.facade.base.filtered$.subscribe((data) => {
@@ -127,6 +124,10 @@ export class BaseInputRelationDropdownComponent
     }
     this.fg = this.formController.getForm();
     this.initDependency();
+  }
+
+  loadOptions() {
+    this.facade.base.loadFiltered(this.filterOptions);
   }
 
   private initFilter() {

@@ -17,7 +17,10 @@ export class RootStoreModule {
     const imports = [];
     let config = META.getOptionsByModel(model.prototype);
 
-    const apiUrl = `/api/${META.getOptionsByModel(model.prototype).name}/admin`;
+    const name = META.getOptionsByModel(model.prototype).name;
+    const url = META.getOptionsByModel(model.prototype).url;
+    const route = url ? url : name;
+    const apiUrl = `/api/${route}/admin`;
 
      const store = getStoreFeatures<
       typeof model,

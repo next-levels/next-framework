@@ -1,5 +1,5 @@
 import {
-  AfterViewInit,
+  AfterViewInit, ChangeDetectorRef,
   Component,
   Input,
   OnDestroy,
@@ -20,6 +20,7 @@ import {
   StoreFacade,
 } from '../../../../../generic-store/public_api';
 import {
+  BUILDERFIELD_ALL_PREFIX,
   FilterOptions,
   LISTFIELD_ALL_PREFIX,
   LISTFIELD_PREFIX,
@@ -27,6 +28,7 @@ import {
   PaginationMeta,
   ScopeFilter,
 } from '@next-levels/types';
+import {haslistFields} from "../../helpers/list.helper";
 
 @Component({
   selector: 'table-submodule',
@@ -75,10 +77,12 @@ export class TableSubmoduleComponent
   constructor(
     public translateService: TranslateService,
     private store: Store<any>,
-    private router: ActivatedRoute
+    private router: ActivatedRoute,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
+    console.log('this.listController init', this.listController)
     this.router.queryParams.subscribe((params) => {
       if (params['search']) {
         this.filterOptions.search = params['search'];
@@ -89,10 +93,36 @@ export class TableSubmoduleComponent
 
     this.model = this.listController.getModelDefinition();
 
-    this.fields = Reflect.getMetadata(
-      LISTFIELD_ALL_PREFIX,
-      this.listController.getModelDefinition()
-    );
+    const listFields =
+      Reflect.getMetadata(
+        LISTFIELD_ALL_PREFIX,
+        this.listController.getModelDefinition()
+      ) || [];
+
+    const builderFields =
+      Reflect.getMetadata(
+        BUILDERFIELD_ALL_PREFIX,
+        this.listController.getModelDefinition()
+      ) || [];
+
+    this.fields = [...builderFields, ...listFields];
+
+    const config = this.listController.getConfig();
+
+    if (config && config.length > 0) {
+      this.fields = config
+        .filter((item: any) => item.list === true)
+        .map((item: any) => item.field);
+    }
+
+
+    if (haslistFields(this.model)) {
+      this.fields = this.model.listFields().filter(field =>
+        this.fields.includes(field)
+      );
+    }
+
+    console.log('this.fields', this.fields)
     if (this.fields) {
       this.displayedColumns = [...this.fields];
       this.displayedColumns.push('actions');
@@ -132,6 +162,8 @@ export class TableSubmoduleComponent
         })
       )
       .subscribe();
+
+    this.cd.detectChanges();
   }
 
   ngAfterViewInit(): void {
