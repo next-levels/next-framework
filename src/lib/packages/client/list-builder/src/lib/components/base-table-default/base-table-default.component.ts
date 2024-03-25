@@ -196,6 +196,8 @@ export class BaseTableDefaultComponent
         })
       )
       .subscribe();
+    this.cdRef.detectChanges();
+
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -212,30 +214,6 @@ export class BaseTableDefaultComponent
     }
   }
 
-  private ongoingTouches: PointerEvent[] = [];
-
-  @HostListener('pointerdown', ['$event'])
-  onPointerDown(event: PointerEvent) {
-    if (event.pointerType === 'touch') {
-      this.ongoingTouches.push(event);
-    }
-  }
-
-  @HostListener('pointermove', ['$event'])
-  onPointerMove(event: PointerEvent) {
-    if (event.pointerType === 'touch' && this.ongoingTouches.length > 1) {
-      // Handle two-finger swipe gesture
-      console.log('Two-finger swipe gesture detected');
-      // Implement your logic here
-    }
-  }
-
-  @HostListener('pointerup', ['$event'])
-  onPointerUp(event: PointerEvent) {
-    if (event.pointerType === 'touch') {
-      this.ongoingTouches = this.ongoingTouches.filter(touch => touch.pointerId !== event.pointerId);
-    }
-  }
   ngAfterViewInit(): void {
     setTimeout(() => {
       // Because this hook is not the lifecycle of an extending component like table-default but of this component which has its own template

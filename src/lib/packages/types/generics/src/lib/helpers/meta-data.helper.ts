@@ -29,7 +29,7 @@ export class META {
 
   static getViewControllerByName(name: string): Constructor | undefined {
     const model = view_controller_models_key.get(name);
-
+    console.log('view_controller_models_key', view_controller_models_key)
     if (model) {
       return new model();
     } else {
