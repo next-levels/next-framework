@@ -33,6 +33,7 @@ import { InputCurrencyComponent } from './form-elements/input-currency/input-cur
 import { NgxCurrencyDirective } from 'ngx-currency';
 import { InputImageFileComponent } from './form-elements/input-imagefile/input-imagefile.component';
 import { ListSelectorComponent } from './list-selector/list-selector.component';
+import { InputMultiImageFileComponent } from './form-elements/input-multiimagefile/input-multiimagefile.component';
 
 @NgModule({
   imports: [
@@ -70,6 +71,7 @@ import { ListSelectorComponent } from './list-selector/list-selector.component';
     InputRelationDropdownComponent,
     InputFileComponent,
     InputImageFileComponent,
+    InputMultiImageFileComponent,
     InputCheckboxComponent,
     InputDateComponent,
     InputCodeeditorComponent,
@@ -103,6 +105,7 @@ export class FuseAngularFormBuilderModule {
             RELATION: InputRelationDropdownComponent,
             FILE: InputFileComponent,
             IMAGEFILE: InputImageFileComponent,
+            MULTIIMAGEFILE: InputMultiImageFileComponent,
             SIGN: InputFileComponent,
             CODE: InputCodeeditorComponent,
             JSON: InputJsoneditorComponent,
