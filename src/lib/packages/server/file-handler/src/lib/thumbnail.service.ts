@@ -4,7 +4,7 @@ import { Readable } from 'stream';
 import { FileEntity } from './entities/file.entity';
 import { Response } from 'express';
 import { ErrorCode, Result } from '../../../nest-tools';
-import sharp = require('sharp');
+const sharp = require('sharp');
 
 @Injectable()
 export class ThumbnailService {
@@ -42,27 +42,26 @@ export class ThumbnailService {
   }
 
   async createJPEG(
-      buffer: Buffer,
-      width: number,
-      height: number
+    buffer: Buffer,
+    width: number,
+    height: number
   ): Promise<Buffer> {
     return await sharp(buffer)
-        .resize(width, height, { fit: 'cover' })
-        .toFormat('jpg')
-        .toBuffer();
+      .resize(width, height, { fit: 'cover' })
+      .toFormat('jpg')
+      .toBuffer();
   }
 
   async createPNG(
-      buffer: Buffer,
-      width: number,
-      height: number
+    buffer: Buffer,
+    width: number,
+    height: number
   ): Promise<Buffer> {
     return await sharp(buffer)
-        .resize(width, height, { fit: 'cover' })
-        .toFormat('png')
-        .toBuffer();
+      .resize(width, height, { fit: 'cover' })
+      .toFormat('png')
+      .toBuffer();
   }
-
 
   bufferToReadableStream(buffer: Buffer): Readable {
     const readableStream = new Readable();

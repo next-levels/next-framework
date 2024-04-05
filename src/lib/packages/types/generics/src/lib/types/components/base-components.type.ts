@@ -10,6 +10,7 @@ export interface BaseComponents {
   CHECKBOX?: any;
   RELATION?: any;
   IMAGEFILE?: any;
+  MULTIIMAGEFILE?: any;
   FILE?: any;
   SIGN?: any;
   RADIO?: any;
