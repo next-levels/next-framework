@@ -1,19 +1,28 @@
-import {Inject, Injectable} from '@nestjs/common';
-import {InjectRepository} from '@nestjs/typeorm';
-import {In, ObjectType, Repository} from 'typeorm';
-import {FilterOperator, FilterSuffix, paginate, Paginated, PaginateQuery,} from 'nestjs-paginate';
-import {IBaseCmsService} from './service.type';
-import {getFilterFields} from '../../../helpers/fields.helper';
-import {BaseApiService} from '../../../types/service.type';
-import {Result} from '../../../../../../nest-tools';
-import {HookRegistryService} from "../../../helpers/hook.regestry";
+import { Inject, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { In, ObjectType, Repository } from 'typeorm';
+import {
+  FilterOperator,
+  FilterSuffix,
+  paginate,
+  Paginated,
+  PaginateQuery,
+} from 'nestjs-paginate';
+import { IBaseCmsService } from './service.type';
+import { getFilterFields } from '../../../helpers/fields.helper';
+import { BaseApiService } from '../../../types/service.type';
+import { Result } from '../../../../../../nest-tools';
+import { HookRegistryService } from '../../../helpers/hook.regestry';
 
-export function GenericBaseCMSService<T>(entity: ObjectType<T>, registryServiceToken: any,
+export function GenericBaseCMSService<T>(
+  entity: ObjectType<T>,
+  registryServiceToken: any
 ): any {
   @Injectable()
   class GenericServiceHost
     extends BaseApiService
-    implements IBaseCmsService<T> {
+    implements IBaseCmsService<T>
+  {
     constructor(
       @InjectRepository(entity)
       private readonly repository: Repository<T>,
@@ -35,18 +44,16 @@ export function GenericBaseCMSService<T>(entity: ObjectType<T>, registryServiceT
       );
 
       const existingEntity = await this.repository.findOne({
-        where: {id: id} as any,
+        where: { id: id } as any,
       });
       if (!existingEntity) {
         throw new Error('Entity not found');
       }
       let updatedEntity = Object.assign(existingEntity, data);
 
-
       if (beforeHook) {
         updatedEntity = beforeHook(updatedEntity) as Awaited<T> & Partial<T>;
       }
-
 
       const savedData = await this.repository.save(updatedEntity);
       if (afterHook) {
@@ -72,7 +79,7 @@ export function GenericBaseCMSService<T>(entity: ObjectType<T>, registryServiceT
       }
       return Result.ok(
         await this.repository.find({
-          where: {id: In(ids)} as any,
+          where: { id: In(ids) } as any,
         })
       );
     }
@@ -134,16 +141,13 @@ export function GenericBaseCMSService<T>(entity: ObjectType<T>, registryServiceT
     }
 
     async findOne(id: number): Promise<Result<any | null>> {
-      const beforeHook = this.hookRegistry.getHook(
-        `${entity.name}.before.get`
-      );
+      const beforeHook = this.hookRegistry.getHook(`${entity.name}.before.get`);
       // @ts-ignore
       const relationFields = this.repository.metadata.relations.map(
         (relation) => relation.propertyName as any
       );
-
       let result = await this.repository.findOne({
-        where: {id: id} as any,
+        where: { id: id } as any,
         relations: relationFields,
       });
 
@@ -163,7 +167,7 @@ export function GenericBaseCMSService<T>(entity: ObjectType<T>, registryServiceT
 
       // Step 2: Fetch it back with relations
       return this.repository.findOne({
-        where: {id: newEntity.id} as any,
+        where: { id: newEntity.id } as any,
         relations: relationFields, // Include the relations you want
       });
     }

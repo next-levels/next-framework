@@ -1,150 +1,91 @@
-<div class="input-file-wrapper mt-1" [formGroup]="fg">
-  <span class="custom-label" *ngIf="!formField.noLabel">{{
-    formField.label
-  }}</span>
-
-  <button
-    mat-icon-button
-    aria-label="Generate with KI"
-    [color]="'primary'"
-    (click)="openAiModal()"
-  >
-    <mat-icon [svgIcon]="'heroicons_outline:sparkles'"></mat-icon>
-  </button>
-
-  <div class="relative w-32 h-32 mr-4 rounded-md overflow-hidden">
-    <ng-container *ngIf="edit" [ngTemplateOutlet]="editToggler"></ng-container>
-    <ng-container *ngIf="editMode">
-      <!-- Upload / Remove avatar -->
-      <div class="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
-      <div
-        *ngIf="edit"
-        class="absolute inset-0 flex items-center justify-center z-20"
-      >
-        <div>
-          <input
-            id="avatar-file-input"
-            class="absolute h-0 w-0 opacity-0 invisible pointer-events-none"
-            type="file"
-            multiple
-            [accept]="'image/jpeg, image/png'"
-            (change)="uploadFile(avatarFileInput.files)"
-            #avatarFileInput
-          />
-          <label
-            class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer hover:bg-hover"
-            for="avatar-file-input"
-            matRipple
-          >
-            <mat-icon
-              class="text-white"
-              [svgIcon]="'heroicons_outline:camera'"
-            ></mat-icon>
-          </label>
+<ng-container>
+  <div class="space-y-8" [formGroup]="fg">
+    <ng-container>
+      <div>
+        <div
+          class="text-3xl font-extrabold tracking-tight ng-tns-c281-33 ng-star-inserted"
+        >
+          {{ formField.label }}
         </div>
-        <div>
-          <button mat-icon-button>
-            <mat-icon
-              class="text-white"
-              [svgIcon]="'heroicons_outline:trash'"
-            ></mat-icon>
-          </button>
+
+        <div
+          cdkDropList
+          (cdkDropListDropped)="drop($event)"
+          class="flex flex-wrap -m-2 mt-2"
+        >
+          <ng-container>
+            <div
+              (filesChangeEmiter)="uploadFile($event)"
+              class="flex flex-col w-64 h-64 m-2 p-4 drop-shadow-xl rounded-2xl cursor-pointer bg-card dropzone items-center items-stretch"
+              fileDragDrop
+            >
+              <div class="aspect-[9/6] center-image" (click)="file.click()">
+                <div
+                  class="grid place-items-center place-content-center h-full w-full"
+                >
+                  <!-- Icons -->
+                  <div class="relative">
+                    <mat-icon
+                      [svgIcon]="'heroicons_solid:document'"
+                      class="icon-size-14 text-hint opacity-50"
+                    ></mat-icon>
+                    <div
+                      class="absolute left-0 bottom-0 px-1.5 rounded text-sm font-semibold leading-5 text-white"
+                    >
+                      <input
+                        #file
+                        (change)="uploadFile($event.target.files)"
+                        id="file"
+                        multiple
+                        name="file"
+                        type="file"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        class="font-semibold dropzone-label w-full"
+                        for="file"
+                        style="color: #cad1db"
+                        *transloco="let t"
+                      >
+                        {{ t('media.upload') }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-container *ngFor="let file of files">
+            <a
+              cdkDrag
+              appPreventClickOnDrag
+              (click)="selectFile(file)"
+              (clickPrevented)="onDrag()"
+              class="flex flex-col w-64 h-64 m-2 p-6 drop-shadow-xl rounded-2xl cursor-pointer"
+              [ngClass]="file.brightness > 80 || dark ? 'dark' : 'bg-card'"
+            >
+              <div class="aspect-[9/6] center-image h-100 overflow-hidden">
+                <div class="flex items-center justify-center file-zone">
+                  <mat-icon
+                    [svgIcon]="'heroicons_solid:document'"
+                    class="file-icon text-hint opacity-50"
+                  ></mat-icon>
+                  <div
+                    class="file-label absolute left-0 bottom-0 px-1.5 rounded font-semibold leading-5"
+                  >
+                    {{
+                      file.type.toUpperCase() + ' Sortierung:' + file.sort_order
+                    }}
+                  </div>
+                </div>
+                <img alt="" [src]="baseApiUrl + file.id" />
+              </div>
+            </a>
+          </ng-container>
         </div>
       </div>
     </ng-container>
-
-    <img
-      class="object-cover w-full h-full"
-      *ngIf="file_id"
-      [src]="baseApiUrl + file_id"
-    />
-
-    <img
-      class="object-cover w-full h-full"
-      *ngIf="this.generatedImage"
-      [src]="this.generatedImage"
-    />
-    <div
-      class="flex items-center justify-center p-4 w-full h-full rounded overflow-hidden uppercase text-6xl font-bold leading-none bg-gray-100 text-gray-600 dark:bg-primary-700 dark:text-gray-200"
-      *ngIf="!file_id"
-    ></div>
   </div>
-</div>
-
-<ng-template #editToggler>
-  <div class="absolute top-0 right-0 z-50">
-    <ng-container *ngIf="!editMode">
-      <button
-        class="rounded-full"
-        mat-mini-fab
-        (click)="toggleEditMode(true)"
-        type="button"
-        color="accent"
-      >
-        <mat-icon [svgIcon]="'heroicons_solid:pencil'"></mat-icon>
-      </button>
-    </ng-container>
-    <ng-container *ngIf="editMode">
-      <button
-        class="rounded-full"
-        mat-mini-fab
-        (click)="toggleEditMode(false)"
-        type="button"
-        color="warn"
-      >
-        <mat-icon [svgIcon]="'heroicons_solid:x-mark'"></mat-icon>
-      </button>
-    </ng-container>
-  </div>
-</ng-template>
-
-<ng-template #modalTemplate let-item>
-  <form (ngSubmit)="generateOpenAi()">
-    <textarea
-      class="w-full border"
-      style="height: 300px"
-      [(ngModel)]="textareaValue"
-      name="textarea"
-    ></textarea>
-    <div class="flex justify-end">
-      <button
-        class="ml-4 rounded-md"
-        mat-stroked-button
-        [color]="'primary'"
-        type="submit"
-      >
-        <mat-icon [svgIcon]="'heroicons_outline:sparkles'"></mat-icon>
-        <span *ngIf="!isLoading" class="ml-2 mr-1">Generieren</span>
-        <div *ngIf="isLoading" class="loading-animation">
-          Anfrage wird verarbeitet...
-        </div>
-      </button>
-    </div>
-  </form>
-</ng-template>
-
-<ng-container *ngFor="let file of files">
-  <!-- <a
-    cdkDrag
-    appPreventClickOnDrag
-    (click)="selectFile(file)"
-    (clickPrevented)="onDrag()"
-    class="flex flex-col w-64 h-64 m-2 p-6 drop-shadow-xl rounded-2xl cursor-pointer"
-    [ngClass]="file.brightness > 80 || dark ? 'dark' : 'bg-card'"
-  > -->
-  <div class="aspect-[9/6] center-image h-100 overflow-hidden">
-    <div class="flex items-center justify-center file-zone">
-      <mat-icon
-        [svgIcon]="'heroicons_solid:document'"
-        class="file-icon text-hint opacity-50"
-      ></mat-icon>
-      <div
-        class="file-label absolute left-0 bottom-0 px-1.5 rounded font-semibold leading-5"
-      >
-        {{ file.type.toUpperCase() + ' Sortierung:' + file.sort_order }}
-      </div>
-    </div>
-    <img alt="" src="{{ file.id | imageUrl }}" />
-  </div>
-  <!-- </a> -->
 </ng-container>

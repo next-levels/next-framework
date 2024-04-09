@@ -1,10 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  Inject,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -13,29 +7,23 @@ import { EnvironmentStorageService } from '../../../../../angular-commons/src';
 import { MatDialog } from '@angular/material/dialog';
 import { BaseFile } from '@next-levels/types';
 import { ActivatedRoute } from '@angular/router';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'nxt-input-imagefile',
   template: '<ng-container ></ng-container>',
+  encapsulation: ViewEncapsulation.None,
 })
 export class BaseInputMultiImageFileComponent extends BaseInputComponent {
-  editMode = false;
-  edit = true;
   baseApiUrl = '';
   baseUrl = '';
-  file_id: number;
 
   attachment_type: string;
   attachment_id: number;
-  field_name: string;
 
   files: BaseFile[] = [];
-
-  isLoading = false;
-
-  @ViewChild('modalTemplate') modalTemplate: TemplateRef<any>;
-  generatedImage;
-  textareaValue = '';
+  selectedFile: BaseFile;
+  clickLock = false;
 
   constructor(
     public _httpClient: HttpClient,
@@ -51,16 +39,10 @@ export class BaseInputMultiImageFileComponent extends BaseInputComponent {
     this.baseUrl = this.environment.baseUrl;
   }
 
-  override init() {
+  override async init() {
     super.init();
-
-    this.attachment_type = 'product';
-    this.field_name = 'image';
+    this.attachment_type = this.formController.getModel().apiAlias;
     this.attachment_id = +this.route.snapshot.paramMap.get('id');
-
-    this.file_id = this.formController
-      ?.getForm()
-      .get(this.formField.name)?.value;
 
     if (this.formField?.options?.base_path) {
       this.baseApiUrl = this.baseUrl + this.formField.options.base_path;
@@ -68,69 +50,25 @@ export class BaseInputMultiImageFileComponent extends BaseInputComponent {
       this.baseApiUrl = this.baseUrl + '/api/files/';
     }
 
+    this.files = (await firstValueFrom(
+      this._httpClient.get(
+        `${this.baseApiUrl}download/${this.attachment_type}/${this.attachment_id}/${this.formField.name}`
+      )
+    )) as BaseFile[];
+
     if (this.formField && this.formField?.required) {
       this.formField.label = this.formField.label + '*';
     }
-  }
 
-  openAiModal(): void {
-    this._matDialog.open(this.modalTemplate, {
-      minWidth: '60%',
-      minHeight: '60%',
-      autoFocus: false,
-    });
-  }
-
-  generateOpenAi() {
-    this.isLoading = true;
-    const apiUrl = this.environment.baseUrl + '/api/openai/image';
-    const params = {
-      prompt: this.textareaValue,
-    };
-
-    this._http.post<any>(apiUrl, params).subscribe((value) => {
-      this.generatedImage = value.result;
-      this._changeDetectorRef.detectChanges();
-
-      this.isLoading = false;
-      this._matDialog.closeAll();
-
-      return value;
-    });
+    this._changeDetectorRef.detectChanges();
   }
 
   /**
    * Upload avatar
    *
-   * @param fileList
+   * @param pFileList
    */
-  public async uploadAvatar(fileList: FileList): Promise<void> {
-    if (!fileList.length) {
-      return;
-    }
-
-    const allowedTypes = ['image/jpeg', 'image/png'];
-    const file = fileList[0];
-
-    if (!allowedTypes.includes(file.type)) {
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('image', file, file.name);
-
-    firstValueFrom(
-      this._httpClient.post(`${this.baseApiUrl}upload`, formData)
-    ).then((response: any) => {
-      this.toggleEditMode(false);
-      const tempPatch = {};
-      tempPatch[this.formField.name] = response.id;
-      this.formController?.getForm().patchValue(tempPatch);
-      this.file_id = response.id;
-    });
-  }
-
-  public async uploadFile(pFileList: FileList): Promise<void> {
+  public async uploadFile(pFileList: File[]): Promise<void> {
     if (!pFileList.length) {
       return;
     }
@@ -148,34 +86,53 @@ export class BaseInputMultiImageFileComponent extends BaseInputComponent {
 
     firstValueFrom(
       this._httpClient.post(
-        `${this.baseApiUrl}upload/${this.attachment_type}/${this.attachment_id}/${this.field_name}`,
+        `${this.baseApiUrl}upload/${this.attachment_type}/${this.attachment_id}/${this.formField.name}`,
         formData
       )
     ).then((response: any) => {
-      // const path = `${environment.baseUrl}/api/files/${response.id}`;
+      const path = `${this.baseApiUrl}${response.id}`;
       // this.getImageBrightness(path).then((brightness) => {
       //   formData.append('brightness', brightness.toString());
       // });
 
       this.files = [...this.files, ...[response]];
-      console.log('this.files', this.files);
+
       this._changeDetectorRef.detectChanges();
     });
   }
 
-  /**
-   * Toggle edit mode
-   *
-   * @param editMode
-   */
-  public toggleEditMode(editMode: boolean | null = null): void {
-    if (editMode === null) {
-      this.editMode = !this.editMode;
-    } else {
-      this.editMode = editMode;
-    }
+  drop(event: CdkDragDrop<BaseFile[]>) {
+    console.log('event', event);
+    const temp = [];
+    this.files.forEach((val) => temp.push(Object.assign({}, val)));
+    const prevSort = temp[event.previousIndex].sort_order;
+    temp[event.previousIndex].sort_order = temp[event.currentIndex].sort_order;
+    temp[event.currentIndex].sort_order = prevSort;
+    this.files = temp.slice().sort((a, b) => a.sort_order - b.sort_order);
 
-    // Mark for check
-    this.cdRef.markForCheck();
+    this.patchSortOrder(temp[event.previousIndex]);
+    this.patchSortOrder(temp[event.currentIndex]);
+  }
+
+  patchSortOrder(file: BaseFile): void {
+    firstValueFrom(this._httpClient.post(this.baseApiUrl, file)).then(
+      (response: any) => {
+        this._changeDetectorRef.detectChanges();
+      }
+    );
+  }
+
+  onDrag(): void {
+    this.clickLock = true;
+  }
+
+  selectFile(file: BaseFile): void {
+    if (this.clickLock) {
+      this.clickLock = false;
+      return;
+    }
+    this.selectedFile = file;
+    // this._navigationService._drawer.next(file);
+    this._changeDetectorRef.markForCheck();
   }
 }

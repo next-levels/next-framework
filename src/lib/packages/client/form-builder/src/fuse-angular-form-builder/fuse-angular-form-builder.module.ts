@@ -34,6 +34,12 @@ import { NgxCurrencyDirective } from 'ngx-currency';
 import { InputImageFileComponent } from './form-elements/input-imagefile/input-imagefile.component';
 import { ListSelectorComponent } from './list-selector/list-selector.component';
 import { InputMultiImageFileComponent } from './form-elements/input-multiimagefile/input-multiimagefile.component';
+import {
+  CdkDrag,
+  CdkDropListGroup,
+  DragDropModule,
+} from '@angular/cdk/drag-drop';
+import { InputMultiImageFileDirective } from './form-elements/input-multiimagefile/input-multiimagefile.directive';
 
 @NgModule({
   imports: [
@@ -59,8 +65,11 @@ import { InputMultiImageFileComponent } from './form-elements/input-multiimagefi
     CodeEditorModule.forRoot(),
     NgxCurrencyDirective,
     FormsModule,
+    CdkDrag,
+    CdkDropListGroup,
+    DragDropModule,
   ],
-  exports: [],
+  exports: [InputMultiImageFileDirective],
   declarations: [
     InputTextComponent,
     InputTextareaComponent,
@@ -77,6 +86,7 @@ import { InputMultiImageFileComponent } from './form-elements/input-multiimagefi
     InputCodeeditorComponent,
     InputJsoneditorComponent,
     ListSelectorComponent,
+    InputMultiImageFileDirective,
   ],
 })
 export class FuseAngularFormBuilderModule {

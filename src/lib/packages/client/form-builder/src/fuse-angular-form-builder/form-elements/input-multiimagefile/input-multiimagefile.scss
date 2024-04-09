@@ -1,0 +1,52 @@
+.text-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.centered {
+  font-family: sans-serif;
+  font-size: 1.3em;
+  text-align: center;
+}
+
+.dropzone {
+  height: 200px;
+  display: table;
+  width: 100%;
+  background-color: #eee;
+  border: dashed 1px #cad1db;
+  text-align: center;
+}
+
+.dropzone .label {
+  color: #cad1db;
+}
+
+input[type='file'] {
+  display: none;
+}
+
+.center-image {
+  display: flex;
+  align-items: center;
+  height: 1001%;
+}
+
+.file-zone {
+  position: absolute;
+  bottom: 4px;
+
+  .file-icon {
+    width: 14px;
+    min-height: 14px;
+    min-width: 14px;
+  }
+
+  .file-label {
+    color: #1e293b;
+    margin-left: 10px;
+    font-size: 9px;
+    opacity: 0.7;
+    width: 200px;
+  }
+}
