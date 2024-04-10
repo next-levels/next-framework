@@ -19,9 +19,6 @@ export class FileInjectInterceptor implements NestInterceptor {
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const request = context.switchToHttp().getRequest();
-    if (request.url.indexOf('filter') === -1) {
-      console.log('request', request.method);
-    }
     if (request.method === 'DELETE') {
       return next.handle();
     }
@@ -58,14 +55,15 @@ export class FileInjectInterceptor implements NestInterceptor {
           data = [data];
           singleEnitiy = true;
         }
+
         if (request.url.indexOf('filter') === -1) {
-          console.log('data', data);
+          console.log('filteres', entitiesWithFileFields.entries());
         }
         for (const item of data) {
           for (const [className, Entity] of entitiesWithFileFields.entries()) {
-            if (item instanceof Entity) {
-              await this.processFileFields(item, className);
-            }
+            // if (item instanceof Entity) {
+            await this.processFileFields(item, className, Entity);
+            // }
           }
         }
 
@@ -82,10 +80,18 @@ export class FileInjectInterceptor implements NestInterceptor {
     );
   }
 
-  private async processFileFields(entity, className: string) {
+  private async processFileFields(entity, className: string, EntityModel) {
     const fileFields = Reflect.getMetadata(
       FILE_FIELD_METADATA_KEY,
-      entity?.constructor?.prototype
+      EntityModel?.prototype
+    );
+    console.log(
+      'className',
+      className,
+      entity.id,
+      fileFields,
+      EntityModel?.constructor,
+      EntityModel?.prototype
     );
     if (fileFields && Array.isArray(fileFields)) {
       for (const fileField of fileFields) {
