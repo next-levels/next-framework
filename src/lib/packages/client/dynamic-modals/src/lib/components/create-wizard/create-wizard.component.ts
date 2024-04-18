@@ -5,7 +5,13 @@ import {MinimizeService} from '../../services/minimize/minimize.service';
 import {MAT_DIALOG_DATA, MatDialog} from '@angular/material/dialog';
 import {MatStepper} from '@angular/material/stepper';
 import {FORM, FormController} from '../../../../../form-builder/src';
-import {BUILDERFIELD_ALL_PREFIX, LISTFIELD_ALL_PREFIX, ScopeFilter, VISIBILITY_PREFIX,} from '@next-levels/types';
+import {
+  BUILDERFIELD_ALL_PREFIX,
+  LISTFIELD_ALL_PREFIX,
+  META,
+  ScopeFilter,
+  VISIBILITY_PREFIX
+} from '@next-levels/types';
 
 @Component({
   selector: 'vosdellen-create-wizard',
@@ -75,7 +81,9 @@ export class CreateWizardComponent implements AfterViewInit, OnInit {
     }
 
     this.className = this.formController.getClassName() ?? '';
-    const fileFields = FORM.hasCreateFields(this.model) ? this.model.createFields() : null
+
+    const viewController =  META.getViewController(this.model) ?? this.model;
+    const fileFields = FORM.hasCreateFields(viewController) ? viewController.createFields() : null
 
     if (fileFields) {
       this.steps = fileFields.map((tab: any, index: number) => {

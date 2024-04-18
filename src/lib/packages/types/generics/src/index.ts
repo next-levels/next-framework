@@ -3,6 +3,7 @@ export * from './lib/helpers/util.helper';
 export * from './lib/types/Constructor';
 export * from './lib/types/BaseFile';
 export * from './lib/types/form-controller';
+export * from './lib/types/view-controller';
 export * from './lib/types/GenericPagination';
 export * from './lib/types/FilterOptions';
 export * from './lib/types/ScopeFilter';

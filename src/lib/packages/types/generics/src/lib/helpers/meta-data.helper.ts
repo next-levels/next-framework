@@ -27,10 +27,23 @@ export class META {
     return undefined;
   }
 
+  static getViewController(constructor: Constructor): Constructor | undefined {
+    const name = Reflect.getMetadata(MODELCLASS_PREFIX, constructor.constructor)
+    const model = view_controller_models_key.get(name);
+     if (model) {
+      return new model();
+    } else {
+      // Handle the case where no model was found.
+      console.log('No model found with the given name.');
+    }
+
+    // if no model found, return undefined
+    return undefined;
+  }
+
   static getViewControllerByName(name: string): Constructor | undefined {
     const model = view_controller_models_key.get(name);
-    console.log('view_controller_models_key', view_controller_models_key)
-    if (model) {
+     if (model) {
       return new model();
     } else {
       // Handle the case where no model was found.

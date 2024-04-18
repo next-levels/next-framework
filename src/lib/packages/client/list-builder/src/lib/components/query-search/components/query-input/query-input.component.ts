@@ -458,15 +458,24 @@ export class QueryInputComponent implements OnInit, OnChanges {
       optionListToBePopulated.length > 0 &&
       options.length === 0
     ) {
-      Swal.fire({
-        text: 'Diese Eingabe entspricht keinem der zur Auswahl stehenden Werte!',
-        icon: 'error',
-        buttonsStyling: false,
-        confirmButtonText: 'Verstanden!',
-        customClass: {
-          confirmButton: 'btn fw-bold btn-primary',
-        },
-      }).then((r) => r);
+
+      const result = [];
+      result.push({
+        key: 'id',
+        operation: '$eq',
+        value: value,
+        expression: '$or',
+      })
+
+      result.push({
+        key: 'name',
+        operation: '$eq',
+        value: value,
+        expression: '$or',
+      })
+
+      this.queryChange.emit(result);
+
     }
 
     return options;
