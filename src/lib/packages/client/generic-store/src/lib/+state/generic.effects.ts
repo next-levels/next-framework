@@ -73,26 +73,26 @@ export class GenericEffects<EntityType extends object> {
       ) as Observable<Action>
   );
 
-    selectEntity$ = createEffect(
-        () =>
-            this.actions$.pipe(
-                customOfType(this.entityActions.selectEntity),
-                mergeMap((m: { payload: { entityId: number } }) =>
-                    this.entityService.getEntity(m.payload.entityId).pipe(
-                        map((entity: EntityType) => {
-                             return this.entityActions.selectEntitySuccess({
-                                payload: {
-                                    entity: entity,
-                                },
-                            });
-                        }),
-                        catchError((errors) =>
-                            of(this.entityActions.selectEntityFail({ errors }))
-                        )
-                    )
-                )
-            ) as Observable<Action>
-    );
+  selectEntity$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        customOfType(this.entityActions.selectEntity),
+        mergeMap((m: { payload: { entityId: number } }) =>
+          this.entityService.getEntity(m.payload.entityId).pipe(
+            map((entity: EntityType) => {
+              return this.entityActions.selectEntitySuccess({
+                payload: {
+                  entity: entity,
+                },
+              });
+            }),
+            catchError((errors) =>
+              of(this.entityActions.selectEntityFail({ errors }))
+            )
+          )
+        )
+      ) as Observable<Action>
+  );
 
   loadEntitiesSuccess$ = createEffect(
     () =>
@@ -195,11 +195,7 @@ export class GenericEffects<EntityType extends object> {
           Swal.fire({
             text: 'Sie haben den ' + this.entityName + ' erfolgreich gelöscht!',
             icon: 'success',
-            buttonsStyling: false,
             confirmButtonText: 'Verstanden!',
-            customClass: {
-              confirmButton: 'btn fw-bold btn-primary',
-            },
           });
         })
       ),
@@ -299,7 +295,7 @@ export class GenericEffects<EntityType extends object> {
               .batchEditEntities(action.payload.ids, action.payload.changes)
               .pipe(
                 map((entities) => {
-                   return this.entityActions.batchEditEntitiesSuccess({
+                  return this.entityActions.batchEditEntitiesSuccess({
                     payload: { entities: entities as unknown[] },
                   });
                 }),
