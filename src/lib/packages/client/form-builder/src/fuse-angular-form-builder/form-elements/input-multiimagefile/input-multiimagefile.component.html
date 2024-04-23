@@ -64,7 +64,7 @@
               (click)="selectFile(file)"
               (clickPrevented)="onDrag()"
               class="flex flex-col w-64 h-64 m-2 p-6 drop-shadow-xl rounded-2xl cursor-pointer"
-              [ngClass]="file.brightness > 80 || dark ? 'dark' : 'bg-card'"
+              [ngClass]="file.brightness > 80 ? 'dark' : 'bg-card'"
             >
               <div class="aspect-[9/6] center-image h-100 overflow-hidden">
                 <div class="flex items-center justify-center file-zone">
@@ -76,10 +76,29 @@
                     class="file-label absolute left-0 bottom-0 px-1.5 rounded font-semibold leading-5"
                   >
                     {{
-                      file.type.toUpperCase() + ' Sortierung:' + file.sort_order
+                      file.type.toUpperCase() +
+                        ' Sortierung:' +
+                        (file.sort_order + 1)
                     }}
                   </div>
                 </div>
+                <button
+                  mat-flat-button
+                  (click)="changeCoverImage(file)"
+                  class="absolute right-0 top-0 px-1.5 rounded mat-flat-button mat-primary"
+                >
+                  Cover <span *ngIf="file.is_cover_image">&#10003;</span>
+                </button>
+                <button
+                  mat-icon-button
+                  (click)="deleteFile(file)"
+                  class="absolute right-0 bottom-0 px-1.5 rounded mat-mdc-unelevated-button mat-primary"
+                >
+                  <mat-icon
+                    class="text-white"
+                    [svgIcon]="'heroicons_outline:trash'"
+                  ></mat-icon>
+                </button>
                 <img alt="" [src]="baseApiUrl + file.id" />
               </div>
             </a>

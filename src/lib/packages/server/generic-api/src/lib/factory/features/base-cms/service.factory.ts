@@ -152,7 +152,7 @@ export function GenericBaseCMSService<T>(
       });
 
       if (beforeHook) {
-        result = beforeHook(result) as Awaited<T> & Partial<T>;
+        result = (await beforeHook(result)) as Awaited<T> & Partial<T>;
       }
 
       return Result.ok(result);

@@ -53,4 +53,7 @@ export class FileEntity implements BaseFile {
 
   @Column({ type: 'int', nullable: true })
   brightness: number;
+
+  @Column({ type: 'bool', default: false })
+  is_cover_image: boolean;
 }

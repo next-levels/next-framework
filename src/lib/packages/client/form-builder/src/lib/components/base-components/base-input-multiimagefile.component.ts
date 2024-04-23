@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { BaseFile } from '@next-levels/types';
 import { ActivatedRoute } from '@angular/router';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'nxt-input-imagefile',
@@ -42,6 +43,7 @@ export class BaseInputMultiImageFileComponent extends BaseInputComponent {
   override async init() {
     super.init();
     this.attachment_type = this.formController.getModel().apiAlias;
+
     this.attachment_id = +this.route.snapshot.paramMap.get('id');
 
     if (this.formField?.options?.base_path) {
@@ -50,11 +52,15 @@ export class BaseInputMultiImageFileComponent extends BaseInputComponent {
       this.baseApiUrl = this.baseUrl + '/api/files/';
     }
 
-    this.files = (await firstValueFrom(
-      this._httpClient.get(
-        `${this.baseApiUrl}download/${this.attachment_type}/${this.attachment_id}/${this.formField.name}`
-      )
-    )) as BaseFile[];
+    // this.files = (await firstValueFrom(
+    //   this._httpClient.get(
+    //     `${this.baseApiUrl}download/${this.attachment_type}/${this.attachment_id}/${this.formField.name}`
+    //   )
+    // )) as BaseFile[];
+
+    this.files = this.formController.getForm().value[this.formField.name];
+
+    console.log('this.files', this.files);
 
     if (this.formField && this.formField?.required) {
       this.formField.label = this.formField.label + '*';
@@ -97,6 +103,10 @@ export class BaseInputMultiImageFileComponent extends BaseInputComponent {
 
       this.files = [...this.files, ...[response]];
 
+      this.formController
+        .getForm()
+        .patchValue({ [this.formField.name]: this.files });
+
       this._changeDetectorRef.detectChanges();
     });
   }
@@ -110,12 +120,16 @@ export class BaseInputMultiImageFileComponent extends BaseInputComponent {
     temp[event.currentIndex].sort_order = prevSort;
     this.files = temp.slice().sort((a, b) => a.sort_order - b.sort_order);
 
+    this.formController
+      .getForm()
+      .patchValue({ [this.formField.name]: this.files });
+
     this.patchSortOrder(temp[event.previousIndex]);
     this.patchSortOrder(temp[event.currentIndex]);
   }
 
   patchSortOrder(file: BaseFile): void {
-    firstValueFrom(this._httpClient.post(this.baseApiUrl, file)).then(
+    firstValueFrom(this._httpClient.patch(this.baseApiUrl, file)).then(
       (response: any) => {
         this._changeDetectorRef.detectChanges();
       }
@@ -132,7 +146,51 @@ export class BaseInputMultiImageFileComponent extends BaseInputComponent {
       return;
     }
     this.selectedFile = file;
-    // this._navigationService._drawer.next(file);
+    // this._navigationService._drawer.next(file); // NavigationService is part of CMS and can't be imported
     this._changeDetectorRef.markForCheck();
+  }
+
+  deleteFile(file: BaseFile): void {
+    Swal.fire({
+      text: 'Sind Sie sich sicher, dass Sie das Bild löschen möchten?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Ja, löschen!',
+      cancelButtonText: 'Nein, abbrechen',
+    }).then((result) => {
+      if (result.value) {
+        firstValueFrom(
+          this._httpClient.delete(this.baseApiUrl, {
+            params: { id: file.id },
+          })
+        ).then((response: any) => {
+          this.files.splice(this.files.indexOf(file), 1);
+          this.formController
+            .getForm()
+            .patchValue({ [this.formField.name]: this.files });
+          console.log('this.files', this.files);
+          this._changeDetectorRef.markForCheck();
+          // this._navigationService._drawer.next(null);
+        });
+      } else if (result.isDismissed) {
+      }
+    });
+  }
+
+  changeCoverImage(clickedFile: BaseFile): void {
+    const temp = [];
+    this.files.forEach((val) => temp.push(Object.assign({}, val)));
+    temp.forEach((file) => {
+      if (file.id === clickedFile.id) {
+        file.is_cover_image = file.is_cover_image ? 0 : 1;
+      } else {
+        file.is_cover_image = 0;
+      }
+    });
+    this.files = temp.slice();
+    console.log('this.files', this.files);
+    this.formController
+      .getForm()
+      .patchValue({ [this.formField.name]: this.files });
   }
 }
