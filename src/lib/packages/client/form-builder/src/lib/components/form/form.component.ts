@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormController } from '../../controller/form-controller';
-import { BUILDERFIELD_ALL_PREFIX, FORMFIELD_PREFIX } from '@next-levels/types';
+import { BUILDERFIELD_ALL_PREFIX, FORMFIELD_PREFIX, META } from '@next-levels/types';
 import { TranslateService } from '@ngx-translate/core';
 import {
   FORM,
@@ -92,9 +92,12 @@ export class FormComponent implements OnInit {
       this.dataOutput.emit(this.controller);
 
       this.fg = this.controller.getForm();
+
+      const viewController =  META.getViewController(this.model) ?? this.model;
+
       const className = this.controller.getClassName() ?? '';
-      let fileFields = FORM.hasDetailFields(this.model)
-        ? this.model.detailFields()
+      let fileFields = FORM.hasDetailFields(viewController)
+        ? viewController.detailFields()
         : null;
 
       if (this.tab) {

@@ -84,6 +84,14 @@ export class FileInjectInterceptor implements NestInterceptor {
       FILE_FIELD_METADATA_KEY,
       EntityModel?.prototype
     );
+    console.log(
+      'className',
+      className,
+      entity.id,
+      fileFields,
+      EntityModel?.constructor,
+      EntityModel?.prototype
+    );
     if (fileFields && Array.isArray(fileFields)) {
       for (const fileField of fileFields) {
         const files = await this.filesService.findFilesByObject(

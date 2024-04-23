@@ -16,7 +16,6 @@ export function ViewController(config: ViewControllerOptions) {
   const options = config;
   const name: string = config.name;
 
-
   return (constructor: Constructor) => {
     const variables =
       Reflect.getMetadata(VIEWCLASS_ALL_PREFIX, constructor) || [];
