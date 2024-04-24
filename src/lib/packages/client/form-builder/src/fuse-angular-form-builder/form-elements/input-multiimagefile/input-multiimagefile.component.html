@@ -87,7 +87,8 @@
                   (click)="changeCoverImage(file)"
                   class="absolute right-0 top-0 px-1.5 rounded mat-flat-button mat-primary"
                 >
-                  Cover <span *ngIf="file.is_cover_image">&#10003;</span>
+                  Cover <span *ngIf="file.is_cover_image">&#x2611;</span
+                  ><span *ngIf="!file.is_cover_image">&#x2610;</span>
                 </button>
                 <button
                   mat-icon-button

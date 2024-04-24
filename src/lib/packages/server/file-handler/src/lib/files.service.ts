@@ -140,6 +140,10 @@ export class FilesService {
     return Result.ok(this._filesRepository.save(newFile));
   }
 
+  async createExternal(file: FileEntity) {
+    return Result.ok(this._filesRepository.save(file));
+  }
+
   async findFilesByObject(
     attachmentType: string,
     attachmentId: number

@@ -58,7 +58,8 @@ export class BaseInputMultiImageFileComponent extends BaseInputComponent {
     //   )
     // )) as BaseFile[];
 
-    this.files = this.formController.getForm().value[this.formField.name];
+    const formValue = this.formController.getForm().value[this.formField.name];
+    this.files = [...formValue];
 
     console.log('this.files', this.files);
 
@@ -112,7 +113,6 @@ export class BaseInputMultiImageFileComponent extends BaseInputComponent {
   }
 
   drop(event: CdkDragDrop<BaseFile[]>) {
-    console.log('event', event);
     const temp = [];
     this.files.forEach((val) => temp.push(Object.assign({}, val)));
     const prevSort = temp[event.previousIndex].sort_order;
@@ -124,11 +124,11 @@ export class BaseInputMultiImageFileComponent extends BaseInputComponent {
       .getForm()
       .patchValue({ [this.formField.name]: this.files });
 
-    this.patchSortOrder(temp[event.previousIndex]);
-    this.patchSortOrder(temp[event.currentIndex]);
+    this.patchFile(temp[event.previousIndex]);
+    this.patchFile(temp[event.currentIndex]);
   }
 
-  patchSortOrder(file: BaseFile): void {
+  patchFile(file: BaseFile): void {
     firstValueFrom(this._httpClient.patch(this.baseApiUrl, file)).then(
       (response: any) => {
         this._changeDetectorRef.detectChanges();
@@ -146,7 +146,6 @@ export class BaseInputMultiImageFileComponent extends BaseInputComponent {
       return;
     }
     this.selectedFile = file;
-    // this._navigationService._drawer.next(file); // NavigationService is part of CMS and can't be imported
     this._changeDetectorRef.markForCheck();
   }
 
@@ -168,9 +167,7 @@ export class BaseInputMultiImageFileComponent extends BaseInputComponent {
           this.formController
             .getForm()
             .patchValue({ [this.formField.name]: this.files });
-          console.log('this.files', this.files);
           this._changeDetectorRef.markForCheck();
-          // this._navigationService._drawer.next(null);
         });
       } else if (result.isDismissed) {
       }
@@ -178,17 +175,21 @@ export class BaseInputMultiImageFileComponent extends BaseInputComponent {
   }
 
   changeCoverImage(clickedFile: BaseFile): void {
-    const temp = [];
-    this.files.forEach((val) => temp.push(Object.assign({}, val)));
-    temp.forEach((file) => {
-      if (file.id === clickedFile.id) {
-        file.is_cover_image = file.is_cover_image ? 0 : 1;
-      } else {
-        file.is_cover_image = 0;
+    this.files.forEach((file, index) => {
+      let changed = false;
+      const updatedFile = { ...file };
+      if (updatedFile.id === clickedFile.id) {
+        updatedFile.is_cover_image = !updatedFile.is_cover_image;
+        changed = true;
+      } else if (updatedFile.is_cover_image) {
+        updatedFile.is_cover_image = false;
+        changed = true;
+      }
+      if (changed) {
+        this.patchFile(updatedFile);
+        this.files[index] = updatedFile;
       }
     });
-    this.files = temp.slice();
-    console.log('this.files', this.files);
     this.formController
       .getForm()
       .patchValue({ [this.formField.name]: this.files });
