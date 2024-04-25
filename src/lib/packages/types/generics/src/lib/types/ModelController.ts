@@ -10,7 +10,7 @@ export class ModelController<T> {
 
   $createFields: Fields<T> | Groups<T> | Tabs<T> = [];
   $detailFields: Fields<T> | Groups<T> | Tabs<T> = [];
-  $detailActions: Array<{ label: string, icon: string, click: () => void }> = [];
+  $detailActions: Fields<T>;
 
   $listFields: Fields<T> = [];
   $listScope: ScopeFilterTyped<T> = null;
@@ -25,7 +25,7 @@ export class ModelController<T> {
     return this.$detailFields;
   }
 
-  detailActions(): Array<{ label: string, icon: string, click: () => void }> {
+  detailActions(): Fields<T> {
     return this.$detailActions;
   }
 
