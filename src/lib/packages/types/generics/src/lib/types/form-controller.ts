@@ -1,3 +1,4 @@
+import { ActionType } from "../../../../../../../../../next-cms/packages/cms";
 import {DropdownOptions} from "./options/dropdown-options";
 import {ModelRelationOptions} from "./options/relation-options";
 
@@ -8,4 +9,6 @@ export interface FormController<T> {
 
   createFields(): Array<{[key: string]: Array<keyof T>}>;
   detailFields?(): Array<{[key: string]: Array<keyof T>}>;
+  detailActions?(): Array<ActionType>;
+  listActions?(): Array<ActionType>;
 }

@@ -9,4 +9,11 @@ export class FORM {
   static hasListFilters(obj: any): boolean {
     return "listFilters" in obj;
   }
+
+  static hasListActions(obj: any): boolean {
+    return "listActions" in obj;
+  }
+  static hasDetailActions(obj: any): boolean {
+    return "detailActions" in obj;
+  }
 }
