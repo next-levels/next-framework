@@ -26,6 +26,17 @@
         <!-- Buttons -->
         <ng-container *transloco="let t">
             <div class="flex shrink-0 items-center sm:ml-4 ng-star-inserted my-5">
+                <ng-container *ngFor="let action of actions">
+                    <button
+                            class="ml-4 rounded-md"
+                            mat-flat-button
+                            [color]="'primary'"
+                            (click)="fireAction(action)"
+                    >
+                        <mat-icon [svgIcon]="action.icon"></mat-icon>
+                        <span class="ml-2 mr-1">{{ t(action.label) }}</span>
+                    </button>
+                </ng-container>
                 <button
                         class="ml-4 rounded-md"
                         mat-flat-button

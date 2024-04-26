@@ -1,3 +1,4 @@
+import { ActionType } from "../../../../../../../../../next-cms/packages/cms";
 import { DropdownOptions } from "./options/dropdown-options";
 import { ModelRelationOptions } from "./options/relation-options";
 import { ScopeFilter, ScopeFilterTyped } from './ScopeFilter';
@@ -10,7 +11,8 @@ export class ModelController<T> {
 
   $createFields: Fields<T> | Groups<T> | Tabs<T> = [];
   $detailFields: Fields<T> | Groups<T> | Tabs<T> = [];
-  $detailActions: Fields<T>;
+  $detailActions: Fields<T> = [];
+  $listActions: Fields<T> = [];
 
   $listFields: Fields<T> = [];
   $listScope: ScopeFilterTyped<T> = null;
@@ -27,6 +29,10 @@ export class ModelController<T> {
 
   detailActions(): Fields<T> {
     return this.$detailActions;
+  }
+
+  listActions(): Fields<T> {
+    return this.$listActions;
   }
 
   listFields(): Fields<T> {
