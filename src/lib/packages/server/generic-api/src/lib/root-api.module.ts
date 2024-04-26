@@ -7,7 +7,7 @@ import {getFeatures} from "@next-levels/next-framework";
 @Module({})
 export class RootApiModule {
   static forFeature(models: any[],providers:any[] = [],controllers:any[] = []): DynamicModule {
-    const services = [];
+     const services = [];
     for (let model of models) {
       if (!model.prototype) {
         throw new Error('Model should be a class');

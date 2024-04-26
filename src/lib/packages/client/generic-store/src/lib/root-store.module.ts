@@ -1,12 +1,11 @@
-import { NgModule, ModuleWithProviders, Type, Injector } from '@angular/core';
-import { Store, StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
+import {NgModule, ModuleWithProviders, Type} from '@angular/core';
+import {Store, StoreModule} from '@ngrx/store';
+import {EffectsModule} from '@ngrx/effects';
 import {
-  EnvironmentStorageService,
   InstanceRegistryService,
 } from '../../../angular-commons';
- import { getStoreFeatures } from './factory/generic.factory';
-import { GenericData } from './types/generic.data';
+import {getStoreFeatures} from './factory/generic.factory';
+import {GenericData} from './types/generic.data';
 import {NotificationData} from "./+store-types/notifcation/notification.data";
 import {META} from "@next-levels/types";
 
@@ -22,7 +21,7 @@ export class RootStoreModule {
     const route = url ? url : name;
     const apiUrl = `/api/${route}/admin`;
 
-     const store = getStoreFeatures<
+    const store = getStoreFeatures<
       typeof model,
       {
         base: GenericData<typeof model>;
@@ -31,7 +30,7 @@ export class RootStoreModule {
     >(model, {
       ...config,
       route: apiUrl,
-       features: ['base', 'notifications'],
+      features: ['base', 'notifications'],
     });
 
     providers.push({
@@ -61,7 +60,7 @@ export class RootStoreModule {
         private registry: InstanceRegistryService,
         public NGRXstore: Store<any>
       ) {
-          this.registry.register(model, new store.facade(NGRXstore, store.store));
+        this.registry.register(model, new store.facade(NGRXstore, store.store));
       }
     }
 
