@@ -1,22 +1,23 @@
-import {DropdownOptions} from "./options/dropdown-options";
-import {ModelRelationOptions} from "./options/relation-options";
+import { DropdownOptions } from "./options/dropdown-options";
+import { ModelRelationOptions } from "./options/relation-options";
 import { ScopeFilter, ScopeFilterTyped } from './ScopeFilter';
 
 export type Fields<T> = Array<keyof T>;
 export type Groups<T> = Array<{ [key: string]: Fields<T> }>;
 export type Tabs<T> = Array<{ [P in keyof T]?: Fields<T> }>;
 
-export class ModelController<T>{
+export class ModelController<T> {
 
   $createFields: Fields<T> | Groups<T> | Tabs<T> = [];
   $detailFields: Fields<T> | Groups<T> | Tabs<T> = [];
+  $detailActions: Fields<T>;
 
   $listFields: Fields<T> = [];
-  $listScope:ScopeFilterTyped<T> = null;
-  $listFilters:ScopeFilterTyped<T>[] = []
+  $listScope: ScopeFilterTyped<T> = null;
+  $listFilters: ScopeFilterTyped<T>[] = []
   $listType: string;
 
-   createFields(): Fields<T> | Groups<T> | Tabs<T> {
+  createFields(): Fields<T> | Groups<T> | Tabs<T> {
     return this.$createFields;
   }
 
@@ -24,11 +25,15 @@ export class ModelController<T>{
     return this.$detailFields;
   }
 
-   listFields(): Fields<T> {
+  detailActions(): Fields<T> {
+    return this.$detailActions;
+  }
+
+  listFields(): Fields<T> {
     return this.$listFields;
   }
 
-   listScope(): ScopeFilterTyped<T> {
+  listScope(): ScopeFilterTyped<T> {
     return this.$listScope;
   }
 
