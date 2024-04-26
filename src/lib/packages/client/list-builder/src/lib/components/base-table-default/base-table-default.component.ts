@@ -144,15 +144,16 @@ export class BaseTableDefaultComponent
         .map((item: any) => item.field);
     }
 
+    const viewController = META.getViewController(this.model) ?? this.model
 
-    if (haslistFields(this.model)) {
-       this.fields = this.model.listFields().filter(field =>
+    if (haslistFields(viewController)) {
+       this.fields = viewController.listFields().filter(field =>
         this.fields.includes(field)
       );
     }
 
-    if (hasListActions(this.model)) {
-      this.actions = this.model.listActions();
+    if (hasListActions(viewController)) {
+      this.actions = viewController.listActions();
     }
     if (this.fields) {
       this.displayedColumns.push('select');

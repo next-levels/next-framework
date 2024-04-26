@@ -85,7 +85,7 @@ export class CreateWizardComponent implements AfterViewInit, OnInit {
     const viewController =  META.getViewController(this.model) ?? this.model;
     const fileFields = FORM.hasCreateFields(viewController) ? viewController.createFields() : null
 
-    if (fileFields) {
+    if (fileFields && fileFields.length > 0) {
       this.steps = fileFields.map((tab: any, index: number) => {
         const firstKey = Object.keys(tab)[0];
         return {
