@@ -38,7 +38,7 @@ import {
   BatchWizardComponent,
   CreateWizardComponent,
 } from '../../../../../dynamic-modals';
-import {haslistFields} from "../../helpers/list.helper";
+import {hasListActions, haslistFields} from "../../helpers/list.helper";
 
 @Component({
   template: '<ng-container></ng-container>',
@@ -77,6 +77,7 @@ export class BaseTableDefaultComponent
 
   modelFacade: BaseFacadeType;
   model: any;
+  actions: [] = [];
   modelReference: string;
 
   itemsPerPage = 20;
@@ -143,13 +144,17 @@ export class BaseTableDefaultComponent
         .map((item: any) => item.field);
     }
 
+    const viewController = META.getViewController(this.model) ?? this.model
 
-    if (haslistFields(this.model)) {
-       this.fields = this.model.listFields().filter(field =>
+    if (haslistFields(viewController)) {
+       this.fields = viewController.listFields().filter(field =>
         this.fields.includes(field)
       );
     }
 
+    if (hasListActions(viewController)) {
+      this.actions = viewController.listActions();
+    }
     if (this.fields) {
       this.displayedColumns.push('select');
       this.displayedColumns = [...this.displayedColumns, ...this.fields];
@@ -317,6 +322,10 @@ export class BaseTableDefaultComponent
 
   public openExportInsurersModal() {
     this.rowExport.emit();
+  }
+
+  public fireAction(action) {
+    action.click(this.model);
   }
 
   public openAddModal() {

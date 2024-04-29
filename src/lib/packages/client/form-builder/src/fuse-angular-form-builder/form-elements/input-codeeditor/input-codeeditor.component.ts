@@ -16,7 +16,7 @@ export class InputCodeeditorComponent extends BaseInputTextareaComponent {
     public editorOptions: JsonEditorOptions;
     public data: any;
     theme = 'vs-dark';
-    model: CodeModel;
+    model: CodeModel = null;
     options = {
         contextmenu: true,
         minimap: {
@@ -29,14 +29,20 @@ export class InputCodeeditorComponent extends BaseInputTextareaComponent {
                 public readonly _matDialog: MatDialog,
     ) {
         super(cdRef, translateService);
-        this.data = JSON.stringify(this.value, null, 2);
 
-        this.model = {
-            language: 'json',
-            value: this.data,
-            uri: 'main.json'
-        };
     }
+
+
+  override init() {
+    this.data = JSON.stringify(this.value, null, 2);
+
+    console.log('DATA', this.data);
+    this.model = {
+      language: 'json',
+      value: this.value,
+      uri: 'main.json'
+    };
+  }
 
     onCodeChanged(value) {
         console.log('CODE', value);
@@ -45,6 +51,7 @@ export class InputCodeeditorComponent extends BaseInputTextareaComponent {
     openEditor(row: any): void {
         this._matDialog.open(this.modalTemplate, {
             minWidth: '60%',
+          minHeight: '60%',
             autoFocus: false,
             data: {
                 data: this.value,

@@ -14,3 +14,7 @@ export function getFilterOptions(pagination): FilterOptions {
 export function haslistFields(obj: any): boolean {
   return "listFields" in obj;
 }
+
+export function hasListActions(obj: any): boolean {
+  return "listActions" in obj;
+}
