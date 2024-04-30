@@ -36,16 +36,12 @@ export class ListSelectorComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('this.formField', this.formField);
-
     if (this.formField && this.formField.name && this.formController) {
       this.fg = this.formController?.getForm();
     }
   }
 
   ngAfterViewInit() {
-    console.log('this.formField', this.formField);
-
     if (this.container !== undefined && this.formField.options) {
       const componentFactory =
         this.componentFactoryResolver.resolveComponentFactory(
@@ -57,7 +53,6 @@ export class ListSelectorComponent implements OnInit, AfterViewInit {
         componentRef.instance as TableDefaultComponent;
 
       // const rootModelName = META.getNameByModel(new model());
-      console.log(this.formField.options.model);
       const model = META.getModelByName(this.formField.options.model);
       const viewController = META.getListControllerByName(
         this.formField.options.view

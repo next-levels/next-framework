@@ -9,6 +9,8 @@ export class ListController<T> {
   $listFilters: ScopeFilterTyped<T>[] = [];
   $listType: string;
 
+  $searchFields: Fields<T> = [];
+
   listActions(): Array<ActionType> {
     return this.$listActions;
   }
@@ -19,6 +21,18 @@ export class ListController<T> {
 
   listScope(): ScopeFilterTyped<T> {
     return this.$listScope;
+  }
+
+  searchFields(): Fields<T> {
+    return this.$searchFields;
+  }
+
+  listFilters(): ScopeFilterTyped<T>[] {
+    return this.$listFilters;
+  }
+
+  listType(): string {
+    return this.$listType;
   }
 
   constructor() {}

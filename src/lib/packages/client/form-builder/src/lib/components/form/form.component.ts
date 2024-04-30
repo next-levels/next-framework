@@ -77,6 +77,7 @@ export class FormComponent implements OnInit {
   ngOnInit(): void {
     if (this.formModel) {
       this.model = new this.formModel();
+      const instance = new this.formModel();
 
       if (!this.data) {
         this.data = this.model;
@@ -92,7 +93,6 @@ export class FormComponent implements OnInit {
       this.dataOutput.emit(this.controller);
 
       this.fg = this.controller.getForm();
-      const instance = new this.formModel();
 
       const viewController = META.getFormController(instance) ?? this.model;
 
@@ -114,10 +114,27 @@ export class FormComponent implements OnInit {
           BUILDERFIELD_ALL_PREFIX,
           this.model
         );
-        fileFields = [{ general: visibilityFields }];
+        fileFields = visibilityFields;
+      }
+
+      if (Array.isArray(fileFields)) {
+        this.groups = [
+          {
+            key: 'default',
+            index: 1,
+            arrayIndex: 1,
+            title: '',
+            description: '',
+            fields: fileFields,
+          },
+        ];
+
+        this.changeDetectorRef.detectChanges();
+        return;
       }
 
       const groups = Object.keys(fileFields);
+ 
       if (groups && groups.length > 0) {
         this.groups = groups
           .map((group: any, index: number) => {

@@ -59,7 +59,12 @@ export class FileInjectInterceptor implements NestInterceptor {
         //   console.log('data', data);
         // }
         for (const item of data) {
-          for (const [className, Entity] of entitiesWithFileFields.entries()) {
+          for (const [
+            className,
+            Entity,
+          ] of entitiesWithFileFields.entries() as unknown as IterableIterator<
+            [string, any]
+          >) {
             // if (item instanceof Entity) {
             await this.processFileFields(item, className, Entity);
             // }

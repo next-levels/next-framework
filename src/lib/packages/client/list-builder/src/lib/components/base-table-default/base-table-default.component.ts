@@ -146,8 +146,6 @@ export class BaseTableDefaultComponent
 
     const viewController = META.getListController(this.model) ?? this.model;
 
-    console.log(this.fields);
-
     if (haslistFields(viewController)) {
       this.fields = viewController
         .listFields()
