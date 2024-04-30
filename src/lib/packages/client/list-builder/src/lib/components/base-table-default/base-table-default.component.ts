@@ -4,7 +4,7 @@ import {
   ChangeDetectorRef,
   Component,
   ComponentFactoryResolver,
-  EventEmitter, HostListener,
+  EventEmitter,
   Input,
   OnDestroy,
   OnInit,
@@ -38,7 +38,7 @@ import {
   BatchWizardComponent,
   CreateWizardComponent,
 } from '../../../../../dynamic-modals';
-import {hasListActions, haslistFields} from "../../helpers/list.helper";
+import { hasListActions, haslistFields } from '../../helpers/list.helper';
 
 @Component({
   template: '<ng-container></ng-container>',
@@ -144,12 +144,14 @@ export class BaseTableDefaultComponent
         .map((item: any) => item.field);
     }
 
-    const viewController = META.getViewController(this.model) ?? this.model
+    const viewController = META.getListController(this.model) ?? this.model;
+
+    console.log(this.fields);
 
     if (haslistFields(viewController)) {
-       this.fields = viewController.listFields().filter(field =>
-        this.fields.includes(field)
-      );
+      this.fields = viewController
+        .listFields()
+        .filter((field) => this.fields.includes(field));
     }
 
     if (hasListActions(viewController)) {
@@ -163,12 +165,11 @@ export class BaseTableDefaultComponent
 
     if (this.listController.scope.length > 0) {
       this.listController.scope.forEach((scope) => {
-        if(scope.value){
+        if (scope.value) {
           this.filterOptions['filter.' + scope.key] =
-              scope.operation + ':' + scope.value;
-        }else {
-          this.filterOptions['filter.' + scope.key] =
-              scope.operation ;
+            scope.operation + ':' + scope.value;
+        } else {
+          this.filterOptions['filter.' + scope.key] = scope.operation;
         }
       });
     }
@@ -202,7 +203,6 @@ export class BaseTableDefaultComponent
       )
       .subscribe();
     this.cdRef.detectChanges();
-
   }
 
   ngOnChanges(changes: SimpleChanges): void {

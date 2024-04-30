@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormController } from '../../controller/form-controller';
-import { BUILDERFIELD_ALL_PREFIX, FORMFIELD_PREFIX, META } from '@next-levels/types';
+import { BUILDERFIELD_ALL_PREFIX, META } from '@next-levels/types';
 import { TranslateService } from '@ngx-translate/core';
 import {
   FORM,
@@ -92,8 +92,9 @@ export class FormComponent implements OnInit {
       this.dataOutput.emit(this.controller);
 
       this.fg = this.controller.getForm();
+      const instance = new this.formModel();
 
-      const viewController =  META.getViewController(this.model) ?? this.model;
+      const viewController = META.getFormController(instance) ?? this.model;
 
       const className = this.controller.getClassName() ?? '';
       let fileFields = FORM.hasDetailFields(viewController)
@@ -104,7 +105,7 @@ export class FormComponent implements OnInit {
         if (this.tab === 'header') {
           fileFields = fileFields.header;
         } else {
-          fileFields = fileFields.tabs[this.tab];
+          fileFields = fileFields[this.tab];
         }
       }
 
@@ -116,34 +117,42 @@ export class FormComponent implements OnInit {
         fileFields = [{ general: visibilityFields }];
       }
 
-      if (fileFields) {
-        this.groups = fileFields.map((field: any, index: number) => {
-          const firstKey = Object.keys(field)[0];
+      const groups = Object.keys(fileFields);
+      if (groups && groups.length > 0) {
+        this.groups = groups
+          .map((group: any, index: number) => {
+            const fields = fileFields[group];
 
-          let title = this.translate.instant(
-            className + '.groups.' + firstKey + '.name'
-          );
-          let description = this.translate.instant(
-            className + '.groups.' + firstKey + '.description'
-          );
+            if (fields && fields.length > 0) {
+              this.fields = fields;
+            } else {
+              return null;
+            }
 
-          if (
-            description ===
-            className + '.groups.' + firstKey + '.description'
-          ) {
-            description = '';
-          }
+            let title = this.translate.instant(
+              className + '.groups.' + group + '.name'
+            );
+            let description = this.translate.instant(
+              className + '.groups.' + group + '.description'
+            );
 
-          this.fields.push(...field[firstKey]);
+            if (
+              description ===
+              className + '.groups.' + group + '.description'
+            ) {
+              description = '';
+            }
 
-          return {
-            index: index,
-            arrayIndex: index + 1,
-            title: title,
-            description: description,
-            fields: field[firstKey],
-          };
-        });
+            return {
+              key: group,
+              index: index,
+              arrayIndex: index + 1,
+              title: title,
+              description: description,
+              fields: fields,
+            };
+          })
+          .filter((group) => group !== null);
       }
 
       this.changeDetectorRef.detectChanges();

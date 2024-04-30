@@ -9,6 +9,7 @@ import { ViewCheckboxComponent } from '../components/view-items/view-checkbox/vi
 import { ViewFileComponent } from '../components/view-items/view-file/view-file.component';
 import { ViewResultComponent } from '../components/view-items/view-result.component';
 import { ViewInlineEditComponent } from '../components/view-items/view-inline-edit/view-inline-edit.component';
+import { ViewStateComponent } from '../components/view-items/view-state/view-state.component';
 
 export let defaultListComponents: ListComponents = {
   HIDDEN: ViewTextComponent,
@@ -28,5 +29,6 @@ export let defaultListComponents: ListComponents = {
   JSON: ViewTextComponent,
   CODE: ViewTextComponent,
   RESULT: ViewResultComponent,
+  STATE: ViewStateComponent,
   INLINE_EDIT: ViewInlineEditComponent,
 };

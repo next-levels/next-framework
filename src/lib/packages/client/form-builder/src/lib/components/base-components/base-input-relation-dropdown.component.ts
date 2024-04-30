@@ -5,7 +5,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { InstanceRegistryService } from '../../../../../angular-commons';
 import { BaseInputComponent } from './base-input.component';
 import {
-  FilterOptions, META,
+  FilterOptions,
+  META,
   ModelRelationOptions,
   PaginationMeta,
 } from '@next-levels/types';
@@ -68,9 +69,8 @@ export class BaseInputRelationDropdownComponent
   }
 
   override ngOnInit(): void {
-    const model = this.formController
-      .getModelDefinition();
-    const viewController = META.getViewController(model) ?? model
+    const model = this.formController.getModelDefinition();
+    const viewController = META.getFormController(model) ?? model;
 
     this.settings = viewController.relations(this.formField.name);
     this.fg = this.formController?.getForm();

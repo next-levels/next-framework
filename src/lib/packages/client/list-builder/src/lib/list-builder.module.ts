@@ -1,6 +1,5 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule, DatePipe, NgOptimizedImage } from '@angular/common';
-import { ContractStateComponent } from './components/view-items/contract-state/contract-state.component';
 import { TableDefaultComponent } from './components/table-default/table-default.component';
 import { TableSubmoduleComponent } from './components/table-submodule/table-submodule.component';
 import { ViewCurrencyComponent } from './components/view-items/view-currency/view-currency.component';
@@ -52,6 +51,7 @@ import { ViewResultComponent } from './components/view-items/view-result.compone
 import { ViewCheckboxComponent } from './components/view-items/view-checkbox/view-checkbox.component';
 import { TableInlineEditComponent } from './components/table-inline-edit/table-inline-edit.component';
 import { FormBuilderModule } from '../../../form-builder';
+import { ViewStateComponent } from './components/view-items/view-state/view-state.component';
 
 @NgModule({
   imports: [
@@ -88,14 +88,13 @@ import { FormBuilderModule } from '../../../form-builder';
   ],
   providers: [DatePipe],
   declarations: [
-    ContractStateComponent,
     TableDefaultComponent,
     TableInlineEditComponent,
     TableCalendarComponent,
     SimpleListComponent,
     CardListComponent,
     TableSubmoduleComponent,
-    ContractStateComponent,
+    ViewStateComponent,
     ViewCurrencyComponent,
     ViewElementComponent,
     ViewTextComponent,
@@ -114,14 +113,13 @@ import { FormBuilderModule } from '../../../form-builder';
     ViewCheckboxComponent,
   ],
   exports: [
-    ContractStateComponent,
     TableDefaultComponent,
     TableInlineEditComponent,
     TableCalendarComponent,
     SimpleListComponent,
     CardListComponent,
     TableSubmoduleComponent,
-    ContractStateComponent,
+    ViewStateComponent,
     ViewCurrencyComponent,
     ViewElementComponent,
     ViewTextComponent,
