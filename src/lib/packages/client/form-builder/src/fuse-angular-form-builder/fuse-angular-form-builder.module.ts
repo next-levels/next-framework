@@ -39,6 +39,7 @@ import {
   DragDropModule,
 } from '@angular/cdk/drag-drop';
 import { InputMultiImageFileDirective } from './form-elements/input-multiimagefile/input-multiimagefile.directive';
+import { CodeEditorModule } from '@ngstack/code-editor';
 
 @NgModule({
   imports: [
@@ -62,6 +63,7 @@ import { InputMultiImageFileDirective } from './form-elements/input-multiimagefi
     MatRippleModule,
     NgJsonEditorModule,
     NgxCurrencyDirective,
+    CodeEditorModule.forRoot(),
     FormsModule,
     CdkDrag,
     CdkDropListGroup,
