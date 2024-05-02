@@ -7,13 +7,7 @@ import { BaseViewComponent } from '../base-view/base-view.component';
   styleUrls: ['./view-state.component.scss'],
 })
 export class ViewStateComponent extends BaseViewComponent {
-  colors = [
-    'bg-teal-400',
-    'bg-indigo-400',
-    'bg-purple-400',
-    'bg-pink-400',
-    'bg-green-400',
-  ];
+  colors = ['bg-teal-400', 'bg-green-400', 'bg-purple-400', 'bg-pink-400'];
 
   getColor(value: string): string {
     let hash = 0;
