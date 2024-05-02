@@ -1,13 +1,11 @@
-import {NgModule, ModuleWithProviders, Type} from '@angular/core';
-import {Store, StoreModule} from '@ngrx/store';
-import {EffectsModule} from '@ngrx/effects';
-import {
-  InstanceRegistryService,
-} from '../../../angular-commons';
-import {getStoreFeatures} from './factory/generic.factory';
-import {GenericData} from './types/generic.data';
-import {NotificationData} from "./+store-types/notifcation/notification.data";
-import {META} from "@next-levels/types";
+import { ModuleWithProviders, NgModule, Type } from '@angular/core';
+import { Store, StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { InstanceRegistryService } from '../../../angular-commons';
+import { getStoreFeatures } from './factory/generic.factory';
+import { GenericData } from './types/generic.data';
+import { NotificationData } from './+store-types/notifcation/notification.data';
+import { META } from '@next-levels/types';
 
 @NgModule({})
 export class RootStoreModule {

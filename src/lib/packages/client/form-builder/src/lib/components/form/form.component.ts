@@ -134,11 +134,13 @@ export class FormComponent implements OnInit {
       }
 
       const groups = Object.keys(fileFields);
- 
+
       if (groups && groups.length > 0) {
         this.groups = groups
           .map((group: any, index: number) => {
             const fields = fileFields[group];
+            let title = null;
+            let description = null;
 
             if (fields && fields.length > 0) {
               this.fields = fields;
@@ -146,18 +148,20 @@ export class FormComponent implements OnInit {
               return null;
             }
 
-            let title = this.translate.instant(
-              className + '.groups.' + group + '.name'
-            );
-            let description = this.translate.instant(
-              className + '.groups.' + group + '.description'
-            );
+            if (fields && fields.length > 1) {
+              title = this.translate.instant(
+                className + '.groups.' + group + '.name'
+              );
+              description = this.translate.instant(
+                className + '.groups.' + group + '.description'
+              );
 
-            if (
-              description ===
-              className + '.groups.' + group + '.description'
-            ) {
-              description = '';
+              if (
+                description ===
+                className + '.groups.' + group + '.description'
+              ) {
+                description = '';
+              }
             }
 
             return {

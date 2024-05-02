@@ -46,9 +46,8 @@
                         class="font-semibold dropzone-label w-full"
                         for="file"
                         style="color: #cad1db"
-                        *transloco="let t"
                       >
-                        {{ t('media.upload') }}
+                        {{ 'media.upload' | translate }}
                       </label>
                     </div>
                   </div>
@@ -77,8 +76,8 @@
                   >
                     {{
                       file.type.toUpperCase() +
-                        ' Sortierung:' +
-                        (file.sort_order + 1)
+                      ' Sortierung:' +
+                      (file.sort_order + 1)
                     }}
                   </div>
                 </div>
@@ -88,7 +87,7 @@
                   class="absolute right-0 top-0 px-1.5 rounded mat-flat-button mat-primary"
                 >
                   Cover <span *ngIf="file.is_cover_image">&#x2611;</span
-                  ><span *ngIf="!file.is_cover_image">&#x2610;</span>
+                ><span *ngIf="!file.is_cover_image">&#x2610;</span>
                 </button>
                 <button
                   mat-icon-button
@@ -100,7 +99,7 @@
                     [svgIcon]="'heroicons_outline:trash'"
                   ></mat-icon>
                 </button>
-                <img alt="" [src]="baseApiUrl + file.id" />
+                <img alt="" [src]="baseApiUrl + file.id"/>
               </div>
             </a>
           </ng-container>

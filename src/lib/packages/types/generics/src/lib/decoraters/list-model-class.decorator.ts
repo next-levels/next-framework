@@ -19,6 +19,8 @@ export function ListModel(config: ViewControllerOptions) {
     Reflect.defineMetadata(LISTCLASS_PREFIX, name, constructor);
     Reflect.defineMetadata(LISTCLASS_OPTIONS_PREFIX, options, constructor);
 
+    console.log('list_controller_models_key', name);
+
     if (!list_controller_models_key.has(name)) {
       list_controller_models_key.set(name, constructor);
     }

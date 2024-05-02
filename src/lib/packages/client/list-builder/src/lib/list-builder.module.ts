@@ -15,7 +15,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { TranslocoModule } from '@ngneat/transloco';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BaseListComponent } from './components/base-list/base-list.component';
 import { ViewRelationComponent } from './components/view-items/view-relation/view-relation.component';
@@ -52,6 +51,7 @@ import { ViewCheckboxComponent } from './components/view-items/view-checkbox/vie
 import { TableInlineEditComponent } from './components/table-inline-edit/table-inline-edit.component';
 import { FormBuilderModule } from '../../../form-builder';
 import { ViewStateComponent } from './components/view-items/view-state/view-state.component';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 
 @NgModule({
   imports: [
@@ -68,7 +68,6 @@ import { ViewStateComponent } from './components/view-items/view-state/view-stat
     MatSortModule,
     MatTableModule,
     FormsModule,
-    TranslocoModule,
     ReactiveFormsModule,
     DatePipe,
     NgOptimizedImage,
@@ -85,6 +84,9 @@ import { ViewStateComponent } from './components/view-items/view-state/view-stat
     MatTreeNodeDef,
     MatTreeModule,
     FormBuilderModule,
+    MatMenu,
+    MatMenuItem,
+    MatMenuTrigger,
   ],
   providers: [DatePipe],
   declarations: [

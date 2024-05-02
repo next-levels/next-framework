@@ -8,6 +8,7 @@ export class ListController<T> {
   $listScope: ScopeFilterTyped<T> = null;
   $listFilters: ScopeFilterTyped<T>[] = [];
   $listType: string;
+  $rowAction: ActionType;
 
   $searchFields: Fields<T> = [];
 

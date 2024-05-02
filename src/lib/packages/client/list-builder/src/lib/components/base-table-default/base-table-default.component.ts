@@ -9,10 +9,18 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { debounceTime, merge, Observable, Subject, takeUntil, tap } from 'rxjs';
+import {
+  debounceTime,
+  interval,
+  merge,
+  Observable,
+  Subject,
+  takeUntil,
+  takeWhile,
+  tap,
+} from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, SortDirection } from '@angular/material/sort';
 import { FormControl } from '@angular/forms';
@@ -49,6 +57,7 @@ export class BaseTableDefaultComponent
   implements OnInit, OnDestroy, AfterViewInit
 {
   @Input() listController: ListController;
+  @Input() viewController: any;
   @Input() showHeader = false;
   @Input() showSearch = true;
   @Input() selector: string;
@@ -112,9 +121,10 @@ export class BaseTableDefaultComponent
 
   ngOnInit() {
     this.activeRoute.queryParams.subscribe((params) => {
-      if (params['search']) {
-        this.filterOptions.search = params['search'];
-      }
+      this.filterOptions.search = params['search'] || this.filterOptions.search;
+      this.filterOptions.page = params['page'] || this.filterOptions.page;
+      this.filterOptions.limit = params['limit'] || this.filterOptions.limit;
+      this.filterOptions.sortBy = params['sortBy'] || this.filterOptions.sortBy;
     });
 
     this.modelFacade = this.listController.getFacade();
@@ -136,27 +146,26 @@ export class BaseTableDefaultComponent
 
     this.fields = [...builderFields, ...listFields];
 
-    const config = this.listController.getConfig();
-
-    if (config && config.length > 0) {
-      this.fields = config
-        .filter((item: any) => item.list === true)
-        .map((item: any) => item.field);
+    if (this.viewController === undefined) {
+      this.viewController = META.getListController(this.model) ?? this.model;
     }
 
-    const viewController = META.getListController(this.model) ?? this.model;
-
-    if (haslistFields(viewController)) {
-      this.fields = viewController
+    if (haslistFields(this.viewController)) {
+      this.fields = this.viewController
         .listFields()
         .filter((field) => this.fields.includes(field));
     }
 
-    if (hasListActions(viewController)) {
-      this.actions = viewController.listActions();
+    console.log(this.fields);
+
+    if (hasListActions(this.viewController)) {
+      this.actions = this.viewController.listActions();
     }
+
     if (this.fields) {
-      this.displayedColumns.push('select');
+      if (!this.childTable) {
+        this.displayedColumns.push('select');
+      }
       this.displayedColumns = [...this.displayedColumns, ...this.fields];
       this.displayedColumns.push('actions');
     }
@@ -179,7 +188,19 @@ export class BaseTableDefaultComponent
 
     this.modelFacade?.base.pagination$.subscribe((paginationMeta) => {
       if (paginationMeta) {
-        this.pagination = paginationMeta;
+        this.pagination = {
+          ...paginationMeta,
+          currentPage: paginationMeta.currentPage,
+          itemsPerPage: paginationMeta.itemsPerPage,
+        };
+        this.filterOptions = {
+          ...this.filterOptions,
+          page: paginationMeta.currentPage,
+          limit: paginationMeta.itemsPerPage,
+          sortBy: `${
+            paginationMeta.sortBy[0][0]
+          }:${paginationMeta.sortBy[0][1].toUpperCase()}`,
+        };
       }
     });
 
@@ -203,50 +224,43 @@ export class BaseTableDefaultComponent
     this.cdRef.detectChanges();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['selector']) {
-      if (this.modelFacade?.selectors[changes['selector'].currentValue]) {
-        const observable = this.modelFacade.selectors[
-          changes['selector'].currentValue
-        ] as unknown as Observable<any>;
-        observable.subscribe((entries: unknown) => {
-          this.dataSource.data = entries as any[];
-          this.cdRef.detectChanges();
-        });
-      }
-    }
+  ngAfterViewInit(): void {
+    const checkInterval = interval(100).pipe(
+      takeWhile(() => !this.sort || !this.paginator)
+    );
+
+    checkInterval.subscribe({
+      next: () => {},
+      complete: () => {
+        this.initializeSortAndPaginator();
+        this.cdRef.detectChanges();
+      },
+    });
   }
 
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      // Because this hook is not the lifecycle of an extending component like table-default but of this component which has its own template
-      if (this.sort && this.paginator) {
-        this.sort.sortChange.subscribe(() => {
-          this.paginator.pageIndex = 0;
-        });
+  private initializeSortAndPaginator() {
+    this.sort.sortChange.subscribe(() => {
+      this.paginator.pageIndex = 0;
+    });
 
-        merge(this.sort.sortChange, this.paginator.page)
-          .pipe(
-            takeUntil(this._unsubscribeAll),
-            tap(() => {
-              this.filterOptions = {
-                ...this.filterOptions,
-                page: this.paginator.pageIndex + 1,
-                limit: this.paginator.pageSize,
-                sortBy: `${
-                  this.sort.active
-                }:${this.sort.direction.toUpperCase()}`,
-              };
+    merge(this.sort.sortChange, this.paginator.page)
+      .pipe(
+        takeUntil(this._unsubscribeAll),
+        tap(() => {
+          this.filterOptions = {
+            ...this.filterOptions,
+            page: this.paginator.pageIndex + 1,
+            limit: this.paginator.pageSize,
+            sortBy: `${this.sort.active}:${this.sort.direction.toUpperCase()}`,
+          };
 
-              if (this.modelFacade) {
-                this.modelFacade.base.loadFiltered(this.filterOptions);
-              }
-            })
-          )
-          .subscribe();
-      }
-      this.cdRef.detectChanges();
-    }, 100);
+          if (this.modelFacade) {
+            console.log(this.filterOptions);
+            this.modelFacade.base.loadFiltered(this.filterOptions);
+          }
+        })
+      )
+      .subscribe();
   }
 
   getTimestamp(value) {
@@ -254,6 +268,11 @@ export class BaseTableDefaultComponent
   }
 
   public selectRow(row: any) {
+    if (this.viewController.$rowAction) {
+      this.viewController.$rowAction.click(row, this.router);
+      return;
+    }
+
     if (this.detailModal) {
       this._matDialog.open(CreateWizardComponent, {
         minWidth: '50%',
@@ -314,12 +333,44 @@ export class BaseTableDefaultComponent
     });
   }
 
-  public openAddInsurersModal() {
-    this.rowCreate.emit();
+  batchEdit() {
+    this._matDialog.open(BatchWizardComponent, {
+      minWidth: '50%',
+      autoFocus: false,
+      data: {
+        model: this.model,
+        modelFacade: this.modelFacade,
+        edit: true,
+        scope: this.listController.scope,
+        config: this.listController.getConfig(),
+        values: this.selection.selected,
+      },
+    });
+    this.cdRef.detectChanges();
   }
 
-  public openExportInsurersModal() {
-    this.rowExport.emit();
+  batchDelete() {
+    let name = '';
+    this.translateService.get('test').subscribe((translated: string) => {
+      const labelCode =
+        META.getNameByModel(this.listController.getModelDefinition()) + '.name';
+      name = this.translateService.instant(labelCode);
+    });
+    Swal.fire({
+      text:
+        'Sind Sie sich sicher, dass Sie die ausgewählten Einträge vom Typ ' +
+        name +
+        ' löschen möchten?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Ja, löschen!',
+      cancelButtonText: 'Nein, abbrechen',
+    }).then((result) => {
+      if (result.value) {
+        this.modelFacade.base.batchDelete(this.selection.selected);
+      } else if (result.isDismissed) {
+      }
+    });
   }
 
   public fireAction(action) {
@@ -475,15 +526,6 @@ export class BaseTableDefaultComponent
     }
   }
 
-  public trackByFn(index: number, item: any): any {
-    return item.id || index;
-  }
-
-  ngOnDestroy(): void {
-    this._unsubscribeAll.next(null);
-    this._unsubscribeAll.complete();
-  }
-
   setQuery(filterOptions: any[]) {
     let value, arr;
     const filters: FilterOptions = { ...this.filterOptions };
@@ -499,18 +541,11 @@ export class BaseTableDefaultComponent
         filters['filter.' + filterOption.key] = value;
       }
     }
+
     this.modelFacade?.base.loadFiltered(filters);
   }
 
   public openQueryRowsModal() {}
-
-  public addSearchQueryCall(event: any) {
-    this.saveSearchQuery.emit(event);
-  }
-
-  public openSelectSearchQueryModal(event: any) {
-    this.getQueryRowsView.emit();
-  }
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -530,49 +565,12 @@ export class BaseTableDefaultComponent
     return numSelected > 0;
   }
 
-  batchEdit() {
-    this._matDialog.open(BatchWizardComponent, {
-      minWidth: '50%',
-      autoFocus: false,
-      data: {
-        model: this.model,
-        modelFacade: this.modelFacade,
-        edit: true,
-        scope: this.listController.scope,
-        config: this.listController.getConfig(),
-        values: this.selection.selected,
-      },
-    });
-    this.cdRef.detectChanges();
+  public trackByFn(index: number, item: any): any {
+    return item.id || index;
   }
 
-  batchDelete() {
-    let name = '';
-    this.translateService.get('test').subscribe((translated: string) => {
-      const labelCode =
-        META.getNameByModel(this.listController.getModelDefinition()) + '.name';
-      name = this.translateService.instant(labelCode);
-    });
-    Swal.fire({
-      text:
-        'Sind Sie sich sicher, dass Sie die ausgewählten Einträge vom Typ ' +
-        name +
-        ' löschen möchten?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Ja, löschen!',
-      cancelButtonText: 'Nein, abbrechen',
-    }).then((result) => {
-      if (result.value) {
-        this.modelFacade.base.batchDelete(this.selection.selected);
-      } else if (result.isDismissed) {
-      }
-    });
+  ngOnDestroy(): void {
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
   }
-
-  navigateSettings() {
-    this.router.navigate([this.router.url + '/settings']);
-  }
-
-  getName(row: any, field: string) {}
 }

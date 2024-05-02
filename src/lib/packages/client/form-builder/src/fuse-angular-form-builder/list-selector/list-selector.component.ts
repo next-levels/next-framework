@@ -63,6 +63,8 @@ export class ListSelectorComponent implements OnInit, AfterViewInit {
         this.registry.retrieve(this.formField.options.model),
         model
       );
+      tableSubmoduleComponentInstance.childTable = true;
+      tableSubmoduleComponentInstance.viewController = viewController;
 
       if (this.formField.options.keySelf && this.formController?.getModel()) {
         tableSubmoduleComponentInstance.listController.setScope(

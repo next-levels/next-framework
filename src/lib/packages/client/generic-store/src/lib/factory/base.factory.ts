@@ -11,7 +11,7 @@ import { BaseService } from '../types/base.service';
 import { GenericEffects } from '../+state/generic.effects';
 import { BaseFacade } from './base.facede';
 import { EntityPaginated, FilterOptions } from '@next-levels/types';
-import {EnvironmentStorageService} from "../../../../angular-commons";
+import { EnvironmentStorageService } from '../../../../angular-commons';
 
 export function createBaseService<T extends object>(modelUrl: string) {
   @Injectable({
@@ -19,12 +19,13 @@ export function createBaseService<T extends object>(modelUrl: string) {
   })
   class GenericService implements BaseService<T> {
     envService: EnvironmentStorageService;
+
     constructor(public _http: HttpClient) {
       this.envService = EnvironmentStorageService.getInstance();
     }
 
     getEntity(id: number | string): Observable<T> {
-       return this._http.get<T>(this.envService.baseUrl + modelUrl + '/' + id);
+      return this._http.get<T>(this.envService.baseUrl + modelUrl + '/' + id);
     }
 
     getAll(): Observable<T[]> {
@@ -32,9 +33,12 @@ export function createBaseService<T extends object>(modelUrl: string) {
     }
 
     findByFilter(filter: FilterOptions): Observable<EntityPaginated<T>> {
-      return this._http.get<EntityPaginated<T>>(`${this.envService.baseUrl + modelUrl}/filter`, {
-        params: { ...filter },
-      });
+      return this._http.get<EntityPaginated<T>>(
+        `${this.envService.baseUrl + modelUrl}/filter`,
+        {
+          params: { ...filter },
+        }
+      );
     }
 
     addEntity(data: T): Observable<T> {
@@ -42,13 +46,18 @@ export function createBaseService<T extends object>(modelUrl: string) {
     }
 
     deleteEntity(entity: T): Observable<T> {
-      return this._http.delete<T>(this.envService.baseUrl + modelUrl + '/' + (entity as any).id);
+      return this._http.delete<T>(
+        this.envService.baseUrl + modelUrl + '/' + (entity as any).id
+      );
     }
 
     batchDeleteEntities(entities: T[]): Observable<T[]> {
-      return this._http.put<T[]>(this.envService.baseUrl + modelUrl + '/batch-delete', {
-        entities: entities,
-      });
+      return this._http.put<T[]>(
+        this.envService.baseUrl + modelUrl + '/batch-delete',
+        {
+          entities: entities,
+        }
+      );
     }
 
     batchEditEntities(ids: number[], changes: Partial<T>): Observable<T> {
@@ -59,7 +68,10 @@ export function createBaseService<T extends object>(modelUrl: string) {
     }
 
     updateEntity(id: number | string, data: Partial<T>): Observable<T> {
-       return this._http.patch<T>(this.envService.baseUrl + modelUrl + '/' + id, data);
+      return this._http.patch<T>(
+        this.envService.baseUrl + modelUrl + '/' + id,
+        data
+      );
     }
   }
 
@@ -99,8 +111,10 @@ export function createBaseFacadeInstance<T, S>(
       super(store, actions, selectors);
     }
   }
+
   return new GenericFacade(storeClass);
 }
+
 export function createBaseEffectServicePair<T extends object>(
   config: EffectsConfig
 ) {

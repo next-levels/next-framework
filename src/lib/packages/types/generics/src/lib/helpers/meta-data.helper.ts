@@ -20,8 +20,6 @@ const MODELCLASS_PREFIX = 'fb:models';
 export class META {
   static getModelByName(name: string): Constructor | undefined {
     for (const model of decorator_models) {
-      console.log(Reflect.getMetadata(MODELCLASS_PREFIX, model));
-
       if (Reflect.getMetadata(MODELCLASS_PREFIX, model) === name) {
         if (model) {
           return new model();
@@ -128,6 +126,8 @@ export class META {
       MODELCLASS_PREFIX,
       constructor.constructor
     );
+    console.log('name', name);
+    console.log('list_controller_models_key', list_controller_models_key);
     const model = list_controller_models_key.get(name);
     if (model) {
       return new model();
