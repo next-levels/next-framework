@@ -4,7 +4,7 @@
       formControlName="{{ formField.name }}"
       (keyup)="onEventChange($event)"
     >
-      {{ formField.label }}
+      <span *ngIf="!formField.noLabel">{{ formField.label }}</span>
     </mat-checkbox>
   </div>
 </div>

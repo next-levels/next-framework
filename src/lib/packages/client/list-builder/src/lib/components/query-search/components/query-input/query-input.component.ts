@@ -11,7 +11,13 @@ import {
 import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
-import { KEY_LEFT, KEY_RETURN, KEY_SPACE, KEY_TAB } from 'keycode-js';
+import {
+  KEY_BACK_SPACE,
+  KEY_LEFT,
+  KEY_RETURN,
+  KEY_SPACE,
+  KEY_TAB,
+} from 'keycode-js';
 import { Observable, Subject } from 'rxjs';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
@@ -25,11 +31,7 @@ import {
   SuggestionDetails,
 } from '../../models/settings';
 import { SaveQueryDialogComponent } from '../save-query-dialog/save-query-dialog.component';
-import {
-  BUILDERFIELD_ALL_PREFIX,
-  BUILDERFIELD_PREFIX,
-  META,
-} from '@next-levels/types';
+import { BUILDERFIELD_ALL_PREFIX, META } from '@next-levels/types';
 import { SearchQuery } from '../../models/search-queries.model';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
@@ -227,11 +229,12 @@ export class QueryInputComponent implements OnInit, OnChanges {
     }
     if (event.keyCode !== KEY_RETURN) {
       this.isCurrentlyTypedIn = true;
-      this.isSuccessfullySubmitted = false;
     }
     if (
       this.currentEvent === 'Value' &&
       this.isCurrentlyTypedIn &&
+      !this.isExpectingSpace &&
+      !this.isSuccessfullySubmitted &&
       (event.keyCode === KEY_RETURN ||
         event.keyCode === KEY_TAB ||
         event.keyCode === KEY_SPACE)
@@ -242,12 +245,16 @@ export class QueryInputComponent implements OnInit, OnChanges {
         this.myControl.value + this.autoTrigger.activeOption.value
       );
     }
+    if (event.keyCode !== KEY_RETURN) {
+      this.isSuccessfullySubmitted = false;
+    }
     if (event.keyCode === KEY_SPACE) {
       this.isExpectingSpace = false;
     }
     if (
       this.restrictedEditMode &&
       event.keyCode !== KEY_SPACE &&
+      event.keyCode !== KEY_BACK_SPACE &&
       this.isExpectingSpace
     ) {
       Swal.fire({
@@ -426,7 +433,7 @@ export class QueryInputComponent implements OnInit, OnChanges {
     if (this.currentEvent === 'Field') {
       if (
         this.searchList.length >= 4 &&
-        this.searchList[this.searchList.length - 1].Value === 'ODER'
+        this.searchList[this.searchList.length - 1].Value === 'OR'
       ) {
         limitation = this.searchList[this.searchList.length - 4].Value;
       }
@@ -447,15 +454,41 @@ export class QueryInputComponent implements OnInit, OnChanges {
       optionListToBePopulated.length > 0 &&
       options.length === 0
     ) {
-      Swal.fire({
-        text: 'Diese Eingabe entspricht keinem der zur Auswahl stehenden Werte!',
-        icon: 'error',
-        buttonsStyling: false,
-        confirmButtonText: 'Verstanden!',
-        customClass: {
-          confirmButton: 'btn fw-bold btn-primary',
-        },
-      }).then((r) => r);
+      const result = [];
+
+      const listController = META.getListController(this.model) ?? null;
+
+      let searchFields =
+        'searchFields' in listController
+          ? (listController as any).searchFields()
+          : null;
+
+      if (searchFields) {
+        searchFields.forEach((field: string) => {
+          result.push({
+            key: field,
+            operation: '$eq',
+            value: value,
+            expression: '$or',
+          });
+        });
+      } else {
+        result.push({
+          key: 'id',
+          operation: '$eq',
+          value: value,
+          expression: '$or',
+        });
+
+        result.push({
+          key: 'name',
+          operation: '$eq',
+          value: value,
+          expression: '$or',
+        });
+      }
+
+      this.queryChange.emit(result);
     }
 
     return options;

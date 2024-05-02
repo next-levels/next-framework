@@ -14,16 +14,23 @@
         {{ group.description }}
       </div>
     </div>
-    <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
-      <div class="sm:col-span-2" *ngFor="let field of group.fields">
-        <nxt-form-element
-          [fieldName]="field"
-          [formController]="controller"
-          [readOnly]="readOnly"
-          (change)="isFormValid($event)"
-          (dataOutput)="isFormValid($event)"
-        ></nxt-form-element>
-      </div>
+    <div class="flex w-full"
+         [ngClass]="{
+         'mt-8': group.title != null,
+         '-m-2.5 -mt-5':group.title == null}"
+         [class.flex-wrap]="!settings.nowrap">
+
+      <nxt-form-element
+        *ngFor="let field of group.fields"
+        class="pr-5"
+        [fieldName]="field"
+        [formController]="controller"
+        [readOnly]="readOnly"
+        (change)="isFormValid($event)"
+        (dataOutput)="isFormValid($event)"
+      ></nxt-form-element>
+
     </div>
+    <div class="my-10 "></div>
   </ng-container>
 </div>

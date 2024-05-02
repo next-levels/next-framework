@@ -14,7 +14,6 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { TranslocoModule } from '@ngneat/transloco';
 import { ViewModalComponent } from './components/view-modal/view-modal.component';
 import { MatTableModule } from '@angular/material/table';
 import { FormBuilderModule } from '../../../form-builder/public_api';
@@ -22,7 +21,7 @@ import { ListBuilderModule } from '../../../list-builder/src';
 import { HttpClientModule } from '@angular/common/http';
 import { InlineSVGModule } from 'ng-inline-svg-2';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import {CreateSimpleComponent} from "./components/create-simple/create-simple.component";
+import { CreateSimpleComponent } from './components/create-simple/create-simple.component';
 
 const store = new MinimizeStore();
 
@@ -31,7 +30,7 @@ const store = new MinimizeStore();
     CreateWizardComponent,
     BatchWizardComponent,
     ViewModalComponent,
-    CreateSimpleComponent
+    CreateSimpleComponent,
   ],
   imports: [
     CommonModule,
@@ -42,7 +41,6 @@ const store = new MinimizeStore();
     MatDialogModule,
     MatIconModule,
     MatButtonModule,
-    TranslocoModule,
     FormBuilderModule,
     MatTableModule,
     ListBuilderModule,
@@ -50,7 +48,12 @@ const store = new MinimizeStore();
     InlineSVGModule.forRoot(),
     NgbTooltipModule,
   ],
-  exports: [CreateWizardComponent, BatchWizardComponent, ViewModalComponent,CreateSimpleComponent],
+  exports: [
+    CreateWizardComponent,
+    BatchWizardComponent,
+    ViewModalComponent,
+    CreateSimpleComponent,
+  ],
   providers: [
     {
       provide: MinimizeStore,

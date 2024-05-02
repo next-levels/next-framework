@@ -1,5 +1,5 @@
 <div class="input-file-wrapper mt-1" [formGroup]="fg">
-  <mat-label>{{ formField.label }} hallo</mat-label>
+  <mat-label *ngIf="!formField.noLabel">{{ formField.label }} hallo</mat-label>
 
   <div class="relative mr-4 rounded-md overflow-hidden">
     <ng-container *ngIf="edit" [ngTemplateOutlet]="editToggler"></ng-container>

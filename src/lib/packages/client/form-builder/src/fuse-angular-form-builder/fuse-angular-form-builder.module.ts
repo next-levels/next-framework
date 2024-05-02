@@ -1,4 +1,4 @@
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
@@ -28,37 +28,46 @@ import { FormBuilderModule } from '../lib/form-builder.module';
 import { InputCodeeditorComponent } from './form-elements/input-codeeditor/input-codeeditor.component';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
 import { InputJsoneditorComponent } from './form-elements/input-jsoneditor/input-jsoneditor.component';
-import { CodeEditorModule } from '@ngstack/code-editor';
 import { InputCurrencyComponent } from './form-elements/input-currency/input-currency.component';
 import { NgxCurrencyDirective } from 'ngx-currency';
 import { InputImageFileComponent } from './form-elements/input-imagefile/input-imagefile.component';
+import { ListSelectorComponent } from './list-selector/list-selector.component';
+import { InputMultiImageFileComponent } from './form-elements/input-multiimagefile/input-multiimagefile.component';
+import {
+  CdkDrag,
+  CdkDropListGroup,
+  DragDropModule,
+} from '@angular/cdk/drag-drop';
+import { InputMultiImageFileDirective } from './form-elements/input-multiimagefile/input-multiimagefile.directive';
 
 @NgModule({
-    imports: [
-        ReactiveFormsModule,
-        CommonModule,
-        RouterModule,
-        TranslateModule,
-        MatInputModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        MatAutocompleteModule,
-        MatSortModule,
-        MatPaginatorModule,
-        MatTableModule,
-        MatCheckboxModule,
-        MatSelectModule,
-        MatInputModule,
-        QuillEditorComponent,
-        MatIconModule,
-        MatButtonModule,
-        MatRippleModule,
-        NgJsonEditorModule,
-        CodeEditorModule.forRoot(),
-        NgxCurrencyDirective,
-        FormsModule,
-    ],
-  exports: [],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    RouterModule,
+    TranslateModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatAutocompleteModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatCheckboxModule,
+    MatSelectModule,
+    MatInputModule,
+    QuillEditorComponent,
+    MatIconModule,
+    MatButtonModule,
+    MatRippleModule,
+    NgJsonEditorModule,
+    NgxCurrencyDirective,
+    FormsModule,
+    CdkDrag,
+    CdkDropListGroup,
+    DragDropModule,
+  ],
+  exports: [InputMultiImageFileDirective],
   declarations: [
     InputTextComponent,
     InputTextareaComponent,
@@ -69,10 +78,13 @@ import { InputImageFileComponent } from './form-elements/input-imagefile/input-i
     InputRelationDropdownComponent,
     InputFileComponent,
     InputImageFileComponent,
+    InputMultiImageFileComponent,
     InputCheckboxComponent,
     InputDateComponent,
     InputCodeeditorComponent,
     InputJsoneditorComponent,
+    ListSelectorComponent,
+    InputMultiImageFileDirective,
   ],
 })
 export class FuseAngularFormBuilderModule {
@@ -101,9 +113,12 @@ export class FuseAngularFormBuilderModule {
             RELATION: InputRelationDropdownComponent,
             FILE: InputFileComponent,
             IMAGEFILE: InputImageFileComponent,
+            MULTIIMAGEFILE: InputMultiImageFileComponent,
             SIGN: InputFileComponent,
             CODE: InputCodeeditorComponent,
             JSON: InputJsoneditorComponent,
+            RESULT: InputNumberComponent,
+            LISTSELECTOR: ListSelectorComponent,
           },
           baseUri
         ).providers,

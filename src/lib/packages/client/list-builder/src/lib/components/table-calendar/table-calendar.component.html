@@ -1,16 +1,16 @@
 <div class="flex flex-row">
   <!-- Liste -->
   <div
-    class="flex flex-col flex-auto min-w-0 sm:overflow-hidden bg-card dark:bg-gray-800"
+    class="flex flex-col flex-auto min-w-0 sm:overflow-hidden bg-card dark:bg-gray-900"
     [ngClass]="{ '': !childTable }"
   >
     <!-- Header -->
     <div
       *ngIf="showHeader == true"
-      class="relative flex flex-col sm:flex-row flex-0 sm:justify-around px-3 justify-between items-center dark:bg-gray-800"
+      class="relative flex flex-col sm:flex-row flex-0 sm:justify-around px-3 justify-between items-center dark:bg-gray-900"
     >
       <!-- Query Input -->
-      <ng-container *transloco="let t">
+      <ng-container>
         <div class="tracking-tight w-full">
           <query-input
             [style]="{ flex: '1' }"
@@ -26,7 +26,7 @@
       </ng-container>
 
       <!-- Buttons -->
-      <ng-container *transloco="let t">
+      <ng-container>
         <div class="flex shrink-0 items-center sm:ml-4 ng-star-inserted my-5">
           <button
             class="ml-4 rounded-md"
@@ -35,7 +35,7 @@
             (click)="openAddModal()"
           >
             <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-            <span class="ml-2 mr-1">{{ t('button.add') }}</span>
+            <span class="ml-2 mr-1">{{ 'button.add' | translate }}</span>
           </button>
 
           <button
@@ -77,7 +77,7 @@
         </a>
       </div>
       <div
-        class="bg-white list-builder-table ng-star-inserted border-white rounded-xl grid content-between items-start dark:bg-gray-800 border-t"
+        class="bg-white list-builder-table ng-star-inserted border-white rounded-xl grid content-between items-start dark:bg-gray-900 border-t"
         style="
           overflow-x: auto;
           min-height: 90vh;
@@ -87,7 +87,7 @@
       >
         <!-- Table Content -->
         <table
-          class="w-full list-builder-table bg-white list-builder-table border-white rounded-xl self-start dark:bg-gray-800"
+          class="w-full list-builder-table bg-white list-builder-table border-white rounded-xl self-start dark:bg-gray-900"
           mat-table
           matSort
           [dataSource]="dataSource"
@@ -148,7 +148,7 @@
           </ng-container>
 
           <!-- actions -->
-          <ng-container matColumnDef="actions" *transloco="let t">
+          <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef></th>
             <td
               mat-cell
@@ -208,7 +208,7 @@
           ></tr>
         </table>
         <mat-paginator
-          class="border-b sm:border-t sm:border-b-0 z-10 dark:bg-gray-800 bottom-0 w-full self-end text-gray-900 dark:text-white"
+          class="border-b sm:border-t sm:border-b-0 z-10 dark:bg-gray-900 bottom-0 w-full self-end text-gray-900 dark:text-white"
           showFirstLastButtons
           [ngClass]="{ 'pointer-events-none': (loading$ | async) }"
           [pageSizeOptions]="[5, 10, 25, 100]"
@@ -222,7 +222,7 @@
   </div>
 
   <!-- Kalender -->
-  <div class="w-64 bg-white rounded-xl shadow-lg dark:bg-gray-800">
+  <div class="w-64 bg-white rounded-xl shadow-lg dark:bg-gray-900">
     <!-- Kalender-Inhalt -->
     <mat-calendar
       [selected]="selectedDate"
@@ -242,9 +242,9 @@
     <ng-template #noGuarantees>
       <div
         class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center"
-        *transloco="let t"
+
       >
-        Keine {{ t(listController.getModelClassName() + '.name') }}
+        Keine {{ listController.getModelClassName() + '.name' | translate }}
       </div>
     </ng-template>
   </div>

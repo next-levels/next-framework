@@ -1,6 +1,5 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule, DatePipe, NgOptimizedImage } from '@angular/common';
-import { ContractStateComponent } from './components/view-items/contract-state/contract-state.component';
 import { TableDefaultComponent } from './components/table-default/table-default.component';
 import { TableSubmoduleComponent } from './components/table-submodule/table-submodule.component';
 import { ViewCurrencyComponent } from './components/view-items/view-currency/view-currency.component';
@@ -16,13 +15,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { TranslocoModule } from '@ngneat/transloco';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BaseListComponent } from './components/base-list/base-list.component';
 import { ViewRelationComponent } from './components/view-items/view-relation/view-relation.component';
 import { defaultListComponents } from './types/default-list-components.type';
 import { BaseViewComponent } from './components/view-items/base-view/base-view.component';
 import { ViewDateComponent } from './components/view-items/view-date/view-date.component';
+import { ViewInlineEditComponent } from './components/view-items/view-inline-edit/view-inline-edit.component';
 import { ViewModalComponent } from './components/view-modal/view-modal.component';
 import { ViewDropdownComponent } from './components/view-items/view-dropdown/view-dropdown.component';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -37,6 +36,22 @@ import { RouterLink } from '@angular/router';
 import { CardListComponent } from './components/card-list/card-list.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { TableCalendarComponent } from './components/table-calendar/table-calendar.component';
+import { TableTreeComponent } from './components/table-tree/table-tree.component';
+import {
+  MatTree,
+  MatTreeModule,
+  MatTreeNode,
+  MatTreeNodeDef,
+  MatTreeNodePadding,
+  MatTreeNodeToggle,
+} from '@angular/material/tree';
+import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
+import { ViewResultComponent } from './components/view-items/view-result.component';
+import { ViewCheckboxComponent } from './components/view-items/view-checkbox/view-checkbox.component';
+import { TableInlineEditComponent } from './components/table-inline-edit/table-inline-edit.component';
+import { FormBuilderModule } from '../../../form-builder';
+import { ViewStateComponent } from './components/view-items/view-state/view-state.component';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 
 @NgModule({
   imports: [
@@ -53,7 +68,6 @@ import { TableCalendarComponent } from './components/table-calendar/table-calend
     MatSortModule,
     MatTableModule,
     FormsModule,
-    TranslocoModule,
     ReactiveFormsModule,
     DatePipe,
     NgOptimizedImage,
@@ -61,16 +75,28 @@ import { TableCalendarComponent } from './components/table-calendar/table-calend
     InlineSVGModule.forRoot(),
     QuerySearchModule,
     RouterLink,
+    MatTree,
+    MatTreeNode,
+    CdkDropList,
+    CdkDrag,
+    MatTreeNodePadding,
+    MatTreeNodeToggle,
+    MatTreeNodeDef,
+    MatTreeModule,
+    FormBuilderModule,
+    MatMenu,
+    MatMenuItem,
+    MatMenuTrigger,
   ],
   providers: [DatePipe],
   declarations: [
-    ContractStateComponent,
     TableDefaultComponent,
+    TableInlineEditComponent,
     TableCalendarComponent,
     SimpleListComponent,
     CardListComponent,
     TableSubmoduleComponent,
-    ContractStateComponent,
+    ViewStateComponent,
     ViewCurrencyComponent,
     ViewElementComponent,
     ViewTextComponent,
@@ -81,17 +107,21 @@ import { TableCalendarComponent } from './components/table-calendar/table-calend
     ViewDateComponent,
     ViewImageFileComponent,
     ViewFileComponent,
+    ViewInlineEditComponent,
     ViewModalComponent,
     ViewDropdownComponent,
+    TableTreeComponent,
+    ViewResultComponent,
+    ViewCheckboxComponent,
   ],
   exports: [
-    ContractStateComponent,
     TableDefaultComponent,
+    TableInlineEditComponent,
     TableCalendarComponent,
     SimpleListComponent,
     CardListComponent,
     TableSubmoduleComponent,
-    ContractStateComponent,
+    ViewStateComponent,
     ViewCurrencyComponent,
     ViewElementComponent,
     ViewTextComponent,
@@ -102,7 +132,11 @@ import { TableCalendarComponent } from './components/table-calendar/table-calend
     ViewDateComponent,
     ViewImageFileComponent,
     ViewFileComponent,
+    ViewInlineEditComponent,
     ViewDropdownComponent,
+    TableTreeComponent,
+    ViewResultComponent,
+    ViewCheckboxComponent,
   ],
 })
 export class ListBuilderModule {

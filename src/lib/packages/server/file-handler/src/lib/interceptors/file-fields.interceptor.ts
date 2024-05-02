@@ -55,12 +55,19 @@ export class FileInjectInterceptor implements NestInterceptor {
           data = [data];
           singleEnitiy = true;
         }
-
+        // if (request.url.indexOf('filter') === -1) {
+        //   console.log('data', data);
+        // }
         for (const item of data) {
-          for (const [className, Entity] of entitiesWithFileFields.entries()) {
-            if (item instanceof Entity) {
-              await this.processFileFields(item, className);
-            }
+          for (const [
+            className,
+            Entity,
+          ] of entitiesWithFileFields.entries() as unknown as IterableIterator<
+            [string, any]
+          >) {
+            // if (item instanceof Entity) {
+            await this.processFileFields(item, className, Entity);
+            // }
           }
         }
 
@@ -77,12 +84,11 @@ export class FileInjectInterceptor implements NestInterceptor {
     );
   }
 
-  private async processFileFields(entity, className: string) {
+  private async processFileFields(entity, className: string, EntityModel) {
     const fileFields = Reflect.getMetadata(
       FILE_FIELD_METADATA_KEY,
-      entity?.constructor?.prototype
+      EntityModel?.prototype
     );
-
     if (fileFields && Array.isArray(fileFields)) {
       for (const fileField of fileFields) {
         const files = await this.filesService.findFilesByObject(

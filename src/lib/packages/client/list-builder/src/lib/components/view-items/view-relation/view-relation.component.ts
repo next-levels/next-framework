@@ -2,6 +2,8 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { BaseViewComponent } from '../base-view/base-view.component';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
+import { META } from '@next-levels/types';
+import { InstanceRegistryService } from '@next-levels/next-framework-client';
 
 @Component({
   selector: 'nxtlvls-view-relation',
@@ -10,13 +12,16 @@ import { select, Store } from '@ngrx/store';
 })
 export class ViewRelationComponent extends BaseViewComponent implements OnInit {
   detailFields: any[] = [];
+
   constructor(
     public override cdRef: ChangeDetectorRef,
     public router: Router,
-    public store: Store<any>
+    public store: Store<any>,
+    private registry: InstanceRegistryService
   ) {
     super(cdRef);
   }
+
   override ngOnInit() {
     super.ngOnInit();
 
@@ -50,6 +55,9 @@ export class ViewRelationComponent extends BaseViewComponent implements OnInit {
       let foreign_id;
       if (this.listField.options.map.includes('.')) {
         const fieldNameArray = this.listField.options.map.split('.');
+
+        console.log(fieldNameArray);
+        console.log(this.viewObject);
         foreign_id = this.viewObject[fieldNameArray[0]][fieldNameArray[1]];
       }
 
@@ -68,6 +76,20 @@ export class ViewRelationComponent extends BaseViewComponent implements OnInit {
           );
           this.cdRef.detectChanges();
         });
+      }
+
+      if (this.listField.options.model) {
+        const model = META.getModelByName(this.listField.options.model);
+        if (model) {
+          this.registry.retrieve(model).base.filtered$.subscribe((data) => {
+            if (!data || data.length === 0) return;
+            this._value = this.mapData(
+              settings.fields,
+              data.find((item: any) => item.id === foreign_id)
+            );
+            this.cdRef.detectChanges();
+          });
+        }
       }
     }
 

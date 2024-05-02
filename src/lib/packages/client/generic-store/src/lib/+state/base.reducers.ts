@@ -182,10 +182,8 @@ export function createBaseReducers<
       loading: true,
     })),
     on(actions.batchEditEntitiesSuccess, (state, { payload }) => {
-      console.log('payload.entities', payload.entities);
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      console.log('payload.entities', payload.entities);
       return entityAdapter.updateMany(
         payload.entities as Update<EntityType>[],
         {

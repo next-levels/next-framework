@@ -91,8 +91,14 @@ export class BaseListComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if (this.listController.scope.length > 0) {
       this.listController.scope.forEach((scope) => {
-        this.filterOptions['filter.' + scope.key] =
-          scope.operation + ':' + scope.value;
+        if(scope.value){
+          this.filterOptions['filter.' + scope.key] =
+              scope.operation + ':' + scope.value;
+        }else {
+          this.filterOptions['filter.' + scope.key] =
+              scope.operation ;
+        }
+
       });
     }
 

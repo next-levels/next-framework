@@ -105,7 +105,9 @@ export class FilesService {
   ): Promise<Result<Promise<FileEntity>>> {
     const attachmentObject = this.entitiesWithFileFields.get(attachmentType);
     if (!attachmentObject) {
-      throw new Error(`Entity not found for attachmentType: ${attachmentType}`);
+      throw new Error(
+        `Entity not found for attachmentType: ${attachmentType} ${this.entitiesWithFileFields}`
+      );
     }
 
     const fileFields =
@@ -136,6 +138,10 @@ export class FilesService {
     newFile.description = dto.description;
 
     return Result.ok(this._filesRepository.save(newFile));
+  }
+
+  async createExternal(file: FileEntity) {
+    return Result.ok(this._filesRepository.save(file));
   }
 
   async findFilesByObject(

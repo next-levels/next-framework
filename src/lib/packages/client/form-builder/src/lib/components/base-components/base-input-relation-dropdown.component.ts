@@ -6,6 +6,7 @@ import { InstanceRegistryService } from '../../../../../angular-commons';
 import { BaseInputComponent } from './base-input.component';
 import {
   FilterOptions,
+  META,
   ModelRelationOptions,
   PaginationMeta,
 } from '@next-levels/types';
@@ -68,9 +69,10 @@ export class BaseInputRelationDropdownComponent
   }
 
   override ngOnInit(): void {
-    this.settings = this.formController
-      .getModelDefinition()
-      .relations(this.formField.name);
+    const model = this.formController.getModelDefinition();
+    const viewController = META.getFormController(model) ?? model;
+
+    this.settings = viewController.relations(this.formField.name);
     this.fg = this.formController?.getForm();
     this.formField.label = this.formField.label ?? this.formField.name;
     this.value = this.formController?.getValue(this.formField.name);
@@ -114,9 +116,6 @@ export class BaseInputRelationDropdownComponent
         if (this.settings.scope) {
           this.filterOptions['filter.' + this.settings.scope.key] =
             this.settings.scope.operation + ':' + this.settings.scope.value;
-          this.facade.base.loadFiltered(this.filterOptions);
-        } else {
-          this.facade.base.loadFiltered();
         }
 
         this.facade.base.filtered$.subscribe((data) => {
@@ -127,6 +126,10 @@ export class BaseInputRelationDropdownComponent
     }
     this.fg = this.formController.getForm();
     this.initDependency();
+  }
+
+  loadOptions() {
+    this.facade.base.loadFiltered(this.filterOptions);
   }
 
   private initFilter() {

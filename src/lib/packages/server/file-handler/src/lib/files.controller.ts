@@ -85,7 +85,7 @@ export class FilesController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: './uploads/tires',
+        destination: './uploads/products',
         filename: editFileName,
       }),
       fileFilter: imageFileFilter,
@@ -105,6 +105,19 @@ export class FilesController {
       fieldName,
       dto
     );
+  }
+
+  @Get('download/:attachmentType/:attachmentId/:fieldName')
+  async downloadFiles(
+    @Param('attachmentType') attachmentType: string,
+    @Param('attachmentId') attachmentId: number,
+    @Param('fieldName') fieldName: string
+  ) {
+    const files = await this._filesService.findFilesByObject(
+      attachmentType,
+      attachmentId
+    );
+    return files.filter((file) => file.field_name === fieldName);
   }
 
   @UseGuards(JwtAuthGuard)

@@ -69,7 +69,7 @@ function getFeature(
     case 'cms':
       return {
         controller: GenericBaseCMSControllerCreator(config, globalEventEmitter),
-        service: GenericBaseCMSService(entity),
+        service: GenericBaseCMSService(entity,registryServiceToken),
         serviceToken: serviceToken,
       };
     case 'cms-mongo':
@@ -94,7 +94,7 @@ function getFeature(
           entity,
           `${route}`,
           {
-            origin: ['http://localhost:4200',process.env['CMS_URL'], 'http://localhost:4222'],
+            origin: ['http://localhost:4200',process.env['CMS_URL'], 'http://localhost:4222','http://127.0.0.1:4222'],
             credentials: true,
           },
           globalEventEmitter

@@ -1,4 +1,4 @@
-<div *transloco="let t">
+<div>
   <div *ngFor="let field of _fields" class="view-item">
     <p class="my-6 font-medium view-modal__title">
       {{ translateService.instant(listController.getElementLabel(field)) }}
@@ -24,7 +24,7 @@
               class="icon-size-5 text-current"
               [svgIcon]="'heroicons_solid:arrow-small-left'"
             ></mat-icon>
-            <span class="ml-1.5">{{ t('button.back') }}</span>
+            <span class="ml-1.5">{{ 'button.back' | translate }}</span>
           </span>
         </button>
       </div>
