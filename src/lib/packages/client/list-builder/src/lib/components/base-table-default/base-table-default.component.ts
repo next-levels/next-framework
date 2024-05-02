@@ -113,7 +113,7 @@ export class BaseTableDefaultComponent
   constructor(
     public translateService: TranslateService,
     private activeRoute: ActivatedRoute,
-    private router: Router,
+    public router: Router,
     public readonly _matDialog: MatDialog,
     private componentFactoryResolver: ComponentFactoryResolver,
     public cdRef: ChangeDetectorRef
