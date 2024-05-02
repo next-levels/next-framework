@@ -4,6 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { BaseInputComponent } from './base-input.component';
 import { EnvironmentStorageService } from '../../../../../angular-commons/src';
+//import { FilesService } from '@next-levels/next-framework';
 
 @Component({
   selector: 'nxt-input-file',
@@ -16,19 +17,23 @@ export class BaseInputFileComponent extends BaseInputComponent {
   baseUrl = '';
   file_id: number;
   file_name = '';
+  // .bin files do not have a set MIME type
+  // MDN recommends using application/octet-stream
+  // macOS uploads them as application/macbinary
+  // x-binary is also used by some browsers
   allowedTypes = [
-    'application/msword',
-    'application/vnd.ms-excel',
-    'application/vnd.ms-powerpoint',
-    'text/plain',
-    'application/pdf',
+    'application/x-binary',
+    'application/octet-stream',
+    'application/macbinary'
   ];
 
   constructor(
     public _httpClient: HttpClient,
     public override cdRef: ChangeDetectorRef,
     public override translateService: TranslateService,
-    public environmentStorage: EnvironmentStorageService
+    public environmentStorage: EnvironmentStorageService,
+    //@Inject(FilesService)
+    //private readonly filesService: FilesService
   ) {
     super(cdRef, translateService);
     this.baseUrl = this.environmentStorage.baseUrl;
@@ -40,6 +45,12 @@ export class BaseInputFileComponent extends BaseInputComponent {
     this.file_id = this.formController
       ?.getForm()
       .get(this.formField.name)?.value;
+      console.log(this.file_id);
+      console.log(this.formField.name);
+      /*this.filesService.findOne(this.file_id).then((response: any) => {  
+        this.file_name = response.name;
+      });*/
+    console.log(this.file_name);
     if (this.file_id) {
       this._httpClient.get(`${this.baseApiUrl}upload`);
     }
@@ -57,22 +68,22 @@ export class BaseInputFileComponent extends BaseInputComponent {
    *
    * @param fileList
    */
-  public async uploadAvatar(fileList: FileList): Promise<void> {
+  public async uploadFile(fileList: FileList): Promise<void> {
     if (!fileList.length) {
       return;
     }
 
     const file = fileList[0];
 
-    if (!this.allowedTypes.includes(file.type)) {
+    /*if (!this.allowedTypes.includes(file.type)) {
       return;
-    }
+    }*/
 
     const formData = new FormData();
-    formData.append('image', file, file.name);
+    formData.append('file', file, file.name);
 
     firstValueFrom(
-      this._httpClient.post(`${this.baseApiUrl}upload`, formData)
+      this._httpClient.post(`${this.baseApiUrl}upload/file`, formData)
     ).then((response: any) => {
       this.toggleEditMode(false);
       const tempPatch = {};
@@ -80,6 +91,8 @@ export class BaseInputFileComponent extends BaseInputComponent {
       this.formController?.getForm().patchValue(tempPatch);
       this.file_id = response.id;
       this.file_name = response.name;
+      console.log(this.file_id);
+      console.log(this.file_name);
     });
   }
 

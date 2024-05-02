@@ -1,5 +1,5 @@
 <div class="input-file-wrapper mt-1" [formGroup]="fg">
-  <mat-label *ngIf="!formField.noLabel">{{ formField.label }} hallo</mat-label>
+  <mat-label *ngIf="!formField.noLabel">{{ formField.label }}</mat-label>
 
   <div class="relative mr-4 rounded-md overflow-hidden">
     <ng-container *ngIf="edit" [ngTemplateOutlet]="editToggler"></ng-container>
@@ -8,7 +8,7 @@
       <div class="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
       <div
         *ngIf="edit"
-        class="absolute inset-0 flex items-center justify-center z-20"
+        class="absolute inset-0 flex items-center justify-end z-20 p-5"
       >
         <div>
           <input
@@ -17,7 +17,7 @@
             type="file"
             [multiple]="false"
             [accept]="allowedTypes.join(', ')"
-            (change)="uploadAvatar(avatarFileInput.files)"
+            (change)="uploadFile(avatarFileInput.files)"
             #avatarFileInput
           />
           <label
@@ -27,7 +27,7 @@
           >
             <mat-icon
               class="text-white"
-              [svgIcon]="'heroicons_outline:upload'"
+              [svgIcon]="'heroicons_outline:arrow-up-tray'"
             ></mat-icon>
           </label>
         </div>
@@ -43,13 +43,13 @@
     </ng-container>
 
     <div
-      class="bg-black bg-opacity-50 flex items-center justify-center z-20"
+      class="bg-black bg-opacity-50 flex z-20 p-4"
       *ngIf="file_name"
     >
       {{ file_name }}
     </div>
     <div
-      class="bg-black bg-opacity-50 flex items-center justify-center z-20"
+      class="bg-black bg-opacity-50 flex z-20 p-4"
       *ngIf="file_id && !file_name"
     >
       {{ file_id }}
@@ -62,7 +62,7 @@
 </div>
 
 <ng-template #editToggler>
-  <div class="absolute top-0 right-0 z-50">
+  <div class="absolute top-0 right-0 z-50 p-1">
     <ng-container *ngIf="!editMode">
       <button
         class="rounded-full"
@@ -71,7 +71,7 @@
         type="button"
         color="accent"
       >
-        <mat-icon [svgIcon]="'heroicons_solid:pencil-alt'"></mat-icon>
+        <mat-icon [svgIcon]="'heroicons_solid:pencil'"></mat-icon>
       </button>
     </ng-container>
     <ng-container *ngIf="editMode">
@@ -82,7 +82,7 @@
         type="button"
         color="warn"
       >
-        <mat-icon [svgIcon]="'heroicons_solid:x'"></mat-icon>
+        <mat-icon [svgIcon]="'heroicons_solid:x-mark'"></mat-icon>
       </button>
     </ng-container>
   </div>
