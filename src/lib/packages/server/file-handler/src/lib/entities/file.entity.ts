@@ -56,4 +56,7 @@ export class FileEntity implements BaseFile {
 
   @Column({ type: 'bool', default: false })
   is_cover_image: boolean;
+
+  @Column({ type: 'bool', default: true })
+  local: boolean;
 }

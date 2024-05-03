@@ -22,14 +22,17 @@ export class ViewImageFileComponent
   }
   override ngOnInit() {
     super.ngOnInit();
-
-    if(this.listField?.options?.base_path){
-      this.baseUrl = this.baseUrl  + this.listField.options.base_path;
-    }else {
+    if (this.listField?.options?.base_path) {
+      this.baseUrl = this.baseUrl + this.listField.options.base_path;
+    } else {
       this.baseUrl = this.baseUrl + '/api/files/';
     }
-    this._value = this._value
-      ? this.baseUrl + this._value
-      : false;
+    if (this._value) {
+      if (this._value.indexOf('https://') !== 0) {
+        this._value = this.baseUrl + this._value;
+      }
+    } else {
+      this._value = false;
+    }
   }
 }

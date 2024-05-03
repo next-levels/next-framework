@@ -10,6 +10,7 @@ export interface BaseFile {
 
   sort_order?: number;
   is_cover_image?: boolean;
+  local: boolean;
 
   brightness?: number;
   created_at?: Date;
