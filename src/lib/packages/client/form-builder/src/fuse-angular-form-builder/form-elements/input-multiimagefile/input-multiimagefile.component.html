@@ -99,7 +99,12 @@
                     [svgIcon]="'heroicons_outline:trash'"
                   ></mat-icon>
                 </button>
-                <img alt="" [src]="baseApiUrl + file.id"/>
+                <img
+                  [alt]="file.path"
+                  [src]="baseApiUrl + file.id"
+                  *ngIf="file.local"
+                />
+                <img [alt]="file.path" [src]="file.path" *ngIf="!file.local" />
               </div>
             </a>
           </ng-container>

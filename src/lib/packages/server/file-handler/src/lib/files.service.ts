@@ -140,10 +140,6 @@ export class FilesService {
     return Result.ok(this._filesRepository.save(newFile));
   }
 
-  async createExternal(file: FileEntity) {
-    return Result.ok(this._filesRepository.save(file));
-  }
-
   async findFilesByObject(
     attachmentType: string,
     attachmentId: number
@@ -255,5 +251,19 @@ export class FilesService {
     }
 
     return '';
+  }
+
+  async createExternal(file: FileEntity) {
+    return Result.ok(this._filesRepository.save(file));
+  }
+
+  /**
+   * Remove external file
+   *
+   * @param file
+   */
+  public async removeExternal(file: FileEntity): Promise<Result<unknown>> {
+    await this._filesRepository.delete(file.id);
+    return Result.ok();
   }
 }
