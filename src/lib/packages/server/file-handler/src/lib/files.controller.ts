@@ -138,6 +138,18 @@ export class FilesController {
     return await this._filesService.createFromFile(file);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Post('upload/file')
+  @UseInterceptors(FileInterceptor('file', {
+    storage: diskStorage({
+      destination: './uploads/files',
+      filename: editFileName,
+    }),
+  }))
+  public async createFile(@Body() dto: Partial<FileDto>, @UploadedFile() file: Express.Multer.File): Promise<Result<FileEntity>> {
+    return await this._filesService.createFromFile(file);
+  }
+
   @Post('upload/public')
   @UseInterceptors(
     FileInterceptor('file', {

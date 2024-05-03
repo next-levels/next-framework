@@ -30,10 +30,6 @@ import { BaseInputCodeeditorComponent } from './components/base-components/base-
 import { BaseInputJsoneditorComponent } from './components/base-components/base-input-jsoneditor.component';
 import { FormComponent } from './components/form/form.component';
 
-export interface FormBuilderConfig {
-  environment: string;
-}
-
 @NgModule({
   imports: [
     ReactiveFormsModule,
@@ -58,6 +54,7 @@ export interface FormBuilderConfig {
     FormElementComponent,
     FormSetComponent,
     FormComponent,
+    BaseInputFileComponent,
   ],
   declarations: [
     FormElementComponent,
@@ -78,15 +75,11 @@ export interface FormBuilderConfig {
 })
 export class FormBuilderModule {
   static forRoot(
-    components: FormComponents,
-    baseUrl: string
+    components: FormComponents
   ): ModuleWithProviders<FormBuilderModule> {
     return {
       ngModule: FormBuilderModule,
-      providers: [
-        { provide: 'formBuilderComponents', useValue: components },
-        { provide: 'baseUrl', useValue: baseUrl },
-      ],
+      providers: [{ provide: 'formBuilderComponents', useValue: components }],
     };
   }
 }

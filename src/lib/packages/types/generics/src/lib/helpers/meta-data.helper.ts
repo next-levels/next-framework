@@ -126,8 +126,7 @@ export class META {
       MODELCLASS_PREFIX,
       constructor.constructor
     );
-    console.log('name', name);
-    console.log('list_controller_models_key', list_controller_models_key);
+
     const model = list_controller_models_key.get(name);
     if (model) {
       return new model();

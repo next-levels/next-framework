@@ -156,8 +156,6 @@ export class BaseTableDefaultComponent
         .filter((field) => this.fields.includes(field));
     }
 
-    console.log(this.fields);
-
     if (hasListActions(this.viewController)) {
       this.actions = this.viewController.listActions();
     }

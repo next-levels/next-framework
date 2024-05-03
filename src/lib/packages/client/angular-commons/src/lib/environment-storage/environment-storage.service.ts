@@ -8,6 +8,9 @@ export class EnvironmentStorageService {
   public baseUrl = 'http://localhost:3333';
   public baseSocket = 'http://localhost:3333';
 
+  public environments: any[];
+  private currentEnvironment: any;
+
   private constructor() {}
 
   public static getInstance(): EnvironmentStorageService {
@@ -17,8 +20,20 @@ export class EnvironmentStorageService {
     return EnvironmentStorageService.instance;
   }
 
-  setConfig(config: { baseUrl: string }): void {
+  setConfig(config: { baseUrl: string }, environments: any[]): void {
+    this.environments = environments;
     this.baseUrl = config.baseUrl;
     this.baseSocket = config.baseUrl;
+    this.currentEnvironment = this.environments.find(
+      (env) => env.baseUrl === config.baseUrl
+    );
+  }
+
+  setEnvionments(environments: any[]): void {
+    this.environments = environments;
+  }
+
+  getCurrentEnvironment() {
+    return this.currentEnvironment;
   }
 }
