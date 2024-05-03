@@ -5,8 +5,8 @@ import { Injectable } from '@angular/core';
 })
 export class EnvironmentStorageService {
   private static instance: EnvironmentStorageService;
-  public baseUrl = 'http://localhost:3333';
-  public baseSocket = 'http://localhost:3333';
+  public baseUrl = '';
+  public baseSocket = '';
 
   public environments: any[];
   private currentEnvironment: any;
@@ -22,8 +22,6 @@ export class EnvironmentStorageService {
 
   setConfig(config: { baseUrl: string }, environments: any[]): void {
     this.environments = environments;
-    this.baseUrl = config.baseUrl;
-    this.baseSocket = config.baseUrl;
     this.currentEnvironment = this.environments.find(
       (env) => env.baseUrl === config.baseUrl
     );
