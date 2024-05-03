@@ -28,7 +28,6 @@ import { FormBuilderModule } from '../lib/form-builder.module';
 import { InputCodeeditorComponent } from './form-elements/input-codeeditor/input-codeeditor.component';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
 import { InputJsoneditorComponent } from './form-elements/input-jsoneditor/input-jsoneditor.component';
-import { CodeEditorModule } from '@ngstack/code-editor';
 import { InputCurrencyComponent } from './form-elements/input-currency/input-currency.component';
 import { NgxCurrencyDirective } from 'ngx-currency';
 import { InputImageFileComponent } from './form-elements/input-imagefile/input-imagefile.component';
@@ -40,6 +39,7 @@ import {
   DragDropModule,
 } from '@angular/cdk/drag-drop';
 import { InputMultiImageFileDirective } from './form-elements/input-multiimagefile/input-multiimagefile.directive';
+import { CodeEditorModule } from '@ngstack/code-editor';
 
 @NgModule({
   imports: [
@@ -62,8 +62,8 @@ import { InputMultiImageFileDirective } from './form-elements/input-multiimagefi
     MatButtonModule,
     MatRippleModule,
     NgJsonEditorModule,
-    CodeEditorModule.forRoot(),
     NgxCurrencyDirective,
+    CodeEditorModule.forRoot(),
     FormsModule,
     CdkDrag,
     CdkDropListGroup,
@@ -90,40 +90,31 @@ import { InputMultiImageFileDirective } from './form-elements/input-multiimagefi
   ],
 })
 export class FuseAngularFormBuilderModule {
-  static forRoot(
-    baseUri: string
-  ): ModuleWithProviders<FuseAngularFormBuilderModule> {
+  static forRoot(): ModuleWithProviders<FuseAngularFormBuilderModule> {
     return {
       ngModule: FuseAngularFormBuilderModule,
       providers: [
-        {
-          provide: 'baseUrl',
-          useValue: baseUri,
-        },
-        ...FormBuilderModule.forRoot(
-          {
-            HIDDEN: InputTextareaComponent,
-            TEXT: InputTextComponent,
-            CURRENCY: InputCurrencyComponent,
-            TEXTAREA: InputTextareaComponent,
-            DROPDOWN: InputDropdownComponent,
-            RADIO: InputDropdownComponent,
-            HTML: InputHtmlComponent,
-            DATE: InputDateComponent,
-            NUMBER: InputNumberComponent,
-            CHECKBOX: InputCheckboxComponent,
-            RELATION: InputRelationDropdownComponent,
-            FILE: InputFileComponent,
-            IMAGEFILE: InputImageFileComponent,
-            MULTIIMAGEFILE: InputMultiImageFileComponent,
-            SIGN: InputFileComponent,
-            CODE: InputCodeeditorComponent,
-            JSON: InputJsoneditorComponent,
-            RESULT: InputNumberComponent,
-            LISTSELECTOR: ListSelectorComponent,
-          },
-          baseUri
-        ).providers,
+        ...FormBuilderModule.forRoot({
+          HIDDEN: InputTextareaComponent,
+          TEXT: InputTextComponent,
+          CURRENCY: InputCurrencyComponent,
+          TEXTAREA: InputTextareaComponent,
+          DROPDOWN: InputDropdownComponent,
+          RADIO: InputDropdownComponent,
+          HTML: InputHtmlComponent,
+          DATE: InputDateComponent,
+          NUMBER: InputNumberComponent,
+          CHECKBOX: InputCheckboxComponent,
+          RELATION: InputRelationDropdownComponent,
+          FILE: InputFileComponent,
+          IMAGEFILE: InputImageFileComponent,
+          MULTIIMAGEFILE: InputMultiImageFileComponent,
+          SIGN: InputFileComponent,
+          CODE: InputCodeeditorComponent,
+          JSON: InputJsoneditorComponent,
+          RESULT: InputNumberComponent,
+          LISTSELECTOR: ListSelectorComponent,
+        }).providers,
       ],
     };
   }

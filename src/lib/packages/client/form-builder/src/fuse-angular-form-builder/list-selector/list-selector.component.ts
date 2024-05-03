@@ -1,5 +1,6 @@
 import {
-  AfterViewInit, ChangeDetectorRef,
+  AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ComponentFactoryResolver,
   Input,
@@ -8,12 +9,12 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import {FormOptions, META} from '@next-levels/types';
+import { FormOptions, META } from '@next-levels/types';
 import { FormController } from '../../lib/controller/form-controller';
-import {ListController} from '../../../../list-builder';
+import { ListController } from '../../../../list-builder';
 import { InstanceRegistryService } from '@next-levels/next-framework-client';
 import { ActivatedRoute } from '@angular/router';
-import {TableDefaultComponent} from "../../../../list-builder/src/lib/components/table-default/table-default.component";
+import { TableDefaultComponent } from '../../../../list-builder/src/lib/components/table-default/table-default.component';
 
 @Component({
   selector: 'nxt-list-selector',
@@ -51,25 +52,40 @@ export class ListSelectorComponent implements OnInit, AfterViewInit {
       const tableSubmoduleComponentInstance =
         componentRef.instance as TableDefaultComponent;
 
+      // const rootModelName = META.getNameByModel(new model());
+      const model = META.getModelByName(this.formField.options.model);
+      const viewController = META.getListControllerByName(
+        this.formField.options.view
+      );
 
-         const model = this.formField.options.model;
-         // const rootModelName = META.getNameByModel(new model());
-         const viewController = META.getViewControllerByName(model);
+      tableSubmoduleComponentInstance.listController = new ListController(
+        model,
+        this.registry.retrieve(this.formField.options.model),
+        model
+      );
+      tableSubmoduleComponentInstance.childTable = true;
+      tableSubmoduleComponentInstance.viewController = viewController;
 
-        tableSubmoduleComponentInstance.listController = new ListController(
-          viewController,
-          this.registry.retrieve(this.formField.options.model),
-          viewController
+      if (this.formField.options.keySelf && this.formController?.getModel()) {
+        tableSubmoduleComponentInstance.listController.setScope(
+          this.formField.options.key,
+          '$eq',
+          this.formController?.getModel()[this.formField.options.keySelf]
         );
-         tableSubmoduleComponentInstance.listController.setScope(
-           this.formField.options.key,
-           '$eq',
-           Number(this.route.snapshot.paramMap.get('id'))
-         );
+      } else {
+        tableSubmoduleComponentInstance.listController.setScope(
+          this.formField.options.key,
+          '$eq',
+          Number(this.route.snapshot.paramMap.get('id'))
+        );
+      }
 
       this.cdRef.detectChanges();
 
-      console.log('tableSubmoduleComponentInstance', tableSubmoduleComponentInstance);
+      console.log(
+        'tableSubmoduleComponentInstance',
+        tableSubmoduleComponentInstance
+      );
     }
   }
 }

@@ -5,8 +5,11 @@ import { Injectable } from '@angular/core';
 })
 export class EnvironmentStorageService {
   private static instance: EnvironmentStorageService;
-  public baseUrl = 'http://localhost:3333';
-  public baseSocket = 'http://localhost:3333';
+  public baseUrl = '';
+  public baseSocket = '';
+
+  public environments: any[];
+  private currentEnvironment: any;
 
   private constructor() {}
 
@@ -17,8 +20,18 @@ export class EnvironmentStorageService {
     return EnvironmentStorageService.instance;
   }
 
-  setConfig(config: { baseUrl: string }): void {
-    this.baseUrl = config.baseUrl;
-    this.baseSocket = config.baseUrl;
+  setConfig(config: { baseUrl: string }, environments: any[]): void {
+    this.environments = environments;
+    this.currentEnvironment = this.environments.find(
+      (env) => env.baseUrl === config.baseUrl
+    );
+  }
+
+  setEnvionments(environments: any[]): void {
+    this.environments = environments;
+  }
+
+  getCurrentEnvironment() {
+    return this.currentEnvironment;
   }
 }

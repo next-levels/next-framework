@@ -1,4 +1,4 @@
-<div class="input-text-wrapper mt-1 input-wrapper" [formGroup]="fg">
+<div class="input-text-wrapper mt-1 input-wrapper" [formGroup]="fg" xmlns="http://www.w3.org/1999/html">
   <mat-form-field floatLabel="always">
     <mat-label *ngIf="!formField.noLabel">{{ formField.label }}</mat-label>
     <input
@@ -7,5 +7,34 @@
       placeholder="{{ formField.label }}"
       [spellcheck]="false"
     />
+
+
+    <button class=" mat-icon-button   mat-button
+            matSuffix
+            mat-icon-button"
+            (click)="translateField()"
+    >
+      <mat-icon
+        *ngIf="false"
+        class="icon-size-5 text-current"
+        [svgIcon]="'heroicons_solid:globe-asia-australia'"
+        (click)="translateField()"
+      ></mat-icon>
+    </button>
+
+
+    <button *ngIf="false" class=" mat-icon-button   mat-button
+            matSuffix
+            mat-icon-button"
+            (click)="translateField()">
+      <mat-icon
+        class="icon-size-5 text-current"
+        [svgIcon]="'heroicons_solid:sparkles'"
+        (click)="translateField()"
+      ></mat-icon>
+    </button>
+
+
   </mat-form-field>
 </div>
+

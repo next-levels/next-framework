@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormController } from '../../controller/form-controller';
-import { BUILDERFIELD_ALL_PREFIX, FORMFIELD_PREFIX, META } from '@next-levels/types';
+import { BUILDERFIELD_ALL_PREFIX, META } from '@next-levels/types';
 import { TranslateService } from '@ngx-translate/core';
 import {
   FORM,
@@ -77,6 +77,7 @@ export class FormComponent implements OnInit {
   ngOnInit(): void {
     if (this.formModel) {
       this.model = new this.formModel();
+      const instance = new this.formModel();
 
       if (!this.data) {
         this.data = this.model;
@@ -93,7 +94,7 @@ export class FormComponent implements OnInit {
 
       this.fg = this.controller.getForm();
 
-      const viewController =  META.getViewController(this.model) ?? this.model;
+      const viewController = META.getFormController(instance) ?? this.model;
 
       const className = this.controller.getClassName() ?? '';
       let fileFields = FORM.hasDetailFields(viewController)
@@ -104,7 +105,7 @@ export class FormComponent implements OnInit {
         if (this.tab === 'header') {
           fileFields = fileFields.header;
         } else {
-          fileFields = fileFields.tabs[this.tab];
+          fileFields = fileFields[this.tab];
         }
       }
 
@@ -113,37 +114,66 @@ export class FormComponent implements OnInit {
           BUILDERFIELD_ALL_PREFIX,
           this.model
         );
-        fileFields = [{ general: visibilityFields }];
+        fileFields = visibilityFields;
       }
 
-      if (fileFields) {
-        this.groups = fileFields.map((field: any, index: number) => {
-          const firstKey = Object.keys(field)[0];
+      if (Array.isArray(fileFields)) {
+        this.groups = [
+          {
+            key: 'default',
+            index: 1,
+            arrayIndex: 1,
+            title: '',
+            description: '',
+            fields: fileFields,
+          },
+        ];
 
-          let title = this.translate.instant(
-            className + '.groups.' + firstKey + '.name'
-          );
-          let description = this.translate.instant(
-            className + '.groups.' + firstKey + '.description'
-          );
+        this.changeDetectorRef.detectChanges();
+        return;
+      }
 
-          if (
-            description ===
-            className + '.groups.' + firstKey + '.description'
-          ) {
-            description = '';
-          }
+      const groups = Object.keys(fileFields);
 
-          this.fields.push(...field[firstKey]);
+      if (groups && groups.length > 0) {
+        this.groups = groups
+          .map((group: any, index: number) => {
+            const fields = fileFields[group];
+            let title = null;
+            let description = null;
 
-          return {
-            index: index,
-            arrayIndex: index + 1,
-            title: title,
-            description: description,
-            fields: field[firstKey],
-          };
-        });
+            if (fields && fields.length > 0) {
+              this.fields = fields;
+            } else {
+              return null;
+            }
+
+            if (fields && fields.length > 1) {
+              title = this.translate.instant(
+                className + '.groups.' + group + '.name'
+              );
+              description = this.translate.instant(
+                className + '.groups.' + group + '.description'
+              );
+
+              if (
+                description ===
+                className + '.groups.' + group + '.description'
+              ) {
+                description = '';
+              }
+            }
+
+            return {
+              key: group,
+              index: index,
+              arrayIndex: index + 1,
+              title: title,
+              description: description,
+              fields: fields,
+            };
+          })
+          .filter((group) => group !== null);
       }
 
       this.changeDetectorRef.detectChanges();

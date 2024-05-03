@@ -31,11 +31,7 @@ import {
   SuggestionDetails,
 } from '../../models/settings';
 import { SaveQueryDialogComponent } from '../save-query-dialog/save-query-dialog.component';
-import {
-  BUILDERFIELD_ALL_PREFIX,
-  BUILDERFIELD_PREFIX,
-  META,
-} from '@next-levels/types';
+import { BUILDERFIELD_ALL_PREFIX, META } from '@next-levels/types';
 import { SearchQuery } from '../../models/search-queries.model';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
@@ -458,24 +454,41 @@ export class QueryInputComponent implements OnInit, OnChanges {
       optionListToBePopulated.length > 0 &&
       options.length === 0
     ) {
-
       const result = [];
-      result.push({
-        key: 'id',
-        operation: '$eq',
-        value: value,
-        expression: '$or',
-      })
 
-      result.push({
-        key: 'name',
-        operation: '$eq',
-        value: value,
-        expression: '$or',
-      })
+      const listController = META.getListController(this.model) ?? null;
+
+      let searchFields =
+        'searchFields' in listController
+          ? (listController as any).searchFields()
+          : null;
+
+      if (searchFields) {
+        searchFields.forEach((field: string) => {
+          result.push({
+            key: field,
+            operation: '$eq',
+            value: value,
+            expression: '$or',
+          });
+        });
+      } else {
+        result.push({
+          key: 'id',
+          operation: '$eq',
+          value: value,
+          expression: '$or',
+        });
+
+        result.push({
+          key: 'name',
+          operation: '$eq',
+          value: value,
+          expression: '$or',
+        });
+      }
 
       this.queryChange.emit(result);
-
     }
 
     return options;

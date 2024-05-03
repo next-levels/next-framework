@@ -12,5 +12,29 @@ export function getFilterOptions(pagination): FilterOptions {
 }
 
 export function haslistFields(obj: any): boolean {
-  return "listFields" in obj;
+  return 'listFields' in obj;
+}
+
+export function hasListActions(obj: any): boolean {
+  return 'listActions' in obj;
+}
+
+export function hasListFields(obj: any): boolean {
+  return 'listFields' in obj;
+}
+
+export function hasSearchFields(obj: any): boolean {
+  return 'searchFields' in obj;
+}
+
+export function hasListFilters(obj: any): boolean {
+  return 'listFilters' in obj;
+}
+
+export function haslistScope(obj: any): boolean {
+  return 'listScope' in obj;
+}
+
+export function hasListType(obj: any): boolean {
+  return 'listType' in obj;
 }

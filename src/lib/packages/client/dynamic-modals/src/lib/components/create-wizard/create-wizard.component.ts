@@ -1,16 +1,23 @@
 import 'reflect-metadata';
-import {AfterViewInit, ChangeDetectorRef, Component, Inject, Input, OnInit, ViewChild,} from '@angular/core';
-import {SwalService} from '../../services/swal/swal.service';
-import {MinimizeService} from '../../services/minimize/minimize.service';
-import {MAT_DIALOG_DATA, MatDialog} from '@angular/material/dialog';
-import {MatStepper} from '@angular/material/stepper';
-import {FORM, FormController} from '../../../../../form-builder/src';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { SwalService } from '../../services/swal/swal.service';
+import { MinimizeService } from '../../services/minimize/minimize.service';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MatStepper } from '@angular/material/stepper';
+import { FORM, FormController } from '../../../../../form-builder/src';
 import {
   BUILDERFIELD_ALL_PREFIX,
   LISTFIELD_ALL_PREFIX,
   META,
   ScopeFilter,
-  VISIBILITY_PREFIX
 } from '@next-levels/types';
 
 @Component({
@@ -68,8 +75,7 @@ export class CreateWizardComponent implements AfterViewInit, OnInit {
     this.config = data.config;
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit() {
     if (!this.formController) {
@@ -82,10 +88,12 @@ export class CreateWizardComponent implements AfterViewInit, OnInit {
 
     this.className = this.formController.getClassName() ?? '';
 
-    const viewController =  META.getViewController(this.model) ?? this.model;
-    const fileFields = FORM.hasCreateFields(viewController) ? viewController.createFields() : null
+    const viewController = META.getFormController(this.model) ?? this.model;
+    const fileFields = FORM.hasCreateFields(viewController)
+      ? viewController.createFields()
+      : null;
 
-    if (fileFields) {
+    if (fileFields && fileFields.length > 0) {
       this.steps = fileFields.map((tab: any, index: number) => {
         const firstKey = Object.keys(tab)[0];
         return {
@@ -96,9 +104,7 @@ export class CreateWizardComponent implements AfterViewInit, OnInit {
           fields: tab[firstKey],
         };
       });
-
-     } else {
-
+    } else {
       const listFields =
         Reflect.getMetadata(
           LISTFIELD_ALL_PREFIX,
@@ -113,25 +119,22 @@ export class CreateWizardComponent implements AfterViewInit, OnInit {
 
       let fields = [...builderFields, ...listFields];
 
-
       if (this.config && this.config.length > 0) {
-        fields = this.config.filter((item: any) => item.create === true).map((item: any) => item.field);
+        fields = this.config
+          .filter((item: any) => item.create === true)
+          .map((item: any) => item.field);
       }
 
       this.getStepsConfig(fields);
-
     }
 
     this.cdRef.detectChanges();
   }
 
-
   getStepsConfig(fileFields: any[]) {
     for (let i = 0; i < fileFields.length; i++) {
       const field = fileFields[i];
-      let currentStep = this.steps.find(
-        (step) => step.title === field.group
-      );
+      let currentStep = this.steps.find((step) => step.title === field.group);
 
       if (!currentStep) {
         currentStep = {
@@ -163,13 +166,12 @@ export class CreateWizardComponent implements AfterViewInit, OnInit {
     }
   }
 
-  isValid() {
-  }
+  isValid() {}
 
   fireAction() {
     const form = this.formController.getForm().value;
 
-     if (this.scope && this.scope.length > 0) {
+    if (this.scope && this.scope.length > 0) {
       form[this.scope[0].key] = this.scope[0].value;
     }
 

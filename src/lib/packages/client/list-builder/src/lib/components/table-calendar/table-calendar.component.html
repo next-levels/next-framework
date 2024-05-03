@@ -10,7 +10,7 @@
       class="relative flex flex-col sm:flex-row flex-0 sm:justify-around px-3 justify-between items-center dark:bg-gray-900"
     >
       <!-- Query Input -->
-      <ng-container *transloco="let t">
+      <ng-container>
         <div class="tracking-tight w-full">
           <query-input
             [style]="{ flex: '1' }"
@@ -26,7 +26,7 @@
       </ng-container>
 
       <!-- Buttons -->
-      <ng-container *transloco="let t">
+      <ng-container>
         <div class="flex shrink-0 items-center sm:ml-4 ng-star-inserted my-5">
           <button
             class="ml-4 rounded-md"
@@ -35,7 +35,7 @@
             (click)="openAddModal()"
           >
             <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-            <span class="ml-2 mr-1">{{ t('button.add') }}</span>
+            <span class="ml-2 mr-1">{{ 'button.add' | translate }}</span>
           </button>
 
           <button
@@ -148,7 +148,7 @@
           </ng-container>
 
           <!-- actions -->
-          <ng-container matColumnDef="actions" *transloco="let t">
+          <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef></th>
             <td
               mat-cell
@@ -242,9 +242,9 @@
     <ng-template #noGuarantees>
       <div
         class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center"
-        *transloco="let t"
+
       >
-        Keine {{ t(listController.getModelClassName() + '.name') }}
+        Keine {{ listController.getModelClassName() + '.name' | translate }}
       </div>
     </ng-template>
   </div>

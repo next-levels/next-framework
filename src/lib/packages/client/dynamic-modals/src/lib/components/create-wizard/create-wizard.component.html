@@ -1,4 +1,4 @@
-<mat-horizontal-stepper [linear]="true" #horizontalStepper *transloco="let t">
+<mat-horizontal-stepper [linear]="true" #horizontalStepper>
   <mat-step
     *ngFor="let step of steps"
     class="stepper-item"
@@ -11,9 +11,10 @@
     <ng-template matStepLabel>
       {{
         className + '.groups.' + step.title + '.name' | translate
-      }}</ng-template
+      }}
+    </ng-template
     >
-    <p class="my-6 font-medium"> </p>
+    <p class="my-6 font-medium"></p>
 
     <div class="grid gap-4">
       <nxtlvls-form-set
@@ -33,7 +34,7 @@
           type="reset"
           (click)="horizontalStepper.reset()"
         >
-          {{ t('button.cancel') }}
+          {{ 'button.cancel' | translate }}
         </button>
         <div class="inline-flex items-center">
           <button
@@ -47,7 +48,7 @@
                 class="icon-size-5 text-current"
                 [svgIcon]="'heroicons_solid:arrow-small-left'"
               ></mat-icon>
-              <span class="ml-1.5">{{ t('button.back') }}</span>
+              <span class="ml-1.5">{{ 'button.cancel' | translate }}</span>
             </span>
           </button>
 
@@ -72,8 +73,8 @@
             *ngIf="currentStep === steps.length"
             (click)="fireAction()"
           >
-            <span class="mr-1.5" *ngIf="!edit">{{ t('button.create') }}</span>
-            <span class="mr-1.5" *ngIf="edit">{{ t('button.save') }}</span>
+            <span class="mr-1.5" *ngIf="!edit">{{ 'button.create' | translate }}</span>
+            <span class="mr-1.5" *ngIf="edit">{{ 'button.save' | translate }}</span>
             <mat-icon
               class="icon-size-5 text-current"
               [svgIcon]="'heroicons_solid:plus'"

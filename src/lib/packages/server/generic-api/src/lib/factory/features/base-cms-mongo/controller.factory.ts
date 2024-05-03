@@ -7,7 +7,6 @@ import {
   Param,
   Patch,
   Post,
-  Query,
   Req,
   Type,
   UseGuards,
@@ -115,7 +114,6 @@ export function GenericBaseCMSControllerMongo<T extends Type<any>>(
     }
 
     @Get(':id')
-    @UseInterceptors(FileInjectInterceptor)
     public async frontendFindOne(@Param('id') id: string): Promise<Result<T>> {
       return await this.service.findOne(id);
     }

@@ -1,6 +1,5 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule, DatePipe, NgOptimizedImage } from '@angular/common';
-import { ContractStateComponent } from './components/view-items/contract-state/contract-state.component';
 import { TableDefaultComponent } from './components/table-default/table-default.component';
 import { TableSubmoduleComponent } from './components/table-submodule/table-submodule.component';
 import { ViewCurrencyComponent } from './components/view-items/view-currency/view-currency.component';
@@ -16,7 +15,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { TranslocoModule } from '@ngneat/transloco';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BaseListComponent } from './components/base-list/base-list.component';
 import { ViewRelationComponent } from './components/view-items/view-relation/view-relation.component';
@@ -52,6 +50,8 @@ import { ViewResultComponent } from './components/view-items/view-result.compone
 import { ViewCheckboxComponent } from './components/view-items/view-checkbox/view-checkbox.component';
 import { TableInlineEditComponent } from './components/table-inline-edit/table-inline-edit.component';
 import { FormBuilderModule } from '../../../form-builder';
+import { ViewStateComponent } from './components/view-items/view-state/view-state.component';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 
 @NgModule({
   imports: [
@@ -68,7 +68,6 @@ import { FormBuilderModule } from '../../../form-builder';
     MatSortModule,
     MatTableModule,
     FormsModule,
-    TranslocoModule,
     ReactiveFormsModule,
     DatePipe,
     NgOptimizedImage,
@@ -85,17 +84,19 @@ import { FormBuilderModule } from '../../../form-builder';
     MatTreeNodeDef,
     MatTreeModule,
     FormBuilderModule,
+    MatMenu,
+    MatMenuItem,
+    MatMenuTrigger,
   ],
   providers: [DatePipe],
   declarations: [
-    ContractStateComponent,
     TableDefaultComponent,
     TableInlineEditComponent,
     TableCalendarComponent,
     SimpleListComponent,
     CardListComponent,
     TableSubmoduleComponent,
-    ContractStateComponent,
+    ViewStateComponent,
     ViewCurrencyComponent,
     ViewElementComponent,
     ViewTextComponent,
@@ -114,14 +115,13 @@ import { FormBuilderModule } from '../../../form-builder';
     ViewCheckboxComponent,
   ],
   exports: [
-    ContractStateComponent,
     TableDefaultComponent,
     TableInlineEditComponent,
     TableCalendarComponent,
     SimpleListComponent,
     CardListComponent,
     TableSubmoduleComponent,
-    ContractStateComponent,
+    ViewStateComponent,
     ViewCurrencyComponent,
     ViewElementComponent,
     ViewTextComponent,

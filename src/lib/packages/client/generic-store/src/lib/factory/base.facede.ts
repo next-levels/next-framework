@@ -6,6 +6,7 @@ import { BasicFacade } from '../types/base.type';
 import { FilterOptions, PaginationMeta } from '@next-levels/types';
 
 export abstract class StoreFacade {}
+
 export class BaseFacade<EntityType, StateType>
   extends StoreFacade
   implements BasicFacade<EntityType>
@@ -41,7 +42,7 @@ export class BaseFacade<EntityType, StateType>
   }
 
   select(entityId: number) {
-     this.store.dispatch(
+    this.store.dispatch(
       this.baseActions.selectEntity({ payload: { entityId } })
     );
   }
