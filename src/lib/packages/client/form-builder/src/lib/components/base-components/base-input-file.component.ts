@@ -1,9 +1,9 @@
-import { ChangeDetectorRef, Component, Inject } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { BaseInputComponent } from './base-input.component';
-import { EnvironmentStorageService } from '../../../../../angular-commons/src';
+import { EnvironmentStorageService } from '../../../../../angular-commons';
 
 @Component({
   selector: 'nxt-input-file',
