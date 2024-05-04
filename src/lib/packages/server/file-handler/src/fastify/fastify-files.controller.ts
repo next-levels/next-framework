@@ -20,7 +20,6 @@ import { FrontendJwtAuthGuard, JwtAuthGuard } from '../../../nest-commons/src';
 import { diskStorage } from 'multer';
 import { UpdateFileDto } from '../lib/dtos/update-file.dto';
 import { FilesService } from '../lib/files.service';
-import { File } from '@nest-lab/fastify-multer';
 import {
   decodeBase64ToFile,
   editFileName,
