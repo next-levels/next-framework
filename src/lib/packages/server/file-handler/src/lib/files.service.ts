@@ -51,7 +51,7 @@ export class FilesService {
    * @param id
    * @returns
    */
-  public async findOne(id: number): Promise<FileEntity | null> {
+  public async findOne(id: string): Promise<FileEntity | null> {
     return await this._filesRepository.findOneBy({ id: id });
   }
 
@@ -97,7 +97,7 @@ export class FilesService {
   }
 
   async createOrUpdate(
-    file: Express.Multer.File,
+    file: any,
     attachmentType: string,
     attachmentId: number,
     fieldName: string,
@@ -219,7 +219,7 @@ export class FilesService {
    * @param hash
    * @param res
    */
-  public async serveFile(id: number, res: any): Promise<Result<void>> {
+  public async serveFile(id: string, res: any): Promise<Result<void>> {
     const file = await this._filesRepository.findOne({
       where: { id },
     });

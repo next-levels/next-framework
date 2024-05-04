@@ -1,7 +1,7 @@
 import { FileEntity } from '../entities/file.entity';
 
 export class FileDto {
-  id?: number;
+  id?: string;
   name: string;
   path: string;
   mime_type: string;
@@ -13,6 +13,7 @@ export class FileDto {
   sort_order?: number;
 
   brightness?: number;
+
   static fromFile(uploadedFile: any): FileEntity {
     const file = new FileEntity();
 
