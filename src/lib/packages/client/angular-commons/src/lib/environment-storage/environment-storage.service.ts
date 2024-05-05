@@ -21,6 +21,7 @@ export class EnvironmentStorageService {
   }
 
   setConfig(config: { baseUrl: string }, environments: any[]): void {
+    this.baseSocket = config.baseUrl;
     this.environments = environments;
     this.currentEnvironment = this.environments.find(
       (env) => env.baseUrl === config.baseUrl

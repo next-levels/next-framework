@@ -9,7 +9,7 @@ export function createNotificationReducer<EntityType>(
 ): ActionReducer<EntityState<EntityType>> {
   {
     return createReducer<EntityState<EntityType>>(
-      entityAdapter.getInitialState({ unReadCount: 0,updated: Date.now() }),
+      entityAdapter.getInitialState({ unReadCount: 0, updated: Date.now() }),
 
       on(actions.setEntity, (state: any, payload) => {
         return entityAdapter.addOne((<any>payload).payload, {

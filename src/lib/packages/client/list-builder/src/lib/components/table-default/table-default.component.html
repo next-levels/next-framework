@@ -33,7 +33,7 @@
           </button>
         </ng-container>
         <button
-          
+
           class="ml-4 rounded-md"
           mat-flat-button
           [color]="'primary'"
@@ -57,7 +57,7 @@
   </div>
 
   <!-- Main -->
-  <div class="relative h-full dark:bg-slate-900" [ngClass]="{ 'p-5': !childTable }" style="height: 100vh; overflow-x:
+  <div class="relative h-full dark:bg-slate-900 " [ngClass]="{ 'sm:p-5 p-2': !childTable }" style="height: 100vh; overflow-x:
     auto">
     <div class="pt-1 d-flex justify-content-end selectedRowsButton"
          *ngIf="isOneSelected()"
@@ -96,22 +96,15 @@
                 mat-header-row
                 *matHeaderRowDef="displayedColumns;sticky: true"
               ></tr>
+
               <tr
                 mat-row
                 *matRowDef="let row; columns: displayedColumns"
+                [class.row-animate]="(modelFacade.notification.updated$ | async) <
+              getTimestamp(row.updatedAt)
+          "
               ></tr>
 
-
-              <ng-container *ngIf="false">
-                <tr
-                  mat-row
-                  *matRowDef="let row; columns: displayedColumns"
-                  [class.row-animate]="
-            (modelFacade?.notification?.updated$ | async) <
-            getTimestamp(row.updated_at)
-          "
-                ></tr>
-              </ng-container>
 
               </thead>
 

@@ -24,7 +24,7 @@ export function createReducers(
           baseEntityAdapter
         );
         break;
-      case 'notification':
+      case 'notifications':
         reducer = createNotificationReducer(
           entityName,
           baseActions,
@@ -33,7 +33,7 @@ export function createReducers(
         break;
       // add more cases as necessary
       default:
-       // console.info(`No reducer found for key "${key}"`);
+        // console.info(`No reducer found for key "${key}"`);
         break;
     }
     if (reducer) {

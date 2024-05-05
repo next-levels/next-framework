@@ -1,6 +1,6 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { createSelector, Store } from '@ngrx/store';
- import { Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { BaseFacade } from './base.facede';
 import { NotificationFacade } from '../+store-types/notifcation/notification.facede';
 import { createNotificationFacade } from '../+store-types/notifcation/notification.factory';
@@ -18,7 +18,7 @@ interface MinimumConstructable {
 export function createGenericFacade<T extends Object, S>(
   modelName: string,
   storeToken: InjectionToken<any>,
-  features: string[] = ['notification', 'basic'],
+  features: string[] = ['notifications', 'basic'],
   entity: T
 ) {
   @Injectable({
@@ -28,11 +28,12 @@ export function createGenericFacade<T extends Object, S>(
     base: BaseFacade<T, S>;
     notification: NotificationFacade<T, S>;
     selectors: Record<string, (arg: any) => Observable<any>>;
+
     constructor(
       public store: Store<S>,
       @Inject(storeToken) public genericStore: any
     ) {
-      if (features.includes('notification')) {
+      if (features.includes('notifications')) {
         this.notification = createNotificationFacade<T, S>(
           store,
           genericStore.baseActions,

@@ -14,10 +14,29 @@
 }
 
 .row-animate {
-  animation: rowAppear 1s ease-in-out;
-  /* background: #1cff9d1a; */
-  border: #1cff9db0 solid 4px;
-  //border: #52c60096 solid 2px;
+  animation: rowAppear 1.5s ease-in-out;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 5px;
+    left: -11px;
+    height: 2px;
+    width: 100%;
+    background: var(--gradient);
+    animation: slideInFull 1.5s forwards;
+  }
+
+
+  @keyframes slideInFull {
+    from {
+      width: 0%;
+    }
+    to {
+      width: 100%;
+    }
+  }
+
 }
 
 

@@ -2,16 +2,12 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { EntityAdapter } from '@ngrx/entity';
 import { NotificationData } from './notification.data';
 
-export function createNotificationSelectorsFeature<
-  EntityType,
-  StateType extends object
->(featureKey: string, entityAdapter: EntityAdapter<EntityType>): any {
-  const getFeatureState = createFeatureSelector<StateType>(featureKey);
-
-  const getEntityState = createSelector(
-    getFeatureState,
-    (state: any) => state.notification
-  );
+export function createNotificationSelectors<EntityType, StateType>(
+  featureKey: string,
+  entityAdapter: EntityAdapter<EntityType>
+): any {
+  const getEntityState =
+    createFeatureSelector<NotificationData<EntityType>>(featureKey);
 
   const getEntityNotificationCount = createSelector(
     getEntityState,
@@ -25,7 +21,37 @@ export function createNotificationSelectorsFeature<
 
   return {
     getEntityNotificationCount,
-    getEntityNotificationUpdated
+    getEntityNotificationUpdated,
+  };
+}
+
+export function createNotificationSelectorsFeature<
+  EntityType,
+  StateType extends object
+>(featureKey: string, entityAdapter: EntityAdapter<EntityType>): any {
+  const getFeatureState = createFeatureSelector<StateType>(featureKey);
+
+  const getEntityState = createSelector(getFeatureState, (state: any) => {
+    return state.notifications;
+  });
+
+  const getEntityNotificationCount = createSelector(
+    getEntityState,
+    (state: NotificationData<EntityType>) => {
+      return state.unReadCount;
+    }
+  );
+
+  const getEntityNotificationUpdated = createSelector(
+    getEntityState,
+    (state: NotificationData<EntityType>) => {
+      return state.updated;
+    }
+  );
+
+  return {
+    getEntityNotificationCount,
+    getEntityNotificationUpdated,
   };
 }
 
