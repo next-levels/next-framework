@@ -1,18 +1,18 @@
-<div class="flex flex-col flex-auto min-w-0 sm:overflow-hidden bg-grey-50  dark:bg-slate-900"
-     [ngClass]="{ '': !childTable }">
+<div [ngClass]="{ '': !childTable }"
+     class="flex flex-col flex-auto min-w-0 sm:overflow-hidden bg-grey-50  dark:bg-slate-900">
 
   <div *ngIf="showHeader == true"
        class="relative bg-grey-50 flex flex-col sm:flex-row flex-0 sm:justify-around px-5 justify-between items-center dark:bg-gray-900 mt-5">
     <ng-container>
       <div class="tracking-tight w-full">
         <query-input
-          [style]="{ flex: '1' }"
-          [model]="model"
-          (queryChange)="setQuery($event)"
-          [placeholder]="'Suche'"
-          [modelReference]="modelReference"
           (openQueryRowsModalEvent)="openQueryRowsModal()"
+          (queryChange)="setQuery($event)"
+          [modelReference]="modelReference"
+          [model]="model"
+          [placeholder]="'Suche'"
           [searchQuery]="searchQuery"
+          [style]="{ flex: '1' }"
         >
         </query-input>
       </div>
@@ -23,10 +23,10 @@
       <div class="flex shrink-0 items-center sm:ml-4 ng-star-inserted my-5">
         <ng-container *ngFor="let action of actions">
           <button
+            (click)="fireAction(action)"
+            [color]="'primary'"
             class="ml-4 rounded-md"
             mat-flat-button
-            [color]="'primary'"
-            (click)="fireAction(action)"
           >
             <mat-icon [svgIcon]="action.icon"></mat-icon>
             <span class="ml-2 mr-1">{{ action.label | translate }}</span>
@@ -34,20 +34,20 @@
         </ng-container>
         <button
 
+          (click)="openAddModal()"
+          [color]="'primary'"
           class="ml-4 rounded-md"
           mat-flat-button
-          [color]="'primary'"
-          (click)="openAddModal()"
         >
           <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
           <span class="ml-2 mr-1">{{ 'button.add' | translate }}</span>
         </button>
 
         <button
+          (click)="export()"
+          [color]="'accent'"
           class="ml-4 rounded-md"
           mat-flat-button
-          [color]="'accent'"
-          (click)="export()"
         >
           <mat-icon [svgIcon]="'heroicons_outline:arrow-down-tray'"></mat-icon>
           <span class="ml-2 mr-1">Export</span>
@@ -57,24 +57,24 @@
   </div>
 
   <!-- Main -->
-  <div class="relative h-full dark:bg-slate-900 " [ngClass]="{ 'sm:p-5 p-2': !childTable }" style="height: 100vh; overflow-x:
+  <div [ngClass]="{ 'sm:p-5 p-2': !childTable }" class="relative h-full dark:bg-slate-900 " style="height: 100vh; overflow-x:
     auto">
-    <div class="pt-1 d-flex justify-content-end selectedRowsButton"
-         *ngIf="isOneSelected()"
+    <div *ngIf="isOneSelected()"
+         class="pt-1 d-flex justify-content-end selectedRowsButton"
     >
-      <a class="btn btn-primary me-2 mr-0 pr-0 smallbutton"
-         (click)="batchEdit()">
+      <a (click)="batchEdit()"
+         class="btn btn-primary me-2 mr-0 pr-0 smallbutton">
         Ausgewählte bearbeiten
       </a>
       ·
-      <a class="btn btn-primary me-2 mr-0 pr-0 smallbutton"
-         (click)="batchDelete()">
+      <a (click)="batchDelete()"
+         class="btn btn-primary me-2 mr-0 pr-0 smallbutton">
         Ausgewählte löschen
       </a>
     </div>
     <div
-      class="bg-white list-builder-table ng-star-inserted border-white rounded-xl grid content-between items-start dark:bg-slate-900 border-t dark:border-slate-500 max-h-[83vh] overflow-x-auto"
       [ngClass]="{ 'min-h-[83vh]': !childTable }"
+      class="bg-white list-builder-table ng-star-inserted border-white rounded-xl grid content-between items-start dark:bg-slate-900 border-t dark:border-slate-500 max-h-[83vh] overflow-x-auto"
     >
 
       <div
@@ -82,27 +82,27 @@
         <div class="flex-auto px-0 pt-0 pb-2 dark:transparent dark:border-slate-500">
           <div class="p-0">
             <table
-              mat-table
-              matSort
-              [dataSource]="dataSource"
-              [trackBy]="trackByFn"
-              [matSortDisableClear]="true"
               #participantsTable
               *ngIf="dataSource.data.length > 0; else noGuarantees"
-              class="items-center w-full mb-0 align-top border-gray-200 text-slate-500 dark:bg-gray-900">
+              [dataSource]="dataSource"
+              [matSortDisableClear]="true"
+              [trackBy]="trackByFn"
+              class="items-center w-full mb-0 align-top border-gray-200 text-slate-500 dark:bg-gray-900"
+              mat-table
+              matSort>
               <thead class="align-bottom">
               <tr
+                *matHeaderRowDef="displayedColumns;sticky: true"
                 class="px-6 py-3 font-bold text-left uppercase align-middle bg-white dark:bg-gray-900 border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap  "
                 mat-header-row
-                *matHeaderRowDef="displayedColumns;sticky: true"
               ></tr>
 
               <tr
-                mat-row
                 *matRowDef="let row; columns: displayedColumns"
-                [class.row-animate]="(modelFacade.notification.updated$ | async) <
+                [class.row-animate]="modelFacade && modelFacade.notification && (modelFacade.notification.updated$ | async) <
               getTimestamp(row.updatedAt)
           "
+                mat-row
               ></tr>
 
 
@@ -113,46 +113,46 @@
 
 
                 <ng-container matColumnDef="select">
-                  <th mat-header-cell *matHeaderCellDef class="w-25px w-0">
+                  <th *matHeaderCellDef class="w-25px w-0" mat-header-cell>
                     <div
                       class="form-check form-check-sm form-check-custom form-check-solid"
                     >
                       <input
+                        (click)="masterToggle()"
+                        [checked]="selection.hasValue() && isAllSelected()"
                         class="form-check-input widget-13-check "
                         type="checkbox"
-                        [checked]="selection.hasValue() && isAllSelected()"
-                        (click)="masterToggle()"
                       />
                     </div>
                   </th>
 
-                  <td mat-cell *matCellDef="let data">
+                  <td *matCellDef="let data" mat-cell>
                     <div
                       class="form-check form-check-sm form-check-custom form-check-solid w-40px"
                     >
                       <input
+                        (change)="$event ? selection.toggle(data) : null"
+                        (click)="$event.stopPropagation()"
+                        [checked]="selection.isSelected(data)"
                         class="form-check-input widget-13-check"
                         type="checkbox"
-                        (click)="$event.stopPropagation()"
-                        (change)="$event ? selection.toggle(data) : null"
-                        [checked]="selection.isSelected(data)"
                       />
                     </div>
                   </td>
                 </ng-container>
 
                 <ng-container *ngFor="let field of fields" matColumnDef="{{ field }}">
-                  <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                  <th *matHeaderCellDef mat-header-cell mat-sort-header>
                     {{
                       translateService.instant(listController.getElementLabel(field))
                     }}
                   </th>
 
                   <td
-                    mat-cell
-                    *matCellDef="let data"
                     (click)="selectRow(data)"
+                    *matCellDef="let data"
                     class="py-1 align-start bg-transparent border-b whitespace-nowrap shadow-transparent"
+                    mat-cell
                   >
                     <div class="flex ">
                       <nxtlvls-view-element
@@ -166,50 +166,50 @@
                 </ng-container>
 
                 <ng-container matColumnDef="actions">
-                  <th mat-header-cell *matHeaderCellDef>
+                  <th *matHeaderCellDef mat-header-cell>
                   </th>
                   <td
-                    mat-cell
                     *matCellDef="let data"
                     class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent action-cell"
+                    mat-cell
                     style="width: 150px"
                   >
             <span class="items-center">
 
 
-                   <a class="min-w-10 min-h-7 h-7 px-2 leading-6 cursor-pointer"
-                      *ngIf="childTable"
+                   <a *ngIf="childTable"
+                      class="min-w-10 min-h-7 h-7 px-2 leading-6 cursor-pointer"
                       style="pointer-events: all">
-             <mat-icon class="icon-size-6 action-icon" [svgIcon]="'heroicons_outline:chevron-right'"></mat-icon>
+             <mat-icon [svgIcon]="'heroicons_outline:chevron-right'" class="icon-size-6 action-icon"></mat-icon>
               </a>
 
-              <a class="min-w-10 min-h-7 h-7 px-2 leading-6 cursor-pointer"
-                 *ngIf="!childTable"
-                 [matMenuTriggerFor]="menu" style="pointer-events: all">
-             <mat-icon class="icon-size-6 action-icon" [svgIcon]="'heroicons_outline:ellipsis-horizontal'"></mat-icon>
+              <a *ngIf="!childTable"
+                 [matMenuTriggerFor]="menu"
+                 class="min-w-10 min-h-7 h-7 px-2 leading-6 cursor-pointer" style="pointer-events: all">
+             <mat-icon [svgIcon]="'heroicons_outline:ellipsis-horizontal'" class="icon-size-6 action-icon"></mat-icon>
               </a>
 
               <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="selectRow(data)">
+                <button (click)="selectRow(data)" mat-menu-item>
                    <mat-icon
-                     class="icon-size-4 text-slate-800 action-icon"
                      [svgIcon]="'heroicons_outline:eye'"
+                     class="icon-size-4 text-slate-800 action-icon"
                    ></mat-icon>
                   Ansehen
                 </button>
 
-                <button mat-menu-item (click)="duplicate(data)">
+                <button (click)="duplicate(data)" mat-menu-item>
                   <mat-icon
-                    class="icon-size-4 action-icon"
                     [svgIcon]="'heroicons_outline:document-duplicate'"
+                    class="icon-size-4 action-icon"
                   ></mat-icon>
                   Duplizieren
                 </button>
 
-                <button mat-menu-item (click)="delete(data)">
+                <button (click)="delete(data)" mat-menu-item>
                        <mat-icon
-                         class="icon-size-4 action-icon"
                          [svgIcon]="'heroicons_outline:document-minus'"
+                         class="icon-size-4 action-icon"
                        ></mat-icon>
                   Löschen
                 </button>
@@ -228,16 +228,16 @@
       </div>
 
       <mat-paginator
-        class="mat-paginator-sticky border-b sm:border-t sm:border-b-0 z-10 dark:bg-gray-900 bottom-0 w-full self-end text-gray-500 dark:text-white"
-        showFirstLastButtons
+        [length]="pagination.totalItems"
         [ngClass]="{
           'pointer-events-none': (loading$ | async),
           'hidden': childTable,
           }"
-        [pageSizeOptions]="[5, 10, 25, 100]"
-        [length]="pagination.totalItems"
         [pageIndex]="pagination.currentPage - 1"
+        [pageSizeOptions]="[5, 10, 25, 100]"
         [pageSize]="pagination.itemsPerPage"
+        class="mat-paginator-sticky border-b sm:border-t sm:border-b-0 z-10 dark:bg-gray-900 bottom-0 w-full self-end text-gray-500 dark:text-white"
+        showFirstLastButtons
       ></mat-paginator>
     </div>
   </div>

@@ -79,21 +79,16 @@ export class BaseTableDefaultComponent
 
   public loading$: Observable<boolean>;
   public _unsubscribeAll: Subject<any> = new Subject<any>();
-  private subscription: Subscription;
-
   public searchInputControl: FormControl = new FormControl<string | null>(null);
   public statusFilterControl: FormControl = new FormControl<string>('');
   public displayedColumns: string[] = [];
   public fields: string[] = [];
   public dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
-
   modelFacade: BaseFacadeType;
   model: any;
   actions: [] = [];
   modelReference: string;
-
   itemsPerPage = 20;
-
   public pagination: PaginationMeta = {
     currentPage: 1,
     itemsPerPage: this.itemsPerPage,
@@ -101,7 +96,6 @@ export class BaseTableDefaultComponent
     totalItems: 0,
     sortBy: [['id', 'DESC' as SortDirection]],
   };
-
   public filterOptions: FilterOptions = {
     page: this.pagination.currentPage,
     limit: this.pagination.itemsPerPage,
@@ -110,8 +104,8 @@ export class BaseTableDefaultComponent
     }:${this.pagination.sortBy[0][1].toUpperCase()}`,
     search: '',
   };
-
   public selection = new SelectionModel<Element>(true, []);
+  private subscription: Subscription;
 
   constructor(
     public translateService: TranslateService,
@@ -135,13 +129,15 @@ export class BaseTableDefaultComponent
     this.model = this.listController.getModelDefinition();
     this.modelReference = this.listController.getClassName();
 
-    this.registry
-      .retrieve(this.modelReference)
-      .notification.updated$.subscribe((updated) => {
+    const instance = this.registry.retrieve(this.modelReference);
+    if (instance && instance.notification) {
+      instance.notification.updated$.subscribe((updated) => {
         console.log('updated', updated);
       });
+      instance.notification.resetCount();
 
-    this.registry.retrieve(this.modelReference).notification.resetCount();
+      this.registry.retrieve(this.modelReference).notification.resetCount();
+    }
 
     const listFields =
       Reflect.getMetadata(
@@ -192,7 +188,7 @@ export class BaseTableDefaultComponent
 
     this.subscription = this.modelFacade?.base.filtered$.subscribe(
       (entries: unknown) => {
-        this.dataSource.data = (entries as any[]).reverse();
+        this.dataSource.data = entries as any[];
         this.cdRef.detectChanges();
       }
     );
@@ -247,31 +243,6 @@ export class BaseTableDefaultComponent
         this.cdRef.detectChanges();
       },
     });
-  }
-
-  private initializeSortAndPaginator() {
-    this.sort.sortChange.subscribe(() => {
-      this.paginator.pageIndex = 0;
-    });
-
-    merge(this.sort.sortChange, this.paginator.page)
-      .pipe(
-        takeUntil(this._unsubscribeAll),
-        tap(() => {
-          this.filterOptions = {
-            ...this.filterOptions,
-            page: this.paginator.pageIndex + 1,
-            limit: this.paginator.pageSize,
-            sortBy: `${this.sort.active}:${this.sort.direction.toUpperCase()}`,
-          };
-
-          if (this.modelFacade) {
-            console.log(this.filterOptions);
-            this.modelFacade.base.loadFiltered(this.filterOptions);
-          }
-        })
-      )
-      .subscribe();
   }
 
   getTimestamp(value) {
@@ -584,5 +555,30 @@ export class BaseTableDefaultComponent
     this._unsubscribeAll.next(null);
     this.subscription.unsubscribe();
     this._unsubscribeAll.complete();
+  }
+
+  private initializeSortAndPaginator() {
+    this.sort.sortChange.subscribe(() => {
+      this.paginator.pageIndex = 0;
+    });
+
+    merge(this.sort.sortChange, this.paginator.page)
+      .pipe(
+        takeUntil(this._unsubscribeAll),
+        tap(() => {
+          this.filterOptions = {
+            ...this.filterOptions,
+            page: this.paginator.pageIndex + 1,
+            limit: this.paginator.pageSize,
+            sortBy: `${this.sort.active}:${this.sort.direction.toUpperCase()}`,
+          };
+
+          if (this.modelFacade) {
+            console.log(this.filterOptions);
+            this.modelFacade.base.loadFiltered(this.filterOptions);
+          }
+        })
+      )
+      .subscribe();
   }
 }
