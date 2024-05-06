@@ -4,10 +4,11 @@
   "projectType": "library",
   "sourceRoot": "src",
   "prefix": "vosdellen",
+  "tags": [],
   "targets": {
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["coverage/libs/angular/angular-tools"],
+      "outputs": ["{workspaceRoot}/coverage/libs/angular/angular-tools"],
       "options": {
         "jestConfig": "libs/angular/angular-tools/jest.config.ts",
         "passWithNoTests": true
@@ -22,6 +23,5 @@
         ]
       }
     }
-  },
-  "tags": []
+  }
 }

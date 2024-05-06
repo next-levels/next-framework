@@ -81,11 +81,6 @@ export class ListSelectorComponent implements OnInit, AfterViewInit {
       }
 
       this.cdRef.detectChanges();
-
-      console.log(
-        'tableSubmoduleComponentInstance',
-        tableSubmoduleComponentInstance
-      );
     }
   }
 }

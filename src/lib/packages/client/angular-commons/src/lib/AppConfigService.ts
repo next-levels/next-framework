@@ -5,16 +5,10 @@ import { EnvironmentStorageService } from './environment-storage/environment-sto
   providedIn: 'root',
 })
 export class AppConfigService {
-  private envConfig: any;
-
   constructor(private env: EnvironmentStorageService) {}
 
   loadConfig(environments: any[]) {
     const currentOrigin = window.location.origin;
     this.env.setConfig({ baseUrl: currentOrigin }, environments);
-  }
-
-  get environmentName(): string {
-    return this.envConfig ? this.envConfig.name : 'local';
   }
 }

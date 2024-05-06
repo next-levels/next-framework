@@ -1,11 +1,9 @@
-import { Injectable, InjectionToken } from '@angular/core';
+import { InjectionToken } from '@angular/core';
 import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import { createReducers } from './reducer.factory';
 import { EffectsConfig } from '../types/effects-config.type';
 import { createGenericFacade } from './generic.facade';
-import {
-  META,
-} from '@next-levels/types';
+import { META } from '@next-levels/types';
 import { createBaseEffectServicePair } from './base.factory';
 import { createNotificationEffectServicePair } from '../+store-types/notifcation/notification.factory';
 import { createGenericActions } from '../+state/generic.actions';
@@ -33,7 +31,7 @@ export function createGenericStore<T extends object, S>(
   modelName: string,
   funcArray: Array<ActionType<T>>,
   selectorArray: Array<SelectorType<T, S>>,
-  features: string[] = ['notification', 'basic']
+  features: string[] = ['notifications', 'basic']
 ) {
   class GenericStore {
     public featureKey: string;
@@ -111,7 +109,7 @@ function getEffectService(
   switch (feature) {
     case 'base':
       return createBaseEffectServicePair(config);
-    case 'notification':
+    case 'notifications':
       return createNotificationEffectServicePair(config);
 
     default:
@@ -123,7 +121,7 @@ function getAction(feature: string) {
   switch (feature) {
     case 'base':
       return createGenericActions;
-    case 'notification':
+    case 'notifications':
       return createNotificationActions;
 
     default:
@@ -135,7 +133,7 @@ function getSelector(feature: string) {
   switch (feature) {
     case 'base':
       return createGenericSelectorsFeature;
-    case 'notification':
+    case 'notifications':
       return createNotificationSelectorsFeature;
 
     default:

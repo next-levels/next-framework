@@ -1,7 +1,12 @@
-import { BaseComponents } from './components/base-components.type';
-
 export type ScopeFilterOperations =
-  '$eq' | '$not' | '$g' | '$lt' | 'in' | 'nin' | '$ilike';
+  | '$eq'
+  | '$not'
+  | '$g'
+  | '$lt'
+  | 'in'
+  | 'nin'
+  | '$like'
+  | '$null';
 
 export interface ScopeFilter {
   key: string;
@@ -14,5 +19,3 @@ export interface ScopeFilterTyped<T> {
   operation: ScopeFilterOperations;
   value?: any;
 }
-
-

@@ -1,5 +1,5 @@
 export interface BaseFile {
-  id?: number;
+  id?: string;
   file_index?: string;
   name: string;
   path?: string;

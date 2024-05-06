@@ -9,8 +9,8 @@ import {
 
 @Entity('files')
 export class FileEntity implements BaseFile {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ type: 'varchar', nullable: true })
   file_index: string;

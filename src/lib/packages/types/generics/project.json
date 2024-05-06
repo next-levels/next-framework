@@ -4,10 +4,11 @@
   "projectType": "library",
   "sourceRoot": "src",
   "prefix": "vosdellen",
+  "tags": [],
   "targets": {
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["coverage/libs/generics"],
+      "outputs": ["{workspaceRoot}/coverage/libs/generics"],
       "options": {
         "jestConfig": "libs/generics/jest.config.ts",
         "passWithNoTests": true
@@ -19,6 +20,5 @@
         "lintFilePatterns": ["libs/generics/**/*.ts", "libs/generics/**/*.html"]
       }
     }
-  },
-  "tags": []
+  }
 }

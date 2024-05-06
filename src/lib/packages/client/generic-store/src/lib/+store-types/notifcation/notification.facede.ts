@@ -5,13 +5,16 @@ import { StoreFacade } from '../../factory/base.facede';
 
 export interface NotificationTypeFacade<EntityType> {
   setEntity(entity: EntityType): void;
+
+  resetCount(entity: EntityType): void;
+
   unReadCount$: Observable<number>;
-  updated$: Observable<number>;
+  updated$: Observable<Date>;
 }
 
 export type NotificationTypeSelectors<EntityType, StateType> = {
   getEntityNotificationCount: (state: StateType) => number;
-  getEntityNotificationUpdated: (state: StateType) => number;
+  getEntityNotificationUpdated: (state: StateType) => Date;
 };
 
 export class NotificationFacade<EntityType, StateType>
@@ -19,7 +22,7 @@ export class NotificationFacade<EntityType, StateType>
   implements NotificationTypeFacade<EntityType>
 {
   public unReadCount$: Observable<number>;
-  public updated$:  Observable<number>;
+  public updated$: Observable<Date>;
 
   constructor(
     public store: Store<StateType>,
@@ -29,7 +32,7 @@ export class NotificationFacade<EntityType, StateType>
     public baseSelectors: NotificationTypeSelectors<EntityType, StateType>
   ) {
     super();
-    if (this.baseSelectors){
+    if (this.baseSelectors) {
       this.unReadCount$ = this.store.select(
         this.baseSelectors.getEntityNotificationCount
       );
@@ -38,6 +41,7 @@ export class NotificationFacade<EntityType, StateType>
       );
     }
   }
+
   public setEntity(entity: EntityType) {
     this.store.dispatch(this.baseActions.setEntity({ payload: entity }));
   }

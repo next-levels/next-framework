@@ -1,5 +1,5 @@
 export interface BaseFile {
-  id?: number;
+  id?: string;
   file_index?: string;
   name: string;
   path?: string;
@@ -11,4 +11,6 @@ export interface BaseFile {
   brightness?: number;
   created_at?: Date;
   updated_at?: Date;
+
+  local: boolean;
 }
