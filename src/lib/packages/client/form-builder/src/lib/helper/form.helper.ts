@@ -22,4 +22,8 @@ export class FORM {
   static hasHeadFields(obj: any): boolean {
     return 'headFields' in obj;
   }
+
+  static hasDropdowns(obj: any): boolean {
+    return 'dropdowns' in obj;
+  }
 }

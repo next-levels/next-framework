@@ -20,6 +20,7 @@ export class ViewImageFileComponent
     super(cdRef);
     this.baseUrl = this.environmentStorage.baseUrl;
   }
+
   override ngOnInit() {
     super.ngOnInit();
     if (this.listField?.options?.base_path) {
@@ -28,7 +29,7 @@ export class ViewImageFileComponent
       this.baseUrl = this.baseUrl + '/api/files/';
     }
     if (this._value) {
-      if (this._value.indexOf('https://') !== 0) {
+      if (this._value.indexOf('https://') === 0) {
         this._value = this.baseUrl + this._value;
       }
     } else {
