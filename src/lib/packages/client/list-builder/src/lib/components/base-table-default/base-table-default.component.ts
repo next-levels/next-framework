@@ -17,6 +17,7 @@ import {
   merge,
   Observable,
   Subject,
+  Subscription,
   takeUntil,
   takeWhile,
   tap,
@@ -47,6 +48,7 @@ import {
   CreateWizardComponent,
 } from '../../../../../dynamic-modals';
 import { hasListActions, haslistFields } from '../../helpers/list.helper';
+import { InstanceRegistryService } from '../../../../../angular-commons';
 
 @Component({
   template: '<ng-container></ng-container>',
@@ -77,6 +79,7 @@ export class BaseTableDefaultComponent
 
   public loading$: Observable<boolean>;
   public _unsubscribeAll: Subject<any> = new Subject<any>();
+  private subscription: Subscription;
 
   public searchInputControl: FormControl = new FormControl<string | null>(null);
   public statusFilterControl: FormControl = new FormControl<string>('');
@@ -116,7 +119,8 @@ export class BaseTableDefaultComponent
     public router: Router,
     public readonly _matDialog: MatDialog,
     private componentFactoryResolver: ComponentFactoryResolver,
-    public cdRef: ChangeDetectorRef
+    public cdRef: ChangeDetectorRef,
+    private registry: InstanceRegistryService
   ) {}
 
   ngOnInit() {
@@ -130,7 +134,14 @@ export class BaseTableDefaultComponent
     this.modelFacade = this.listController.getFacade();
     this.model = this.listController.getModelDefinition();
     this.modelReference = this.listController.getClassName();
-    this.modelFacade?.notification?.updated$?.subscribe((timestamp) => {});
+
+    this.registry
+      .retrieve(this.modelReference)
+      .notification.updated$.subscribe((updated) => {
+        console.log('updated', updated);
+      });
+
+    this.registry.retrieve(this.modelReference).notification.resetCount();
 
     const listFields =
       Reflect.getMetadata(
@@ -179,10 +190,12 @@ export class BaseTableDefaultComponent
       });
     }
 
-    this.modelFacade?.base.filtered$.subscribe((entries: unknown) => {
-      this.dataSource.data = entries as any[];
-      this.cdRef.detectChanges();
-    });
+    this.subscription = this.modelFacade?.base.filtered$.subscribe(
+      (entries: unknown) => {
+        this.dataSource.data = (entries as any[]).reverse();
+        this.cdRef.detectChanges();
+      }
+    );
 
     this.modelFacade?.base.pagination$.subscribe((paginationMeta) => {
       if (paginationMeta) {
@@ -569,6 +582,7 @@ export class BaseTableDefaultComponent
 
   ngOnDestroy(): void {
     this._unsubscribeAll.next(null);
+    this.subscription.unsubscribe();
     this._unsubscribeAll.complete();
   }
 }

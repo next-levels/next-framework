@@ -56,16 +56,23 @@ export class ViewRelationComponent extends BaseViewComponent implements OnInit {
       if (this.listField.options.map.includes('.')) {
         const fieldNameArray = this.listField.options.map.split('.');
 
-        console.log(fieldNameArray);
-        console.log(this.viewObject);
-        foreign_id = this.viewObject[fieldNameArray[0]][fieldNameArray[1]];
+        if (this.viewObject[fieldNameArray[0]]) {
+          foreign_id = this.viewObject[fieldNameArray[0]][fieldNameArray[1]];
+        }
       }
 
-      let settings = this.listController
-        .getModelDefinition()
-        .relations(this.fieldName);
+      let settings = null;
+      if (this.hasRelation(this.listController.getModelDefinition())) {
+        settings = this.listController
+          .getModelDefinition()
+          .relations(this.fieldName);
+      }
 
-      if (settings.action !== undefined && settings.selector !== undefined) {
+      if (
+        settings &&
+        settings.action !== undefined &&
+        settings.selector !== undefined
+      ) {
         this.store.dispatch(settings.action);
 
         this.store.pipe(select(settings.selector)).subscribe((data) => {
@@ -81,14 +88,16 @@ export class ViewRelationComponent extends BaseViewComponent implements OnInit {
       if (this.listField.options.model) {
         const model = META.getModelByName(this.listField.options.model);
         if (model) {
-          this.registry.retrieve(model).base.filtered$.subscribe((data) => {
-            if (!data || data.length === 0) return;
-            this._value = this.mapData(
-              settings.fields,
-              data.find((item: any) => item.id === foreign_id)
-            );
-            this.cdRef.detectChanges();
-          });
+          this.registry
+            .retrieve(this.listField.options.model)
+            .base.filtered$.subscribe((data) => {
+              if (!data || data.length === 0) return;
+              this._value = this.mapData(
+                settings.fields,
+                data.find((item: any) => item.id === foreign_id)
+              );
+              this.cdRef.detectChanges();
+            });
         }
       }
     }
@@ -163,5 +172,9 @@ export class ViewRelationComponent extends BaseViewComponent implements OnInit {
           .then((r) => r);
       }
     }
+  }
+
+  hasRelation(obj: any): boolean {
+    return 'relations' in obj;
   }
 }

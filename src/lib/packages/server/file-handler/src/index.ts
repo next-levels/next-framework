@@ -6,3 +6,7 @@ export * from './lib/dtos/file.dto';
 export * from './lib/entities/file.entity';
 export * from './lib/base-file.type';
 export * from './lib/interceptors/file-fields.interceptor';
+
+export * from './fastify/fastify-files.module';
+export * from './fastify/fastify-file-interceptor';
+export * from './fastify/fastify-files-interceptor';

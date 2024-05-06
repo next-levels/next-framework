@@ -87,6 +87,13 @@ export function GenericBaseCMSController<T extends Type<any>>(
           method: 'post',
           data: result.getValue(),
         });
+
+        console.log('events:' + name);
+        console.log('result.getValue():' + result.getValue());
+        event.emit('events:' + 'entity-stream', {
+          method: 'post',
+          data: result.getValue(),
+        });
       }
       return result;
     }

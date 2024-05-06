@@ -4,10 +4,11 @@
   "projectType": "library",
   "sourceRoot": "libs/form-builder/src",
   "prefix": "nxt-lvls",
+  "tags": [],
   "targets": {
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["coverage/libs/form-builder"],
+      "outputs": ["{workspaceRoot}/coverage/libs/form-builder"],
       "options": {
         "jestConfig": "libs/form-builder/jest.config.ts",
         "passWithNoTests": true
@@ -22,6 +23,5 @@
         ]
       }
     }
-  },
-  "tags": []
+  }
 }

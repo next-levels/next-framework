@@ -19,6 +19,7 @@ export function createNotificationService<T extends object>(modelUrl: string) {
 
     setEntity(entity: T) {}
   }
+
   return ModuleService;
 }
 
@@ -50,14 +51,21 @@ export function createNotificationFacade<T, S>(
   })
   class ModuleFacade extends NotificationFacade<T, S> {
     public override unReadCount$: Observable<number>;
+    public override updated$: Observable<Date>;
 
     constructor(public override store: Store<S>) {
       super(store, actions, selectors);
     }
+
     public override setEntity(entity: T) {
       this.store.dispatch(this.baseActions.setEntity({ payload: entity }));
     }
+
+    public override resetCount(entity: T) {
+      this.store.dispatch(this.baseActions.resetCount({ payload: entity }));
+    }
   }
+
   return new ModuleFacade(storeClass); // Create and return instance of ModuleFacade, not the class itself
 }
 

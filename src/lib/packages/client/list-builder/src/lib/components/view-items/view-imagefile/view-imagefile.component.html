@@ -13,5 +13,8 @@
       [svgIcon]="'heroicons_solid:eye'"
     ></mat-icon>
   </a>
-  <img src="{{ _value }}" style="max-width: 200px" alt="{{ _value }}" />
+  <img *ngIf="_value" src="{{ _value }}" style="max-width: 200px" alt="{{ _value }}"/>
+  <img *ngIf="!_value && listField?.options?.placeholder"
+       src="{{listField?.options?.placeholder}}"
+       style="max-width: 40px" alt=""/>
 </div>

@@ -4,10 +4,12 @@
   "projectType": "library",
   "sourceRoot": "src",
   "prefix": "next-framework",
+  "architect": {},
+  "tags": [],
   "targets": {
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["coverage/libs/dynamic-modals"],
+      "outputs": ["{workspaceRoot}/coverage/libs/dynamic-modals"],
       "options": {
         "jestConfig": "libs/libs/dynamic-modals/jest.config.ts",
         "passWithNoTests": true
@@ -22,8 +24,5 @@
         ]
       }
     }
-  },
-  "architect": {
-},
-  "tags": []
+  }
 }

@@ -5,7 +5,6 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -16,37 +15,41 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { FilesService } from './files.service';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { Result } from '../../../nest-tools/src';
+import { FrontendJwtAuthGuard, JwtAuthGuard } from '../../../nest-commons/src';
 import { diskStorage } from 'multer';
+import { UpdateFileDto } from '../lib/dtos/update-file.dto';
+import { FilesService } from '../lib/files.service';
 import {
   decodeBase64ToFile,
   editFileName,
   imageFileFilter,
-} from './file.helper';
-import { FileDto } from './dtos/file.dto';
-import { UpdateFileDto } from './dtos/update-file.dto';
-import { FileEntity } from './entities/file.entity';
-import { ThumbnailService } from './thumbnail.service';
-import { Response as ExpressResponse } from 'express';
-import { Result } from '../../../nest-tools/src';
-import { FrontendJwtAuthGuard, JwtAuthGuard } from '../../../nest-commons/src';
+} from '../lib/file.helper';
+import { FileDto } from '../lib/dtos/file.dto';
+import { FileEntity } from '../lib/entities/file.entity';
+import { FastifyFileInterceptor } from './fastify-file-interceptor';
+import { FastifyReply } from 'fastify';
+import { FastifyThumbnailService } from './fastify-thumbnail.service';
 
 @Controller('files')
 @ApiTags('Files')
-export class FilesController {
+export class FastifyFilesController {
   constructor(
     private readonly _filesService: FilesService,
-    private readonly _thumbnailService: ThumbnailService
+    private readonly _thumbnailService: FastifyThumbnailService
   ) {}
 
   @Get(':id')
   public async serveLocalFile(
     @Param('id') id: string,
-    @Res() res: ExpressResponse
+    @Res() reply: FastifyReply
   ): Promise<Result<void>> {
-    if (!id) return Result.ok();
-    return await this._filesService.serveFile(id, res);
+    const file = await this._filesService.findOne(id);
+    if (!file) {
+      reply.code(404).send('File not found');
+      return;
+    }
+    return await this._thumbnailService.serveFile(file, reply);
   }
 
   @Get(':id/thumb')
@@ -55,12 +58,12 @@ export class FilesController {
     @Query('width') width: string,
     @Query('height') height: string,
     @Query('type') type: string,
-    @Res() res: ExpressResponse
+    @Res() reply: FastifyReply
   ): Promise<Result<void>> {
     const file = await this._filesService.findOne(id);
     return await this._thumbnailService.serveThumbnail(
       file,
-      res,
+      reply,
       width,
       height,
       type
@@ -70,19 +73,19 @@ export class FilesController {
   @Get(':id/download')
   async downloadFile(
     @Param('id') id: string,
-    @Res() res: ExpressResponse
+    @Res() reply: FastifyReply
   ): Promise<Result<void>> {
     const file = await this._filesService.findOne(id);
     if (!file) {
-      res.status(404).send('File not found');
+      reply.code(404).send('File not found');
       return undefined;
     }
-    return await this._thumbnailService.downloadFile(file, res);
+    return await this._thumbnailService.downloadFile(file, reply);
   }
 
   @Post('upload/:attachmentType/:attachmentId/:fieldName')
   @UseInterceptors(
-    FileInterceptor('file', {
+    FastifyFileInterceptor('file', {
       storage: diskStorage({
         destination: './uploads/products',
         filename: editFileName,
@@ -91,7 +94,7 @@ export class FilesController {
     })
   )
   async uploadFile(
-    @UploadedFile() file,
+    @UploadedFile() file: File,
     @Param('attachmentType') attachmentType: string,
     @Param('attachmentId') attachmentId: number,
     @Param('fieldName') fieldName: string,
@@ -122,7 +125,7 @@ export class FilesController {
   @UseGuards(JwtAuthGuard)
   @Post('upload')
   @UseInterceptors(
-    FileInterceptor('image', {
+    FastifyFileInterceptor('image', {
       storage: diskStorage({
         destination: './uploads/files',
         filename: editFileName,
@@ -140,7 +143,7 @@ export class FilesController {
   @UseGuards(JwtAuthGuard)
   @Post('upload/file')
   @UseInterceptors(
-    FileInterceptor('file', {
+    FastifyFileInterceptor('file', {
       storage: diskStorage({
         destination: './uploads/files',
         filename: editFileName,
@@ -156,7 +159,7 @@ export class FilesController {
 
   @Post('upload/public')
   @UseInterceptors(
-    FileInterceptor('file', {
+    FastifyFileInterceptor('file', {
       storage: diskStorage({
         destination: './uploads/user',
         filename: editFileName,
@@ -186,7 +189,7 @@ export class FilesController {
   @UseGuards(FrontendJwtAuthGuard)
   @Post('upload/frontend/:fieldName')
   @UseInterceptors(
-    FileInterceptor('file', {
+    FastifyFileInterceptor('file', {
       storage: diskStorage({
         destination: './uploads/frontenduser',
         filename: editFileName,
@@ -230,7 +233,7 @@ export class FilesController {
   @UseGuards(FrontendJwtAuthGuard)
   @Post('upload/frontend')
   @UseInterceptors(
-    FileInterceptor('image', {
+    FastifyFileInterceptor('image', {
       storage: diskStorage({
         destination: './uploads/user',
         filename: editFileName,
@@ -253,9 +256,7 @@ export class FilesController {
 
   @UseGuards(JwtAuthGuard)
   @Delete()
-  public async delete(
-    @Query('id', ParseIntPipe) id: string
-  ): Promise<Result<unknown>> {
+  public async delete(@Query('id') id: string): Promise<Result<unknown>> {
     const file = await this._filesService.findOne(id);
     return this._filesService.remove(file);
   }
