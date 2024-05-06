@@ -4,10 +4,11 @@
   "projectType": "library",
   "sourceRoot": "src",
   "prefix": "vosdellen",
+  "tags": [],
   "targets": {
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["coverage/libs/list-builder"],
+      "outputs": ["{workspaceRoot}/coverage/libs/list-builder"],
       "options": {
         "jestConfig": "libs/list-builder/jest.config.ts",
         "passWithNoTests": true
@@ -22,6 +23,5 @@
         ]
       }
     }
-  },
-  "tags": []
+  }
 }
