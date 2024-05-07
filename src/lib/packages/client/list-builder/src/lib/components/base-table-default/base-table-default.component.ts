@@ -553,7 +553,9 @@ export class BaseTableDefaultComponent
 
   ngOnDestroy(): void {
     this._unsubscribeAll.next(null);
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
     this._unsubscribeAll.complete();
   }
 
@@ -574,7 +576,6 @@ export class BaseTableDefaultComponent
           };
 
           if (this.modelFacade) {
-            console.log(this.filterOptions);
             this.modelFacade.base.loadFiltered(this.filterOptions);
           }
         })

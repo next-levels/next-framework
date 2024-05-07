@@ -1,12 +1,20 @@
 import { Component } from '@angular/core';
 
 import { BaseTableDefaultComponent } from '../base-table-default/base-table-default.component';
-import { MatTreeFlatDataSource, MatTreeFlattener } from "@angular/material/tree";
-import { FlatTreeControl } from "@angular/cdk/tree";
-import { SelectionModel } from "@angular/cdk/collections";
-import { MatCheckboxChange } from "@angular/material/checkbox";
-import { CdkDragDrop } from "@angular/cdk/drag-drop";
-import {debounceTime, Observable, of as observableOf, takeUntil, tap} from "rxjs";
+import {
+  MatTreeFlatDataSource,
+  MatTreeFlattener,
+} from '@angular/material/tree';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { SelectionModel } from '@angular/cdk/collections';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import {
+  debounceTime,
+  Observable,
+  of as observableOf,
+  takeUntil,
+  tap,
+} from 'rxjs';
 
 export class CategoryNode {
   children: CategoryNode[];
@@ -32,7 +40,6 @@ export class CategoryFlatNode {
   styleUrls: ['../base-table-default/base-table.scss'],
 })
 export class TableTreeComponent extends BaseTableDefaultComponent {
-
   treeControl: FlatTreeControl<CategoryFlatNode>;
   treeFlattener: MatTreeFlattener<CategoryNode, CategoryFlatNode>;
   dataSourceTree: MatTreeFlatDataSource<CategoryNode, CategoryFlatNode>;
@@ -54,22 +61,26 @@ export class TableTreeComponent extends BaseTableDefaultComponent {
 
     this.treeFlattener = new MatTreeFlattener(
       this.transformer,
-      node => node.level,
-      node => node.expandable,
-      node => this.findChildren(node.id)
+      (node) => node.level,
+      (node) => node.expandable,
+      (node) => this.findChildren(node.id)
     );
 
-    this.treeControl = new FlatTreeControl<CategoryFlatNode>(node => node.level, node => node.expandable);
-    this.dataSourceTree = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-
+    this.treeControl = new FlatTreeControl<CategoryFlatNode>(
+      (node) => node.level,
+      (node) => node.expandable
+    );
+    this.dataSourceTree = new MatTreeFlatDataSource(
+      this.treeControl,
+      this.treeFlattener
+    );
 
     this.modelFacade?.base.filtered$.subscribe((categories: unknown) => {
       this.dataSourceTree.data = (categories as any).map((category) => ({
         ...category,
-        id: category.api_id // Map api_id to id
+        id: category.api_id, // Map api_id to id
       })) as CategoryNode[];
 
-      console.log(this.dataSourceTree.data)
       if (this.dataSourceTree.data.length > 0) {
         this.dataLoaded = true;
       }
@@ -77,7 +88,6 @@ export class TableTreeComponent extends BaseTableDefaultComponent {
     });
 
     if (this.modelFacade) {
-      console.log(this.filterOptions)
       this.filterOptions = { ...this.filterOptions, limit: this.itemsPerPage };
       this.modelFacade.base.loadFiltered(this.filterOptions);
       this.loading$ = this.modelFacade.base.loaded$;
@@ -105,17 +115,16 @@ export class TableTreeComponent extends BaseTableDefaultComponent {
       node.type,
       node.id
     );
-  }
+  };
 
-  private _getLevel = (node: CategoryFlatNode) => node.level;
-  private _isExpandable = (node: CategoryFlatNode) => node.expandable;
-  private _getChildren = (node: CategoryNode): Observable<CategoryNode[]> => observableOf(node.children);
   hasChild = (_: number, _nodeData: CategoryFlatNode) => _nodeData.expandable;
+
   findChildren(parentId: string): CategoryNode[] {
     // Assuming `categories` is your array of categories
-    return this.dataSourceTree.data.filter(node => node.parent_api_id === parentId);
+    return this.dataSourceTree.data.filter(
+      (node) => node.parent_api_id === parentId
+    );
   }
-
 
   visibleNodes(): CategoryNode[] {
     const result: CategoryNode[] = [];
@@ -123,11 +132,13 @@ export class TableTreeComponent extends BaseTableDefaultComponent {
     const addExpandedChildren = (node: CategoryNode, expanded: string[]) => {
       result.push(node);
       if (expanded.includes(node.id)) {
-        node.children.forEach(child => addExpandedChildren(child, expanded));
+        node.children.forEach((child) => addExpandedChildren(child, expanded));
       }
     };
 
-    this.dataSourceTree.data.forEach(node => addExpandedChildren(node, this.expansionModel.selected));
+    this.dataSourceTree.data.forEach((node) =>
+      addExpandedChildren(node, this.expansionModel.selected)
+    );
     return result;
   }
 
@@ -137,7 +148,10 @@ export class TableTreeComponent extends BaseTableDefaultComponent {
     const visibleNodes = this.visibleNodes();
     const changedData = JSON.parse(JSON.stringify(this.dataSourceTree.data)); // Deep clone
 
-    const findNodeSiblings = (arr: CategoryNode[], id: string): CategoryNode[] | null => {
+    const findNodeSiblings = (
+      arr: CategoryNode[],
+      id: string
+    ): CategoryNode[] | null => {
       for (const item of arr) {
         if (item.id === id) return arr;
         if (item.children) {
@@ -152,16 +166,18 @@ export class TableTreeComponent extends BaseTableDefaultComponent {
     const newSiblings = findNodeSiblings(changedData, nodeAtDest.id);
     if (!newSiblings) return;
 
-    const insertIndex = newSiblings.findIndex(s => s.id === nodeAtDest.id);
+    const insertIndex = newSiblings.findIndex((s) => s.id === nodeAtDest.id);
     const node = event.item.data;
     const siblings = findNodeSiblings(changedData, node.id);
     if (!siblings) return;
 
-    const siblingIndex = siblings.findIndex(n => n.id === node.id);
+    const siblingIndex = siblings.findIndex((n) => n.id === node.id);
     const nodeToInsert: CategoryNode = siblings.splice(siblingIndex, 1)[0];
     if (nodeAtDest.id === nodeToInsert.id) return;
 
-    const nodeAtDestFlatNode = this.treeControl.dataNodes.find(n => nodeAtDest.id === n.id);
+    const nodeAtDestFlatNode = this.treeControl.dataNodes.find(
+      (n) => nodeAtDest.id === n.id
+    );
     if (this.validateDrop && nodeAtDestFlatNode.level !== node.level) {
       alert('Items can only be moved within the same level.');
       return;
@@ -182,7 +198,10 @@ export class TableTreeComponent extends BaseTableDefaultComponent {
   dragHover(node: CategoryFlatNode) {
     if (this.dragging) {
       clearTimeout(this.expandTimeout);
-      this.expandTimeout = setTimeout(() => this.treeControl.expand(node), this.expandDelay);
+      this.expandTimeout = setTimeout(
+        () => this.treeControl.expand(node),
+        this.expandDelay
+      );
     }
   }
 
@@ -194,11 +213,18 @@ export class TableTreeComponent extends BaseTableDefaultComponent {
 
   rebuildTreeForData(data: any) {
     this.dataSourceTree.data = data;
-    this.expansionModel.selected.forEach(id => {
-      const node = this.treeControl.dataNodes.find(n => n.id === id);
+    this.expansionModel.selected.forEach((id) => {
+      const node = this.treeControl.dataNodes.find((n) => n.id === id);
       if (node) this.treeControl.expand(node);
     });
   }
+
+  private _getLevel = (node: CategoryFlatNode) => node.level;
+
+  private _isExpandable = (node: CategoryFlatNode) => node.expandable;
+
+  private _getChildren = (node: CategoryNode): Observable<CategoryNode[]> =>
+    observableOf(node.children);
 
   private getParentNode(node: CategoryFlatNode): CategoryFlatNode | null {
     const currentLevel = node.level;

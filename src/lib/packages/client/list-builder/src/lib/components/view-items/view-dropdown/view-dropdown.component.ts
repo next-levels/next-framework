@@ -11,12 +11,11 @@ export class ViewDropdownComponent extends BaseViewComponent implements OnInit {
   override ngOnInit() {
     this._value = this.viewObject[this.fieldName];
 
-    const formController = META.getFormControllerByName(
-      this.listController.getClassName()
-    ).constructor;
+    const formController =
+      META.getFormControllerByName(this.listController.getClassName()) ??
+      this.listController.getModel();
 
-    if (FORM.hasDropdowns(formController)) {
-      // @ts-ignore
+    if (formController && FORM.hasDropdowns(formController)) {
       let mapValues = formController.dropdowns(this.fieldName);
       this._value = mapValues.find((obj) => obj.value === this._value)?.label;
     }

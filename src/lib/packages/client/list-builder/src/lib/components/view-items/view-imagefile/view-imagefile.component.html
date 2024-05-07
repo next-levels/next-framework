@@ -1,20 +1,21 @@
 <div
-  class="view-file-wrapper"
   [ngClass]="{ 'dark-transparent': listField?.options?.image_transparent }"
+  class="view-file-wrapper"
 >
   <a
+    *ngIf="_value"
+    [href]="_value"
     class="cursor-pointer view-file-wrapper__view-button"
     target="_blank"
-    [href]="_value"
-    *ngIf="_value"
   >
     <mat-icon
-      class="icon-size-4 view-file-wrapper__view-icon"
       [svgIcon]="'heroicons_solid:eye'"
+      class="icon-size-4 view-file-wrapper__view-icon"
     ></mat-icon>
   </a>
-  <img *ngIf="_value" src="{{ _value }}" style="max-width: 200px" alt="{{ _value }}"/>
+  <img *ngIf="_value" alt="{{ _value }}" src="{{ _value }}" style="max-width: 100px;
+     "/>
   <img *ngIf="!_value && listField?.options?.placeholder"
-       src="{{listField?.options?.placeholder}}"
-       style="max-width: 40px" alt=""/>
+       alt=""
+       src="{{listField?.options?.placeholder}}" style="max-width: 40px"/>
 </div>

@@ -1,5 +1,6 @@
 import {
-  AfterViewInit, ChangeDetectorRef,
+  AfterViewInit,
+  ChangeDetectorRef,
   Component,
   Input,
   OnDestroy,
@@ -28,7 +29,7 @@ import {
   PaginationMeta,
   ScopeFilter,
 } from '@next-levels/types';
-import {haslistFields} from "../../helpers/list.helper";
+import { haslistFields } from '../../helpers/list.helper';
 
 @Component({
   selector: 'table-submodule',
@@ -47,16 +48,12 @@ export class TableSubmoduleComponent
   @ViewChild(MatSort) sort: MatSort;
 
   public loading$: Observable<boolean>;
-  private _unsubscribeAll: Subject<any> = new Subject<any>();
-
   public searchInputControl: FormControl = new FormControl<string | null>(null);
   public displayedColumns: string[] = [];
   public fields: string[] = [];
   public dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
-
   modelFacade: BaseFacadeType;
   model: any;
-
   public pagination: PaginationMeta = {
     currentPage: 1,
     itemsPerPage: 5,
@@ -64,7 +61,6 @@ export class TableSubmoduleComponent
     totalItems: 0,
     sortBy: [['id', 'ASC' as SortDirection]],
   };
-
   public filterOptions: FilterOptions = {
     page: this.pagination.currentPage,
     limit: this.pagination.itemsPerPage,
@@ -73,6 +69,7 @@ export class TableSubmoduleComponent
     }:${this.pagination.sortBy[0][1].toUpperCase()}`,
     search: '',
   };
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
     public translateService: TranslateService,
@@ -82,7 +79,6 @@ export class TableSubmoduleComponent
   ) {}
 
   ngOnInit() {
-    console.log('this.listController init', this.listController)
     this.router.queryParams.subscribe((params) => {
       if (params['search']) {
         this.filterOptions.search = params['search'];
@@ -115,14 +111,12 @@ export class TableSubmoduleComponent
         .map((item: any) => item.field);
     }
 
-
     if (haslistFields(this.model)) {
-      this.fields = this.model.listFields().filter(field =>
-        this.fields.includes(field)
-      );
+      this.fields = this.model
+        .listFields()
+        .filter((field) => this.fields.includes(field));
     }
 
-    console.log('this.fields', this.fields)
     if (this.fields) {
       this.displayedColumns = [...this.fields];
       this.displayedColumns.push('actions');

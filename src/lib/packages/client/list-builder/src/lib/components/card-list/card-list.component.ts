@@ -1,37 +1,43 @@
 import {
-  AfterViewInit, ChangeDetectorRef,
+  AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ComponentFactoryResolver,
   EventEmitter,
   Input,
   OnDestroy,
   OnInit,
-  Output, SimpleChanges,
-  ViewChild
+  Output,
+  SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 
-import {ListController} from "../../controllers/ListController";
-import {MatPaginator} from "@angular/material/paginator";
-import {MatSort, SortDirection} from "@angular/material/sort";
-import {debounceTime, merge, Observable, Subject, takeUntil, tap} from "rxjs";
-import {FormControl} from "@angular/forms";
-import {MatTableDataSource} from "@angular/material/table";
-import {BaseFacadeType} from "../../../../../generic-store";
+import { ListController } from '../../controllers/ListController';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort, SortDirection } from '@angular/material/sort';
+import { debounceTime, merge, Observable, Subject, takeUntil, tap } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { MatTableDataSource } from '@angular/material/table';
+import { BaseFacadeType } from '../../../../../generic-store';
 import {
-  BUILDERFIELD_ALL_PREFIX, EXPORT_PREFIX,
+  BUILDERFIELD_ALL_PREFIX,
+  EXPORT_PREFIX,
   EXPORT_PREFIX_ALL,
   FilterOptions,
   LISTFIELD_ALL_PREFIX,
   META,
-  PaginationMeta
-} from "@next-levels/types";
-import {SelectionModel} from "@angular/cdk/collections";
-import {TranslateService} from "@ngx-translate/core";
-import {ActivatedRoute, Router} from "@angular/router";
-import {MatDialog} from "@angular/material/dialog";
-import {BatchWizardComponent, CreateWizardComponent} from "../../../../../dynamic-modals";
-import Swal from "sweetalert2";
-import {ViewModalComponent} from "../view-modal/view-modal.component";
+  PaginationMeta,
+} from '@next-levels/types';
+import { SelectionModel } from '@angular/cdk/collections';
+import { TranslateService } from '@ngx-translate/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import {
+  BatchWizardComponent,
+  CreateWizardComponent,
+} from '../../../../../dynamic-modals';
+import Swal from 'sweetalert2';
+import { ViewModalComponent } from '../view-modal/view-modal.component';
 
 @Component({
   selector: 'card-list',
@@ -58,18 +64,14 @@ export class CardListComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
 
   public loading$: Observable<boolean>;
-  private _unsubscribeAll: Subject<any> = new Subject<any>();
-
   public searchInputControl: FormControl = new FormControl<string | null>(null);
   public statusFilterControl: FormControl = new FormControl<string>('');
   public displayedColumns: string[] = [];
   public fields: string[] = [];
   public dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
-
   modelFacade: BaseFacadeType;
   model: any;
   modelReference: string;
-
   public pagination: PaginationMeta = {
     currentPage: 1,
     itemsPerPage: 20,
@@ -77,7 +79,6 @@ export class CardListComponent implements OnInit, OnDestroy, AfterViewInit {
     totalItems: 0,
     sortBy: [['id', 'DESC' as SortDirection]],
   };
-
   public filterOptions: FilterOptions = {
     page: this.pagination.currentPage,
     limit: this.pagination.itemsPerPage,
@@ -86,8 +87,8 @@ export class CardListComponent implements OnInit, OnDestroy, AfterViewInit {
     }:${this.pagination.sortBy[0][1].toUpperCase()}`,
     search: '',
   };
-
   public selection = new SelectionModel<Element>(true, []);
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
     public translateService: TranslateService,
@@ -96,8 +97,7 @@ export class CardListComponent implements OnInit, OnDestroy, AfterViewInit {
     public readonly _matDialog: MatDialog,
     private componentFactoryResolver: ComponentFactoryResolver,
     private cdRef: ChangeDetectorRef
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.activeRoute.queryParams.subscribe((params) => {
@@ -109,8 +109,7 @@ export class CardListComponent implements OnInit, OnDestroy, AfterViewInit {
     this.modelFacade = this.listController.getFacade();
     this.model = this.listController.getModelDefinition();
     this.modelReference = this.listController.getClassName();
-    this.modelFacade?.notification?.updated$?.subscribe((timestamp) => {
-    });
+    this.modelFacade?.notification?.updated$?.subscribe((timestamp) => {});
 
     const listFields =
       Reflect.getMetadata(
@@ -170,7 +169,7 @@ export class CardListComponent implements OnInit, OnDestroy, AfterViewInit {
         takeUntil(this._unsubscribeAll),
         debounceTime(300),
         tap((search: string) => {
-          this.filterOptions = {...this.filterOptions, search};
+          this.filterOptions = { ...this.filterOptions, search };
           if (this.modelFacade) {
             this.modelFacade.base.loadFiltered(this.filterOptions);
           }
@@ -184,7 +183,7 @@ export class CardListComponent implements OnInit, OnDestroy, AfterViewInit {
       if (this.modelFacade?.selectors[changes['selector'].currentValue]) {
         const observable = this.modelFacade.selectors[
           changes['selector'].currentValue
-          ] as unknown as Observable<any>;
+        ] as unknown as Observable<any>;
         observable.subscribe((entries: unknown) => {
           this.dataSource.data = (entries as any[]).sort((a, b) => {
             return b.id - a.id;
@@ -339,7 +338,7 @@ export class CardListComponent implements OnInit, OnDestroy, AfterViewInit {
           this.listController.getModelDefinition(),
           field
         ) || {};
-      return {field, options};
+      return { field, options };
     });
 
     //filter out fields that have options.hidden set to true and return only the field names
@@ -457,7 +456,7 @@ export class CardListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   setQuery(filterOptions: any[]) {
     let value, arr;
-    const filters: FilterOptions = {...this.filterOptions};
+    const filters: FilterOptions = { ...this.filterOptions };
     for (const filterOption of filterOptions) {
       value = filterOption.expression ? filterOption.expression + ':' : '';
       value += filterOption.operation + ':' + filterOption.value;
@@ -473,8 +472,7 @@ export class CardListComponent implements OnInit, OnDestroy, AfterViewInit {
     this.modelFacade?.base.loadFiltered(filters);
   }
 
-  public openQueryRowsModal() {
-  }
+  public openQueryRowsModal() {}
 
   public addSearchQueryCall(event: any) {
     this.saveSearchQuery.emit(event);
@@ -503,7 +501,6 @@ export class CardListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   batchEdit() {
-    console.log('');
     this._matDialog.open(BatchWizardComponent, {
       minWidth: '50%',
       autoFocus: false,
@@ -547,6 +544,5 @@ export class CardListComponent implements OnInit, OnDestroy, AfterViewInit {
     this.router.navigate([this.router.url + '/settings']);
   }
 
-  getName(row: any, field: string) {
-  }
+  getName(row: any, field: string) {}
 }

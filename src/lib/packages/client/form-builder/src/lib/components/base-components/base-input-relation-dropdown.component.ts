@@ -21,15 +21,10 @@ export class BaseInputRelationDropdownComponent
   implements OnInit
 {
   data: any[] = [];
-
-  protected _value: string;
   settings: ModelRelationOptions;
-
   options: any[] = [];
   selected: string | number;
-
   facade: any;
-
   public pagination: PaginationMeta = {
     currentPage: 1,
     itemsPerPage: 20,
@@ -37,7 +32,6 @@ export class BaseInputRelationDropdownComponent
     totalItems: 0,
     sortBy: [['id', 'DESC' as SortDirection]],
   };
-
   public filterOptions: FilterOptions = {
     page: this.pagination.currentPage,
     limit: this.pagination.itemsPerPage,
@@ -46,6 +40,7 @@ export class BaseInputRelationDropdownComponent
     }:${this.pagination.sortBy[0][1].toUpperCase()}`,
     search: '',
   };
+  protected _value: string;
 
   constructor(
     public store: Store<any>,
@@ -109,13 +104,24 @@ export class BaseInputRelationDropdownComponent
         if (!this.initFilter()) this.mapData(data);
       });
     } else {
-      const model = this.settings.model;
-      if (this.registry.retrieve(model)) {
-        this.facade = this.registry.retrieve(model);
+      if (this.formField?.options?.model) {
+        this.facade = this.registry.retrieve(this.formField?.options?.model);
+      } else {
+        const model = this.formController?.getModelDefinition();
+        const propertyType = Reflect.getMetadata(
+          'design:type',
+          model,
+          this.formField?.name
+        );
+        this.facade = this.registry.retrieve(propertyType);
+      }
 
-        if (this.settings.scope) {
-          this.filterOptions['filter.' + this.settings.scope.key] =
-            this.settings.scope.operation + ':' + this.settings.scope.value;
+      if (this.facade) {
+        if (this.formField?.options?.scope) {
+          this.filterOptions['filter.' + this.formField?.options?.scope.key] =
+            this.formField?.options?.scope.operation +
+            ':' +
+            this.formField?.options?.scope.value;
         }
 
         this.facade.base.filtered$.subscribe((data) => {
@@ -130,6 +136,34 @@ export class BaseInputRelationDropdownComponent
 
   loadOptions() {
     this.facade.base.loadFiltered(this.filterOptions);
+  }
+
+  mapData(data: any) {
+    this.options = data.map((selectedFieldArray) => {
+      const fieldValues = [];
+
+      this.formField?.options?.fields.forEach((field) => {
+        let value = selectedFieldArray;
+        field.split('.').forEach((key) => {
+          value = value ? value[key] : null;
+        });
+        if (value !== null) fieldValues.push(value);
+      });
+
+      return {
+        value: selectedFieldArray['id'],
+        label: fieldValues.join(' | '),
+      };
+    });
+
+    if (this.formField.name) {
+      const value = this.formController.getValue(this.formField.name);
+      const index = this.options.findIndex((a) => a.value == value);
+      if (index > -1) {
+        this.selected = this.options[index].value;
+      }
+      this.cdRef.markForCheck();
+    }
   }
 
   private initFilter() {
@@ -164,33 +198,5 @@ export class BaseInputRelationDropdownComponent
     value: T[keyof T]
   ): T[] {
     return array.filter((item) => item[propName] === value);
-  }
-
-  mapData(data: any) {
-    this.options = data.map((selectedFieldArray) => {
-      const fieldValues = [];
-
-      this.settings.fields.forEach((field) => {
-        let value = selectedFieldArray;
-        field.split('.').forEach((key) => {
-          value = value ? value[key] : null;
-        });
-        if (value !== null) fieldValues.push(value);
-      });
-
-      return {
-        value: selectedFieldArray['id'],
-        label: fieldValues.join(' | '),
-      };
-    });
-
-    if (this.formField.name) {
-      const value = this.formController.getValue(this.formField.name);
-      const index = this.options.findIndex((a) => a.value == value);
-      if (index > -1) {
-        this.selected = this.options[index].value;
-      }
-      this.cdRef.markForCheck();
-    }
   }
 }

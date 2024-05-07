@@ -113,6 +113,7 @@ export class FuseAngularFormBuilderModule {
           CODE: InputCodeeditorComponent,
           JSON: InputJsoneditorComponent,
           RESULT: InputNumberComponent,
+          STATE: InputDropdownComponent,
           LISTSELECTOR: ListSelectorComponent,
         }).providers,
       ],

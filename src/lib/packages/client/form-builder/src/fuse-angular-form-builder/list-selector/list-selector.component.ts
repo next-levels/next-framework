@@ -48,39 +48,62 @@ export class ListSelectorComponent implements OnInit, AfterViewInit {
           TableDefaultComponent
         );
       const componentRef = this.container.createComponent(componentFactory);
-
       const tableSubmoduleComponentInstance =
         componentRef.instance as TableDefaultComponent;
 
-      // const rootModelName = META.getNameByModel(new model());
-      const model = META.getModelByName(this.formField.options.model);
-      const viewController = META.getListControllerByName(
-        this.formField.options.view
-      );
-
-      tableSubmoduleComponentInstance.listController = new ListController(
+      const model = this.formController.getModelDefinition();
+      const propertyType = Reflect.getMetadata(
+        'design:type',
         model,
-        this.registry.retrieve(this.formField.options.model),
-        model
+        this.formField?.name
       );
-      tableSubmoduleComponentInstance.childTable = true;
-      tableSubmoduleComponentInstance.viewController = viewController;
 
-      if (this.formField.options.keySelf && this.formController?.getModel()) {
-        tableSubmoduleComponentInstance.listController.setScope(
-          this.formField.options.key,
-          '$eq',
-          this.formController?.getModel()[this.formField.options.keySelf]
+      let viewController = null;
+      let targetModel = null;
+
+      if (this.formField.options.model) {
+        let tempModel = this.formField.options.model;
+        targetModel = new tempModel();
+      } else {
+        targetModel = propertyType;
+      }
+
+      if (!this.formField.options.view) {
+        viewController = META.getListControllerByName(
+          META.getNameByModel(targetModel)
         );
       } else {
-        tableSubmoduleComponentInstance.listController.setScope(
-          this.formField.options.key,
-          '$eq',
-          Number(this.route.snapshot.paramMap.get('id'))
+        viewController = META.getListControllerByName(
+          this.formField.options.view
         );
       }
 
-      this.cdRef.detectChanges();
+      tableSubmoduleComponentInstance.listController = new ListController(
+        targetModel,
+        this.registry.retrieve(targetModel.constructor),
+        targetModel
+      );
+
+      if (viewController) {
+        tableSubmoduleComponentInstance.childTable = true;
+        tableSubmoduleComponentInstance.viewController = viewController;
+
+        if (this.formField.options.keySelf && this.formController?.getModel()) {
+          tableSubmoduleComponentInstance.listController.setScope(
+            this.formField.options.key,
+            '$eq',
+            this.formController?.getModel()[this.formField.options.keySelf]
+          );
+        } else {
+          tableSubmoduleComponentInstance.listController.setScope(
+            this.formField.options.key,
+            '$eq',
+            Number(this.route.snapshot.paramMap.get('id'))
+          );
+        }
+
+        this.cdRef.detectChanges();
+      }
     }
   }
 }

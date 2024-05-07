@@ -1,7 +1,7 @@
 <div
+  (click)="openRelation()"
   *ngIf="!detailView"
   class="flex items-center cursor-pointer justify-center py-1 px-3 mr-3 rounded-full leading-normal !hover:text-white !text-white bg-primary ng-tns-c309-40 ng-star-inserted"
-  (click)="openRelation()"
 >
   <span class="text-sm font-medium whitespace-nowrap " style="-webkit-text-fill-color: white !important;">
     {{ _value }}
@@ -9,7 +9,7 @@
 </div>
 
 <div *ngIf="detailView">
-  <mat-expansion-panel class="expansion-panel">
+  <mat-expansion-panel class="expansion-panel bg-transparent">
     <mat-expansion-panel-header>
       <mat-panel-title>
         <div

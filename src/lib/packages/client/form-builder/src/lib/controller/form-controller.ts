@@ -8,13 +8,12 @@ import {
 } from '@next-levels/types';
 
 export class FormController {
+  public formOptions: any = { small: false };
   protected model: any;
   protected modelDefinition: any = null;
   protected form: UntypedFormGroup;
   protected store: Store<any>;
   protected facade: any;
-  public formOptions: any = { small: false };
-
   private beforeSaveFunction: (param: any) => any = null;
 
   constructor(
@@ -37,6 +36,7 @@ export class FormController {
     if (formOptions) {
       this.formOptions = formOptions;
     }
+
     this.form = new UntypedFormGroup({}, null, null);
   }
 
@@ -75,13 +75,13 @@ export class FormController {
   }
 
   update(formValues: any = null): void {
-     if (this.form.valid) {
+    if (this.form.valid) {
       this.facade.base.update(formValues);
-    }else {
-       this.form.updateValueAndValidity();
-       this.form.markAllAsTouched();
-       this.getForm().markAsPristine();
-     }
+    } else {
+      this.form.updateValueAndValidity();
+      this.form.markAllAsTouched();
+      this.getForm().markAsPristine();
+    }
   }
 
   async create(scope: any[] = null) {
