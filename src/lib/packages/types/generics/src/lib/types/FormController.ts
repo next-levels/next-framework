@@ -1,20 +1,21 @@
 import { DropdownOptions } from './options/dropdown-options';
 import { ModelRelationOptions } from './options/relation-options';
 import { ActionType } from './ActionType';
-import { Fields, Groups, Tabs } from '@next-levels/types';
+import { Fields, Grids, Groups, Tabs } from '@next-levels/types';
 
 export class FormController<T> {
   $createFields: Fields<T> | Groups<T> | Tabs<T> = [];
   $detailFields: Fields<T> | Groups<T> | Tabs<T> = [];
   $detailActions: Array<ActionType>;
+  $headFields: Fields<T> | Grids<T> = [];
 
-  $headFields: Fields<T> = [];
+  constructor() {}
 
   createFields(): Fields<T> | Groups<T> | Tabs<T> {
     return this.$createFields;
   }
 
-  headFields(): Fields<T> {
+  headFields(): Fields<T> | Grids<T> {
     return this.$headFields;
   }
 
@@ -39,6 +40,4 @@ export class FormController<T> {
         return { store: '', fields: [] };
     }
   }
-
-  constructor() {}
 }

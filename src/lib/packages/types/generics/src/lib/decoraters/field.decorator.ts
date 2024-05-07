@@ -10,6 +10,13 @@ export function Field(o: BuilderOptions) {
       Reflect.getMetadata(BUILDERFIELD_ALL_PREFIX, target) || [];
     variables.push(propertyKey);
     Reflect.defineMetadata(BUILDERFIELD_ALL_PREFIX, variables, target);
+    Reflect.defineMetadata(
+      'design:type',
+      Reflect.getMetadata('design:type', target, propertyKey),
+      target.constructor,
+      propertyKey
+    );
+
     if (o !== undefined && o !== null) {
       Reflect.defineMetadata(BUILDERFIELD_PREFIX, o, target, propertyKey);
     }

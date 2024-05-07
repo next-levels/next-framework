@@ -66,7 +66,6 @@ export function GenericBaseCMSServiceMongo<T extends Document>(
           ...doc.toObject({ virtuals: true, versionKey: false }),
         };
       });
-      console.log(data);
 
       const response = {
         data: data,
@@ -83,20 +82,6 @@ export function GenericBaseCMSServiceMongo<T extends Document>(
       };
 
       return Result.ok(response);
-    }
-
-    private transformQueryFilter(queryFilter) {
-      const transformedFilter = { ...queryFilter };
-      Object.keys(transformedFilter).forEach((key) => {
-        if (
-          typeof transformedFilter[key] === 'string' &&
-          transformedFilter[key].startsWith('$eq:')
-        ) {
-          transformedFilter[key] = transformedFilter[key].substring(4); // Remove the first 4 characters ('$eq:')
-        }
-      });
-
-      return transformedFilter;
     }
 
     async findOne(key: string): Promise<Result<any | null>> {
@@ -119,6 +104,20 @@ export function GenericBaseCMSServiceMongo<T extends Document>(
       const createdEntity = new this.model(entity);
       await createdEntity.save();
       return createdEntity;
+    }
+
+    private transformQueryFilter(queryFilter) {
+      const transformedFilter = { ...queryFilter };
+      Object.keys(transformedFilter).forEach((key) => {
+        if (
+          typeof transformedFilter[key] === 'string' &&
+          transformedFilter[key].startsWith('$eq:')
+        ) {
+          transformedFilter[key] = transformedFilter[key].substring(4); // Remove the first 4 characters ('$eq:')
+        }
+      });
+
+      return transformedFilter;
     }
   }
 

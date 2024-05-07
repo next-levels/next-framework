@@ -1,13 +1,22 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChanges,} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {FormController} from '../../controller/form-controller';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { FormController } from '../../controller/form-controller';
 import {
   BUILDERFIELD_PREFIX,
-  decorator_models_key, FormOptions,
+  decorator_models_key,
+  FormOptions,
   VISIBILITY_PREFIX,
-  VISIBILITY_PREFIX_ALL
+  VISIBILITY_PREFIX_ALL,
 } from '@next-levels/types';
-import {TranslateService} from "@ngx-translate/core";
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'nxtlvls-form-set',
@@ -26,7 +35,6 @@ export class FormSetComponent implements OnInit {
 
   groups_active = false;
 
-
   public groups: {
     index: number;
     arrayIndex: number;
@@ -36,15 +44,16 @@ export class FormSetComponent implements OnInit {
     fields: any[];
   }[] = [];
 
-  constructor(private changeDetectorRef: ChangeDetectorRef, private translate: TranslateService) {
-  }
+  constructor(
+    private changeDetectorRef: ChangeDetectorRef,
+    private translate: TranslateService
+  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['fields']) {
       this._fields = this.fields;
       if (this.groups_active && this.formFields) {
         this.rebuildForm();
-        console.log(this.groups)
       }
       this.changeDetectorRef.detectChanges();
     }
@@ -60,27 +69,35 @@ export class FormSetComponent implements OnInit {
   ngOnInit(): void {
     if ((this.formFields || this.fields) && this.controller) {
       this.fg = this.controller.getForm();
-      let visibilityFields = Reflect.getMetadata(VISIBILITY_PREFIX_ALL, this.controller.getModelDefinition());
+      let visibilityFields = Reflect.getMetadata(
+        VISIBILITY_PREFIX_ALL,
+        this.controller.getModelDefinition()
+      );
       this.groups_active = !!(visibilityFields && visibilityFields.length > 0);
 
       if (this.groups_active) {
-        const rootModel = decorator_models_key.get(this.controller.getClassName());
-        this.formFields = visibilityFields.filter((field) => {
-          return this.fields.includes(field);
-        })
-          .map(field => {
+        const rootModel = decorator_models_key.get(
+          this.controller.getClassName()
+        );
+        this.formFields = visibilityFields
+          .filter((field) => {
+            return this.fields.includes(field);
+          })
+          .map((field) => {
             return {
-              name: field, ...Reflect.getMetadata(
+              name: field,
+              ...Reflect.getMetadata(
                 BUILDERFIELD_PREFIX,
                 new rootModel(),
                 field
-              )
+              ),
             };
           });
 
         this.rebuildForm();
       } else {
-        this._fields = this.fields ?? this.formFields.map((field) => field.name);
+        this._fields =
+          this.fields ?? this.formFields.map((field) => field.name);
       }
     }
   }
@@ -99,9 +116,12 @@ export class FormSetComponent implements OnInit {
       );
 
       if (!currentStep) {
-
-        const title = this.translate.instant(className + '.groups.' + field.showModal + '.name')
-        const description = this.translate.instant(className + '.groups.' + field.showModal + '.description')
+        const title = this.translate.instant(
+          className + '.groups.' + field.showModal + '.name'
+        );
+        const description = this.translate.instant(
+          className + '.groups.' + field.showModal + '.description'
+        );
 
         currentStep = {
           index: field.index,

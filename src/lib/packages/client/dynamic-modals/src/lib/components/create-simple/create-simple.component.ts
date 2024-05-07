@@ -1,10 +1,21 @@
 import 'reflect-metadata';
-import {AfterViewInit, ChangeDetectorRef, Component, Inject, Input, OnInit,} from '@angular/core';
-import {SwalService} from '../../services/swal/swal.service';
-import {MinimizeService} from '../../services/minimize/minimize.service';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {FormController} from '../../../../../form-builder/src';
-import {ScopeFilter,} from '@next-levels/types';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  Input,
+  OnInit,
+} from '@angular/core';
+import { SwalService } from '../../services/swal/swal.service';
+import { MinimizeService } from '../../services/minimize/minimize.service';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogRef,
+} from '@angular/material/dialog';
+import { FormController } from '../../../../../form-builder/src';
+import { ScopeFilter } from '@next-levels/types';
 
 @Component({
   selector: 'create-simple',
@@ -51,20 +62,15 @@ export class CreateSimpleComponent implements AfterViewInit, OnInit {
     this.config = data.config;
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit() {
-
     this.cdRef.detectChanges();
   }
 
-
-  isValid() {
-  }
+  isValid() {}
 
   fireAction() {
-    console.log(this.formController.getForm().value)
     this.dialogRef.close(this.formController.getForm().value);
   }
 

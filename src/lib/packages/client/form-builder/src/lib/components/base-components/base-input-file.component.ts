@@ -23,17 +23,16 @@ export class BaseInputFileComponent extends BaseInputComponent {
   allowedTypes = [
     'application/x-binary',
     'application/octet-stream',
-    'application/macbinary'
+    'application/macbinary',
   ];
 
   constructor(
     public _httpClient: HttpClient,
     public override cdRef: ChangeDetectorRef,
     public override translateService: TranslateService,
-    public environmentStorage: EnvironmentStorageService,
-    //@Inject(FilesService)
-    //private readonly filesService: FilesService
-  ) {
+    public environmentStorage: EnvironmentStorageService //@Inject(FilesService)
+  ) //private readonly filesService: FilesService
+  {
     super(cdRef, translateService);
     this.baseUrl = this.environmentStorage.baseUrl;
     this.baseApiUrl = this.baseUrl + '/api/files/';
@@ -44,12 +43,10 @@ export class BaseInputFileComponent extends BaseInputComponent {
     this.file_id = this.formController
       ?.getForm()
       .get(this.formField.name)?.value;
-      console.log(this.file_id);
-      console.log(this.formField.name);
-      /*this.filesService.findOne(this.file_id).then((response: any) => {  
-        this.file_name = response.name;
-      });*/
-    console.log(this.file_name);
+
+    /*this.filesService.findOne(this.file_id).then((response: any) => {
+      this.file_name = response.name;
+    });*/
     if (this.file_id) {
       this._httpClient.get(`${this.baseApiUrl}upload`);
     }
@@ -90,8 +87,6 @@ export class BaseInputFileComponent extends BaseInputComponent {
       this.formController?.getForm().patchValue(tempPatch);
       this.file_id = response.id;
       this.file_name = response.name;
-      console.log(this.file_id);
-      console.log(this.file_name);
     });
   }
 

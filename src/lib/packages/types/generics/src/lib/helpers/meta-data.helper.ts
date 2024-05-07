@@ -145,7 +145,7 @@ export class META {
       return new model();
     } else {
       // Handle the case where no model was found.
-      console.log('No model found with the given name.');
+      console.log('No model found with the given name: ' + name);
     }
 
     // if no model found, return undefined

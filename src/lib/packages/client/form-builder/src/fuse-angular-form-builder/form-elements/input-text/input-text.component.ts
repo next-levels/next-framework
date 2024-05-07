@@ -8,7 +8,6 @@ import { BaseInputTextComponent } from '../../../index';
 })
 export class InputTextComponent extends BaseInputTextComponent {
   translateField(): string {
-    console.log('translateField');
     return 'input-text';
   }
 }

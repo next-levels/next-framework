@@ -61,8 +61,6 @@ export class BaseInputMultiImageFileComponent extends BaseInputComponent {
     const formValue = this.formController.getForm().value[this.formField.name];
     this.files = [...formValue];
 
-    console.log('this.files', this.files);
-
     if (this.formField && this.formField?.required) {
       this.formField.label = this.formField.label + '*';
     }
