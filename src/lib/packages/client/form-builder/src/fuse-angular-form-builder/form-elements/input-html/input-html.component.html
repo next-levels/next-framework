@@ -1,13 +1,13 @@
 <ng-container [formGroup]="fg">
   <div class="relative">
-    <span class="custom-label font-medium" *ngIf="!formField.noLabel">{{
-      formField.label
-    }}</span>
+    <span *ngIf="!formField.noLabel" class="custom-label font-medium">{{
+        formField.label
+      }}</span>
     <quill-editor
-      class="w-full mt-2"
       [formControlName]="formField.name"
-      placeholder="Beschreibung"
       [modules]="quillConfiguration"
+      class="w-full mt-2 min-h-80 h-0"
+      placeholder="Beschreibung"
     ></quill-editor>
   </div>
 </ng-container>

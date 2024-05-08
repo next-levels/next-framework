@@ -39,6 +39,30 @@ export class FormElementComponent implements AfterViewInit {
 
   firstChange = true;
 
+  constructor(
+    private cdRef: ChangeDetectorRef,
+    @Inject('formBuilderComponents')
+    private formBuilderComponents: FormComponents
+  ) {}
+
+  @HostBinding('class') get classList(): string {
+    let classes = '';
+
+    if (this.formField?.options?.size === 'full') {
+      classes += 'basis-1/1 ';
+      classes += 'w-full ';
+    }
+
+    return classes.trim();
+  }
+
+  @HostBinding('class.basis-1/2') get applyDefault() {
+    return (
+      !this.formField?.options?.size ||
+      this.formField?.options?.size === 'default'
+    ); // 'my-class' will be applied based on this condition
+  }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes['fieldName']) {
       this.cdRef.markForCheck();
@@ -52,23 +76,6 @@ export class FormElementComponent implements AfterViewInit {
       }
     }
   }
-
-  @HostBinding('class.basis-1/1') get applyLarge() {
-    return this.formField?.options?.size === 'full'; // 'my-class' will be applied based on this condition
-  }
-
-  @HostBinding('class.basis-1/2') get applyDefault() {
-    return (
-      !this.formField?.options?.size ||
-      this.formField?.options?.size === 'default'
-    ); // 'my-class' will be applied based on this condition
-  }
-
-  constructor(
-    private cdRef: ChangeDetectorRef,
-    @Inject('formBuilderComponents')
-    private formBuilderComponents: FormComponents
-  ) {}
 
   ngAfterViewInit() {
     if (this.view !== undefined && this.fieldName) {
