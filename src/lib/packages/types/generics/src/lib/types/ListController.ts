@@ -1,4 +1,4 @@
-import { ScopeFilterTyped } from './ScopeFilter';
+import { CustomListFilter, ScopeFilterTyped } from './ScopeFilter';
 import { ActionType } from './ActionType';
 import { Fields } from '@next-levels/types';
 
@@ -6,7 +6,7 @@ export class ListController<T> {
   $listFields: Fields<T> = [];
   $listActions: Array<ActionType>;
   $listScope: ScopeFilterTyped<T> = null;
-  $listFilters: ScopeFilterTyped<T>[] = [];
+  $listFilters: CustomListFilter<T>[] = [];
   $listType: string;
   $rowAction: ActionType;
 
@@ -28,7 +28,7 @@ export class ListController<T> {
     return this.$searchFields;
   }
 
-  listFilters(): ScopeFilterTyped<T>[] {
+  listFilters(): CustomListFilter<T>[] {
     return this.$listFilters;
   }
 

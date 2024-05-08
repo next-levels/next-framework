@@ -19,3 +19,10 @@ export interface ScopeFilterTyped<T> {
   operation: ScopeFilterOperations;
   value?: any;
 }
+
+export interface CustomListFilter<T> {
+  name: string;
+  visibility: boolean;
+  position: number;
+  options: ScopeFilterTyped<T> | ScopeFilterTyped<T>[];
+}
