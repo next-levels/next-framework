@@ -12,7 +12,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
-import { QuillEditorComponent } from 'ngx-quill';
+import { QuillConfigModule, QuillEditorComponent } from 'ngx-quill';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { InputTextComponent } from './form-elements/input-text/input-text.component';
@@ -64,6 +64,16 @@ import { CodeEditorModule } from '@ngstack/code-editor';
     NgJsonEditorModule,
     NgxCurrencyDirective,
     CodeEditorModule.forRoot(),
+    QuillConfigModule.forRoot({
+      modules: {
+        syntax: true,
+        history: {
+          delay: 2000,
+          maxStack: 500,
+          userOnly: true,
+        },
+      },
+    }),
     FormsModule,
     CdkDrag,
     CdkDropListGroup,
