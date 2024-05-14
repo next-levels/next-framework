@@ -245,7 +245,7 @@
 
 <div class="w-64 bg-white rounded-xl dark:bg-gray-900">
   <ng-template #noGuarantees>
-    <div class="p-8 sm:p-16 text-2xl tracking-tight text-center">
+    <div *ngIf="listController" class="p-8 sm:p-16 text-2xl tracking-tight text-center">
       Keine {{ listController.getModelClassName() + '.name' | translate }} vorhanden
     </div>
   </ng-template>

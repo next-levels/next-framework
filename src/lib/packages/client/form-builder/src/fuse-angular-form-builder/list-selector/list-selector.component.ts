@@ -61,11 +61,10 @@ export class ListSelectorComponent implements OnInit, AfterViewInit {
       let viewController = null;
       let targetModel = null;
 
-      if (this.formField.options.model) {
-        let tempModel = this.formField.options.model;
-        targetModel = new tempModel();
-      } else {
+      if (propertyType !== Array) {
         targetModel = propertyType;
+      } else if (this.formField.options.model) {
+        targetModel = META.getModelByName(this.formField.options.model);
       }
 
       if (!this.formField.options.view) {
