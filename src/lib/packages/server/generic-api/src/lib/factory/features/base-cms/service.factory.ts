@@ -100,6 +100,7 @@ export function GenericBaseCMSService<T>(
       const relationFields = this.repository.metadata.relations.map(
         (relation) => relation.propertyName as any
       );
+
       // const filterableColumns = relationFields.reduce((acc, field) => {
       //   acc[field + '_id'] = [FilterOperator.EQ, FilterOperator.GT];
       //   return acc;
@@ -108,6 +109,7 @@ export function GenericBaseCMSService<T>(
       const allColumnNames = this.repository.metadata.columns.map(
         (column) => column.propertyName
       );
+
       const filterFields = getFilterFields(entity).filter((field) =>
         allColumnNames.includes(field)
       );

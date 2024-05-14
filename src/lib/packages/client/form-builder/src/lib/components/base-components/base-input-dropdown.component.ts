@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseInputComponent } from './base-input.component';
 import { META } from '@next-levels/types';
-import { FORM } from '../../helper/form.helper';
 
 @Component({
   selector: 'nxt-input-dropdown',
@@ -18,8 +17,17 @@ export class BaseInputDropdownComponent
       const model = this.formController?.getModelDefinition();
       const viewModel = META.getFormController(model) ?? model;
 
-      if (FORM.hasDropdowns(viewModel)) {
-        this.options = viewModel?.dropdowns(this.formField?.name);
+      if (
+        this.formField &&
+        this.formField.options &&
+        this.formField.options.options
+      ) {
+        this.options = this.formField.options.options.map((option: any) => {
+          return {
+            label: option,
+            value: option,
+          };
+        });
       }
     }
   }

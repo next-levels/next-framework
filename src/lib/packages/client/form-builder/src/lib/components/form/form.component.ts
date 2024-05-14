@@ -82,7 +82,7 @@ export class FormComponent implements OnInit {
 
       this.controller = new FormController(
         this.data,
-        this.registry.retrieve(this.model),
+        this.registry.retrieve(this.formModel),
         this.model,
         this.settings
       );

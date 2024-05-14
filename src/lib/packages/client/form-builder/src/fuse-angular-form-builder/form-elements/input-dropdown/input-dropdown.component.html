@@ -1,10 +1,10 @@
-<div class="input-dropdown-wrapper mt-1" [formGroup]="fg">
-  <mat-form-field floatLabel="always" class="flex-auto gt-xs:pr-3 w-full">
+<div [formGroup]="fg" class="input-dropdown-wrapper mt-1">
+  <mat-form-field class="flex-auto gt-xs:pr-3 w-full" floatLabel="always">
     <mat-label *ngIf="!formField.noLabel">{{ formField.label }}</mat-label>
 
-    <mat-select [formControlName]="formField.name" (change)="logChange($event)">
+    <mat-select (change)="logChange($event)" [formControlName]="formField.name">
       <mat-option *ngFor="let option of this.options" [value]="option.value">
-        {{ option.label }}
+        {{ option.value | translate }}
       </mat-option>
     </mat-select>
   </mat-form-field>

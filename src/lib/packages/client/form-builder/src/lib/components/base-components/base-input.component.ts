@@ -16,6 +16,7 @@ import {
   VisibilityOptions,
 } from '@next-levels/types';
 import { FormController } from '../../controller/form-controller';
+import { debounceTime } from 'rxjs';
 
 @Component({
   template: '<ng-container ></ng-container>',
@@ -26,16 +27,16 @@ export class BaseInputComponent implements OnInit {
   @Input() formField: FormOptions;
   @Input() formController: FormController | undefined;
   @Output() dataOutput = new EventEmitter<any>();
-  protected fg: FormGroup | undefined;
-  protected formControl: FormControl | undefined;
-  protected changed = false;
-  protected dependency: DependencyOptions | null | undefined = null;
+  formControl: FormControl | undefined;
   value = '';
   disabled = false;
   updateOn: 'change' | 'blur' | 'submit' | undefined = 'change';
   visibilityOptions: VisibilityOptions;
   comment: string | undefined;
   headline: string | undefined;
+  protected fg: FormGroup | undefined;
+  protected changed = false;
+  protected dependency: DependencyOptions | null | undefined = null;
 
   constructor(
     public cdRef: ChangeDetectorRef,
@@ -72,9 +73,49 @@ export class BaseInputComponent implements OnInit {
             this.headline = translated;
           });
       }
+
+      this.formController
+        .getForm()
+        .statusChanges.pipe(debounceTime(300))
+        .subscribe((status) => {
+          this.cdRef.detectChanges();
+        });
+
       this.initFormControl();
       this.initDependency();
       this.init();
+    }
+  }
+
+  init() {
+    // override this method in child classes
+  }
+
+  changeValue(value: any) {
+    this.dataOutput.emit(value);
+  }
+
+  protected initDependency() {
+    if (this.dependency?.field && this.fg?.controls[this.dependency.field]) {
+      // Get initial value of the dependency and check if the dependency is valid
+      const initalValue = this.formController?.getValue(this.dependency.field);
+      this.checkDependency(initalValue);
+
+      // Subscribe to value changes of the dependency
+      this.fg.controls[this.dependency.field].valueChanges.subscribe(
+        (value: any) => {
+          this.checkDependency(value);
+        }
+      );
+    }
+  }
+
+  protected checkDependency(value: any) {
+    if (this.dependency?.field && this.formField) {
+      if (this.fg?.controls[this.dependency.field]) {
+        const dependencyValue = this.dependency.value;
+        this.formField.hidden = dependencyValue !== value && dependencyValue;
+      }
     }
   }
 
@@ -118,37 +159,5 @@ export class BaseInputComponent implements OnInit {
         this.formField.name
       );
     }
-  }
-
-  protected initDependency() {
-    if (this.dependency?.field && this.fg?.controls[this.dependency.field]) {
-      // Get initial value of the dependency and check if the dependency is valid
-      const initalValue = this.formController?.getValue(this.dependency.field);
-      this.checkDependency(initalValue);
-
-      // Subscribe to value changes of the dependency
-      this.fg.controls[this.dependency.field].valueChanges.subscribe(
-        (value: any) => {
-          this.checkDependency(value);
-        }
-      );
-    }
-  }
-
-  init() {
-    // override this method in child classes
-  }
-
-  protected checkDependency(value: any) {
-    if (this.dependency?.field && this.formField) {
-      if (this.fg?.controls[this.dependency.field]) {
-        const dependencyValue = this.dependency.value;
-        this.formField.hidden = dependencyValue !== value && dependencyValue;
-      }
-    }
-  }
-
-  changeValue(value: any) {
-    this.dataOutput.emit(value);
   }
 }

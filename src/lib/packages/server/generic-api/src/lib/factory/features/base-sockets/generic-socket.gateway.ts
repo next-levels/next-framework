@@ -25,9 +25,7 @@ export function GenericWebSocketGateway(
     @WebSocketServer()
     server: Server;
 
-    constructor() {
-      console.log('GenericGateway', namespace);
-    }
+    constructor() {}
 
     afterInit(server: Server) {
       if (entity) {

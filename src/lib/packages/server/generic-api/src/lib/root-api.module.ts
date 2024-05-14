@@ -1,13 +1,17 @@
-import {Features, META, Scope, Source} from "@next-levels/types";
-import {DynamicModule, Global, Module} from "@nestjs/common";
-import {TypeOrmModule} from "@nestjs/typeorm";
-import {getFeatures} from "@next-levels/next-framework";
+import { Features, META, Scope, Source } from '@next-levels/types';
+import { DynamicModule, Global, Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { getFeatures } from '@next-levels/next-framework';
 
 @Global()
 @Module({})
 export class RootApiModule {
-  static forFeature(models: any[],providers:any[] = [],controllers:any[] = []): DynamicModule {
-     const services = [];
+  static forFeature(
+    models: Function[],
+    providers: any[] = [],
+    controllers: any[] = []
+  ): DynamicModule {
+    const services = [];
     for (let model of models) {
       if (!model.prototype) {
         throw new Error('Model should be a class');
@@ -22,7 +26,7 @@ export class RootApiModule {
       module: RootApiModule,
       controllers: controllers,
       providers: [...services, ...providers],
-      exports: [TypeOrmModule.forFeature(models),...services, ...providers],
+      exports: [TypeOrmModule.forFeature(models), ...services, ...providers],
     };
   }
 
@@ -31,7 +35,7 @@ export class RootApiModule {
     const features = [];
     let userScope = false;
 
-    if(config.source && config.scope && config.source === Source.SQL) {
+    if (config.source && config.scope && config.source === Source.SQL) {
       if (config.scope.includes(Scope.PUBLIC)) {
         features.push('app');
       }
@@ -40,7 +44,7 @@ export class RootApiModule {
       }
     }
 
-    if(config.source && config.scope &&  config.source === Source.MONGO) {
+    if (config.source && config.scope && config.source === Source.MONGO) {
       if (config.scope.includes(Scope.PUBLIC)) {
         features.push('app');
       }
@@ -57,7 +61,6 @@ export class RootApiModule {
       userScope = true;
     }
 
-
-    return getFeatures(model, config.name, features,userScope);
+    return getFeatures(model, config.name, features, userScope);
   }
 }

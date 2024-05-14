@@ -1,40 +1,31 @@
-<div class="input-text-wrapper mt-1 input-wrapper" [formGroup]="fg" xmlns="http://www.w3.org/1999/html">
-  <mat-form-field floatLabel="always">
+<div [formGroup]="fg" class="input-text-wrapper mt-1 input-wrapper" xmlns="http://www.w3.org/1999/html">
+  <mat-form-field class="fuse-mat-rounded fuse-mat-emphasized-affix fuse-mat-bold" floatLabel="always">
     <mat-label *ngIf="!formField.noLabel">{{ formField.label }}</mat-label>
     <input
-      matInput
-      formControlName="{{ formField.name }}"
-      placeholder="{{ formField.label }}"
       [spellcheck]="false"
+      formControlName="{{ formField.name }}"
+      matInput
+      placeholder="{{ formField.label }}"
     />
 
 
-    <button class=" mat-icon-button   mat-button
+    <button (click)="translateField()"
+            class=" mat-icon-button   mat-button
             matSuffix
             mat-icon-button"
-            (click)="translateField()"
     >
       <mat-icon
+        (click)="translateField()"
         *ngIf="false"
-        class="icon-size-5 text-current"
         [svgIcon]="'heroicons_solid:globe-asia-australia'"
-        (click)="translateField()"
-      ></mat-icon>
-    </button>
-
-
-    <button *ngIf="false" class=" mat-icon-button   mat-button
-            matSuffix
-            mat-icon-button"
-            (click)="translateField()">
-      <mat-icon
         class="icon-size-5 text-current"
-        [svgIcon]="'heroicons_solid:sparkles'"
-        (click)="translateField()"
       ></mat-icon>
     </button>
 
 
+    @if (formControl?.invalid && formController) {
+      <mat-error> {{ formController.getErrorMessage(formField.name) }}</mat-error>
+    }
   </mat-form-field>
 </div>
 

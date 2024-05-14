@@ -3,10 +3,9 @@
 </div>
 <div
   *ngIf="
-    getFormControl()?.hasError(formField?.validation?.error_code) &&
-    getFormControl()?.touched
+    getFormControl()?.errors
   "
   class="fv-plugins-message-container invalid-feedback"
 >
-  {{ formField?.validation?.error_message }}
+   
 </div>

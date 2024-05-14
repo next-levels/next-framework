@@ -19,6 +19,7 @@ import {
   FORMFIELD_PREFIX,
   FormOptions,
 } from '@next-levels/types';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'nxt-form-element',
@@ -42,7 +43,8 @@ export class FormElementComponent implements AfterViewInit {
   constructor(
     private cdRef: ChangeDetectorRef,
     @Inject('formBuilderComponents')
-    private formBuilderComponents: FormComponents
+    private formBuilderComponents: FormComponents,
+    private _translate: TranslateService
   ) {}
 
   @HostBinding('class') get classList(): string {

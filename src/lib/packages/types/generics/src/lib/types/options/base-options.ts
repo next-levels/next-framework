@@ -9,8 +9,9 @@ export interface BuilderOptions {
   listType?: string;
   prompt?: any;
   translatable?: boolean;
-  size?: "small" | "half" | "full";
+  size?: 'small' | 'half' | 'full';
   required?: boolean;
   hidden?: boolean;
   options?: any;
+  readonly?: boolean;
 }
