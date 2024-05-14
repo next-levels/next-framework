@@ -28,7 +28,7 @@ export function Property(
     if (!Array.isArray(flags)) {
       flags = [flags];
     }
-    
+
     Reflect.defineMetadata(
       ZOD_SCHEMA_METADATA_KEY,
       schema,

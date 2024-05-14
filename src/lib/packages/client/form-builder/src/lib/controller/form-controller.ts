@@ -140,6 +140,8 @@ export class FormController {
       this.form
     );
 
+    console.log('validModel', validModel);
+
     try {
       validModel.parse(this.form.value);
       // Process valid data

@@ -1,89 +1,72 @@
 <div class="input-file-wrapper mt-1" [formGroup]="fg">
   <mat-label *ngIf="!formField.noLabel">{{ formField.label }}</mat-label>
 
-  <div class="relative mr-4 rounded-md overflow-hidden">
-    <ng-container *ngIf="edit" [ngTemplateOutlet]="editToggler"></ng-container>
-    <ng-container *ngIf="editMode">
-      <!-- Upload / Remove avatar -->
-      <div class="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
-      <div
-        *ngIf="edit"
-        class="absolute inset-0 flex items-center justify-end z-20 p-5"
-      >
-        <div>
-          <input
-            id="avatar-file-input"
-            class="absolute h-0 w-0 opacity-0 invisible pointer-events-none"
-            type="file"
-            [multiple]="false"
-            [accept]="allowedTypes.join(', ')"
-            (change)="uploadFile(avatarFileInput.files)"
-            #avatarFileInput
-          />
-          <label
-            class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer hover:bg-hover"
-            for="avatar-file-input"
-            matRipple
-          >
-            <mat-icon
-              class="text-white"
-              [svgIcon]="'heroicons_outline:arrow-up-tray'"
-            ></mat-icon>
-          </label>
+  <div class="p-0.5 max-w-sm bg-white rounded-xl shadow-md flex flex-col items-center space-y-4 my-5">
+    <ngx-file-drop
+      *ngIf="!file_id"
+      #fileDropRef
+      class="w-full cursor-pointer "
+      dropZoneLabel="Datei auswählen"
+      dropZoneClassName=" border-dashed border-2  rounded-xl text-center h-12"
+      accept="{{allowedTypes.join(', ')}}"
+      (onFileDrop)="uploadFile($event)"
+      (onFileOver)="fileOver($event)"
+      (onFileLeave)="fileLeave($event)"
+      (click)="openDialog()"
+    >
+      <input type="file" (change)="fileBrowseHandler($event )" multiple>
+    </ngx-file-drop>
+
+    <div *ngIf="file_id" class="w-full border-dashed border-2  rounded-xl text-center  items-baseline">
+      <div class="flex justify-between bg-gray-50 m-1 rounded-lg h-10">
+
+        <div class="flex self-center pl-2">
+          <div class="self-center">
+
+            <div
+              *ngIf="file_type == 'image/png'"
+              class="rounded w-8 h-8  bg-center bg-cover flex"
+              [style.background-image]="'url(' + getSource(file_id) + ')'">
+
+            </div>
+
+            <div *ngIf="file_type != 'image/png'" class="p-1 pt-2">
+              <mat-icon
+                class="icon-size-4"
+                [svgIcon]="'heroicons_outline:document'"
+              ></mat-icon>
+            </div>
+          </div>
+          <div class="self-center pl-2 text-xs max-w-60">
+            <p>{{ file_name }} ({{ file_size / 1000 }} KB)</p>
+          </div>
         </div>
+
+
         <div>
-          <button mat-icon-button>
+          <button
+            (click)="downloadFile(file_id)"
+            mat-icon-button>
             <mat-icon
-              class="text-white"
+              class="icon-size-3"
+              [svgIcon]="'heroicons_outline:arrow-down-tray'"
+            ></mat-icon>
+          </button>
+          <button
+            (click)="deleteFile(file_id)"
+            mat-icon-button>
+            <mat-icon
+              class="icon-size-3"
               [svgIcon]="'heroicons_outline:trash'"
             ></mat-icon>
           </button>
         </div>
-      </div>
-    </ng-container>
 
-    <div
-      class="bg-black bg-opacity-50 flex z-20 p-4"
-      *ngIf="file_name"
-    >
-      {{ file_name }}
+      </div>
     </div>
-    <div
-      class="bg-black bg-opacity-50 flex z-20 p-4"
-      *ngIf="file_id && !file_name"
-    >
-      {{ file_id }}
-    </div>
-    <div
-      class="flex items-center justify-center p-4 w-full h-full rounded overflow-hidden uppercase text-6xl font-bold leading-none bg-gray-100 text-gray-600 dark:bg-primary-700 dark:text-gray-200"
-      *ngIf="!file_id"
-    ></div>
   </div>
+
+
 </div>
 
-<ng-template #editToggler>
-  <div class="absolute top-0 right-0 z-50 p-1">
-    <ng-container *ngIf="!editMode">
-      <button
-        class="rounded-full"
-        mat-mini-fab
-        (click)="toggleEditMode(true)"
-        type="button"
-        color="accent"
-      >
-        <mat-icon [svgIcon]="'heroicons_solid:pencil'"></mat-icon>
-      </button>
-    </ng-container>
-    <ng-container *ngIf="editMode">
-      <button
-        class="rounded-full"
-        mat-mini-fab
-        (click)="toggleEditMode(false)"
-        type="button"
-        color="warn"
-      >
-        <mat-icon [svgIcon]="'heroicons_solid:x-mark'"></mat-icon>
-      </button>
-    </ng-container>
-  </div>
-</ng-template>
+

@@ -13,8 +13,13 @@ export function Field(o: BuilderOptions | FormControl) {
   return (target: object, propertyKey: string) => {
     const variables =
       Reflect.getMetadata(BUILDERFIELD_ALL_PREFIX, target) || [];
-    variables.push(propertyKey);
+
+    if (!variables.includes(propertyKey)) {
+      variables.push(propertyKey);
+    }
+
     Reflect.defineMetadata(BUILDERFIELD_ALL_PREFIX, variables, target);
+
     Reflect.defineMetadata(
       'design:type',
       Reflect.getMetadata('design:type', target, propertyKey),

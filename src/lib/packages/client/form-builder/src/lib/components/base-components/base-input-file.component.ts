@@ -4,6 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { BaseInputComponent } from './base-input.component';
 import { EnvironmentStorageService } from '../../../../../angular-commons';
+import { NgxFileDropEntry } from 'ngx-file-drop';
 
 @Component({
   selector: 'nxt-input-file',
@@ -14,27 +15,30 @@ export class BaseInputFileComponent extends BaseInputComponent {
   edit = true;
   baseApiUrl = '';
   baseUrl = '';
-  file_id: number;
+  file_id: string;
   file_name = '';
+  file_type = '';
+  file_size = '';
   // .bin files do not have a set MIME type
   // MDN recommends using application/octet-stream
   // macOS uploads them as application/macbinary
   // x-binary is also used by some browsers
   allowedTypes = [
-    'application/x-binary',
-    'application/octet-stream',
-    'application/macbinary',
+    'image/png',
+    'image/jpeg',
+    'image/gif',
+    'image/svg+xml',
+    'application/pdf',
   ];
 
   constructor(
     public _httpClient: HttpClient,
     public override cdRef: ChangeDetectorRef,
     public override translateService: TranslateService,
-    public environmentStorage: EnvironmentStorageService //@Inject(FilesService)
-  ) //private readonly filesService: FilesService
-  {
+    public environmentStorage: EnvironmentStorageService //@Inject(FilesService) //private readonly filesService: FilesService
+  ) {
     super(cdRef, translateService);
-    this.baseUrl = this.environmentStorage.baseUrl;
+    this.baseUrl = this.environmentStorage.baseSocket;
     this.baseApiUrl = this.baseUrl + '/api/files/';
   }
 
@@ -44,9 +48,6 @@ export class BaseInputFileComponent extends BaseInputComponent {
       ?.getForm()
       .get(this.formField.name)?.value;
 
-    /*this.filesService.findOne(this.file_id).then((response: any) => {
-      this.file_name = response.name;
-    });*/
     if (this.file_id) {
       this._httpClient.get(`${this.baseApiUrl}upload`);
     }
@@ -64,30 +65,53 @@ export class BaseInputFileComponent extends BaseInputComponent {
    *
    * @param fileList
    */
-  public async uploadFile(fileList: FileList): Promise<void> {
+  public async uploadFile(
+    fileList: FileList | NgxFileDropEntry[]
+  ): Promise<void> {
     if (!fileList.length) {
       return;
     }
 
-    const file = fileList[0];
+    // Check the type of the first entry in the array to determine how to process it
+    if (fileList[0] instanceof File) {
+      // Directly handle FileList scenario
+      this.handleFileUpload(fileList[0] as File);
+    } else if (fileList[0] instanceof NgxFileDropEntry) {
+      // Handle NgxFileDropEntry scenario
+      const entry = fileList[0] as NgxFileDropEntry;
+      if (entry.fileEntry.isFile) {
+        const fileEntry = entry.fileEntry as FileSystemFileEntry;
+        fileEntry.file((file: File) => {
+          this.handleFileUpload(file);
+        });
+      }
+    }
+  }
 
-    /*if (!this.allowedTypes.includes(file.type)) {
-      return;
-    }*/
+  private async handleFileUpload(file: File): Promise<void> {
+    if (!this.allowedTypes.includes(file.type)) {
+      return; // Optionally handle unsupported file types
+    }
 
     const formData = new FormData();
     formData.append('file', file, file.name);
 
-    firstValueFrom(
-      this._httpClient.post(`${this.baseApiUrl}upload/file`, formData)
-    ).then((response: any) => {
+    try {
+      const response: any = await firstValueFrom(
+        this._httpClient.post(`${this.baseApiUrl}upload/file`, formData)
+      );
+
       this.toggleEditMode(false);
       const tempPatch = {};
       tempPatch[this.formField.name] = response.id;
       this.formController?.getForm().patchValue(tempPatch);
       this.file_id = response.id;
       this.file_name = response.name;
-    });
+      this.file_type = response.type;
+      this.file_size = response.file_size;
+    } catch (error) {
+      console.error('Upload error:', error);
+    }
   }
 
   /**

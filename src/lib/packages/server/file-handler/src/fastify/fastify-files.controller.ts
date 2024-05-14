@@ -83,6 +83,20 @@ export class FastifyFilesController {
     return await this._thumbnailService.downloadFile(file, reply);
   }
 
+  @Get('get/:id')
+  async getFile(
+    @Param('id') id: string,
+    @Res() reply: FastifyReply
+  ): Promise<Result<FileEntity>> {
+    const file = await this._filesService.findOne(id);
+
+    if (!file) {
+      reply.code(404).send('File not found');
+      return undefined;
+    }
+    return Result.ok(file);
+  }
+
   @Post('upload/:attachmentType/:attachmentId/:fieldName')
   @UseInterceptors(
     FastifyFileInterceptor('file', {

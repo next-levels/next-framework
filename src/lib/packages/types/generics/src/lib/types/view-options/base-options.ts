@@ -37,8 +37,8 @@ const o = {
   dropdown() {
     return createElement('DROPDOWN');
   },
-  file() {
-    return createElement('FILE');
+  file(allowedTypes: string[] = []) {
+    return createElement('FILE', { allowedTypes: allowedTypes });
   },
   date() {
     return createElement('DATE');

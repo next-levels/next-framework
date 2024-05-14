@@ -38,53 +38,52 @@ export function zodToFields(
 
   if (isZodInstance(ZodString, zodType)) {
     options = {
+      ...options,
       type: 'TEXT',
-      required: zodType.isNullable(),
     };
   } else if (isZodInstance(ZodNumber, zodType)) {
     const isInteger = Boolean(
       zodType._def.checks.find((check: any) => check.kind === 'int')
     );
     options = {
+      ...options,
       type: 'NUMBER',
-      required: zodType.isNullable(),
     };
   } else if (isZodInstance(ZodDate, zodType)) {
     options = {
+      ...options,
       type: 'DATE',
-      required: zodType.isNullable(),
     };
   } else if (isZodInstance(ZodBoolean, zodType)) {
     options = {
+      ...options,
       type: 'CHECKBOX',
-      required: zodType.isNullable(),
     };
   } else if (
     isZodInstance(ZodEnum, zodType) ||
     isZodInstance(ZodNativeEnum, zodType)
   ) {
     options = {
+      ...options,
       type: 'DROPDOWN',
       options: { options: zodType._def.values as any[] },
-      required: zodType.isNullable(),
     };
   } else if (isZodInstance(ZodArray, zodType)) {
     // Arrays may require specific handling based on your database and TypeORM driver
     const elementType = zodToFields(zodType.element);
     options = {
-      type: 'JSON', // Or jsonb, depending on your needs
-      required: zodType.isNullable(),
+      ...options,
+      type: 'JSON',
     };
   } else if (isZodInstance(ZodObject, zodType)) {
     throw new Error(
       'TypeORM does not support embedded objects directly as columns. Consider relationships or jsonb.'
     );
   } else {
-    console.log(options, zodType);
   }
 
   if (zodType.isOptional()) {
-    options.required = true;
+    options.required = false;
   }
 
   return options;

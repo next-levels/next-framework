@@ -86,14 +86,52 @@ export class FastifyThumbnailService {
     file: FileEntity,
     reply: FastifyReply
   ): Promise<Result<void>> {
-    const fileBuffer = await this.fileToBuffer(file);
-    const readable = this.bufferToReadableStream(fileBuffer);
+    try {
+      const fileBuffer = await this.fileToBuffer(file);
+      const readable = this.bufferToReadableStream(fileBuffer);
 
-    reply.header('Content-Disposition', `attachment; filename="${file.name}"`);
-    reply.type(file.mime_type);
-    reply.send(readable);
+      reply.header(
+        'Content-Disposition',
+        `attachment; filename="${file.name}"`
+      );
+      reply.type(file.mime_type);
 
-    return Result.ok();
+      readable.on('error', (err) => {
+        console.error('Stream error', err);
+        reply.status(500).send('Error sending file'); // Properly handle streaming errors
+      });
+
+      // Pipe the readable stream directly to the response
+      readable.pipe(reply.raw);
+
+      return new Promise((resolve, reject) => {
+        readable.on('end', () => {
+          reply.raw.end(); // Properly close the response when the stream ends
+          resolve(Result.ok());
+        });
+
+        readable.on('error', (err) => {
+          console.error('Stream failed', err);
+          reject(
+            Result.fail({
+              // Handle failure and ensure the response is properly ended
+              message: 'Failed to stream file',
+              httpCode: 500,
+              changeHttpCode: true,
+            })
+          );
+          reply.raw.end(); // Ensure to close the response on error too
+        });
+      });
+    } catch (error) {
+      console.error('Error downloading file', error);
+      reply.status(500).send('Failed to download file');
+      return Result.fail({
+        message: 'Failed to download file',
+        httpCode: 500,
+        changeHttpCode: true,
+      }); // Return failure result
+    }
   }
 
   async serveFile(
@@ -107,6 +145,24 @@ export class FastifyThumbnailService {
     reply.type(file.mime_type);
     reply.send(readable);
 
-    return Result.ok();
+    return new Promise((resolve, reject) => {
+      readable.on('end', () => {
+        reply.raw.end(); // Properly close the response when the stream ends
+        resolve(Result.ok());
+      });
+
+      readable.on('error', (err) => {
+        console.error('Stream failed', err);
+        reject(
+          Result.fail({
+            // Handle failure and ensure the response is properly ended
+            message: 'Failed to stream file',
+            httpCode: 500,
+            changeHttpCode: true,
+          })
+        );
+        reply.raw.end(); // Ensure to close the response on error too
+      });
+    });
   }
 }

@@ -8,7 +8,11 @@ export class AppConfigService {
   constructor(private env: EnvironmentStorageService) {}
 
   loadConfig(environments: any[]) {
-    const currentOrigin = window.location.origin;
+    let currentOrigin = window.location.origin;
+
+    if (currentOrigin.includes('localhost')) {
+      currentOrigin = 'http://localhost:3333';
+    }
     this.env.setConfig({ baseUrl: currentOrigin }, environments);
   }
 }
