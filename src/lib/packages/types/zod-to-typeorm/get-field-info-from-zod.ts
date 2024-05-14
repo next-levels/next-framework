@@ -24,28 +24,38 @@ export function zodToTypeOrmColumn(zodType: ZodTypeAny): ColumnOptions {
   let options: ColumnOptions = {};
 
   if (isZodInstance(ZodString, zodType)) {
-    // Check for 'max' kind check and correctly handle extraction of 'value' when available
-    const maxLengthCheck = zodType._def.checks.find(
-      (check) => check.kind === 'max'
-    );
-    let maxLength: number | string =
-      maxLengthCheck && 'value' in maxLengthCheck
-        ? maxLengthCheck.value
-        : undefined;
+    if (zodType._def && zodType._def.checks) {
+      const maxLengthCheck = zodType._def.checks.find(
+        (check) => check.kind === 'max'
+      );
 
-    if (typeof maxLength === 'string') {
-      maxLength = parseInt(maxLength);
+      let maxLength: number | string =
+        maxLengthCheck && 'value' in maxLengthCheck
+          ? maxLengthCheck.value
+          : undefined;
+
+      if (typeof maxLength === 'string') {
+        maxLength = parseInt(maxLength);
+      }
+
+      options = {
+        type: maxLength && maxLength <= 255 ? 'varchar' : 'text',
+        nullable: zodType.isNullable(),
+        ...(maxLength && maxLength <= 255 ? { length: maxLength } : {}),
+      };
+    } else {
+      options = {
+        type: 'varchar',
+        nullable: zodType.isNullable(),
+      };
     }
-
-    options = {
-      type: maxLength && maxLength <= 255 ? 'varchar' : 'text',
-      nullable: zodType.isNullable(),
-      ...(maxLength && maxLength <= 255 ? { length: maxLength } : {}),
-    };
   } else if (isZodInstance(ZodNumber, zodType)) {
-    const isInteger = Boolean(
-      zodType._def.checks.find((check: any) => check.kind === 'int')
-    );
+    let isInteger = true;
+    if (zodType._def && zodType._def.checks) {
+      isInteger = Boolean(
+        zodType._def.checks.find((check: any) => check.kind === 'int')
+      );
+    }
     options = {
       type: isInteger ? 'int' : 'float',
       nullable: zodType.isNullable(),
@@ -87,7 +97,9 @@ export function zodToTypeOrmColumn(zodType: ZodTypeAny): ColumnOptions {
   }
 
   if (isZodInstance(ZodDefault, zodType)) {
-    options.default = zodType._def.defaultValue();
+    if (zodType._def) {
+      //options.default = zodType._def.defaultValue();
+    }
   }
 
   if (zodType.isNullable()) {
