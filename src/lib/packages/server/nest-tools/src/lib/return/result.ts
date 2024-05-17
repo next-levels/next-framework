@@ -4,7 +4,7 @@ export class Result<T> {
   public isSuccess: boolean;
   public isFailure: boolean;
   public error: ErrorCode | null;
-  private readonly _value: T;
+  readonly _value: T;
 
   private constructor(
     isSuccess: boolean,
@@ -29,7 +29,7 @@ export class Result<T> {
   }
 
   public static ok<U>(value?: U): Result<U> {
-     return new Result<U>(true, null, value);
+    return new Result<U>(true, null, value);
   }
 
   public static fail<U>(error: ErrorCode): Result<U> {
