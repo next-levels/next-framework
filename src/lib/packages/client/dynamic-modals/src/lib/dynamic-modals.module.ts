@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CreateWizardComponent } from './components/create-wizard/create-wizard.component';
 import { TranslateModule } from '@ngx-translate/core';
@@ -22,6 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { InlineSVGModule } from 'ng-inline-svg-2';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { CreateSimpleComponent } from './components/create-simple/create-simple.component';
+import { TranslateModalComponent } from './components/translate-modal/translate-modal.component';
 
 const store = new MinimizeStore();
 
@@ -31,6 +32,7 @@ const store = new MinimizeStore();
     BatchWizardComponent,
     ViewModalComponent,
     CreateSimpleComponent,
+    TranslateModalComponent
   ],
   imports: [
     CommonModule,
@@ -53,6 +55,7 @@ const store = new MinimizeStore();
     BatchWizardComponent,
     ViewModalComponent,
     CreateSimpleComponent,
+    TranslateModalComponent
   ],
   providers: [
     {
@@ -63,5 +66,6 @@ const store = new MinimizeStore();
     MinimizeService,
     SwalService,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class DynamicModalsModule {}
