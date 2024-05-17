@@ -18,6 +18,7 @@ import {
   LISTFIELD_ALL_PREFIX,
   META,
   ScopeFilter,
+  SYSTEM_SCHEMA_METADATA_KEY,
 } from '@next-levels/types';
 
 @Component({
@@ -119,11 +120,10 @@ export class CreateWizardComponent implements AfterViewInit, OnInit {
 
       let fields = [...builderFields, ...listFields];
 
-      if (this.config && this.config.length > 0) {
-        fields = this.config
-          .filter((item: any) => item.create === true)
-          .map((item: any) => item.field);
-      }
+      let systemFields =
+        Reflect.getMetadata(SYSTEM_SCHEMA_METADATA_KEY, this.model) || [];
+
+      fields = fields.filter((field) => !systemFields.includes(field));
 
       this.getStepsConfig(fields);
     }
@@ -176,11 +176,13 @@ export class CreateWizardComponent implements AfterViewInit, OnInit {
     }
 
     if (this.edit) {
-      this.modelFacade.base.update(form);
+      this.formController.update();
       this._matDialog.closeAll();
     } else {
-      this.modelFacade.base.add(form);
-      this._matDialog.closeAll();
+      let success = this.formController.save();
+      if (success) {
+        this._matDialog.closeAll();
+      }
     }
   }
 

@@ -1,11 +1,3 @@
 <div [ngClass]="{ hidden: formField?.hidden }">
   <ng-template #input></ng-template>
 </div>
-<div
-  *ngIf="
-    getFormControl()?.errors
-  "
-  class="fv-plugins-message-container invalid-feedback"
->
-   
-</div>

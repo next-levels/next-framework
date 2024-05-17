@@ -47,21 +47,21 @@ export function applyTypeOrmDecoratorsFromZodFlags(
     return true;
   }
 
-  if (schema.description?.includes('created_at')) {
+  if (flags?.includes('created_at')) {
     CreateDateColumn({
       nullable: true,
     })(target, propertyKey);
     return true;
   }
 
-  if (schema.description?.includes('updated_at')) {
+  if (flags?.includes('updated_at')) {
     UpdateDateColumn({
       nullable: true,
     })(target, propertyKey);
     return true;
   }
 
-  if (schema.description?.includes('index')) {
+  if (flags?.includes('index')) {
     Index()(target, propertyKey);
   }
   return false;

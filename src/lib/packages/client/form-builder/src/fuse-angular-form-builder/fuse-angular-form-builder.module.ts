@@ -41,6 +41,7 @@ import {
 import { InputMultiImageFileDirective } from './form-elements/input-multiimagefile/input-multiimagefile.directive';
 import { CodeEditorModule } from '@ngstack/code-editor';
 import { NgxFileDropModule } from 'ngx-file-drop';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   imports: [
@@ -50,6 +51,7 @@ import { NgxFileDropModule } from 'ngx-file-drop';
     TranslateModule,
     MatInputModule,
     MatDatepickerModule,
+    MatFormFieldModule,
     MatNativeDateModule,
     MatAutocompleteModule,
     MatSortModule,
@@ -102,10 +104,16 @@ import { NgxFileDropModule } from 'ngx-file-drop';
   ],
 })
 export class FuseAngularFormBuilderModule {
-  static forRoot(): ModuleWithProviders<FuseAngularFormBuilderModule> {
+  static forRoot(
+    formStyles: string = ''
+  ): ModuleWithProviders<FuseAngularFormBuilderModule> {
     return {
       ngModule: FuseAngularFormBuilderModule,
       providers: [
+        {
+          provide: 'formStyles',
+          useValue: formStyles,
+        },
         ...FormBuilderModule.forRoot({
           HIDDEN: InputTextareaComponent,
           TEXT: InputTextComponent,

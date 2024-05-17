@@ -1,10 +1,15 @@
 <div class="input-checkbox-wrapper mt-1" [formGroup]="fg">
-  <div class="form-check form-check-solid form-switch fv-row">
-    <mat-checkbox
-      formControlName="{{ formField.name }}"
-      (keyup)="onEventChange($event)"
-    >
-      <span *ngIf="!formField.noLabel">{{ formField.label }}</span>
-    </mat-checkbox>
-  </div>
+  <mat-form-field class="mat-invisible" [class]="formStyles" floatLabel="always">
+    <mat-label></mat-label>
+
+    <div class="form-check form-check-solid form-switch fv-row">
+      <input hidden=true matInput>
+      <mat-checkbox
+        formControlName="{{ formField.name }}"
+        (keyup)="onEventChange($event)"
+      >
+        <span *ngIf="!formField.noLabel">{{ formField.label }}</span>
+      </mat-checkbox>
+    </div>
+  </mat-form-field>
 </div>

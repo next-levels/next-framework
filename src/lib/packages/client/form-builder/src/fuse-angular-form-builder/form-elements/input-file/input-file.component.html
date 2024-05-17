@@ -1,72 +1,73 @@
 <div class="input-file-wrapper mt-1" [formGroup]="fg">
-  <mat-label *ngIf="!formField.noLabel">{{ formField.label }}</mat-label>
+  <mat-form-field class="mat-invisible" [class]="formStyles" floatLabel="always">
+    <input hidden=true matInput>
+    <mat-label *ngIf="!formField.noLabel">{{ formField.label }}</mat-label>
 
-  <div class="p-0.5 max-w-sm bg-white rounded-xl shadow-md flex flex-col items-center space-y-4 my-5">
-    <ngx-file-drop
-      *ngIf="!file_id"
-      #fileDropRef
-      class="w-full cursor-pointer "
-      dropZoneLabel="Datei auswählen"
-      dropZoneClassName=" border-dashed border-2  rounded-xl text-center h-12"
-      accept="{{allowedTypes.join(', ')}}"
-      (onFileDrop)="uploadFile($event)"
-      (onFileOver)="fileOver($event)"
-      (onFileLeave)="fileLeave($event)"
-      (click)="openDialog()"
-    >
-      <input type="file" (change)="fileBrowseHandler($event )" multiple>
-    </ngx-file-drop>
+    <div class="max-w-sm bg-white dark:bg-slate-800 rounded shadow-sm flex flex-col items-center space-y-4 w-full">
+      <ngx-file-drop
+        *ngIf="!file_id"
+        #fileDropRef
+        class="w-full cursor-pointer "
+        dropZoneLabel="Datei auswählen"
+        dropZoneClassName="   border  rounded-md text-center h-12"
+        accept="{{allowedTypes.join(', ')}}"
+        (onFileDrop)="uploadFile($event)"
+        (onFileOver)="fileOver($event)"
+        (onFileLeave)="fileLeave($event)"
+        (click)="openDialog()"
+      >
+        <input type="file" (change)="fileBrowseHandler($event )" multiple>
+      </ngx-file-drop>
 
-    <div *ngIf="file_id" class="w-full border-dashed border-2  rounded-xl text-center  items-baseline">
-      <div class="flex justify-between bg-gray-50 m-1 rounded-lg h-10">
+      <div *ngIf="file_id" class="w-full  border  rounded-md text-center  items-baseline">
+        <div class="flex justify-between bg-gray-50 dark:bg-slate-900  rounded-lg h-12">
 
-        <div class="flex self-center pl-2">
+          <div class="flex self-center pl-2">
+            <div class="self-center">
+
+              <div
+                *ngIf="file_type == 'image/png'"
+                class="rounded w-8 h-8  bg-center bg-cover flex"
+                [style.background-image]="'url(' + getSource(file_id) + ')'">
+
+              </div>
+
+              <div *ngIf="file_type != 'image/png'" class="p-1 pt-2">
+                <mat-icon
+                  class="icon-size-4"
+                  [svgIcon]="'heroicons_outline:document'"
+                ></mat-icon>
+              </div>
+            </div>
+            <div class="self-center pl-2 text-xs max-w-60">
+              <p>{{ file_name }} ({{ file_size / 1000 }} KB)</p>
+            </div>
+          </div>
+
           <div class="self-center">
-
-            <div
-              *ngIf="file_type == 'image/png'"
-              class="rounded w-8 h-8  bg-center bg-cover flex"
-              [style.background-image]="'url(' + getSource(file_id) + ')'">
-
-            </div>
-
-            <div *ngIf="file_type != 'image/png'" class="p-1 pt-2">
+            <button
+              (click)="downloadFile(file_id)"
+              mat-icon-button>
               <mat-icon
-                class="icon-size-4"
-                [svgIcon]="'heroicons_outline:document'"
+                class="icon-size-3"
+                [svgIcon]="'heroicons_outline:arrow-down-tray'"
               ></mat-icon>
-            </div>
+            </button>
+            <button
+              (click)="deleteFile(file_id)"
+              mat-icon-button>
+              <mat-icon
+                class="icon-size-3"
+                [svgIcon]="'heroicons_outline:trash'"
+              ></mat-icon>
+            </button>
           </div>
-          <div class="self-center pl-2 text-xs max-w-60">
-            <p>{{ file_name }} ({{ file_size / 1000 }} KB)</p>
-          </div>
+
         </div>
-
-
-        <div>
-          <button
-            (click)="downloadFile(file_id)"
-            mat-icon-button>
-            <mat-icon
-              class="icon-size-3"
-              [svgIcon]="'heroicons_outline:arrow-down-tray'"
-            ></mat-icon>
-          </button>
-          <button
-            (click)="deleteFile(file_id)"
-            mat-icon-button>
-            <mat-icon
-              class="icon-size-3"
-              [svgIcon]="'heroicons_outline:trash'"
-            ></mat-icon>
-          </button>
-        </div>
-
       </div>
     </div>
-  </div>
 
-
+  </mat-form-field>
 </div>
 
 

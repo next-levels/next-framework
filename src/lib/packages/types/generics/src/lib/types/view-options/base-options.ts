@@ -1,5 +1,5 @@
 // Style options type definition
-import { BuilderOptions } from '@next-levels/types';
+import { BuilderOptions, HeroIcon } from '@next-levels/types';
 
 export interface StyleOptions {
   type: 'small' | 'half' | 'full';
@@ -12,6 +12,12 @@ export interface FormControl {
   translatable(): FormControl;
 
   readonly(): FormControl;
+
+  hint(hint: string): FormControl;
+
+  suffix(suffix: string): FormControl;
+
+  icon(icon: HeroIcon): FormControl;
 
   style(styleOptions: StyleOptions): FormControl;
 
@@ -84,7 +90,22 @@ function createElement(
       return this;
     },
     style(styleOptions: StyleOptions) {
-      settings.size = styleOptions.type;
+      if (!settings.options) {
+        settings.options = {};
+      }
+      settings.options.size = styleOptions.type;
+      return this;
+    },
+    hint(hint: string) {
+      settings.hint = hint;
+      return this;
+    },
+    suffix(suffix: string) {
+      settings.suffix = suffix;
+      return this;
+    },
+    icon(icon: HeroIcon) {
+      settings.icon = icon;
       return this;
     },
     view() {

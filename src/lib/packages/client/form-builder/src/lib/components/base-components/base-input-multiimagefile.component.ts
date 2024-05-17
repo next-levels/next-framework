@@ -1,4 +1,9 @@
-import { ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  ViewEncapsulation,
+} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -34,9 +39,10 @@ export class BaseInputMultiImageFileComponent extends BaseInputComponent {
     public _http: HttpClient,
     public readonly _matDialog: MatDialog,
     private route: ActivatedRoute,
-    private _changeDetectorRef: ChangeDetectorRef
+    private _changeDetectorRef: ChangeDetectorRef,
+    @Inject('formStyles') public override formStyles: string
   ) {
-    super(cdRef, translateService);
+    super(cdRef, translateService, formStyles);
     this.baseUrl = this.environment.baseUrl;
   }
 

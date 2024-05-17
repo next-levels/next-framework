@@ -1,6 +1,7 @@
 import {
   ChangeDetectorRef,
   Component,
+  Inject,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
@@ -31,9 +32,10 @@ export class InputCodeeditorComponent extends BaseInputTextareaComponent {
   constructor(
     public override cdRef: ChangeDetectorRef,
     public override translateService: TranslateService,
-    public readonly _matDialog: MatDialog
+    public readonly _matDialog: MatDialog,
+    @Inject('formStyles') public override formStyles: string
   ) {
-    super(cdRef, translateService);
+    super(cdRef, translateService, formStyles);
   }
 
   override init() {

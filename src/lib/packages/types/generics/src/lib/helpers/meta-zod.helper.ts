@@ -1,6 +1,9 @@
 import 'reflect-metadata';
 import { z } from 'zod';
-import { ZOD_SCHEMA_METADATA_KEY } from '@next-levels/types';
+import {
+  SYSTEM_SCHEMA_METADATA_KEY,
+  ZOD_SCHEMA_METADATA_KEY,
+} from '@next-levels/types';
 import { FormGroup } from '@angular/forms';
 
 export function constructZodSchemaFromClass(
@@ -10,8 +13,16 @@ export function constructZodSchemaFromClass(
   const schemaObject: { [key: string]: z.ZodTypeAny } = {};
   const keys = Object.getOwnPropertyNames(targetClass.prototype);
 
+  let systemFields =
+    Reflect.getMetadata(SYSTEM_SCHEMA_METADATA_KEY, targetClass.prototype) ||
+    [];
+
   keys.forEach((propertyKey) => {
-    if (propertyKey !== 'constructor' && form.controls[propertyKey]) {
+    if (
+      propertyKey !== 'constructor' &&
+      form.controls[propertyKey] &&
+      !systemFields.includes(propertyKey)
+    ) {
       const schema = Reflect.getMetadata(
         ZOD_SCHEMA_METADATA_KEY,
         targetClass.prototype,

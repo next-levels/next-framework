@@ -34,6 +34,7 @@ export class ViewElementComponent implements AfterViewInit, OnInit {
   @Input() viewModel: any;
   @Input() viewObject: any;
   @Input() detailView = false;
+  @Input() label = false;
   @Input() listController: ListController;
 
   viewModelInstance: any;
@@ -57,12 +58,18 @@ export class ViewElementComponent implements AfterViewInit, OnInit {
     }
 
     this.translateService.get('test').subscribe((translated: string) => {
-      this.labelCode =
-        META.getNameByModel(this.viewModel) + '.properties.' + this.fieldName;
+      const modelPrototype = this.viewModel.prototype
+        ? this.viewModel.prototype
+        : this.viewModel;
 
-      this.listField = {
-        label: this.translateService.instant(this.labelCode),
-      };
+      this.labelCode =
+        META.getNameByModel(modelPrototype) + '.properties.' + this.fieldName;
+
+      if (this.label && this.labelCode) {
+        this.listField = {
+          label: this.translateService.instant(this.labelCode),
+        };
+      }
     });
   }
 
@@ -77,7 +84,9 @@ export class ViewElementComponent implements AfterViewInit, OnInit {
           ...this.getSettingsField(this.fieldName),
         };
 
-        this.listField.label = this.translateService.instant(this.labelCode);
+        if (this.label && this.labelCode) {
+          this.listField.label = this.translateService.instant(this.labelCode);
+        }
 
         if (this.listBuilderComponents) {
           const component = this.listBuilderComponents[this.listField.type];

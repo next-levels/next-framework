@@ -8,6 +8,7 @@ import { zodToFields } from '../../../../zod-to-typeorm/get-frontend-info-from-z
 import { Field } from './field.decorator';
 
 export const ZOD_SCHEMA_METADATA_KEY = Symbol('ZodSchema');
+export const SYSTEM_SCHEMA_METADATA_KEY = Symbol('SystemSchema');
 
 export function Property(
   schema: z.ZodType<any> | any,
@@ -47,7 +48,6 @@ export function Property(
       if (needColumn) {
         let columnOptions = zodToTypeOrmColumn(schema);
         Column(columnOptions)(target, propertyKey);
-
         Reflect.defineMetadata(
           'design:typeorm:options',
           columnOptions,
@@ -58,6 +58,22 @@ export function Property(
     }
 
     let fieldOptions = zodToFields(schema);
+
+    if (flags?.includes('system')) {
+      const v = Reflect.getMetadata(SYSTEM_SCHEMA_METADATA_KEY, target) || [];
+
+      if (!v.includes(propertyKey)) {
+        v.push(propertyKey);
+      }
+
+      Reflect.defineMetadata(SYSTEM_SCHEMA_METADATA_KEY, v, target);
+
+      fieldOptions = {
+        ...fieldOptions,
+        hidden: true,
+      };
+    }
+
     Field(fieldOptions)(target, propertyKey);
   };
 }

@@ -55,6 +55,10 @@ export class FormElementComponent implements AfterViewInit {
       classes += 'w-full ';
     }
 
+    if (this.formField?.hidden) {
+      classes += 'hidden ';
+    }
+
     return classes.trim();
   }
 

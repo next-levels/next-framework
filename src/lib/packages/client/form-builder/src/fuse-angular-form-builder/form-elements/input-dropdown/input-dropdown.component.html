@@ -1,5 +1,5 @@
 <div [formGroup]="fg" class="input-dropdown-wrapper mt-1">
-  <mat-form-field class="flex-auto gt-xs:pr-3 w-full" floatLabel="always">
+  <mat-form-field [class]="formStyles" class="flex-auto gt-xs:pr-3 w-full" floatLabel="always">
     <mat-label *ngIf="!formField.noLabel">{{ formField.label }}</mat-label>
 
     <mat-select (change)="logChange($event)" [formControlName]="formField.name">

@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  Inject,
   OnInit,
 } from '@angular/core';
 import { BaseInputComponent } from './base-input.component';
@@ -18,8 +19,9 @@ export class BaseInputTextComponent
 {
   constructor(
     public override cdRef: ChangeDetectorRef,
-    public override translateService: TranslateService
+    public override translateService: TranslateService,
+    @Inject('formStyles') public override formStyles: string
   ) {
-    super(cdRef, translateService);
+    super(cdRef, translateService, formStyles);
   }
 }

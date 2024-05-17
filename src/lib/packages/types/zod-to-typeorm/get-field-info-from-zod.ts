@@ -39,7 +39,7 @@ export function zodToTypeOrmColumn(zodType: ZodTypeAny): ColumnOptions {
       }
 
       options = {
-        type: maxLength && maxLength <= 255 ? 'varchar' : 'text',
+        type: maxLength && maxLength >= 255 ? 'text' : 'varchar',
         nullable: zodType.isNullable(),
         ...(maxLength && maxLength <= 255 ? { length: maxLength } : {}),
       };
@@ -98,7 +98,7 @@ export function zodToTypeOrmColumn(zodType: ZodTypeAny): ColumnOptions {
 
   if (isZodInstance(ZodDefault, zodType)) {
     if (zodType._def) {
-      //options.default = zodType._def.defaultValue();
+      options.default = zodType._def.defaultValue();
     }
   }
 

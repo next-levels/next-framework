@@ -4,6 +4,7 @@ import {
   Component,
   EventEmitter,
   HostBinding,
+  Inject,
   Input,
   OnInit,
   Output,
@@ -40,7 +41,8 @@ export class BaseInputComponent implements OnInit {
 
   constructor(
     public cdRef: ChangeDetectorRef,
-    public translateService: TranslateService
+    public translateService: TranslateService,
+    @Inject('formStyles') public formStyles: string
   ) {}
 
   ngOnInit(): void {

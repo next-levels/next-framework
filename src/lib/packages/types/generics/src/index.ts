@@ -49,3 +49,5 @@ export * from './lib/types/options/property-tag';
 export * from './lib/types/options/dropdown-options';
 
 export * from './lib/types/view-options/base-options';
+
+export * from './lib/common/icons/icons';

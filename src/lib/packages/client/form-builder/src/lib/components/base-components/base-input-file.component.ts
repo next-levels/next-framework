@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -35,9 +35,10 @@ export class BaseInputFileComponent extends BaseInputComponent {
     public _httpClient: HttpClient,
     public override cdRef: ChangeDetectorRef,
     public override translateService: TranslateService,
-    public environmentStorage: EnvironmentStorageService //@Inject(FilesService) //private readonly filesService: FilesService
+    public environmentStorage: EnvironmentStorageService, //@Inject(FilesService) //private readonly filesService: FilesService
+    @Inject('formStyles') public override formStyles: string
   ) {
-    super(cdRef, translateService);
+    super(cdRef, translateService, formStyles);
     this.baseUrl = this.environmentStorage.baseSocket;
     this.baseApiUrl = this.baseUrl + '/api/files/';
   }

@@ -1,5 +1,5 @@
 <div class="input-textarea-wrapper mt-1 input-wrapper" [formGroup]="fg">
-  <mat-form-field floatLabel="always" class="flex-auto">
+  <mat-form-field [class]="formStyles" floatLabel="always" class="flex-auto">
     <mat-label *ngIf="!formField.noLabel">{{ formField.label }}</mat-label>
     <textarea
       matInput

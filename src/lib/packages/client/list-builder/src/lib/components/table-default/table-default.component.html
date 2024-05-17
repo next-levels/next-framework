@@ -18,7 +18,6 @@
       </div>
     </ng-container>
 
-
     <ng-container>
       <div class="flex shrink-0 items-center sm:ml-4 ng-star-inserted my-5">
         <ng-container *ngFor="let action of actions">
@@ -115,7 +114,7 @@
                 <ng-container matColumnDef="select">
                   <th *matHeaderCellDef class="w-25px w-0" mat-header-cell>
                     <div
-                      class="form-check form-check-sm form-check-custom form-check-solid"
+                      class="form-check form-check-sm form-check-custom form-check-solid "
                     >
                       <input
                         (click)="masterToggle()"
@@ -141,7 +140,7 @@
                   </td>
                 </ng-container>
 
-                <ng-container *ngFor="let field of fields" matColumnDef="{{ field }}">
+                <ng-container *ngFor="let field of fields; let i = index" matColumnDef="{{ field }}" [sticky]="i === 0">
                   <th *matHeaderCellDef mat-header-cell mat-sort-header>
                     {{
                       translateService.instant(listController.getElementLabel(field))
@@ -151,7 +150,7 @@
                   <td
                     (click)="selectRow(data)"
                     *matCellDef="let data"
-                    class="py-1 align-start bg-transparent border-b whitespace-nowrap shadow-transparent"
+                    class="py-1 align-start bg-transparent border-b whitespace-nowrap shadow-transparent bg-white dark:bg-slate-900"
                     mat-cell
                   >
                     <div class="flex ">
@@ -165,12 +164,12 @@
                   </td>
                 </ng-container>
 
-                <ng-container matColumnDef="actions">
-                  <th *matHeaderCellDef mat-header-cell>
+                <ng-container matColumnDef="actions" [stickyEnd]="true">
+                  <th *matHeaderCellDef mat-header-cell class="bg-white dark:bg-slate-900">
                   </th>
                   <td
                     *matCellDef="let data"
-                    class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent action-cell"
+                    class="p-2 align-middle border-b whitespace-nowrap shadow-transparent action-cell bg-white dark:bg-slate-900"
                     mat-cell
                     style="width: 150px"
                   >

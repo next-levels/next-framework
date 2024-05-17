@@ -6,6 +6,7 @@ export const PropertyTag = {
   created_at: 'created_at',
   updated_at: 'updated_at',
   index: 'index',
+  system: 'system',
 } as const;
 
 type TagTypesKey = keyof typeof PropertyTag;

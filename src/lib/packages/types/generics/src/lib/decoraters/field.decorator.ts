@@ -9,7 +9,6 @@ export function Field(o: BuilderOptions | FormControl) {
   if ('getSettings' in o) {
     o = o.getSettings();
   }
-
   return (target: object, propertyKey: string) => {
     const variables =
       Reflect.getMetadata(BUILDERFIELD_ALL_PREFIX, target) || [];

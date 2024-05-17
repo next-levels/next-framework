@@ -1,5 +1,5 @@
 <ng-container [formGroup]="fg">
-  <mat-form-field floatLabel="always">
+  <mat-form-field [class]="formStyles" floatLabel="always">
     <mat-label *ngIf="!formField.noLabel">{{ formField.label }}</mat-label>
     <input
       matInput
@@ -7,6 +7,24 @@
       placeholder="{{ formField.label }}"
       [spellcheck]="false"
       type="number"
+      [readonly]="formField.readonly"
+
     />
+
+    <mat-icon
+      *ngIf="formField?.icon"
+      matIconSuffix
+      [svgIcon]="'heroicons_solid:'+formField.icon"
+      class="icon-size-5 text-current"
+    ></mat-icon>
+    <span *ngIf="formField?.suffix" matSuffix>{{ formField.suffix }}</span>
+    <mat-hint *ngIf="formField?.hint" align="start">{{ formField?.hint }}</mat-hint>
+    <mat-hint *ngIf="formField?.readonly" align="start">(Lesezugriff)</mat-hint>
+    <mat-error class="mat-error-fixed">
+      @if (formController) {
+        {{ formController.getErrorMessage(formField.name, formController.getElementLabel(formField.name) | translate) }}
+      }
+    </mat-error>
+
   </mat-form-field>
 </ng-container>

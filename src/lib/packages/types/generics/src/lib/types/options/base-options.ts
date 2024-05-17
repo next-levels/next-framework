@@ -14,4 +14,8 @@ export interface BuilderOptions {
   hidden?: boolean;
   options?: any;
   readonly?: boolean;
+  icon?: string;
+  suffix?: string;
+  hint?: string;
+  max?: number;
 }

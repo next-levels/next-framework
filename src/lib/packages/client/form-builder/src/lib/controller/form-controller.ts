@@ -83,10 +83,13 @@ export class FormController {
     });
   }
 
-  save(formValues: any = null): void {
+  save(formValues: any = null): boolean {
+    this.validateForm(this.modelDefinition);
     if (this.form.valid) {
-      this.facade.base.save(this.form.value);
+      let formData = this.filterNullFields(this.form.value);
+      this.facade.base.add(formData);
     }
+    return this.form.valid;
   }
 
   update(formValues: any = null, model = this.modelDefinition): void {
@@ -94,14 +97,6 @@ export class FormController {
     if (this.form.valid) {
       this.facade.base.update(this.form.value);
     }
-
-    /*
-  this.form.updateValueAndValidity();
-    this.form.markAllAsTouched();
-    this.getForm().markAsPristine();
-     this.facade.update(this.form.value);
-
-     */
   }
 
   detectChangedField(currentValues: any) {
@@ -127,9 +122,7 @@ export class FormController {
     } catch (error) {
       if (error instanceof z.ZodError) {
         // Set the form control to invalid and pass the Zod error message
-        this.form
-          .get(fieldName)
-          .setErrors({ customError: error.errors[0].message });
+        this.form.get(fieldName).setErrors({ zodError: error });
       }
     }
   }
@@ -139,8 +132,6 @@ export class FormController {
       model.constructor,
       this.form
     );
-
-    console.log('validModel', validModel);
 
     try {
       validModel.parse(this.form.value);
@@ -173,6 +164,12 @@ export class FormController {
     }
   }
 
+  filterNullFields(data: any): any {
+    return Object.fromEntries(
+      Object.entries(data).filter(([key, value]) => value !== null)
+    );
+  }
+
   applyZodErrorsToForm(errors: z.ZodIssue[]): void {
     errors.forEach((error) => {
       const path =
@@ -181,7 +178,6 @@ export class FormController {
           : error.path[0].toString();
       const field = this.form.get(path);
       if (field) {
-        // Create a custom error message or use the one from Zod
         field.setErrors({ zodError: error });
       }
     });
@@ -240,7 +236,7 @@ export class FormController {
     return this.modelDefinition;
   }
 
-  getElementLabel(fieldName: string) {
+  getElementLabel(fieldName: string | undefined): string {
     return (
       META.getNameByModel(this.getModelDefinition()) +
       '.properties.' +
@@ -276,20 +272,18 @@ export class FormController {
     this.beforeSaveFunction = fn;
   }
 
-  getErrorMessage(controlName: string | undefined): string {
+  getErrorMessage(
+    controlName: string | undefined,
+    field: string | undefined
+  ): string {
     const control: FormControl = this.getControl(controlName) as FormControl;
     if (control.errors) {
       for (const errorKey in control.errors) {
-        const params = {
-          value:
-            control.errors[errorKey].requiredLength ||
-            control.errors[errorKey].actualLength ||
-            '',
-        };
         const i18nPath = `model.errors.${controlName}.${errorKey}`;
+        console.log(control.errors);
         const defaultMessage = this.getDefaultMessage(
-          control.errors[errorKey].code,
-          params
+          control.errors[errorKey].issues,
+          field
         );
         return defaultMessage;
         //  let translation = this._translate.instant(i18nPath, params);
@@ -305,15 +299,27 @@ export class FormController {
     return ''; // Return empty if no errors
   }
 
-  private getDefaultMessage(errorType: string, params: any): string {
-    switch (errorType) {
-      case 'invalid_type':
-        return 'This field is required';
-      case 'minlength':
-        return `Minimum length should be ${params.value}`;
-      // Add other cases as necessary
-      default:
-        return 'Invalid field';
+  private getDefaultMessage(errors: z.ZodIssue[], property: string): string {
+    console.log('errors', errors);
+    if (errors.length > 0) {
+      const error = errors[0];
+      console.log('error', error);
+      switch (error.code) {
+        case 'invalid_type':
+          return 'This field is required';
+        case 'too_small':
+          console.log('error.minimum', error.minimum);
+
+          if (error.minimum == 1) {
+            return `${property} wird benötigt`;
+          }
+
+          return `Feld sollte mindestens ${error.minimum} lang sein.`;
+        // Add other cases as necessary
+        default:
+          return 'Invalid field';
+      }
     }
+    return 'Invalid field';
   }
 }

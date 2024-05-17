@@ -12,4 +12,9 @@ export interface FormOptions {
   disabled?: boolean;
   noLabel?: boolean;
   updateOn?: 'change' | 'blur' | 'submit';
+  readonly?: boolean;
+  icon?: string;
+  suffix?: string;
+  hint?: string;
+  max?: number;
 }

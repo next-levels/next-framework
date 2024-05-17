@@ -7,6 +7,7 @@ import {
   ZodNullable,
   ZodNumber,
   ZodObject,
+  ZodReadonly,
   ZodString,
   ZodTypeAny,
 } from 'zod';
@@ -33,14 +34,42 @@ export function zodToFields(
       };
     }
 
+    if (isZodInstance(ZodReadonly, zodType)) {
+      options = {
+        ...options,
+        readonly: true,
+      };
+    }
+
     return zodToFields(unwrapType(zodType), options);
   }
 
   if (isZodInstance(ZodString, zodType)) {
-    options = {
-      ...options,
-      type: 'TEXT',
-    };
+    if (zodType._def && zodType._def.checks) {
+      const maxLengthCheck = zodType._def.checks.find(
+        (check) => check.kind === 'max'
+      );
+
+      let maxLength: number | string =
+        maxLengthCheck && 'value' in maxLengthCheck
+          ? maxLengthCheck.value
+          : undefined;
+
+      if (typeof maxLength === 'string') {
+        maxLength = parseInt(maxLength);
+      }
+
+      options = {
+        ...options,
+        type: 'TEXT',
+        ...(maxLength && maxLength <= 255 ? { max: maxLength } : {}),
+      };
+    } else {
+      options = {
+        ...options,
+        type: 'TEXT',
+      };
+    }
   } else if (isZodInstance(ZodNumber, zodType)) {
     const isInteger = Boolean(
       zodType._def.checks.find((check: any) => check.kind === 'int')

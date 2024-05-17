@@ -1,10 +1,16 @@
-import {ChangeDetectorRef, Component, Inject, TemplateRef, ViewChild} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { BaseInputComponent } from './base-input.component';
 import { EnvironmentStorageService } from '../../../../../angular-commons/src';
-import {MatDialog} from "@angular/material/dialog";
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'nxt-input-imagefile',
@@ -19,8 +25,8 @@ export class BaseInputImageFileComponent extends BaseInputComponent {
 
   isLoading = false;
 
-  @ViewChild('modalTemplate') modalTemplate: TemplateRef<any>
-  generatedImage ;
+  @ViewChild('modalTemplate') modalTemplate: TemplateRef<any>;
+  generatedImage;
   textareaValue = '';
 
   constructor(
@@ -30,9 +36,10 @@ export class BaseInputImageFileComponent extends BaseInputComponent {
     private environment: EnvironmentStorageService,
     public _http: HttpClient,
     public readonly _matDialog: MatDialog,
-    private _changeDetectorRef: ChangeDetectorRef
+    private _changeDetectorRef: ChangeDetectorRef,
+    @Inject('formStyles') public override formStyles: string
   ) {
-    super(cdRef, translateService);
+    super(cdRef, translateService, formStyles);
     this.baseUrl = this.environment.baseUrl;
   }
 
@@ -42,9 +49,9 @@ export class BaseInputImageFileComponent extends BaseInputComponent {
       ?.getForm()
       .get(this.formField.name)?.value;
 
-    if(this.formField?.options?.base_path){
-      this.baseApiUrl = this.baseUrl  + this.formField.options.base_path;
-    }else {
+    if (this.formField?.options?.base_path) {
+      this.baseApiUrl = this.baseUrl + this.formField.options.base_path;
+    } else {
       this.baseApiUrl = this.baseUrl + '/api/files/';
     }
 
@@ -57,7 +64,7 @@ export class BaseInputImageFileComponent extends BaseInputComponent {
     this._matDialog.open(this.modalTemplate, {
       minWidth: '60%',
       minHeight: '60%',
-      autoFocus: false
+      autoFocus: false,
     });
   }
 
@@ -65,11 +72,10 @@ export class BaseInputImageFileComponent extends BaseInputComponent {
     this.isLoading = true;
     const apiUrl = this.environment.baseUrl + '/api/openai/image';
     const params = {
-      prompt: this.textareaValue
+      prompt: this.textareaValue,
     };
 
-    this._http.post<any>(apiUrl, params).subscribe(value => {
-
+    this._http.post<any>(apiUrl, params).subscribe((value) => {
       this.generatedImage = value.result;
       this._changeDetectorRef.detectChanges();
 

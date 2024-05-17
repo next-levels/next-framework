@@ -131,9 +131,7 @@ export class BaseTableDefaultComponent
 
     const instance = this.registry.retrieve(this.modelReference);
     if (instance && instance.notification) {
-      instance.notification.updated$.subscribe((updated) => {
-        console.log('updated', updated);
-      });
+      instance.notification.updated$.subscribe((updated) => {});
       instance.notification.resetCount();
 
       this.registry.retrieve(this.modelReference).notification.resetCount();
@@ -157,7 +155,10 @@ export class BaseTableDefaultComponent
       this.viewController = META.getListController(this.model) ?? this.model;
     }
 
-    if (haslistFields(this.viewController)) {
+    if (
+      haslistFields(this.viewController) &&
+      this.viewController.listFields().length > 0
+    ) {
       this.fields = this.viewController
         .listFields()
         .filter((field) => this.fields.includes(field));

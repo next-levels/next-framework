@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { FormControl, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
@@ -46,9 +46,10 @@ export class BaseInputRelationDropdownComponent
     public store: Store<any>,
     public override cdRef: ChangeDetectorRef,
     public override translateService: TranslateService,
-    private registry: InstanceRegistryService
+    private registry: InstanceRegistryService,
+    @Inject('formStyles') public override formStyles: string
   ) {
-    super(cdRef, translateService);
+    super(cdRef, translateService, formStyles);
   }
 
   override init(): void {

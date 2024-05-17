@@ -3,7 +3,7 @@ import { ModelRelationOptions } from './options/relation-options';
 import { ActionType } from './ActionType';
 import { Fields, Grids, Groups, Tabs } from '@next-levels/types';
 
-export class FormController<T> {
+export class FormController<T extends object> {
   $createFields: Fields<T> | Groups<T> | Tabs<T> = [];
   $detailFields: Fields<T> | Groups<T> | Tabs<T> = [];
   $detailActions: Array<ActionType>;
@@ -25,6 +25,13 @@ export class FormController<T> {
 
   detailActions(): Array<ActionType> {
     return this.$detailActions;
+  }
+
+  getModelName(entity: T): string {
+    if (entity && 'name' in entity) {
+      return (entity as any).name;
+    }
+    return '';
   }
 
   dropdowns(field: string): DropdownOptions[] {

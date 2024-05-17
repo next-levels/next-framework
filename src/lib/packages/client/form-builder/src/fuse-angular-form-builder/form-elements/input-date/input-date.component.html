@@ -1,5 +1,5 @@
 <div class="input-date-wrapper mt-1" [formGroup]="fg">
-  <mat-form-field floatLabel="always">
+  <mat-form-field [class]="formStyles" floatLabel="always">
     <mat-label *ngIf="!formField.noLabel">{{ formField.label }}</mat-label>
     <input
       matInput

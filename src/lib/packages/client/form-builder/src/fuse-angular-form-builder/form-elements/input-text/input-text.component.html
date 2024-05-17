@@ -1,31 +1,31 @@
 <div [formGroup]="fg" class="input-text-wrapper mt-1 input-wrapper" xmlns="http://www.w3.org/1999/html">
-  <mat-form-field class="" floatLabel="always">
+  <mat-form-field [class]="formStyles" floatLabel="always">
     <mat-label *ngIf="!formField.noLabel">{{ formField.label }}</mat-label>
     <input
+      #input
       [spellcheck]="false"
       formControlName="{{ formField.name }}"
       matInput
       placeholder="{{ formField.label }}"
+      [attr.maxlength]="formField?.max ? formField.max : null"
+      [readonly]=" formField.readonly "
     />
 
+    <mat-icon
+      *ngIf="formField?.icon"
+      matIconSuffix
+      [svgIcon]="'heroicons_solid:'+formField.icon"
+      class="icon-size-5 text-current"
+    ></mat-icon>
+    <span *ngIf="formField?.suffix" matSuffix>{{ formField.suffix }}</span>
+    <mat-hint *ngIf="formField?.max" align="end">{{ input.value.length }}/{{ formField?.max }}</mat-hint>
+    <mat-hint *ngIf="formField?.hint" align="start">{{ formField?.hint }}</mat-hint>
+    <mat-error class="mat-error-fixed">
+      @if (formController) {
+        {{ formController.getErrorMessage(formField.name, formController.getElementLabel(formField.name) | translate) }}
+      }
+    </mat-error>
 
-    <button (click)="translateField()"
-            class=" mat-icon-button   mat-button
-            matSuffix
-            mat-icon-button"
-    >
-      <mat-icon
-        (click)="translateField()"
-        *ngIf="false"
-        [svgIcon]="'heroicons_solid:globe-asia-australia'"
-        class="icon-size-5 text-current"
-      ></mat-icon>
-    </button>
-
-
-    @if (formControl?.invalid && formController) {
-      <mat-error> {{ formController.getErrorMessage(formField.name) }}</mat-error>
-    }
   </mat-form-field>
 </div>
 

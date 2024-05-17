@@ -106,7 +106,7 @@ export class FormComponent implements OnInit {
         }
       }
 
-      if (!fileFields) {
+      if (!fileFields || fileFields.length == 0) {
         let visibilityFields = Reflect.getMetadata(
           BUILDERFIELD_ALL_PREFIX,
           this.model
