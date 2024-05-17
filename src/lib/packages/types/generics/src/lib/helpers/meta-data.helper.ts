@@ -2,6 +2,8 @@ import 'reflect-metadata';
 import { Constructor } from '../types/Constructor';
 import { MODELCLASS_OPTIONS_PREFIX } from '../decoraters/model-class.decorator';
 import { ModelOptions } from '../types/options/model-options';
+import { z } from 'zod';
+import { constructZodSchemaFromClassModel } from './meta-zod.helper';
 
 export const decorator_models: Constructor[] = [];
 export const decorator_models_options: any[] = [];
@@ -24,8 +26,7 @@ export class META {
         if (model) {
           return new model();
         } else {
-          // Handle the case where no model was found.
-          console.log('No model found with the given name.');
+          // console.log('No model found with the given name.');
         }
       }
     }
@@ -46,11 +47,8 @@ export class META {
     if (model) {
       return new model();
     } else {
-      // Handle the case where no model was found.
-      console.log('No model found with the given name.');
+      // console.log('No model found with the given name.');
     }
-
-    // if no model found, return undefined
     return undefined;
   }
 
@@ -62,11 +60,9 @@ export class META {
     if (model) {
       return new model();
     } else {
-      // Handle the case where no model was found.
-      console.log('No model found with the given name.');
+      // console.log('No model found with the given name.');
     }
 
-    // if no model found, return undefined
     return undefined;
   }
 
@@ -100,11 +96,9 @@ export class META {
     if (model) {
       return new model();
     } else {
-      // Handle the case where no model was found.
-      console.log('No model found with the given name.');
+      //  console.log('No model found with the given name.');
     }
 
-    // if no model found, return undefined
     return undefined;
   }
 
@@ -113,8 +107,7 @@ export class META {
     if (model) {
       return new model();
     } else {
-      // Handle the case where no model was found.
-      console.log('No model found with the given name.');
+      // console.log('No model found with the given name.');
     }
 
     // if no model found, return undefined
@@ -131,11 +124,9 @@ export class META {
     if (model) {
       return new model();
     } else {
-      // Handle the case where no model was found.
-      console.log('No model found with the given name.');
+      // console.log('No model found with the given name.');
     }
 
-    // if no model found, return undefined
     return undefined;
   }
 
@@ -144,11 +135,23 @@ export class META {
     if (model) {
       return new model();
     } else {
-      // Handle the case where no model was found.
-      console.log('No model found with the given name: ' + name);
+      // console.log('No model found with the given name: ' + name);
     }
 
-    // if no model found, return undefined
     return undefined;
+  }
+
+  static validateModel(model: any, data: any): boolean {
+    const valldateModel = constructZodSchemaFromClassModel(model);
+
+    try {
+      valldateModel.parse(data);
+      return true;
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        console.error('error', error);
+      }
+    }
+    return false;
   }
 }

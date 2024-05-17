@@ -280,42 +280,30 @@ export class FormController {
     if (control.errors) {
       for (const errorKey in control.errors) {
         const i18nPath = `model.errors.${controlName}.${errorKey}`;
-        console.log(control.errors);
-        const defaultMessage = this.getDefaultMessage(
-          control.errors[errorKey].issues,
-          field
-        );
-        return defaultMessage;
-        //  let translation = this._translate.instant(i18nPath, params);
-        /*
-                if (translation === i18nPath) {
-                  return defaultMessage; // Fallback to default if no translation found
-                }
-                return translation;
 
-         */
+        if (errorKey === 'zodError') {
+          const defaultMessage = this.getDefaultMessage(
+            control.errors[errorKey].issues,
+            field
+          );
+          return defaultMessage;
+        }
       }
     }
     return ''; // Return empty if no errors
   }
 
   private getDefaultMessage(errors: z.ZodIssue[], property: string): string {
-    console.log('errors', errors);
     if (errors.length > 0) {
       const error = errors[0];
-      console.log('error', error);
       switch (error.code) {
         case 'invalid_type':
-          return 'This field is required';
+          return 'Feld wird benötigt';
         case 'too_small':
-          console.log('error.minimum', error.minimum);
-
           if (error.minimum == 1) {
             return `${property} wird benötigt`;
           }
-
           return `Feld sollte mindestens ${error.minimum} lang sein.`;
-        // Add other cases as necessary
         default:
           return 'Invalid field';
       }

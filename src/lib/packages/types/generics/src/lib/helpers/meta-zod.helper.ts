@@ -37,6 +37,28 @@ export function constructZodSchemaFromClass(
   return z.object(schemaObject);
 }
 
+export function constructZodSchemaFromClassModel(
+  targetClass: Function
+): z.ZodTypeAny {
+  const schemaObject: { [key: string]: z.ZodTypeAny } = {};
+  const keys = Object.getOwnPropertyNames(targetClass.prototype);
+
+  keys.forEach((propertyKey) => {
+    if (propertyKey !== 'constructor') {
+      const schema = Reflect.getMetadata(
+        ZOD_SCHEMA_METADATA_KEY,
+        targetClass.prototype,
+        propertyKey
+      );
+      if (schema) {
+        schemaObject[propertyKey] = schema;
+      }
+    }
+  });
+
+  return z.object(schemaObject);
+}
+
 export function constructZodSchemaFromClassField(
   targetClass: Function,
   field: string

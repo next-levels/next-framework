@@ -111,6 +111,28 @@ export function zodToFields(
   } else {
   }
 
+  if (zodType._def && zodType._def.checks) {
+    const minLengthCheck = zodType._def.checks.find(
+      (check) => check.kind === 'min'
+    );
+
+    let minLength: number | string =
+      minLengthCheck && 'value' in minLengthCheck
+        ? minLengthCheck.value
+        : undefined;
+
+    if (typeof minLength === 'string') {
+      minLength = parseInt(minLength);
+    }
+
+    if (minLength && minLength > 0) {
+      options = {
+        ...options,
+        required: true,
+      };
+    }
+  }
+
   if (zodType.isOptional()) {
     options.required = false;
   }
