@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import { BaseController } from './BaseController';
 import { ScopeFilter } from '@next-levels/types';
-import { FacadeRegistry } from '../../../../generic-store';
 
 export class ListController extends BaseController {
   scope: ScopeFilter[] = [];
@@ -16,12 +15,6 @@ export class ListController extends BaseController {
     }
 
     if (facade === undefined) {
-      const myFacade = FacadeRegistry.getFacade(model.constructor.name);
-      if (myFacade) {
-        facade = myFacade;
-      } else {
-        throw new Error('No facade found for model ' + model.constructor.name);
-      }
     }
     super(model, facade, modelDefinition);
   }

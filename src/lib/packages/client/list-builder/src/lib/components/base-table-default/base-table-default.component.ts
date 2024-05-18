@@ -49,6 +49,7 @@ import {
 } from '../../../../../dynamic-modals';
 import { hasListActions, haslistFields } from '../../helpers/list.helper';
 import { InstanceRegistryService } from '../../../../../angular-commons';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   template: '<ng-container></ng-container>',
@@ -89,6 +90,9 @@ export class BaseTableDefaultComponent
   actions: [] = [];
   modelReference: string;
   itemsPerPage = 20;
+
+  instnace_id: string;
+
   public pagination: PaginationMeta = {
     currentPage: 1,
     itemsPerPage: this.itemsPerPage,
@@ -115,7 +119,9 @@ export class BaseTableDefaultComponent
     private componentFactoryResolver: ComponentFactoryResolver,
     public cdRef: ChangeDetectorRef,
     private registry: InstanceRegistryService
-  ) {}
+  ) {
+    this.instnace_id = uuidv4();
+  }
 
   ngOnInit() {
     this.activeRoute.queryParams.subscribe((params) => {
@@ -189,6 +195,8 @@ export class BaseTableDefaultComponent
 
     this.subscription = this.modelFacade?.base.filtered$.subscribe(
       (entries: unknown) => {
+        console.log('id', this.instnace_id);
+        console.log('entries', entries);
         this.dataSource.data = entries as any[];
         this.cdRef.detectChanges();
       }

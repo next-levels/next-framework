@@ -12,7 +12,6 @@ export * from './lib/types/base.type';
 export * from './lib/types/base.service';
 export * from './lib/types/batch.facade';
 export * from './lib/types/base-facade.type';
-export * from './lib/facades-registry/facades.registry';
 export * from './lib/+store-types/notifcation/notification.actions';
 export * from './lib/+store-types/notifcation/notification.data';
 export * from './lib/+store-types/notifcation/notification.effects';

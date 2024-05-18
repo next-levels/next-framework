@@ -19,6 +19,8 @@ export function createBaseReducers<
       error: null,
     })),
     on(actions.loadSuccess, (state, { payload: entities }) => {
+      console.log('loadSuccess', state);
+
       return entityAdapter.setAll(entities, state);
     }),
     on(actions.loadFail, (state, { error }) => ({
@@ -38,11 +40,7 @@ export function createBaseReducers<
     }),
 
     on(actions.loadEntitiesFilteredSuccess, (state, { payload: paginated }) => {
-      if (
-        !paginated ||
-        !Array.isArray(paginated.data) ||
-        paginated.data.length === 0
-      ) {
+      if (!paginated || !Array.isArray(paginated.data)) {
         return {
           ...state,
           loaded: false,
@@ -50,6 +48,7 @@ export function createBaseReducers<
           error: null,
         };
       }
+      console.log('loadEntitiesFilteredSuccess', state);
       return entityAdapter.setAll(
         (<EntityPaginated<EntityType>>paginated).data,
         {
