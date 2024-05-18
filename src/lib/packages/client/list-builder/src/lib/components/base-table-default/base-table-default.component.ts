@@ -6,9 +6,11 @@ import {
   ComponentFactoryResolver,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import {
@@ -57,7 +59,7 @@ import { v4 as uuidv4 } from 'uuid';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BaseTableDefaultComponent
-  implements OnInit, OnDestroy, AfterViewInit
+  implements OnInit, OnChanges, OnDestroy, AfterViewInit
 {
   @Input() listController: ListController;
   @Input() viewController: any;
@@ -116,7 +118,6 @@ export class BaseTableDefaultComponent
     private activeRoute: ActivatedRoute,
     public router: Router,
     public readonly _matDialog: MatDialog,
-    private componentFactoryResolver: ComponentFactoryResolver,
     public cdRef: ChangeDetectorRef,
     private registry: InstanceRegistryService
   ) {
@@ -181,7 +182,6 @@ export class BaseTableDefaultComponent
       this.displayedColumns = [...this.displayedColumns, ...this.fields];
       this.displayedColumns.push('actions');
     }
-
     if (this.listController.scope.length > 0) {
       this.listController.scope.forEach((scope) => {
         if (scope.value) {
@@ -238,6 +238,38 @@ export class BaseTableDefaultComponent
       )
       .subscribe();
     this.cdRef.detectChanges();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if ('listController' in changes) {
+      this.filterOptions = {
+        page: this.pagination.currentPage,
+        limit: this.pagination.itemsPerPage,
+        sortBy: `${
+          this.pagination.sortBy[0][0]
+        }:${this.pagination.sortBy[0][1].toUpperCase()}`,
+        search: '',
+      };
+      if (this.listController.scope.length > 0) {
+        this.listController.scope.forEach((scope) => {
+          if (scope.value) {
+            this.filterOptions['filter.' + scope.key] =
+              scope.operation + ':' + scope.value;
+          } else {
+            this.filterOptions['filter.' + scope.key] = scope.operation;
+          }
+        });
+      }
+      if (this.modelFacade) {
+        this.modelFacade.base.loadFiltered(this.filterOptions);
+        this.loading$ = this.modelFacade.base.loaded$;
+      }
+      console.log(
+        'child onChange listController, this.filterOptions',
+        this.listController,
+        this.filterOptions
+      );
+    }
   }
 
   ngAfterViewInit(): void {
