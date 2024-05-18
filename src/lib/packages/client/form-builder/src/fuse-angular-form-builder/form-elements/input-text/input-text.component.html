@@ -26,6 +26,32 @@
       }
     </mat-error>
 
+    <button class=" mat-icon-button   mat-button
+            matSuffix
+            mat-icon-button"
+            (click)="translateField()"
+    >
+      <mat-icon
+        *ngIf="true"
+        class="icon-size-5 text-current"
+        [svgIcon]="'heroicons_solid:globe-asia-australia'"
+        (click)="translateField()"
+      ></mat-icon>
+    </button>
+
+
+    <button *ngIf="false" class=" mat-icon-button   mat-button
+            matSuffix
+            mat-icon-button"
+            (click)="translateField()">
+      <mat-icon
+        class="icon-size-5 text-current"
+        [svgIcon]="'heroicons_solid:sparkles'"
+        (click)="translateField()"
+      ></mat-icon>
+    </button>
+
+
   </mat-form-field>
 </div>
 
