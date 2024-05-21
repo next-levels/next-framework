@@ -98,7 +98,7 @@ export function zodToTypeOrmColumn(zodType: ZodTypeAny): ColumnOptions {
 
   if (isZodInstance(ZodDefault, zodType)) {
     if (zodType._def) {
-      options.default = zodType._def.defaultValue();
+      // options.default = zodType._def.defaultValue();
     }
   }
 
