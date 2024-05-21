@@ -4,9 +4,9 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TranslationEntity } from './entities/translation.entity';
-import { TRANSLATE_FIELD_METADATA_KEY } from './decoretors/translatable-fields.decorator';
 import { UpdateTranslationDto } from './dtos/translation.dto';
 import { Result } from '../../../nest-tools/src/lib/return/result';
+import { LanguagesEntity } from './entities/languages.entity';
 
 @Injectable()
 export class TranslationsService {
@@ -15,6 +15,8 @@ export class TranslationsService {
   constructor(
     @InjectRepository(TranslationEntity)
     private readonly _translationsRepository: Repository<TranslationEntity>,
+    @InjectRepository(LanguagesEntity)
+    private readonly _langsRepository: Repository<LanguagesEntity>,
     private readonly _httpService: HttpService,
     private readonly connection: Connection
   ) {}
@@ -25,8 +27,52 @@ export class TranslationsService {
    * @param id
    * @returns
    */
-  public async findOne(id: number): Promise<TranslationEntity | null> {
-    return await this._translationsRepository.findOneBy({ id: id });
+  public async findOne(
+    model_type: string,
+    model_id: string,
+    lang_id: string
+  ): Promise<TranslationEntity | null> {
+    return await this._translationsRepository.findOneBy({
+      model_type,
+      model_id,
+      lang_id,
+    });
+  }
+
+  /**
+   * Find local file by id
+   *
+   * @returns
+   * @param model_type
+   * @param model_id
+   * @param model_field
+   */
+  public async findField(
+    model_type: string,
+    model_id: string,
+    model_field: string
+  ): Promise<{ lang_id: string; value: any }[]> {
+    const translations: TranslationEntity[] =
+      await this._translationsRepository.findBy({
+        model_type,
+        model_id,
+      });
+
+    const result = translations.map((translation) => {
+      let value: null;
+      try {
+        const content = JSON.parse(translation.content);
+        value = content[model_field];
+      } catch (e) {
+        value = null;
+      }
+      return {
+        lang_id: translation.lang_id,
+        value: value,
+      };
+    });
+
+    return result;
   }
 
   /**
@@ -39,36 +85,69 @@ export class TranslationsService {
   }
 
   async createOrUpdate(
-    dto: UpdateTranslationDto
-  ): Promise<Result<Promise<TranslationEntity>>> {
-    const attachmentObject = this.entitiesWithFileFields.get(dto.model_type);
-    if (!attachmentObject) {
-      throw new Error(`Entity not found for attachmentType: ${dto.model_type}`);
+    dto: UpdateTranslationDto[],
+    model_field: string
+  ): Promise<Result<TranslationEntity[]>> {
+    try {
+      const translationPromises = dto.map(async (item) => {
+        const translation = await this._translationsRepository.findOne({
+          where: {
+            model_type: item.model_type,
+            model_id: item.model_id,
+            lang_id: item.lang_id,
+          },
+        });
+
+        if (translation) {
+          let existingContent = {};
+          if (translation.content) {
+            existingContent = JSON.parse(translation.content);
+          }
+          if (item.content) {
+            existingContent[model_field] = item.content;
+            translation.content = JSON.stringify(existingContent);
+
+            return this._translationsRepository.save(translation);
+          }
+        }
+
+        const newTranslation = new TranslationEntity();
+        newTranslation.model_type = item.model_type;
+        newTranslation.model_id = item.model_id;
+        newTranslation.lang_id = item.lang_id;
+
+        if (item.content) {
+          newTranslation.content = JSON.stringify({
+            [model_field]: item.content,
+          });
+
+          return this._translationsRepository.save(newTranslation);
+        }
+      });
+
+      const savedTranslations = await Promise.all(translationPromises);
+      return Result.ok(savedTranslations);
+    } catch (error: unknown) {
+      let errorMessage = 'An unknown error occurred';
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      return Result.fail({
+        message: errorMessage,
+        httpCode: 500,
+        changeHttpCode: true,
+      });
     }
-
-    const fileFields =
-      Reflect.getMetadata(
-        TRANSLATE_FIELD_METADATA_KEY,
-        attachmentObject.prototype
-      ) || [];
-
-    const newTranslation = new TranslationEntity();
-    newTranslation.model_type = dto.model_type;
-    newTranslation.model_id = dto.model_id;
-    newTranslation.lang = dto.lang;
-    newTranslation.content = dto.content;
-
-    return Result.ok(this._translationsRepository.save(newTranslation));
   }
 
   async addTranslation(
-    lang: string,
+    lang_id: string,
     model_type: string,
-    model_id: number,
+    model_id: string,
     content: any
   ): Promise<any> {
     const existingTranslation = await this._translationsRepository.findOne({
-      where: { model_type, model_id, lang },
+      where: { model_type, model_id, lang_id },
     });
 
     if (existingTranslation) {
@@ -76,7 +155,7 @@ export class TranslationsService {
       return this._translationsRepository.save(existingTranslation);
     } else {
       const newTranslation = this._translationsRepository.create({
-        lang,
+        lang_id,
         model_type,
         model_id,
         content,
@@ -87,13 +166,17 @@ export class TranslationsService {
 
   async getTranslations(
     model_type: string,
-    model_id: number,
-    lang: string
+    model_id: string,
+    lang_id: string
   ): Promise<string> {
     const translation = await this._translationsRepository.findOne({
-      where: { model_type, model_id, lang },
+      where: { model_type, model_id, lang_id },
     });
 
     return translation ? translation.content : '';
+  }
+
+  async getLangs(): Promise<LanguagesEntity[]> {
+    return await this._langsRepository.find();
   }
 }

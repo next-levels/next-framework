@@ -5,8 +5,8 @@ import { Injectable } from '@angular/core';
 })
 export class EnvironmentStorageService {
   private static instance: EnvironmentStorageService;
-  public baseUrl = 'http://localhost:3333';
-  public baseSocket = 'http://localhost:3333';
+  public baseUrl = '';
+  public baseSocket = '';
 
   public environments: any[];
   private currentEnvironment: any;

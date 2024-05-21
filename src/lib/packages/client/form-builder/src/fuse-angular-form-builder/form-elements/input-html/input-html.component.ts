@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { BaseInputHtmlComponent } from '../../../index';
+import { TranslateModalComponent } from '@next-levels/next-framework-client';
+import { TranslateService } from '@ngx-translate/core';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'nxt-input-html',
@@ -19,9 +22,30 @@ export class InputHtmlComponent extends BaseInputHtmlComponent {
     ],
   };
 
+  constructor(
+    public override cdRef: ChangeDetectorRef,
+    public override translateService: TranslateService,
+    public readonly _matDialog: MatDialog,
+    @Inject('formStyles') public override formStyles: string
+  ) {
+    super(cdRef, translateService, formStyles);
+  }
+
   override onEventChange(event: any) {
     if (event.value) {
       this.dataOutput.emit(event.value.toISOString());
     }
+  }
+
+  translateField(): string {
+    this._matDialog.open(TranslateModalComponent, {
+      minWidth: '70%',
+      autoFocus: true,
+      data: {
+        formController: this.formController,
+        field: this.formField,
+      },
+    });
+    return 'input-text';
   }
 }

@@ -60,13 +60,14 @@ export function Property(
     let fieldOptions = zodToFields(schema);
 
     if (flags?.includes('system')) {
-      const v = Reflect.getMetadata(SYSTEM_SCHEMA_METADATA_KEY, target) || [];
+      const systemFields =
+        Reflect.getMetadata(SYSTEM_SCHEMA_METADATA_KEY, target) || [];
 
-      if (!v.includes(propertyKey)) {
-        v.push(propertyKey);
+      if (!systemFields.includes(propertyKey)) {
+        systemFields.push(propertyKey);
       }
 
-      Reflect.defineMetadata(SYSTEM_SCHEMA_METADATA_KEY, v, target);
+      Reflect.defineMetadata(SYSTEM_SCHEMA_METADATA_KEY, systemFields, target);
 
       fieldOptions = {
         ...fieldOptions,

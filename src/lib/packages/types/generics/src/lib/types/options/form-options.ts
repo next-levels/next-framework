@@ -8,6 +8,7 @@ export interface FormOptions {
   validation?: ValidationType;
   required?: boolean;
   hidden?: boolean;
+  translatable?: boolean;
   options?: any;
   disabled?: boolean;
   noLabel?: boolean;

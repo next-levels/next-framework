@@ -41,8 +41,11 @@ export class ViewRelationComponent extends BaseViewComponent implements OnInit {
               this.viewObject[fieldNameArray[0]]?.[fieldNameArray[1]]
             );
           }
+        } else {
+          displayValues.push(this.viewObject[this.fieldName]);
         }
       });
+
       this._value = displayValues.join(' ');
     }
 

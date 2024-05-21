@@ -40,6 +40,9 @@ const o = {
   area() {
     return createElement('TEXTAREA');
   },
+  text() {
+    return createElement('TEXT');
+  },
   dropdown() {
     return createElement('DROPDOWN');
   },

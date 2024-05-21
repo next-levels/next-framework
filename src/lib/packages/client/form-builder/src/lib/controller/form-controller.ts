@@ -12,7 +12,7 @@ import { z } from 'zod';
 import { Subject, takeUntil } from 'rxjs';
 
 export class FormController {
-  public formOptions: any = { small: false };
+  public formOptions: any = { small: false, validateOnChange: true };
   protected model: any;
   protected modelDefinition: any = null;
   protected form: UntypedFormGroup;
@@ -45,18 +45,24 @@ export class FormController {
     }
 
     this.form = new UntypedFormGroup({}, null, null);
-    this.lastFormValues = this.form.value;
-    this.form.valueChanges
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((currentValues) => {
-        this.detectChangedField(currentValues);
-        // Update lastFormValues with the current form state
-        this.lastFormValues = currentValues;
-      });
+    if (this.formOptions.validateOnChange) {
+      this.lastFormValues = this.form.value;
+      this.form.valueChanges
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((currentValues) => {
+          this.detectChangedField(currentValues);
+          // Update lastFormValues with the current form state
+          this.lastFormValues = currentValues;
+        });
+    }
   }
 
   getClassName() {
     return META.getNameByModel(this.getModelDefinition());
+  }
+
+  getFacade() {
+    return this.facade;
   }
 
   addFormControl(control: FormControl, name: string) {

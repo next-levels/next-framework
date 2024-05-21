@@ -110,7 +110,7 @@ export class FastifyFilesController {
   async uploadFile(
     @UploadedFile() file: File,
     @Param('attachmentType') attachmentType: string,
-    @Param('attachmentId') attachmentId: number,
+    @Param('attachmentId') attachmentId: string,
     @Param('fieldName') fieldName: string,
     @Body() dto: Partial<UpdateFileDto>
   ) {
@@ -126,7 +126,7 @@ export class FastifyFilesController {
   @Get('download/:attachmentType/:attachmentId/:fieldName')
   async downloadFiles(
     @Param('attachmentType') attachmentType: string,
-    @Param('attachmentId') attachmentId: number,
+    @Param('attachmentId') attachmentId: string,
     @Param('fieldName') fieldName: string
   ) {
     const files = await this._filesService.findFilesByObject(

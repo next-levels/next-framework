@@ -1,11 +1,11 @@
 <div
-  class="form-set"
   [class.small-form]="
     controller && controller.formOptions && controller.formOptions.small
   "
+  class="form-set"
 >
   <ng-container *ngFor="let group of groups">
-    <div class="w-full mb-2 mt-2" *ngIf="group.title">
+    <div *ngIf="group.title" class="w-full mb-2 mt-2">
       <div class="form-set-title">{{ group.title }}</div>
       <div
         *ngIf="group.description"
@@ -14,23 +14,23 @@
         {{ group.description }}
       </div>
     </div>
-    <div class="flex w-full"
+    <div [class.flex-wrap]="!settings.nowrap"
          [ngClass]="{
          'mt-3': group.title != null,
          '-m-2.5 -mt-5':group.title == null}"
-         [class.flex-wrap]="!settings.nowrap">
+         class="flex w-full">
 
       <nxt-form-element
+        (change)="isFormValid($event)"
+        (dataOutput)="isFormValid($event)"
         *ngFor="let field of group.fields"
-        class="pr-5"
         [fieldName]="field"
         [formController]="controller"
         [readOnly]="readOnly"
-        (change)="isFormValid($event)"
-        (dataOutput)="isFormValid($event)"
+        class="pr-5"
       ></nxt-form-element>
 
     </div>
-    <div class="my-10 "></div>
+    <div class=" "></div>
   </ng-container>
 </div>

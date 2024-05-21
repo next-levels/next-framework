@@ -22,29 +22,6 @@ export class FilesService {
     this.entitiesWithFileFields = this.findClassesWithFileFields();
   }
 
-  private findClassesWithFileFields(): Map<string, any> {
-    const entities = new Map<string, any>();
-
-    this.connection.entityMetadatas.forEach((metadata) => {
-      const Entity = metadata.target;
-      if (typeof Entity === 'function') {
-        let className = metadata.name.toLowerCase();
-        className = className.replace('entity', '');
-
-        const fileFields = Reflect.getMetadata(
-          FILE_FIELD_METADATA_KEY,
-          Entity.prototype
-        );
-
-        if (fileFields) {
-          entities.set(className, Entity);
-        }
-      }
-    });
-
-    return entities;
-  }
-
   /**
    * Find local file by id
    *
@@ -99,7 +76,7 @@ export class FilesService {
   async createOrUpdate(
     file: any,
     attachmentType: string,
-    attachmentId: number,
+    attachmentId: string,
     fieldName: string,
     dto: UpdateFileDto
   ): Promise<Result<Promise<FileEntity>>> {
@@ -142,7 +119,7 @@ export class FilesService {
 
   async findFilesByObject(
     attachmentType: string,
-    attachmentId: number
+    attachmentId: string
   ): Promise<FileEntity[]> {
     return await this._filesRepository.find({
       where: {
@@ -171,16 +148,6 @@ export class FilesService {
   }
 
   /**
-   * Create new local file from url
-   *
-   * @param localFile
-   * @returns
-   */
-  // public async createFromUrl(filePath: string, url: any): Promise<FileEntity> {
-  //   return;
-  // } // So far unused
-
-  /**
    * Update a file
    * @param updateFileDto
    * @returns
@@ -198,6 +165,16 @@ export class FilesService {
       })
     );
   }
+
+  /**
+   * Create new local file from url
+   *
+   * @param localFile
+   * @returns
+   */
+  // public async createFromUrl(filePath: string, url: any): Promise<FileEntity> {
+  //   return;
+  // } // So far unused
 
   /**
    * Remove local file
@@ -265,5 +242,28 @@ export class FilesService {
   public async removeExternal(file: FileEntity): Promise<Result<unknown>> {
     await this._filesRepository.delete(file.id);
     return Result.ok();
+  }
+
+  private findClassesWithFileFields(): Map<string, any> {
+    const entities = new Map<string, any>();
+
+    this.connection.entityMetadatas.forEach((metadata) => {
+      const Entity = metadata.target;
+      if (typeof Entity === 'function') {
+        let className = metadata.name.toLowerCase();
+        className = className.replace('entity', '');
+
+        const fileFields = Reflect.getMetadata(
+          FILE_FIELD_METADATA_KEY,
+          Entity.prototype
+        );
+
+        if (fileFields) {
+          entities.set(className, Entity);
+        }
+      }
+    });
+
+    return entities;
   }
 }

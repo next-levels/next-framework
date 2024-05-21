@@ -1,28 +1,28 @@
 import {
+  CallHandler,
+  ExecutionContext,
   Injectable,
   NestInterceptor,
-  ExecutionContext,
-  CallHandler,
 } from '@nestjs/common';
-import { Observable, of, switchMap } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 import 'reflect-metadata';
 import { TranslationsService } from '../translations.service';
 import { TRANSLATABLE_FIELDS_METADATA_KEY } from '../decoretors/translatable-fields.decorator';
 import { translatableEntities } from '../translatable-entities';
 import { findNearestEntity } from '../translations.helper';
-import {Result} from "../../../../nest-tools";
+import { Result } from '../../../../nest-tools';
 
 @Injectable()
 export class TranslationsInterceptor implements NestInterceptor {
   constructor(private readonly _translationsService: TranslationsService) {}
 
-  async processTranslation(item, lang: string, request: any) {
+  async processTranslation(item, lang_id: string, request: any) {
     const model_type = item.constructor.name;
     const model_id = item.id;
     let translations = await this._translationsService.getTranslations(
       model_type,
       model_id,
-      lang
+      lang_id
     );
 
     const url = request.url;

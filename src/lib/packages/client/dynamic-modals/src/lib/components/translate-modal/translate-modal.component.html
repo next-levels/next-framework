@@ -1,25 +1,54 @@
 <div>
-  <h1>Übersetzung</h1>
-  <nxtlvls-form
-    [formModel]="this.model"
-    [data]="this.values"
-    (dataOutput)="dataOutput($event)"
-    [settings]="{}"
-  ></nxtlvls-form>
+  <div class="flex mb-5 flex-row items-start justify-between">
+    <div>
+      <h1 class="text-2xl font-bold">Übersetzung Feld {{ field.name }}</h1>
+    </div>
+
+    <app-button
+      (click)="translateAll()"
+      [loading]="loading"
+      icon="sparkles"
+      kind="helper"
+      label="Automatisch übersetzen"
+    />
+
+  </div>
+
+  @if (languages) {
+    @for (lang of languages; track lang.id) {
+      <mat-label class="font-medium">{{ 'system.languages.' + lang.iso | translate }}</mat-label>
+      <nxt-form-element
+        [formController]="langController"
+        [formField]="getClonedField(lang.id)"
+        class="pr-5"
+      ></nxt-form-element>
+    }
+  }
 
   <mat-dialog-actions>
     <div class="flex w-full justify-between">
-      <div class="inline-flex items-center">
-        <button class="mr-2" mat-button (click)="close()">
-          <span class="inline-flex items-center">
-            <mat-icon
-              class="icon-size-5 text-current"
-              [svgIcon]="'heroicons_solid:check'"
-            ></mat-icon>
-            <span class="ml-1.5">{{ 'button.save' | translate }}</span>
-          </span>
-        </button>
+      <div class="inline-flex contents items-center justify-around">
+
+        <div>
+          <app-button
+            (click)="fireAction()"
+            icon="check"
+            kind="secondary"
+            label="Speichern"
+          />
+        </div>
+
+        <div>
+          <app-button
+            (click)="fireAction()"
+            icon="cloud-arrow-up"
+            kind="primary"
+            label="Speichern und veröffentlichen"
+          />
+        </div>
+
       </div>
     </div>
   </mat-dialog-actions>
 </div>
+<!-- class="rounded-md hover:shadow-md border border-stone-100 hover:bg-gradient-to-t hover:from-stone-100 before:to-stone-50 hover:-translate-y-[3px]" -->

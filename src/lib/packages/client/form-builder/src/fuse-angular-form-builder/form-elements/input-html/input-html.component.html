@@ -3,6 +3,13 @@
     <span *ngIf="!formField.noLabel" class="custom-label font-medium">{{
         formField.label
       }}</span>
+    <mat-icon
+      (click)="translateField()"
+      *ngIf="formField?.translatable"
+      [svgIcon]="'heroicons_solid:globe-asia-australia'"
+      class="icon-size-5 text-current cursor-pointer hover:primary-button"
+      matIconSuffix
+    ></mat-icon>
     <quill-editor
       [formControlName]="formField.name"
       [modules]="quillConfiguration"
@@ -10,4 +17,6 @@
       placeholder="Beschreibung"
     ></quill-editor>
   </div>
+
+
 </ng-container>

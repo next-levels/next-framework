@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ComponentFactoryResolver,
   EventEmitter,
   Input,
   OnChanges,
@@ -44,6 +43,7 @@ import {
   LISTFIELD_ALL_PREFIX,
   META,
   PaginationMeta,
+  ScopeFilter,
 } from '@next-levels/types';
 import {
   BatchWizardComponent,
@@ -69,6 +69,7 @@ export class BaseTableDefaultComponent
   @Input() detailModal = false;
   @Input() route = '';
   @Input() childTable = false;
+  @Input() entities: any[] = [];
   @Input() searchQuery: any | null;
   @Output() rowClick = new EventEmitter<any>();
   @Output() rowDelete = new EventEmitter<any>();
@@ -81,6 +82,7 @@ export class BaseTableDefaultComponent
   @ViewChild(MatSort) sort: MatSort;
 
   public loading$: Observable<boolean>;
+  @Output() fetchData = true;
   public _unsubscribeAll: Subject<any> = new Subject<any>();
   public searchInputControl: FormControl = new FormControl<string | null>(null);
   public statusFilterControl: FormControl = new FormControl<string>('');
@@ -125,6 +127,12 @@ export class BaseTableDefaultComponent
   }
 
   ngOnInit() {
+    this.dataSource.data = Array(20).fill({});
+
+    if (this.entities && this.entities.length > 0) {
+      this.fetchData = false;
+    }
+
     this.activeRoute.queryParams.subscribe((params) => {
       this.filterOptions.search = params['search'] || this.filterOptions.search;
       this.filterOptions.page = params['page'] || this.filterOptions.page;
@@ -136,12 +144,14 @@ export class BaseTableDefaultComponent
     this.model = this.listController.getModelDefinition();
     this.modelReference = this.listController.getClassName();
 
-    const instance = this.registry.retrieve(this.modelReference);
-    if (instance && instance.notification) {
-      instance.notification.updated$.subscribe((updated) => {});
-      instance.notification.resetCount();
+    if (this.fetchData) {
+      const instance = this.registry.retrieve(this.modelReference);
+      if (instance && instance.notification) {
+        instance.notification.updated$.subscribe((updated) => {});
+        instance.notification.resetCount();
 
-      this.registry.retrieve(this.modelReference).notification.resetCount();
+        this.registry.retrieve(this.modelReference).notification.resetCount();
+      }
     }
 
     const listFields =
@@ -193,50 +203,71 @@ export class BaseTableDefaultComponent
       });
     }
 
-    this.subscription = this.modelFacade?.base.filtered$.subscribe(
-      (entries: unknown) => {
-        console.log('id', this.instnace_id);
-        console.log('entries', entries);
-        this.dataSource.data = entries as any[];
-        this.cdRef.detectChanges();
-      }
-    );
+    if (this.fetchData) {
+      this.subscription = this.modelFacade?.base.filtered$.subscribe(
+        (entries: unknown) => {
+          this.dataSource.data = entries as any[];
+          this.cdRef.detectChanges();
+        }
+      );
 
-    this.modelFacade?.base.pagination$.subscribe((paginationMeta) => {
-      if (paginationMeta) {
-        this.pagination = {
-          ...paginationMeta,
-          currentPage: paginationMeta.currentPage,
-          itemsPerPage: paginationMeta.itemsPerPage,
-        };
-        this.filterOptions = {
-          ...this.filterOptions,
-          page: paginationMeta.currentPage,
-          limit: paginationMeta.itemsPerPage,
-          sortBy: `${
-            paginationMeta.sortBy[0][0]
-          }:${paginationMeta.sortBy[0][1].toUpperCase()}`,
-        };
-      }
-    });
+      this.modelFacade?.base.pagination$.subscribe((paginationMeta) => {
+        if (paginationMeta) {
+          this.pagination = {
+            ...paginationMeta,
+            currentPage: paginationMeta.currentPage,
+            itemsPerPage: paginationMeta.itemsPerPage,
+          };
+          this.filterOptions = {
+            ...this.filterOptions,
+            page: paginationMeta.currentPage,
+            limit: paginationMeta.itemsPerPage,
+            sortBy: `${
+              paginationMeta.sortBy[0][0]
+            }:${paginationMeta.sortBy[0][1].toUpperCase()}`,
+          };
+        }
+      });
 
-    if (this.modelFacade) {
-      this.modelFacade.base.loadFiltered(this.filterOptions);
-      this.loading$ = this.modelFacade.base.loaded$;
+      if (this.modelFacade) {
+        this.modelFacade.base.loadFiltered(this.filterOptions);
+        this.loading$ = this.modelFacade.base.loaded$;
+      }
+
+      this.searchInputControl.valueChanges
+        .pipe(
+          takeUntil(this._unsubscribeAll),
+          debounceTime(300),
+          tap((search: string) => {
+            this.filterOptions = { ...this.filterOptions, search };
+            if (this.modelFacade) {
+              this.modelFacade.base.loadFiltered(this.filterOptions);
+            }
+          })
+        )
+        .subscribe();
     }
 
-    this.searchInputControl.valueChanges
-      .pipe(
-        takeUntil(this._unsubscribeAll),
-        debounceTime(300),
-        tap((search: string) => {
-          this.filterOptions = { ...this.filterOptions, search };
-          if (this.modelFacade) {
-            this.modelFacade.base.loadFiltered(this.filterOptions);
+    if (!this.fetchData) {
+      if (this.viewController && this.entities && this.entities.length > 0) {
+        const scope: ScopeFilter = this.viewController.listScope();
+        this.entities = this.entities.filter((entity) => {
+          let valid = true;
+
+          if (scope.key && scope.key.includes('.')) {
+            const keys = scope.key.split('.');
+            valid = valid && entity[keys[0]][keys[1]] === scope.value;
           }
-        })
-      )
-      .subscribe();
+          if (scope.key && scope.value) {
+            valid = valid && entity[scope.key] === scope.value;
+          }
+
+          return valid;
+        });
+      }
+      this.dataSource.data = this.entities;
+    }
+
     this.cdRef.detectChanges();
   }
 
@@ -260,19 +291,17 @@ export class BaseTableDefaultComponent
           }
         });
       }
-      if (this.modelFacade) {
+      if (this.fetchData && this.modelFacade) {
         this.modelFacade.base.loadFiltered(this.filterOptions);
         this.loading$ = this.modelFacade.base.loaded$;
       }
-      console.log(
-        'child onChange listController, this.filterOptions',
-        this.listController,
-        this.filterOptions
-      );
     }
   }
 
   ngAfterViewInit(): void {
+    if (!this.fetchData) {
+      return;
+    }
     const checkInterval = interval(100).pipe(
       takeWhile(() => !this.sort || !this.paginator)
     );

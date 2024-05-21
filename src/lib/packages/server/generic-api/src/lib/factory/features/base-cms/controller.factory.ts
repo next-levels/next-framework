@@ -99,7 +99,7 @@ export function GenericBaseCMSController<T extends Type<any>>(
     @Patch(':id')
     @ApiBody({ type: entity })
     public async update(
-      @Param('id') id: number,
+      @Param('id') id: string,
       @Body() dto: T
     ): Promise<Result<T>> {
       const result = await this.service.update(id, dto);
@@ -119,20 +119,24 @@ export function GenericBaseCMSController<T extends Type<any>>(
     }
 
     @Delete(':id')
-    public async remove(@Param('id') id: number): Promise<Result<void>> {
+    public async remove(
+      @Param('id') id: string | number
+    ): Promise<Result<void>> {
       return await this.service.delete(id);
     }
 
     @Get(':id')
     @UseInterceptors(FileInjectInterceptor)
-    public async frontendFindOne(@Param('id') id: number): Promise<Result<T>> {
+    public async frontendFindOne(
+      @Param('id') id: string | number
+    ): Promise<Result<T>> {
       return await this.service.findOne(id);
     }
 
     @Put('batch')
     @ApiBody({ type: [entity] })
     public async batchEdit(
-      @Body() data: { ids: number[]; partial: T }
+      @Body() data: { ids: string[] | number[]; partial: T }
     ): Promise<Result<T[]>> {
       return await this.service.batchEdit(data.ids, data.partial);
     }

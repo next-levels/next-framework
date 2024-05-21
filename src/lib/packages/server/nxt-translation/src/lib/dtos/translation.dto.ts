@@ -1,13 +1,9 @@
 export class UpdateTranslationDto {
-  id?: number;
-
   content?: string;
 
-  type?: string;
+  lang_id?: string;
 
-  lang?: string;
-
-  model_id?: number;
+  model_id?: string;
 
   model_type?: string;
 }

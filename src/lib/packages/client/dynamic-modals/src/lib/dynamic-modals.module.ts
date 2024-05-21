@@ -23,6 +23,8 @@ import { InlineSVGModule } from 'ng-inline-svg-2';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { CreateSimpleComponent } from './components/create-simple/create-simple.component';
 import { TranslateModalComponent } from './components/translate-modal/translate-modal.component';
+import { MatLabel } from '@angular/material/form-field';
+import { AppButtonComponent } from '../../../angular-commons';
 
 const store = new MinimizeStore();
 
@@ -32,7 +34,7 @@ const store = new MinimizeStore();
     BatchWizardComponent,
     ViewModalComponent,
     CreateSimpleComponent,
-    TranslateModalComponent
+    TranslateModalComponent,
   ],
   imports: [
     CommonModule,
@@ -49,13 +51,15 @@ const store = new MinimizeStore();
     HttpClientModule,
     InlineSVGModule.forRoot(),
     NgbTooltipModule,
+    MatLabel,
+    AppButtonComponent,
   ],
   exports: [
     CreateWizardComponent,
     BatchWizardComponent,
     ViewModalComponent,
     CreateSimpleComponent,
-    TranslateModalComponent
+    TranslateModalComponent,
   ],
   providers: [
     {
@@ -66,6 +70,6 @@ const store = new MinimizeStore();
     MinimizeService,
     SwalService,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class DynamicModalsModule {}

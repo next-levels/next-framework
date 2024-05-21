@@ -1,8 +1,8 @@
 import {
+  CallHandler,
+  ExecutionContext,
   Injectable,
   NestInterceptor,
-  ExecutionContext,
-  CallHandler,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import 'reflect-metadata';
@@ -44,7 +44,7 @@ export class TranslationsUpdateInterceptor implements NestInterceptor {
       return next.handle();
     }
 
-    const modelId = parseInt(params.id, 10);
+    const modelId = params.id;
     const modelType = target.name;
     let translation = {};
 

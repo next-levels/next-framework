@@ -87,6 +87,20 @@ export class ListSelectorComponent implements OnInit, AfterViewInit {
         tableSubmoduleComponentInstance.childTable = true;
         tableSubmoduleComponentInstance.viewController = viewController;
 
+        if (this.formField.options.fromParent) {
+          let entities: any[] = [];
+
+          let data = this.formController?.getModel();
+
+          if (this.formField.options.selector) {
+            entities = data[this.formField.options.selector];
+          } else {
+            entities = data[this.formField.name];
+          }
+
+          tableSubmoduleComponentInstance.fetchData = false;
+          tableSubmoduleComponentInstance.entities = entities;
+        }
         if (this.formField.options.keySelf && this.formController?.getModel()) {
           tableSubmoduleComponentInstance.listController.setScope(
             this.formField.options.key,

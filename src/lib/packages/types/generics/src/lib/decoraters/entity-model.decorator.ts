@@ -4,7 +4,6 @@ import { Constructor } from '../types/Constructor';
 export const registeredEntities: Map<string, any> = new Map();
 
 export function EntityModel(options?: any) {
-  console.log('EntityModel options', options);
   return function (constructor: Function) {
     if (!registeredEntities.has(options.name)) {
       registeredEntities.set(options.name, constructor);
@@ -15,7 +14,6 @@ export function EntityModel(options?: any) {
 }
 
 export function getEntityByName(name: string): Constructor | undefined {
-  console.log(registeredEntities);
   const model = registeredEntities.get(name);
   if (model) {
     return model;

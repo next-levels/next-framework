@@ -1,6 +1,6 @@
-import {ZodTypeAny} from 'zod';
-import {PrimaryGeneratedColumn} from 'typeorm';
-import {PropertyTagType} from '@next-levels/types';
+import { ZodTypeAny } from 'zod';
+import { PrimaryGeneratedColumn } from 'typeorm';
+import { PropertyTagType } from '@next-levels/types';
 
 /**
  * Interprets Zod schema to determine if a column should be a primary key with UUID generation.
@@ -18,7 +18,6 @@ function shouldBePrimaryGeneratedUUID(schema: ZodTypeAny): boolean {
  * @return {boolean} - True if the column should be a primary key.
  */
 function shouldBePrimaryColumn(schema: ZodTypeAny): boolean {
-  console.log('schema', schema.description);
   return schema.description?.includes('primary');
 }
 

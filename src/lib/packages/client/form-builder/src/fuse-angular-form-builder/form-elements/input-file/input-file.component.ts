@@ -19,7 +19,6 @@ export class InputFileComponent extends BaseInputFileComponent {
         const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
         fileEntry.file((file: File) => {
           this.files.push(file);
-          console.log(droppedFile.relativePath, file);
         });
       }
     }
@@ -43,7 +42,6 @@ export class InputFileComponent extends BaseInputFileComponent {
   }
 
   getSource(key: string): string {
-    console.log('url', this.baseApiUrl + key);
     return this.baseApiUrl + key;
   }
 

@@ -9,7 +9,10 @@ import {
   PaginateQuery,
 } from 'nestjs-paginate';
 import { IBaseCmsService } from './service.type';
-import { getFilterFields } from '../../../helpers/fields.helper';
+import {
+  getFilterFields,
+  getRelationPaths,
+} from '../../../helpers/fields.helper';
 import { BaseApiService } from '../../../types/service.type';
 import { Result } from '../../../../../../nest-tools';
 import { HookRegistryService } from '../../../helpers/hook.regestry';
@@ -35,7 +38,7 @@ export function GenericBaseCMSService<T>(
       return Result.ok(await this.saveWithRelations(data));
     }
 
-    async update(id: number, data: Partial<T>): Promise<Result<T>> {
+    async update(id: number | string, data: Partial<T>): Promise<Result<T>> {
       const beforeHook = this.hookRegistry.getHook(
         `${entity.name}.before.update`
       );
@@ -63,7 +66,7 @@ export function GenericBaseCMSService<T>(
       return Result.ok(savedData);
     }
 
-    async delete(id: number): Promise<Result<any>> {
+    async delete(id: number | string): Promise<Result<any>> {
       return Result.ok(await this.repository.delete(id));
     }
 
@@ -71,15 +74,21 @@ export function GenericBaseCMSService<T>(
       return Result.ok(await this.repository.remove(entities));
     }
 
-    async batchEdit(ids: number[], changes: Partial<T>): Promise<Result<any>> {
-      for (let i = 0; i < ids.length; i++) {
-        await this.update(ids[i], changes);
+    async batchEdit(
+      ids: (string | number)[],
+      changes: Partial<T>
+    ): Promise<Result<any>> {
+      const stringIds = ids.map((id) => id.toString()); // Convert all IDs to strings
+
+      for (let i = 0; i < stringIds.length; i++) {
+        await this.update(stringIds[i], changes);
         // const progress = ((i + 1) * 100) / ids.length;
         // this.batchGateway.server.emit('batch', progress);
       }
+
       return Result.ok(
         await this.repository.find({
-          where: { id: In(ids) } as any,
+          where: { id: In(stringIds) } as any,
         })
       );
     }
@@ -142,12 +151,12 @@ export function GenericBaseCMSService<T>(
       );
     }
 
-    async findOne(id: number): Promise<Result<any | null>> {
+    async findOne(id: number | string): Promise<Result<any | null>> {
       const beforeHook = this.hookRegistry.getHook(`${entity.name}.before.get`);
-      // @ts-ignore
-      const relationFields = this.repository.metadata.relations.map(
-        (relation) => relation.propertyName as any
-      );
+
+      // Gather all relations and their nested relations, using the table name as the prefix
+      const relationFields = getRelationPaths(this.repository.metadata);
+
       let result = await this.repository.findOne({
         where: { id: id } as any,
         relations: relationFields,

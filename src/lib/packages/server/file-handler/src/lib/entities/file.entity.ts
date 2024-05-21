@@ -3,13 +3,17 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('files')
 export class FileEntity implements BaseFile {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn({
+    type: 'binary',
+    length: 16,
+    generated: false,
+  })
   id: string;
 
   @Column({ type: 'varchar', nullable: true })
@@ -42,8 +46,13 @@ export class FileEntity implements BaseFile {
   @Column({ type: 'varchar', nullable: true })
   field_name: string;
 
-  @Column({ type: 'int', nullable: true })
-  attachment_id: number;
+  @Column({
+    type: 'binary',
+    length: 16,
+    nullable: true,
+    generated: false,
+  })
+  attachment_id: string;
 
   @Column({ type: 'varchar', nullable: true })
   attachment_type: string;

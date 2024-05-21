@@ -59,6 +59,10 @@ export class FormElementComponent implements AfterViewInit {
       classes += 'hidden ';
     }
 
+    if (this.formField?.type === 'CHECKBOX') {
+      classes += 'basis-1/4 h-10 ';
+    }
+
     return classes.trim();
   }
 
@@ -84,7 +88,11 @@ export class FormElementComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    if (this.view !== undefined && this.fieldName) {
+    if (
+      this.view !== undefined &&
+      this.fieldName &&
+      this.formField === undefined
+    ) {
       let formModel = this.formController?.getModelDefinition();
 
       if (!formModel && this.model) {

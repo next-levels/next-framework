@@ -1,6 +1,13 @@
-import {ZodTypeAny} from 'zod';
-import {CreateDateColumn, Index, PrimaryGeneratedColumn, UpdateDateColumn,} from 'typeorm';
-import {PropertyTagType} from '@next-levels/types';
+import { ZodTypeAny } from 'zod';
+import {
+  Column,
+  CreateDateColumn,
+  Index,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { PropertyTagType, uuidTransformer } from '@next-levels/types';
 
 /**
  * Interprets Zod schema to determine if a column should be a primary key with UUID generation.
@@ -18,7 +25,6 @@ function shouldBePrimaryGeneratedUUID(schema: ZodTypeAny): boolean {
  * @return {boolean} - True if the column should be a primary key.
  */
 function shouldBePrimaryColumn(schema: ZodTypeAny): boolean {
-  console.log('schema', schema.description);
   return schema.description?.includes('primary');
 }
 
@@ -42,9 +48,29 @@ export function applyTypeOrmDecoratorsFromZodFlags(
   if (flags?.includes('primary') && flags?.includes('increment')) {
     PrimaryGeneratedColumn('increment')(target, propertyKey);
     return true;
+  }
+
+  if (flags?.includes('primary') && flags?.includes('binary')) {
+    PrimaryColumn({
+      type: 'binary',
+      length: 16,
+      generated: false,
+      transformer: uuidTransformer,
+    })(target, propertyKey);
+    return true;
   } else if (flags?.includes('primary')) {
     PrimaryGeneratedColumn()(target, propertyKey);
     return true;
+  }
+
+  if (flags?.includes('binary')) {
+    Column({
+      type: 'binary',
+      length: 16,
+      generated: false,
+      nullable: true,
+      transformer: uuidTransformer,
+    })(target, propertyKey);
   }
 
   if (flags?.includes('created_at')) {

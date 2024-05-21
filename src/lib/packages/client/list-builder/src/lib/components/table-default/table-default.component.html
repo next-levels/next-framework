@@ -55,7 +55,6 @@
     </ng-container>
   </div>
 
-  <!-- Main -->
   <div [ngClass]="{ 'sm:p-5 p-2': !childTable }" class="relative h-full dark:bg-slate-900 " style="height: 100vh; overflow-x:
     auto">
     <div *ngIf="isOneSelected()"
@@ -103,14 +102,10 @@
           "
                 mat-row
               ></tr>
-
-
               </thead>
 
               <div class="body-container">
                 <tbody>
-
-
                 <ng-container matColumnDef="select">
                   <th *matHeaderCellDef class="w-25px w-0" mat-header-cell>
                     <div
@@ -140,7 +135,7 @@
                   </td>
                 </ng-container>
 
-                <ng-container *ngFor="let field of fields; let i = index" matColumnDef="{{ field }}" [sticky]="i === 0">
+                <ng-container *ngFor="let field of fields; let i = index" [sticky]="i === 0" matColumnDef="{{ field }}">
                   <th *matHeaderCellDef mat-header-cell mat-sort-header>
                     {{
                       translateService.instant(listController.getElementLabel(field))
@@ -160,12 +155,13 @@
                         [viewObject]="data"
                       >
                       </nxtlvls-view-element>
+
                     </div>
                   </td>
                 </ng-container>
 
-                <ng-container matColumnDef="actions" [stickyEnd]="true">
-                  <th *matHeaderCellDef mat-header-cell class="bg-white dark:bg-slate-900">
+                <ng-container [stickyEnd]="true" matColumnDef="actions">
+                  <th *matHeaderCellDef class="bg-white dark:bg-slate-900" mat-header-cell>
                   </th>
                   <td
                     *matCellDef="let data"

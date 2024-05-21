@@ -1,18 +1,23 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('nxt_translations')
 export class TranslationEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column({ type: 'varchar' })
+  @PrimaryColumn({ type: 'varchar', length: 25 })
   model_type: string;
 
-  @Column({ type: 'int' })
-  model_id: number;
+  @PrimaryColumn({
+    type: 'binary',
+    length: 16,
+    generated: false,
+  })
+  model_id: string;
 
-  @Column({ type: 'varchar' })
-  lang: string;
+  @PrimaryColumn({
+    type: 'binary',
+    length: 16,
+    generated: false,
+  })
+  lang_id: string;
 
   @Column({ type: 'text' })
   content: string;

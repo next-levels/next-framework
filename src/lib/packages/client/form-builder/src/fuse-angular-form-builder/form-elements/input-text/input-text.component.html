@@ -3,19 +3,19 @@
     <mat-label *ngIf="!formField.noLabel">{{ formField.label }}</mat-label>
     <input
       #input
-      [spellcheck]="false"
-      formControlName="{{ formField.name }}"
-      matInput
-      placeholder="{{ formField.label }}"
       [attr.maxlength]="formField?.max ? formField.max : null"
       [readonly]=" formField.readonly "
+      [spellcheck]="false"
+      formControlName="{{formField.name}}"
+      matInput
+      placeholder="{{formField.label}}"
     />
 
     <mat-icon
       *ngIf="formField?.icon"
-      matIconSuffix
       [svgIcon]="'heroicons_solid:'+formField.icon"
       class="icon-size-5 text-current"
+      matIconSuffix
     ></mat-icon>
     <span *ngIf="formField?.suffix" matSuffix>{{ formField.suffix }}</span>
     <mat-hint *ngIf="formField?.max" align="end">{{ input.value.length }}/{{ formField?.max }}</mat-hint>
@@ -26,31 +26,13 @@
       }
     </mat-error>
 
-    <button class=" mat-icon-button   mat-button
-            matSuffix
-            mat-icon-button"
-            (click)="translateField()"
-    >
-      <mat-icon
-        *ngIf="true"
-        class="icon-size-5 text-current"
-        [svgIcon]="'heroicons_solid:globe-asia-australia'"
-        (click)="translateField()"
-      ></mat-icon>
-    </button>
-
-
-    <button *ngIf="false" class=" mat-icon-button   mat-button
-            matSuffix
-            mat-icon-button"
-            (click)="translateField()">
-      <mat-icon
-        class="icon-size-5 text-current"
-        [svgIcon]="'heroicons_solid:sparkles'"
-        (click)="translateField()"
-      ></mat-icon>
-    </button>
-
+    <mat-icon
+      (click)="translateField()"
+      *ngIf="formField?.translatable"
+      [svgIcon]="'heroicons_solid:globe-asia-australia'"
+      class="icon-size-5 text-current cursor-pointer hover:primary-button"
+      matIconSuffix
+    ></mat-icon>
 
   </mat-form-field>
 </div>

@@ -5,6 +5,7 @@
   },
   "files": [],
   "include": [],
+  "types": ["node"],
   "composite": true,
   "references": [
     {
