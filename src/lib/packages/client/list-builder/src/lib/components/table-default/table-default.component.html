@@ -8,8 +8,8 @@
         <query-input
           (openQueryRowsModalEvent)="openQueryRowsModal()"
           (queryChange)="setQuery($event)"
-          [modelReference]="modelReference"
-          [model]="model"
+          [modelReference]="context.model"
+          [model]="context.model"
           [placeholder]="'Suche'"
           [searchQuery]="searchQuery"
           [style]="{ flex: '1' }"
@@ -97,7 +97,7 @@
 
               <tr
                 *matRowDef="let row; columns: displayedColumns"
-                [class.row-animate]="modelFacade && modelFacade.notification && (modelFacade.notification.updated$ | async) <
+                [class.row-animate]="notificationFacade  && (notificationFacade.updated$ | async) <
               getTimestamp(row.updatedAt)
           "
                 mat-row
@@ -138,7 +138,7 @@
                 <ng-container *ngFor="let field of fields; let i = index" [sticky]="i === 0" matColumnDef="{{ field }}">
                   <th *matHeaderCellDef mat-header-cell mat-sort-header>
                     {{
-                      translateService.instant(listController.getElementLabel(field))
+                      translateService.instant(context.getElementLabel(field))
                     }}
                   </th>
 
@@ -150,8 +150,8 @@
                   >
                     <div class="flex ">
                       <nxtlvls-view-element
+                        [context]="context"
                         [fieldName]="field"
-                        [listController]="listController"
                         [viewObject]="data"
                       >
                       </nxtlvls-view-element>
@@ -240,8 +240,8 @@
 
 <div class="w-64 bg-white rounded-xl dark:bg-gray-900">
   <ng-template #noGuarantees>
-    <div *ngIf="listController" class="p-8 sm:p-16 text-2xl tracking-tight text-center">
-      Keine {{ listController.getModelClassName() + '.name' | translate }} vorhanden
+    <div *ngIf="context" class="p-8 sm:p-16 text-2xl tracking-tight text-center">
+      Keine {{ context.name + '.name' | translate }} vorhanden
     </div>
   </ng-template>
 </div>

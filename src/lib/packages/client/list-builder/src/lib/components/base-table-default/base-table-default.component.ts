@@ -33,15 +33,10 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { ViewModalComponent } from '../view-modal/view-modal.component';
-import { ListController } from '../../controllers/ListController';
-import { BaseFacadeType } from '../../../../../generic-store/src';
 import {
-  BUILDERFIELD_ALL_PREFIX,
   EXPORT_PREFIX,
-  EXPORT_PREFIX_ALL,
   FilterOptions,
-  LISTFIELD_ALL_PREFIX,
-  META,
+  ListController,
   PaginationMeta,
   ScopeFilter,
 } from '@next-levels/types';
@@ -49,9 +44,11 @@ import {
   BatchWizardComponent,
   CreateWizardComponent,
 } from '../../../../../dynamic-modals';
-import { hasListActions, haslistFields } from '../../helpers/list.helper';
-import { InstanceRegistryService } from '../../../../../angular-commons';
-import { v4 as uuidv4 } from 'uuid';
+import { ListContext } from '../../controllers/list-context';
+import {
+  BasicFacade,
+  NotificationTypeFacade,
+} from '../../../../../generic-store';
 
 @Component({
   template: '<ng-container></ng-container>',
@@ -61,8 +58,7 @@ import { v4 as uuidv4 } from 'uuid';
 export class BaseTableDefaultComponent
   implements OnInit, OnChanges, OnDestroy, AfterViewInit
 {
-  @Input() listController: ListController;
-  @Input() viewController: any;
+  @Input() context: ListContext<any>;
   @Input() showHeader = false;
   @Input() showSearch = true;
   @Input() selector: string;
@@ -77,26 +73,18 @@ export class BaseTableDefaultComponent
   @Output() rowCreate = new EventEmitter<any>();
   @Output() getQueryRowsView = new EventEmitter<any>();
   @Output() saveSearchQuery = new EventEmitter<any>();
-
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-
   public loading$: Observable<boolean>;
   @Output() fetchData = true;
   public _unsubscribeAll: Subject<any> = new Subject<any>();
   public searchInputControl: FormControl = new FormControl<string | null>(null);
   public statusFilterControl: FormControl = new FormControl<string>('');
   public displayedColumns: string[] = [];
-  public fields: string[] = [];
   public dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
-  modelFacade: BaseFacadeType;
-  model: any;
-  actions: [] = [];
-  modelReference: string;
   itemsPerPage = 20;
-
-  instnace_id: string;
-
+  actions = [];
+  fields = [];
   public pagination: PaginationMeta = {
     currentPage: 1,
     itemsPerPage: this.itemsPerPage,
@@ -113,6 +101,9 @@ export class BaseTableDefaultComponent
     search: '',
   };
   public selection = new SelectionModel<Element>(true, []);
+  protected controller: ListController<any>;
+  protected baseFacade: BasicFacade<any>;
+  protected notificationFacade: NotificationTypeFacade<any>;
   private subscription: Subscription;
 
   constructor(
@@ -120,14 +111,17 @@ export class BaseTableDefaultComponent
     private activeRoute: ActivatedRoute,
     public router: Router,
     public readonly _matDialog: MatDialog,
-    public cdRef: ChangeDetectorRef,
-    private registry: InstanceRegistryService
-  ) {
-    this.instnace_id = uuidv4();
-  }
+    public cdRef: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.dataSource.data = Array(20).fill({});
+
+    if (this.context) {
+      this.controller = this.context.controller;
+      this.baseFacade = this.context.facade.base;
+      this.notificationFacade = this.context.facade.notification;
+    }
 
     if (this.entities && this.entities.length > 0) {
       this.fetchData = false;
@@ -140,50 +134,8 @@ export class BaseTableDefaultComponent
       this.filterOptions.sortBy = params['sortBy'] || this.filterOptions.sortBy;
     });
 
-    this.modelFacade = this.listController.getFacade();
-    this.model = this.listController.getModelDefinition();
-    this.modelReference = this.listController.getClassName();
-
-    if (this.fetchData) {
-      const instance = this.registry.retrieve(this.modelReference);
-      if (instance && instance.notification) {
-        instance.notification.updated$.subscribe((updated) => {});
-        instance.notification.resetCount();
-
-        this.registry.retrieve(this.modelReference).notification.resetCount();
-      }
-    }
-
-    const listFields =
-      Reflect.getMetadata(
-        LISTFIELD_ALL_PREFIX,
-        this.listController.getModelDefinition()
-      ) || [];
-
-    const builderFields =
-      Reflect.getMetadata(
-        BUILDERFIELD_ALL_PREFIX,
-        this.listController.getModelDefinition()
-      ) || [];
-
-    this.fields = [...builderFields, ...listFields];
-
-    if (this.viewController === undefined) {
-      this.viewController = META.getListController(this.model) ?? this.model;
-    }
-
-    if (
-      haslistFields(this.viewController) &&
-      this.viewController.listFields().length > 0
-    ) {
-      this.fields = this.viewController
-        .listFields()
-        .filter((field) => this.fields.includes(field));
-    }
-
-    if (hasListActions(this.viewController)) {
-      this.actions = this.viewController.listActions();
-    }
+    this.fields = this.context.getFields();
+    this.actions = this.controller.listActions();
 
     if (this.fields) {
       if (!this.childTable) {
@@ -192,8 +144,8 @@ export class BaseTableDefaultComponent
       this.displayedColumns = [...this.displayedColumns, ...this.fields];
       this.displayedColumns.push('actions');
     }
-    if (this.listController.scope.length > 0) {
-      this.listController.scope.forEach((scope) => {
+    if (this.context.getScope().length > 0) {
+      this.context.getScope().forEach((scope) => {
         if (scope.value) {
           this.filterOptions['filter.' + scope.key] =
             scope.operation + ':' + scope.value;
@@ -203,15 +155,20 @@ export class BaseTableDefaultComponent
       });
     }
 
-    if (this.fetchData) {
-      this.subscription = this.modelFacade?.base.filtered$.subscribe(
+    if (this.context.fetch()) {
+      this.context.facade.base.loadFiltered(this.filterOptions);
+
+      this.notificationFacade.updated$.subscribe((updated) => {});
+      this.notificationFacade.resetCount(this.context.model);
+
+      this.subscription = this.context.facade.base.filtered$.subscribe(
         (entries: unknown) => {
           this.dataSource.data = entries as any[];
           this.cdRef.detectChanges();
         }
       );
 
-      this.modelFacade?.base.pagination$.subscribe((paginationMeta) => {
+      this.context.facade.base.pagination$.subscribe((paginationMeta) => {
         if (paginationMeta) {
           this.pagination = {
             ...paginationMeta,
@@ -229,10 +186,7 @@ export class BaseTableDefaultComponent
         }
       });
 
-      if (this.modelFacade) {
-        this.modelFacade.base.loadFiltered(this.filterOptions);
-        this.loading$ = this.modelFacade.base.loaded$;
-      }
+      this.loading$ = this.baseFacade.loaded$;
 
       this.searchInputControl.valueChanges
         .pipe(
@@ -240,26 +194,26 @@ export class BaseTableDefaultComponent
           debounceTime(300),
           tap((search: string) => {
             this.filterOptions = { ...this.filterOptions, search };
-            if (this.modelFacade) {
-              this.modelFacade.base.loadFiltered(this.filterOptions);
-            }
+            this.baseFacade.loadFiltered(this.filterOptions);
           })
         )
         .subscribe();
     }
 
-    if (!this.fetchData) {
-      if (this.viewController && this.entities && this.entities.length > 0) {
-        const scope: ScopeFilter = this.viewController.listScope();
+    if (!this.context.fetch()) {
+      if (this.entities && this.entities.length > 0) {
+        const scope: ScopeFilter = this.context.getScope()[0];
+
         this.entities = this.entities.filter((entity) => {
           let valid = true;
 
-          if (scope.key && scope.key.includes('.')) {
+          if (scope && scope.key && scope.key.includes('.')) {
             const keys = scope.key.split('.');
             valid = valid && entity[keys[0]][keys[1]] === scope.value;
-          }
-          if (scope.key && scope.value) {
-            valid = valid && entity[scope.key] === scope.value;
+          } else {
+            if (scope && scope.key && scope.value) {
+              valid = valid && entity[scope.key] === scope.value;
+            }
           }
 
           return valid;
@@ -281,8 +235,8 @@ export class BaseTableDefaultComponent
         }:${this.pagination.sortBy[0][1].toUpperCase()}`,
         search: '',
       };
-      if (this.listController.scope.length > 0) {
-        this.listController.scope.forEach((scope) => {
+      if (this.context.getScope().length > 0) {
+        this.context.getScope().forEach((scope) => {
           if (scope.value) {
             this.filterOptions['filter.' + scope.key] =
               scope.operation + ':' + scope.value;
@@ -291,9 +245,9 @@ export class BaseTableDefaultComponent
           }
         });
       }
-      if (this.fetchData && this.modelFacade) {
-        this.modelFacade.base.loadFiltered(this.filterOptions);
-        this.loading$ = this.modelFacade.base.loaded$;
+      if (this.fetchData) {
+        this.context.facade.base.loadFiltered(this.filterOptions);
+        this.loading$ = this.context.facade.base.loaded$;
       }
     }
   }
@@ -320,8 +274,8 @@ export class BaseTableDefaultComponent
   }
 
   public selectRow(row: any) {
-    if (this.viewController.$rowAction) {
-      this.viewController.$rowAction.click(row, this.router);
+    if (this.controller.rowAction()) {
+      this.controller.rowAction().click(row, this.router);
       return;
     }
 
@@ -330,11 +284,11 @@ export class BaseTableDefaultComponent
         minWidth: '50%',
         autoFocus: false,
         data: {
-          model: this.model,
+          model: this.context.model,
           edit: true,
           values: row,
-          modelFacade: this.modelFacade,
-          scope: this.listController.scope,
+          modelFacade: this.context.facade,
+          scope: this.context.getScope(),
         },
       });
       this.cdRef.detectChanges();
@@ -346,8 +300,7 @@ export class BaseTableDefaultComponent
   public delete(data: any) {
     let name = '';
     this.translateService.get('test').subscribe((translated: string) => {
-      const labelCode =
-        META.getNameByModel(this.listController.getModelDefinition()) + '.name';
+      const labelCode = this.context.name + '.name';
       name = this.translateService.instant(labelCode);
     });
 
@@ -359,7 +312,7 @@ export class BaseTableDefaultComponent
       cancelButtonText: 'Nein, abbrechen',
     }).then((result) => {
       if (result.value) {
-        this.modelFacade.base.delete(data);
+        this.baseFacade.delete(data);
       } else if (result.isDismissed) {
       }
     });
@@ -379,7 +332,7 @@ export class BaseTableDefaultComponent
         if (duplicate.name) {
           duplicate.name += ' COPY';
         }
-        this.modelFacade.base.add(duplicate);
+        this.baseFacade.add(duplicate);
       } else if (result.isDismissed) {
       }
     });
@@ -390,11 +343,11 @@ export class BaseTableDefaultComponent
       minWidth: '50%',
       autoFocus: false,
       data: {
-        model: this.model,
-        modelFacade: this.modelFacade,
+        model: this.context.model,
+        modelFacade: this.context.facade,
         edit: true,
-        scope: this.listController.scope,
-        config: this.listController.getConfig(),
+        scope: this.context.getScope(),
+        config: this.context,
         values: this.selection.selected,
       },
     });
@@ -404,8 +357,7 @@ export class BaseTableDefaultComponent
   batchDelete() {
     let name = '';
     this.translateService.get('test').subscribe((translated: string) => {
-      const labelCode =
-        META.getNameByModel(this.listController.getModelDefinition()) + '.name';
+      const labelCode = this.context.name + '.name';
       name = this.translateService.instant(labelCode);
     });
     Swal.fire({
@@ -419,14 +371,14 @@ export class BaseTableDefaultComponent
       cancelButtonText: 'Nein, abbrechen',
     }).then((result) => {
       if (result.value) {
-        this.modelFacade.base.batchDelete(this.selection.selected);
+        this.baseFacade.batchDelete(this.selection.selected);
       } else if (result.isDismissed) {
       }
     });
   }
 
   public fireAction(action) {
-    action.click(this.model);
+    action.click(this.context.model, this.router);
   }
 
   public openAddModal() {
@@ -434,43 +386,21 @@ export class BaseTableDefaultComponent
       minWidth: '50%',
       autoFocus: false,
       data: {
-        model: this.model,
-        modelFacade: this.modelFacade,
-        scope: this.listController.scope,
-        config: this.listController.getConfig(),
+        model: this.context.model,
+        modelFacade: this.context.facade,
+        scope: this.context.getScope(),
+        config: this.context,
       },
     });
     this.cdRef.detectChanges();
   }
 
   export() {
-    const listFields =
-      Reflect.getMetadata(
-        LISTFIELD_ALL_PREFIX,
-        this.listController.getModelDefinition()
-      ) || [];
-
-    const builderFields =
-      Reflect.getMetadata(
-        BUILDERFIELD_ALL_PREFIX,
-        this.listController.getModelDefinition()
-      ) || [];
-
-    const exportFields =
-      Reflect.getMetadata(
-        EXPORT_PREFIX_ALL,
-        this.listController.getModelDefinition()
-      ) || [];
-
-    let fields = [...builderFields, ...listFields, ...exportFields];
+    let fields = this.context.getFields();
 
     fields = fields.map((field) => {
       let options =
-        Reflect.getMetadata(
-          EXPORT_PREFIX,
-          this.listController.getModelDefinition(),
-          field
-        ) || {};
+        Reflect.getMetadata(EXPORT_PREFIX, this.context.model, field) || {};
       return { field, options };
     });
 
@@ -496,8 +426,7 @@ export class BaseTableDefaultComponent
 
     let name = '';
     this.translateService.get('test').subscribe((translated: string) => {
-      const labelCode =
-        META.getNameByModel(this.listController.getModelDefinition()) + '.name';
+      const labelCode = this.context.name + '.name';
       name = this.translateService.instant(labelCode);
     });
 
@@ -526,10 +455,7 @@ export class BaseTableDefaultComponent
           labelCode =
             field.split('.')[0] + '.properties.' + field.split('.')[1];
         } else {
-          labelCode =
-            META.getNameByModel(this.listController.getModelDefinition()) +
-            '.properties.' +
-            field;
+          labelCode = this.context.name + '.properties.' + field;
         }
 
         name = this.translateService.instant(labelCode);
@@ -565,8 +491,8 @@ export class BaseTableDefaultComponent
         minWidth: '50%',
         autoFocus: false,
         data: {
-          model: this.model,
-          modelFacade: this.modelFacade,
+          model: this.context.model,
+          modelFacade: this.context.facade,
           values: row,
         },
       });
@@ -594,7 +520,7 @@ export class BaseTableDefaultComponent
       }
     }
 
-    this.modelFacade?.base.loadFiltered(filters);
+    this.baseFacade.loadFiltered(filters);
   }
 
   public openQueryRowsModal() {}
@@ -645,9 +571,7 @@ export class BaseTableDefaultComponent
             sortBy: `${this.sort.active}:${this.sort.direction.toUpperCase()}`,
           };
 
-          if (this.modelFacade) {
-            this.modelFacade.base.loadFiltered(this.filterOptions);
-          }
+          this.baseFacade.loadFiltered(this.filterOptions);
         })
       )
       .subscribe();

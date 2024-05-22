@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { uuidTransformer } from '@next-levels/types';
 
 @Entity('nxt_translations')
 export class TranslationEntity {
@@ -9,6 +10,7 @@ export class TranslationEntity {
     type: 'binary',
     length: 16,
     generated: false,
+    transformer: uuidTransformer,
   })
   model_id: string;
 
@@ -16,6 +18,7 @@ export class TranslationEntity {
     type: 'binary',
     length: 16,
     generated: false,
+    transformer: uuidTransformer,
   })
   lang_id: string;
 

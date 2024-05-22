@@ -4,6 +4,7 @@ import { MODELCLASS_OPTIONS_PREFIX } from '../decoraters/model-class.decorator';
 import { ModelOptions } from '../types/options/model-options';
 import { z } from 'zod';
 import { constructZodSchemaFromClassModel } from './meta-zod.helper';
+import { ListController } from '../types/ListController';
 
 export const decorator_models: Constructor[] = [];
 export const decorator_models_options: any[] = [];
@@ -114,7 +115,9 @@ export class META {
     return undefined;
   }
 
-  static getListController(constructor: Constructor): Constructor | undefined {
+  static getListController(
+    constructor: Constructor
+  ): ListController<any> | undefined {
     const name = Reflect.getMetadata(
       MODELCLASS_PREFIX,
       constructor.constructor
@@ -130,7 +133,9 @@ export class META {
     return undefined;
   }
 
-  static getListControllerByName(name: string): Constructor | undefined {
+  static getListControllerByName(
+    name: string
+  ): ListController<any> | undefined {
     const model = list_controller_models_key.get(name);
     if (model) {
       return new model();

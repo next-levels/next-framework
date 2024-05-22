@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-
 import { BaseTableDefaultComponent } from '../base-table-default/base-table-default.component';
 import {
   MatTreeFlatDataSource,
@@ -53,11 +52,7 @@ export class TableTreeComponent extends BaseTableDefaultComponent {
   override itemsPerPage = 1000;
 
   override ngOnInit() {
-    //super.ngOnInit();
-    this.modelFacade = this.listController.getFacade();
-    this.model = this.listController.getModelDefinition();
-    this.modelReference = this.listController.getClassName();
-    this.modelFacade?.notification?.updated$?.subscribe((timestamp) => {});
+    super.ngOnInit();
 
     this.treeFlattener = new MatTreeFlattener(
       this.transformer,
@@ -75,7 +70,7 @@ export class TableTreeComponent extends BaseTableDefaultComponent {
       this.treeFlattener
     );
 
-    this.modelFacade?.base.filtered$.subscribe((categories: unknown) => {
+    this.baseFacade.filtered$.subscribe((categories: unknown) => {
       this.dataSourceTree.data = (categories as any).map((category) => ({
         ...category,
         id: category.api_id, // Map api_id to id
@@ -87,11 +82,9 @@ export class TableTreeComponent extends BaseTableDefaultComponent {
       this.cdRef.detectChanges();
     });
 
-    if (this.modelFacade) {
-      this.filterOptions = { ...this.filterOptions, limit: this.itemsPerPage };
-      this.modelFacade.base.loadFiltered(this.filterOptions);
-      this.loading$ = this.modelFacade.base.loaded$;
-    }
+    this.filterOptions = { ...this.filterOptions, limit: this.itemsPerPage };
+    this.baseFacade.loadFiltered(this.filterOptions);
+    this.loading$ = this.baseFacade.loaded$;
 
     this.searchInputControl.valueChanges
       .pipe(
@@ -99,9 +92,7 @@ export class TableTreeComponent extends BaseTableDefaultComponent {
         debounceTime(300),
         tap((search: string) => {
           this.filterOptions = { ...this.filterOptions, search };
-          if (this.modelFacade) {
-            this.modelFacade.base.loadFiltered(this.filterOptions);
-          }
+          this.baseFacade.loadFiltered(this.filterOptions);
         })
       )
       .subscribe();

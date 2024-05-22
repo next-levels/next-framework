@@ -9,7 +9,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import {
   KEY_BACK_SPACE,
@@ -34,6 +33,7 @@ import { SaveQueryDialogComponent } from '../save-query-dialog/save-query-dialog
 import { BUILDERFIELD_ALL_PREFIX, META } from '@next-levels/types';
 import { SearchQuery } from '../../models/search-queries.model';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'query-input',
@@ -43,7 +43,19 @@ import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 export class QueryInputComponent implements OnInit, OnChanges {
   public myControl = new FormControl();
   public filteredOptions: Observable<string[]>;
-
+  public styleExpression = '';
+  public isSubmittable = false;
+  public isSuccessfullySubmitted = false;
+  @Input() model: any;
+  @Input() placeholder: string;
+  @Input() style: any = {};
+  @Input() user: any;
+  @Input() searchQuery: SearchQuery;
+  @Input() modelReference: string;
+  @Output() queryChange: EventEmitter<any[]> = new EventEmitter();
+  @Output() openQueryRowsModalEvent = new EventEmitter<any>();
+  @ViewChild('typeahead', { read: MatAutocompleteTrigger })
+  autoTrigger: MatAutocompleteTrigger;
   private searchFields: FieldResult[] = [];
   private fields: string[] = [];
   private fieldList: SuggestionDetails = {
@@ -75,15 +87,15 @@ export class QueryInputComponent implements OnInit, OnChanges {
   private fieldResultMap = new Map();
   private editPosition = 0;
   private searchList: SelectedOption[] = [];
-
-  public styleExpression = '';
-  public isSubmittable = false;
-  public isSuccessfullySubmitted = false;
   private isCurrentlyTypedIn = false;
   private isExpectingSpace = false;
   private restrictedEditMode = true;
-
   private _unsubscribeAll: Subject<any> = new Subject<any>();
+
+  constructor(
+    private readonly _matDialog: MatDialog,
+    private translateService: TranslateService
+  ) {}
 
   private get field(): string[] {
     return this.fieldList.Value;
@@ -113,24 +125,6 @@ export class QueryInputComponent implements OnInit, OnChanges {
       },
     ];
   }
-
-  @Input() model: any;
-  @Input() placeholder: string;
-  @Input() style: any = {};
-  @Input() user: any;
-  @Input() searchQuery: SearchQuery;
-  @Input() modelReference: string;
-
-  @Output() queryChange: EventEmitter<any[]> = new EventEmitter();
-  @Output() openQueryRowsModalEvent = new EventEmitter<any>();
-
-  @ViewChild('typeahead', { read: MatAutocompleteTrigger })
-  autoTrigger: MatAutocompleteTrigger;
-
-  constructor(
-    private readonly _modalService: NgbModal,
-    private translateService: TranslateService
-  ) {}
 
   ngOnInit() {
     this.fields = Reflect.getMetadata(BUILDERFIELD_ALL_PREFIX, this.model);
@@ -313,6 +307,38 @@ export class QueryInputComponent implements OnInit, OnChanges {
   // Private functions
   //
 
+  public addSearchQuery() {
+    if (this.user && this.myControl.value) {
+      const modalRef = this._matDialog.open(SaveQueryDialogComponent, {
+        minWidth: '60%',
+        minHeight: '60%',
+        autoFocus: false,
+        data: {
+          search_statement: JSON.stringify(this.searchList),
+          input_string: this.myControl.value,
+          user: this.user,
+          model_reference: this.modelReference,
+        },
+      });
+    }
+  }
+
+  public emptyQuery() {
+    this.searchList = [];
+    this.myControl.setValue('');
+    this.emitFilter();
+  }
+
+  // ------------- Get Autocomplete List END --------------------
+
+  public submitFunction() {
+    if (this.isCurrentlyTypedIn && !this.isSuccessfullySubmitted) {
+      this.searchListPush(this.getSearchText(this.myControl.value).trim());
+    }
+    // this.styleExpression = this.getColor();
+    this.emitFilter();
+  }
+
   private getOptionList(): string[] {
     if (
       this.searchList == null ||
@@ -336,6 +362,8 @@ export class QueryInputComponent implements OnInit, OnChanges {
     return currentList ? this.getValues(currentList) : this.field;
   }
 
+  // --------------- END : Get the search text based on which the autocomplete will populate --------
+
   private getValues(currentList: SelectionDict): string[] {
     if (this.currentEvent.toLowerCase() != 'value') return currentList.Value;
 
@@ -347,8 +375,6 @@ export class QueryInputComponent implements OnInit, OnChanges {
 
     return filteredResponse ? filteredResponse.AutoCompleteValues : [];
   }
-
-  // ------------- Get Autocomplete List END --------------------
 
   // --------------- START : Get the search text based on which the autocomplete will populate --------
   private getSearchText(value: string): string {
@@ -400,8 +426,6 @@ export class QueryInputComponent implements OnInit, OnChanges {
       this.searchList.pop();
     }
   }
-
-  // --------------- END : Get the search text based on which the autocomplete will populate --------
 
   private getNextEvent(currentEvent: string): string {
     const currentList = this.selectionList.find(
@@ -602,35 +626,6 @@ export class QueryInputComponent implements OnInit, OnChanges {
       position += 1;
     }
     return undefined;
-  }
-
-  public addSearchQuery() {
-    if (this.user && this.myControl.value) {
-      const modalRef = this._modalService.open(SaveQueryDialogComponent, {
-        ariaLabelledBy: 'modal-basic-title',
-        modalDialogClass: 'modal-dialog-centered',
-      });
-      modalRef.componentInstance.searchQuery = {
-        search_statement: JSON.stringify(this.searchList),
-        input_string: this.myControl.value,
-        user: this.user,
-        model_reference: this.modelReference,
-      };
-    }
-  }
-
-  public emptyQuery() {
-    this.searchList = [];
-    this.myControl.setValue('');
-    this.emitFilter();
-  }
-
-  public submitFunction() {
-    if (this.isCurrentlyTypedIn && !this.isSuccessfullySubmitted) {
-      this.searchListPush(this.getSearchText(this.myControl.value).trim());
-    }
-    // this.styleExpression = this.getColor();
-    this.emitFilter();
   }
 
   private validitySupervisor() {

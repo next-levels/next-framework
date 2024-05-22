@@ -10,14 +10,8 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ListController } from '../../../controllers/ListController';
-import {
-  BUILDERFIELD_PREFIX,
-  ListComponents,
-  LISTFIELD_PREFIX,
-  ListOptions,
-  META,
-} from '@next-levels/types';
+import { ListComponents } from '@next-levels/types';
+import { ListContext } from '../../../controllers/list-context';
 
 @Component({
   selector: 'nxtlvls-view-element',
@@ -35,7 +29,7 @@ export class ViewElementComponent implements AfterViewInit, OnInit {
   @Input() viewObject: any;
   @Input() detailView = false;
   @Input() label = false;
-  @Input() listController: ListController;
+  @Input() context: ListContext<any>;
 
   viewModelInstance: any;
   listField: any;
@@ -50,44 +44,19 @@ export class ViewElementComponent implements AfterViewInit, OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.listController) {
-      this.viewModel = this.listController.getModel();
-      this.viewModelInstance = this.listController.getModelDefinition();
+    if (this.context) {
+      this.viewModel = this.context.model;
+      this.viewModelInstance = this.context.model;
     } else {
       this.viewModelInstance = new this.viewModel();
     }
-
-    this.translateService.get('test').subscribe((translated: string) => {
-      const modelPrototype = this.viewModel.prototype
-        ? this.viewModel.prototype
-        : this.viewModel;
-
-      this.labelCode =
-        META.getNameByModel(modelPrototype) + '.properties.' + this.fieldName;
-
-      if (this.label && this.labelCode) {
-        this.listField = {
-          label: this.translateService.instant(this.labelCode),
-        };
-      }
-    });
   }
 
   ngAfterViewInit(): void {
-    if (this.fieldName) {
+    if (this.fieldName && this.context) {
       if (this.viewObject) {
         let type: any = null;
-
-        this.listField = this.getBuildField(this.fieldName);
-        this.listField = {
-          ...this.listField,
-          ...this.getSettingsField(this.fieldName),
-        };
-
-        if (this.label && this.labelCode) {
-          this.listField.label = this.translateService.instant(this.labelCode);
-        }
-
+        this.listField = this.context.getField(this.fieldName);
         if (this.listBuilderComponents) {
           const component = this.listBuilderComponents[this.listField.type];
           if (component) {
@@ -103,22 +72,10 @@ export class ViewElementComponent implements AfterViewInit, OnInit {
     }
   }
 
-  public getSettingsField(field: string): ListOptions {
-    return Reflect.getMetadata(LISTFIELD_PREFIX, this.viewModelInstance, field);
-  }
-
-  public getBuildField(field: string): ListOptions {
-    return Reflect.getMetadata(
-      BUILDERFIELD_PREFIX,
-      this.viewModelInstance,
-      field
-    );
-  }
-
   initComponent(componentRef: any) {
     componentRef.instance.fieldName = this.fieldName;
     componentRef.instance.listField = this.listField;
-    componentRef.instance.listController = this.listController;
+    componentRef.instance.listController = this.context;
     componentRef.instance.viewObject = this.viewObject;
     componentRef.instance.detailView = this.detailView;
     this.cdRef.detectChanges();

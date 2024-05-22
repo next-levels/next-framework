@@ -1,7 +1,10 @@
 import 'reflect-metadata';
-import { BaseController } from './BaseController';
-import { ScopeFilter } from '@next-levels/types';
+import {BaseController} from './BaseController';
+import {ScopeFilter} from '@next-levels/types';
 
+/**
+ * @deprecated
+ */
 export class ListController extends BaseController {
   scope: ScopeFilter[] = [];
   config: any;

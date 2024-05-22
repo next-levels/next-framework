@@ -9,12 +9,11 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FormOptions, META } from '@next-levels/types';
+import { FormOptions } from '@next-levels/types';
 import { FormController } from '../../lib/controller/form-controller';
-import { ListController } from '../../../../list-builder';
-import { InstanceRegistryService } from '@next-levels/next-framework-client';
 import { ActivatedRoute } from '@angular/router';
 import { TableDefaultComponent } from '../../../../list-builder/src/lib/components/table-default/table-default.component';
+import { ListContextFactory } from '../../../../list-builder/src/lib/controllers/list-context-factory';
 
 @Component({
   selector: 'nxt-list-selector',
@@ -30,9 +29,9 @@ export class ListSelectorComponent implements OnInit, AfterViewInit {
 
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
-    private registry: InstanceRegistryService,
     private route: ActivatedRoute,
-    public cdRef: ChangeDetectorRef
+    public cdRef: ChangeDetectorRef,
+    private factory: ListContextFactory
   ) {}
 
   ngOnInit(): void {
@@ -51,72 +50,39 @@ export class ListSelectorComponent implements OnInit, AfterViewInit {
       const tableSubmoduleComponentInstance =
         componentRef.instance as TableDefaultComponent;
 
-      const model = this.formController.getModelDefinition();
+      const definition = this.formController.getModelDefinition();
       const propertyType = Reflect.getMetadata(
         'design:type',
-        model,
+        definition,
         this.formField?.name
       );
 
-      let viewController = null;
-      let targetModel = null;
-
+      let model = null;
       if (propertyType !== Array) {
-        targetModel = propertyType;
+        model = propertyType;
       } else if (this.formField.options.model) {
-        targetModel = META.getModelByName(this.formField.options.model);
+        model = this.formField.options.model;
       }
-
-      if (!this.formField.options.view) {
-        viewController = META.getListControllerByName(
-          META.getNameByModel(targetModel)
-        );
-      } else {
-        viewController = META.getListControllerByName(
-          this.formField.options.view
+      if (!model) {
+        throw new Error(
+          'Model not found. Please provide a model in the formField options'
         );
       }
 
-      tableSubmoduleComponentInstance.listController = new ListController(
-        targetModel,
-        this.registry.retrieve(targetModel.constructor),
-        targetModel
-      );
+      const view = this.formField?.options?.view || null;
 
-      if (viewController) {
-        tableSubmoduleComponentInstance.childTable = true;
-        tableSubmoduleComponentInstance.viewController = viewController;
+      const listContext = this.factory.create(model, view);
 
-        if (this.formField.options.fromParent) {
-          let entities: any[] = [];
-
-          let data = this.formController?.getModel();
-
-          if (this.formField.options.selector) {
-            entities = data[this.formField.options.selector];
-          } else {
-            entities = data[this.formField.name];
-          }
-
-          tableSubmoduleComponentInstance.fetchData = false;
-          tableSubmoduleComponentInstance.entities = entities;
-        }
-        if (this.formField.options.keySelf && this.formController?.getModel()) {
-          tableSubmoduleComponentInstance.listController.setScope(
-            this.formField.options.key,
-            '$eq',
-            this.formController?.getModel()[this.formField.options.keySelf]
-          );
-        } else {
-          tableSubmoduleComponentInstance.listController.setScope(
-            this.formField.options.key,
-            '$eq',
-            Number(this.route.snapshot.paramMap.get('id'))
-          );
-        }
-
-        this.cdRef.detectChanges();
+      if (this.formField.options.fromParent) {
+        listContext.fetch(false);
+        const selector = this.formField.options.selector || this.formField.name;
+        const entities = this.formController?.getModel()[selector] || [];
+        tableSubmoduleComponentInstance.entities = entities;
       }
+
+      tableSubmoduleComponentInstance.childTable = true;
+      tableSubmoduleComponentInstance.context = listContext;
+      this.cdRef.detectChanges();
     }
   }
 }

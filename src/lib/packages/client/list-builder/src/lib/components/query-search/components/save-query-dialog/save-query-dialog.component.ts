@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import {SearchQuery} from "../../models/search-queries.model";
-import {InstanceRegistryService} from "@next-levels/next-framework-client";
+import { SearchQuery } from '../../models/search-queries.model';
+import { InstanceRegistryService } from '@next-levels/next-framework-client';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'save-query-dialog',
@@ -14,7 +14,7 @@ export class SaveQueryDialogComponent implements OnInit {
   @Input() public searchQuery: SearchQuery;
 
   constructor(
-    public activeModal: NgbActiveModal,
+    private readonly _matDialog: MatDialog,
     private regestry: InstanceRegistryService,
     private _formBuilder: FormBuilder
   ) {}
@@ -33,13 +33,12 @@ export class SaveQueryDialogComponent implements OnInit {
    */
   public onSubmit() {
     if (this.searchQueryForm.valid && this.searchQuery) {
-
       this.regestry.retrieve(SearchQuery).base.add({
         ...this.searchQuery,
         ...this.searchQueryForm.value,
       });
 
-      this.activeModal.close();
+      this._matDialog.closeAll();
     }
   }
 
@@ -47,6 +46,6 @@ export class SaveQueryDialogComponent implements OnInit {
    * Dismiss dialog box
    */
   public onDismiss() {
-    this.activeModal.dismiss();
+    this._matDialog.closeAll();
   }
 }
